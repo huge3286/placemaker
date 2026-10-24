@@ -393,6 +393,7 @@ namespace Placemaker.Core.Layers.Roads
         internal static AreaPlan PlanCore(AreaInput input, IReadOnlyList<ControlSchema> controls, CancellationToken cancel, PlanVariant variant)
         {
             var plan = new AreaPlan();
+            var clock = new PlanClock(plan.Timings);
             var site = input.Site ?? new SiteContext();
             var settings = variant?.Settings ?? input.Settings ?? new SettingsBag();
             Func<float2, float> heightAt = SafeHeight(site.HeightAt);
@@ -495,6 +496,7 @@ namespace Placemaker.Core.Layers.Roads
             cancel.ThrowIfCancellationRequested();
 
             var net = new RoadNetwork();
+            clock.Lap("generate");
             foreach (var s in segments)
             {
                 if (!MathEx.Finite(s.Start) || !MathEx.Finite(s.End)) continue;
@@ -550,6 +552,7 @@ namespace Placemaker.Core.Layers.Roads
             cancel.ThrowIfCancellationRequested();
 
             // ── 3. Obstacles (interior) ─────────────────────────────────
+            clock.Lap("assemble and existing roads");
             int removedByObstacles = 0;
             var detours = new List<RoadDetour.Result>();
             RoadObstacles obstacles = null;
@@ -610,6 +613,7 @@ namespace Placemaker.Core.Layers.Roads
             if (givesWay) plan.Facts[FactStairs] = RoadTerrainFit.StairStreets(net, heightAt, maxGrade);
 
             // ── 5b. (s34) Network design: access, connectivity, dead ends, lanes, junctions, walkways, grades ──
+            clock.Lap("obstacles and perimeter");
             var ctx = new RoadDesign.Context
             {
                 Boundary = boundary, Existing = existing, Barriers = barriers, Obstacles = obstacles, Height = follow ? heightAt : null, HalfWidth = hw,
@@ -633,6 +637,7 @@ namespace Placemaker.Core.Layers.Roads
                 ctx.FollowContours = false;
             }
             var design = RoadDesign.Run(net, ctx, cancel);
+            clock.Lap("network design");
             cancel.ThrowIfCancellationRequested();
             // (Smarter roads) No microscopic blocks: a block too small or too thin to build on loses one of its new streets.
             plan.Facts[FactSliversMerged] = RemoveSlivers(net, boundary, allRoads, hw, cancel);
@@ -641,10 +646,11 @@ namespace Placemaker.Core.Layers.Roads
                 RoadConnectivity.CleanDeadEnds(net, new RoadConnectivity.Options { Boundary = boundary, Existing = existing, Barriers = barriers, HalfWidth = hw, Perimeter = perimeter }, new RoadConnectivity.Result());
                 RoadConnectivity.PruneLoosePaths(net);
                 net.DropFragments(150f);
-                RoadDesign.Tidy(net, ctx);
+                RoadDesign.Tidy(net, ctx, cancel);
             }
 
             // ── 5c. (s52) Hillside terraces: bank walks, then ONE terrain field from the final network ──
+            clock.Lap("slivers");
             Terraces.TerraceGround terraceGround = null;
             Func<float2, float> ground = heightAt;
             int bankWalks = 0;
@@ -897,6 +903,7 @@ namespace Placemaker.Core.Layers.Roads
             }
 
             // ── 7. Regions ───────────────────────────────────────────────
+            clock.Lap("terrain and emit");
             var blocks = new List<RoadBlocks.Block>();
             if (plan.Nets.Count > 0)
             {
@@ -976,6 +983,7 @@ namespace Placemaker.Core.Layers.Roads
             plan.Facts[FactRemoved] = removedByObstacles;
             if (terraceLayout != null) TerraceReport(plan, terraceLayout, terraceOpt, terraceGround, net, hw, obstacles, boundary, bankWalks);
             else if (blockOpt != null) BlockReport(plan, blockSurvey, blockOpt, terraceGround, net, hw, obstacles, boundary);
+            clock.Lap("regions and stats");
             return plan;
         }
 

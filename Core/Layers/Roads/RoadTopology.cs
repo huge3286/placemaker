@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Placemaker.Core.Geometry;
 using Unity.Mathematics;
 
@@ -682,14 +683,33 @@ namespace Placemaker.Core.Layers.Roads
         /// perimeter, a staple round a block's top) are given up when the network stays in one piece; the dead ends that
         /// leaves are then cut back (<see cref="PruneStubsBesideRoads"/>).
         /// </summary>
-        public static int GiveUpAlongside(RoadNetwork net, Func<NetRole, float> halfWidth, List<ExistingRoad> existing)
+        public static int GiveUpAlongside(RoadNetwork net, Func<NetRole, float> halfWidth, List<ExistingRoad> existing, CancellationToken cancel = default)
         {
             int count = 0;
             for (int pass = 0; pass < 8; pass++)
             {
+                // Only roads within AlongsideGap can affect RunsAlongside. Index the full
+                // control-point bounds, expanded by road width: a cubic stays inside that
+                // box, including bends that a sampled centreline could miss. Rebuild after
+                // each removal/Weld so edge indices and shared-node exclusions stay current.
+                var nearby = new SegmentIndex(64f);
+                cancel.ThrowIfCancellationRequested();
+                void Add(RoadCurve curve, float width, int owner)
+                {
+                    float2 mn = math.min(math.min(curve.A.xz, curve.B.xz), math.min(curve.C.xz, curve.D.xz));
+                    float2 mx = math.max(math.max(curve.A.xz, curve.B.xz), math.max(curve.C.xz, curve.D.xz));
+                    nearby.Add(mn - width, mx + width, owner);
+                }
+                for (int k = 0; k < net.Edges.Count; k++)
+                    if (RoadGraph.Car(net.Edges[k])) Add(net.Edges[k].Curve, halfWidth(net.Edges[k].Role), k);
+                if (existing != null)
+                    for (int k = 0; k < existing.Count; k++) Add(existing[k].Curve, existing[k].HalfWidth, -k - 1);
+                var scratch = new List<int>();
+                var seen = new HashSet<int>();
                 bool any = false;
                 for (int i = 0; i < net.Edges.Count && !any; i++)
                 {
+                    cancel.ThrowIfCancellationRequested();
                     var e = net.Edges[i];
                     if (!RoadGraph.Car(e) || e.Role == NetRole.PerimeterRoad || e.Role == NetRole.Avenue || e.Role == NetRole.Roundabout) continue;
                     if (RoadGraph.Length(e) < 20f) continue;
@@ -697,8 +717,20 @@ namespace Placemaker.Core.Layers.Roads
                     float Gap(float2 p, float2 tan)
                     {
                         float best = float.MaxValue;
-                        for (int k = 0; k < net.Edges.Count; k++)
+                        float radius = halfWidth(e.Role) + AlongsideGap + 0.01f;
+                        nearby.Query(p - radius, p + radius, scratch, seen);
+                        foreach (int sid in scratch)
                         {
+                            int k = nearby.Owner[sid];
+                            if (k < 0)
+                            {
+                                var r = existing[-k - 1];
+                                float rd = r.Curve.DistanceXZ(p, out float rt);
+                                if (rt < 0.01f || rt > 0.99f) continue;
+                                if (math.abs(math.dot(r.Curve.TangentXZ(rt), tan)) < 0.85f) continue;
+                                best = math.min(best, rd - r.HalfWidth);
+                                continue;
+                            }
                             var o = net.Edges[k];
                             if (k == i || !RoadGraph.Car(o) || o.N0 == e.N0 || o.N0 == e.N1 || o.N1 == e.N0 || o.N1 == e.N1) continue;
                             float d = o.Curve.DistanceXZ(p, out float t);
@@ -706,14 +738,6 @@ namespace Placemaker.Core.Layers.Roads
                             if (math.abs(math.dot(o.Curve.TangentXZ(t), tan)) < 0.85f) continue;
                             best = math.min(best, d - halfWidth(o.Role));
                         }
-                        if (existing != null)
-                            foreach (var r in existing)
-                            {
-                                float d = r.Curve.DistanceXZ(p, out float t);
-                                if (t < 0.01f || t > 0.99f) continue;
-                                if (math.abs(math.dot(r.Curve.TangentXZ(t), tan)) < 0.85f) continue;
-                                best = math.min(best, d - r.HalfWidth);
-                            }
                         return best;
                     }
                     if (!RunsAlongside(e.Curve, halfWidth(e.Role), Gap)) continue;

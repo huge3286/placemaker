@@ -120,6 +120,7 @@ namespace Placemaker.Core.Layers.Roads
 
             r.Lanes = RoadWalkways.Lanes(net, new RoadWalkways.LaneOptions
             {
+                Cancel = cancel,
                 Density = c.BackLanes, Style = c.LaneStyle, Seed = c.Seed ^ 0x51A3u, Boundary = c.Boundary, Height = c.Height,
                 Obstacles = c.Obstacles, HalfWidth = c.HalfWidth, MaxGrade = c.MaxGrade,
                 WalkDensity = c.Walkways * 0.5f, WalkStyle = c.WalkwayStyle,
@@ -162,7 +163,7 @@ namespace Placemaker.Core.Layers.Roads
             if (late > 0) { r.GivenUp += late; RoadConnectivity.PruneLoosePaths(net); }
             // a piece left floating on its own (no city, short) is no network: it goes
             if (net.DropFragments(150f) > 0) RoadConnectivity.PruneLoosePaths(net);
-            r.Fillets += Tidy(net, c);
+            r.Fillets += Tidy(net, c, cancel);
             cancel.ThrowIfCancellationRequested();
 
             Grades(net, c, r);
@@ -174,13 +175,13 @@ namespace Placemaker.Core.Layers.Roads
         /// back or goes, every bare corner left (a street that lost its far side) is rounded, every dead end gets its turning
         /// circle. Returns the corners rounded.
         /// </summary>
-        public static int Tidy(RoadNetwork net, Context c)
+        public static int Tidy(RoadNetwork net, Context c, CancellationToken cancel = default)
         {
             // anything added since (a late link onto the city) keeps the junction gap too
             if (RoadTopology.EnforceJunctionGap(net, c.Existing, c.HalfWidth, RoadTopology.MinJunctionGap, math.max(40f, c.JunctionSpacing * 0.5f))
                 + RoadTopology.GiveUpKnifeEdges(net, 40f, c.Existing) > 0)
                 RoadConnectivity.PruneLoosePaths(net);
-            if (RoadTopology.GiveUpAlongside(net, c.HalfWidth, c.Existing) > 0) RoadConnectivity.PruneLoosePaths(net);
+            if (RoadTopology.GiveUpAlongside(net, c.HalfWidth, c.Existing, cancel) > 0) RoadConnectivity.PruneLoosePaths(net);
             RoadTopology.ExtendTips(net, c.HalfWidth, c.Existing, c.Barriers, c.Obstacles, c.Height, c.MaxGrade);
             if (RoadTopology.PruneStubsBesideRoads(net, c.HalfWidth, c.Existing, c.Barriers) > 0)
             {

@@ -13,6 +13,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Placemaker.Core.Geometry;
 using Unity.Mathematics;
 
@@ -404,6 +405,7 @@ namespace Placemaker.Core.Layers.Roads
 
         public sealed class LaneOptions
         {
+            public CancellationToken Cancel;
             /// <summary>0..1: share of eligible blocks that get a lane.</summary>
             public float Density;
             /// <summary>"alley" | "gravel" | "mixed".</summary>
@@ -426,6 +428,7 @@ namespace Placemaker.Core.Layers.Roads
         /// </summary>
         public static int Lanes(RoadNetwork net, LaneOptions o)
         {
+            o.Cancel.ThrowIfCancellationRequested();
             if (!(o.Density > 0.001f) && !(o.WalkDensity > 0.001f)) return 0;
             var rng = new Unity.Mathematics.Random(o.Seed == 0 ? 0x7F4A7C15u : o.Seed);
             var inc = RoadGraph.Incidence(net, RoadGraph.Car);
@@ -454,14 +457,18 @@ namespace Placemaker.Core.Layers.Roads
             cands.Sort((a, b) => a.p.x != b.p.x ? a.p.x.CompareTo(b.p.x) : a.p.z.CompareTo(b.p.z));
             int added = 0;
             var joined = new List<float2>();
+            RoadGraph.EdgeIndex cachedIndex = null;
             foreach (var c in cands)
             {
+                o.Cancel.ThrowIfCancellationRequested();
                 bool lane = rng.NextFloat() < o.Density;
                 bool path = !lane && rng.NextFloat() < o.WalkDensity;
                 if (!lane && !path) continue;
-                var index = new RoadGraph.EdgeIndex(net, RoadGraph.Any);
                 int ei = RoadGraph.NodeAt(net, c.p.xz, 0.05f) >= 0 ? -1 : FindEdge(net, c.p.xz);
                 if (ei < 0) continue;
+                // Rejected candidates leave the network unchanged. Reuse its expensive flattened
+                // index until a lane splits roads; never carry it across a successful insertion.
+                var index = cachedIndex ?? (cachedIndex = new RoadGraph.EdgeIndex(net, RoadGraph.Any));
                 var e = net.Edges[ei];
                 e.Curve.DistanceXZ(c.p.xz, out float t);
                 foreach (float sgn in new[] { 1f, -1f })
@@ -502,6 +509,7 @@ namespace Placemaker.Core.Layers.Roads
                         net.Edges.Add(new RoadEdge(curve, NetRole.Pathway) { Walk = true, Trail = trail, Category = trail ? AssetCategories.TrailPath : "" });
                     }
                     net.Weld();
+                    cachedIndex = null;
                     joined.Add(c.p.xz); joined.Add(b.xz);
                     if (lane) added++;
                     break;
