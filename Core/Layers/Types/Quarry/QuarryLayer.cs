@@ -13,16 +13,16 @@
 // The basin and the lake are permanent (warned). Water sits below every containing bench, so it
 // never spills; every change is blended back to the original ground at the outline.
 
-using Placemaker.Core.Layers.Types.Scrapyard;
+using Citymaker.Core.Layers.Types.Scrapyard;
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Leisure;
-using Placemaker.Core.Layers.Types.ConstructionSite;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Leisure;
+using Citymaker.Core.Layers.Types.ConstructionSite;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Quarry
+namespace Citymaker.Core.Layers.Types.Quarry
 {
     [AreaGenerator(73, Group = "industrial")]
     public sealed class QuarryLayer : LeisureLayer
@@ -32,7 +32,7 @@ namespace Placemaker.Core.Layers.Types.Quarry
 
         public const string LayerId = "quarry";
         public const string PitPlace = "place:pit";
-        public const string LakeIssue = "Placemaker.Quarry.Issue.LakePermanent";
+        public const string LakeIssue = "Citymaker.Quarry.Issue.LakePermanent";
         public static readonly string[] Subtypes = { "openPit", "gravelPit", "sandPit", "lakeDig", "flooded", "abandoned" };
 
         protected override string Area => "Quarry";
@@ -46,7 +46,7 @@ namespace Placemaker.Core.Layers.Types.Quarry
         protected override List<FeatureInfo> BuildFeatures() => new List<FeatureInfo>
         {
             Feature(SpoilHeapsAddOn.LayerId, ("material", "gravel")), Feature(WorkLightsAddOn.LayerId), Feature("rocks", ("size", "large")),
-            ConstructionSiteLayer.Named(Feature("bigtrees"), "Placemaker.AddOn.BigTrees.Name"), Feature("decals", ("theme", "dirt"), ("density", 2.0)),
+            ConstructionSiteLayer.Named(Feature("bigtrees"), "Citymaker.AddOn.BigTrees.Name"), Feature("decals", ("theme", "dirt"), ("density", 2.0)),
         };
 
         protected override void DefineControls(ControlSet c)
@@ -261,10 +261,10 @@ namespace Placemaker.Core.Layers.Types.Quarry
             ConstructionSiteLayer.EmitYard(ctx, q.Occ, p => q.InPit(p, 3f));
 
             ctx.Stat(Keys.StatArea, Math.Round(region.Area), Keys.UnitM2);
-            ctx.Stat("Placemaker.Stat.PitDepth", Math.Round(q.Pit == null ? 0 : q.Levels * q.BenchH, 1), Keys.UnitM);
-            ctx.Stat("Placemaker.Stat.Benches", q.Pit == null ? 0 : q.Levels, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Machines", q.Machines, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Heaps", q.Heaps, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.PitDepth", Math.Round(q.Pit == null ? 0 : q.Levels * q.BenchH, 1), Keys.UnitM);
+            ctx.Stat("Citymaker.Stat.Benches", q.Pit == null ? 0 : q.Levels, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Machines", q.Machines, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Heaps", q.Heaps, Keys.UnitCount);
             ctx.Plan.Facts["subtype"] = Array.IndexOf(Subtypes, q.Subtype);
             if (q.Pit != null) { ctx.Plan.Facts["pitArea"] = q.Pit.Area; ctx.Plan.Facts["benches"] = q.Levels; ctx.Plan.Facts["pitRef"] = q.Ref; }
         }
@@ -278,7 +278,7 @@ namespace Placemaker.Core.Layers.Types.Quarry
             float rim = ctx.F("rimWidth");
             var baseRing = SiteKit.Inset(region.Ring, rim) ?? SiteKit.Inset(region.Ring, rim * 0.5f);
             var baseRegion = baseRing == null ? null : LayerRegion.From(baseRing);
-            if (baseRegion == null || baseRegion.Area < 300f) { ctx.Issue(IssueSeverity.Info, "Placemaker.Quarry.Issue.NoRoomForPit"); return; }
+            if (baseRegion == null || baseRegion.Area < 300f) { ctx.Issue(IssueSeverity.Info, "Citymaker.Quarry.Issue.NoRoomForPit"); return; }
             float size = ctx.F("pitSize") / 100f;
             var deep = baseRegion.DeepestPoint(out float ins, null, 16);
             float2[] pit = null;
@@ -335,13 +335,13 @@ namespace Placemaker.Core.Layers.Types.Quarry
             pit = Poly.Clean(pit, 0.3f);
             if (!Poly.IsSimple(pit)) pit = baseRing;
             q.Pit = LayerRegion.From(pit);
-            if (q.Pit == null || q.Pit.Area < 300f) { q.Pit = null; ctx.Issue(IssueSeverity.Info, "Placemaker.Quarry.Issue.NoRoomForPit"); return; }
+            if (q.Pit == null || q.Pit.Area < 300f) { q.Pit = null; ctx.Issue(IssueSeverity.Info, "Citymaker.Quarry.Issue.NoRoomForPit"); return; }
 
             q.Pit.DeepestPoint(out float pitIns, null, 16);
             int wanted = math.max(1, ctx.I("levels"));
             int fits = math.max(1, (int)math.floor((pitIns - 3f) / q.BenchW) + 1);
             q.Levels = math.min(wanted, fits);
-            if (q.Levels < wanted) ctx.Issue(IssueSeverity.Info, "Placemaker.Quarry.Issue.FewerBenches", q.Levels, wanted);
+            if (q.Levels < wanted) ctx.Issue(IssueSeverity.Info, "Citymaker.Quarry.Issue.FewerBenches", q.Levels, wanted);
             float refH = float.MaxValue;
             foreach (var p in q.Pit.Ring) refH = math.min(refH, ctx.H(p));
             q.Ref = math.min(refH, ctx.H(deep));
@@ -421,7 +421,7 @@ namespace Placemaker.Core.Layers.Types.Quarry
             int dry = math.clamp((int)math.floor((q.Ref - w) / q.BenchH), 0, q.Levels - 1);
             w = math.min(w, q.Ref - dry * q.BenchH - (dry == 0 ? 0.5f : 0.8f));
             var footprint = dry == 0 ? q.Pit.Ring : SiteKit.Inset(q.Pit.Ring, dry * q.BenchW);
-            if (footprint == null) { ctx.Issue(IssueSeverity.Info, "Placemaker.Quarry.Issue.NoWater"); return; }
+            if (footprint == null) { ctx.Issue(IssueSeverity.Info, "Citymaker.Quarry.Issue.NoWater"); return; }
             // The wall that holds the water: the dry bench just outside the footprint, or the untouched
             // ground beyond the outermost terraform cells (a square cell reaches half a diagonal past
             // its centre, so sample beyond that).
@@ -433,7 +433,7 @@ namespace Placemaker.Core.Layers.Types.Quarry
                     if (q.Region.Contains(p)) lowest = math.min(lowest, q.After(p));
                 if (lowest < float.MaxValue) w = math.min(w, lowest - 0.4f);
             }
-            if (w - floor < 1f) { ctx.Issue(IssueSeverity.Info, "Placemaker.Quarry.Issue.NoWater"); return; }
+            if (w - floor < 1f) { ctx.Issue(IssueSeverity.Info, "Citymaker.Quarry.Issue.NoWater"); return; }
             var floorRing = q.Levels <= 1 ? q.Pit.Ring : SiteKit.Inset(q.Pit.Ring, (q.Levels - 1) * q.BenchW) ?? footprint;
             var floorRegion = LayerRegion.From(floorRing);
             if (floorRegion == null) return;

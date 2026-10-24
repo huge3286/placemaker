@@ -3,9 +3,9 @@
 // grassy wild bushes, hides are the timber campground shelters, and the "lookout" pool (a fire-station
 // upgrade and a water-tower deck, 32-56 m buildings) is never used unless the player picks an asset.
 
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 
-namespace Placemaker.Core.Layers.Types.Wetland
+namespace Citymaker.Core.Layers.Types.Wetland
 {
     public static class WetlandArt
     {

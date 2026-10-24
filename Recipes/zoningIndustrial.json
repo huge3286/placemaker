@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "zoningIndustrial",
-  "nameKey": "Placemaker.Zoning.Type.industrial",
-  "descriptionKey": "Placemaker.Zoning.Type.industrial.Tooltip",
+  "nameKey": "Citymaker.Zoning.Type.industrial",
+  "descriptionKey": "Citymaker.Zoning.Type.industrial.Tooltip",
   "icon": "Media/Game/Icons/Zones.svg",
   "root": {
     "layer": "zoningIndustrial",

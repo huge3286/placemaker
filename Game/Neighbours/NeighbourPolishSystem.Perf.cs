@@ -1,4 +1,4 @@
-// Placemaker neighbourhood polish — what it costs (GPL-3.0).
+// Citymaker neighbourhood polish — what it costs (GPL-3.0).
 //
 // Times every part: the system's whole frame (UpdateMs), a pass gathering its houses on the frame (PassMainMs), the plan
 // on its worker (PlanWorkerMs) and writing a finished plan into the houses (FinishMainMs), with the worst of each. The game
@@ -8,9 +8,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Placemaker.Core.Neighbours;
+using Citymaker.Core.Neighbours;
 
-namespace Placemaker.Game.Neighbours
+namespace Citymaker.Game.Neighbours
 {
     public sealed partial class NeighbourPolishSystem
     {
@@ -76,9 +76,9 @@ namespace Placemaker.Game.Neighbours
             {
                 var path = Path.Combine(PassDumpDir, $"pass-{number:000}.json");
                 File.WriteAllText(path, StitchDump.Write(stitch, settings, raster));
-                Mod.Log.Info($"Placemaker neighbourhood polish: pass input written to {path} ({stitch.Count} houses, {settings.Barriers?.Count ?? 0} barriers)");
+                Mod.Log.Info($"Citymaker neighbourhood polish: pass input written to {path} ({stitch.Count} houses, {settings.Barriers?.Count ?? 0} barriers)");
             }
-            catch (Exception e) { Mod.Log.Warn("Placemaker neighbourhood polish: pass dump failed: " + e.Message); PassDumpDir = null; }
+            catch (Exception e) { Mod.Log.Warn("Citymaker neighbourhood polish: pass dump failed: " + e.Message); PassDumpDir = null; }
         }
     }
 }

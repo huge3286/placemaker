@@ -1,4 +1,4 @@
-// Placemaker roads layer (s34) — the connectivity guarantee.
+// Citymaker roads layer (s34) — the connectivity guarantee.
 //
 // Playtest (images 59/60): a "village" on a hill left whole street systems and single streets floating, connected to
 // nothing (roads around a ruin were removed by obstacle avoidance; the old rule kept "whole networks" on purpose).
@@ -9,10 +9,10 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads
+namespace Citymaker.Core.Layers.Roads
 {
     internal static class RoadConnectivity
     {

@@ -1,8 +1,8 @@
-// Placemaker — binary codec for GroupRecord (GPL-3.0).
+// Citymaker — binary codec for GroupRecord (GPL-3.0).
 // Version-first layout in the spirit of ParkingLotTool's ParkingLotBuildReceipt (KruemelGames,
 // GPL-3.0): the CS2 serializer has no per-component length, so our bytes go into one
 // length-prefixed buffer and carry their own version. Readers stop after the fields they know,
-// so a save written by a newer Placemaker still loads in an older one (extra bytes ignored).
+// so a save written by a newer Citymaker still loads in an older one (extra bytes ignored).
 
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.IO;
 using System.Text;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     public static class ReceiptCodec
     {

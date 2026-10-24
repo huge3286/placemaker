@@ -2,10 +2,10 @@
 // they are seen), otherwise scattered over lawns with value-noise clustering.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns
+namespace Citymaker.Core.Layers.AddOns
 {
     [AreaGenerator(150)]
     public sealed class FlowerbedsAddOn : AddOnLayer
@@ -93,7 +93,7 @@ namespace Placemaker.Core.Layers.AddOns
                 placedBeds++;
                 placedItems += slots.Count;
             }
-            if (placedBeds == 0) NoSpace(ctx, "Placemaker.AddOn.Flowerbeds.Name");
+            if (placedBeds == 0) NoSpace(ctx, "Citymaker.AddOn.Flowerbeds.Name");
             ctx.Stat(Keys.StatFlowerbeds, placedBeds, Keys.UnitCount);
             ctx.Plan.Facts["flowerbedItems"] = placedItems;
         }

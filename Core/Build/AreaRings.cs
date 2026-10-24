@@ -1,4 +1,4 @@
-// Placemaker — the game's own area shape rules, so we never hand CS2 a ring it rejects (GPL-3.0).
+// Citymaker — the game's own area shape rules, so we never hand CS2 a ring it rejects (GPL-3.0).
 //
 // Decompiled from Game.Areas.ValidationHelpers.ValidateArea (CS2 1.6.2f1), see
 // docs/RESEARCH-NOTES-ADDENDUM.md. A complete ring is rejected with ErrorType.InvalidShape when
@@ -13,10 +13,10 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     public static class AreaRings
     {

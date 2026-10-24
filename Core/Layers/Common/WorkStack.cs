@@ -4,7 +4,7 @@
 
 using System.Collections.Generic;
 
-namespace Placemaker.Core.Layers.Common
+namespace Citymaker.Core.Layers.Common
 {
     public sealed class WorkStack<T>
     {

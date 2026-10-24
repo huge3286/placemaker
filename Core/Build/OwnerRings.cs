@@ -1,4 +1,4 @@
-// Placemaker — robust rings for the owner lot (GPL-3.0).
+// Citymaker — robust rings for the owner lot (GPL-3.0).
 //
 // Playtest: "the game rejected the owner lot; building without it" → that build could not be selected
 // or bulldozed as one thing. Lots validate with min node distance 4 m (snap 8 × 0.5), no spikes/necks,
@@ -6,10 +6,10 @@
 // build retries with the next level when the game still rejects the shape.
 
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     public static class OwnerRings
     {

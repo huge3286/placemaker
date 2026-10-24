@@ -1,4 +1,4 @@
-// Placemaker neighbourhood polish — writes the lawns NeighbourPolishSystem planned (GPL-3.0).
+// Citymaker neighbourhood polish — writes the lawns NeighbourPolishSystem planned (GPL-3.0).
 //
 // A surface's nodes may only change before Game.Areas.GeometrySystem (Modification2B) in a frame: that system
 // re-triangulates Updated areas, and everything after it (Areas.SearchSystem, SurfaceExpandSystem, the area batches)
@@ -16,7 +16,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine.Scripting;
 
-namespace Placemaker.Game.Neighbours
+namespace Citymaker.Game.Neighbours
 {
     public sealed partial class NeighbourLawnSystem : GameSystemBase
     {

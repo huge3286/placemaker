@@ -4,7 +4,7 @@
 // Automatic pools are too broad for a beach: "beach.hut" resolves to a 40 m changing-room building and the
 // lookout fallback of lifeguard towers to a 56 m fire-station upgrade, so neither is ever asked for here.
 
-namespace Placemaker.Core.Layers.Types.Beach
+namespace Citymaker.Core.Layers.Types.Beach
 {
     public static class BeachArt
     {

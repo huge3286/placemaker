@@ -3,9 +3,9 @@
 // Street litter bins stay in the general "bin" pool: a rubbish heap is not a bin and vice versa.
 
 using System.Collections.Generic;
-using Placemaker.Core.Build;
+using Citymaker.Core.Build;
 
-namespace Placemaker.Core
+namespace Citymaker.Core
 {
     public static partial class AssetCategories
     {
@@ -17,7 +17,7 @@ namespace Placemaker.Core
     }
 }
 
-namespace Placemaker.Core.Layers.Types.Landfill
+namespace Citymaker.Core.Layers.Types.Landfill
 {
     public static class LandfillCategories
     {

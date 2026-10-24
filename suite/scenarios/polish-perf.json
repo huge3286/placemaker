@@ -1,5 +1,5 @@
 {
-  "_about": "Neighbourhood polish on a town at once: nine square blocks of houses (about 450), polish switched on over all of them; the step polishIdle reports how long until every house was looked at and the frame cost meanwhile (Placemaker.log 'polish idle'). Send with tools/hot/Send-Hot.ps1 -File suite/scenarios/polish-perf.json.",
+  "_about": "Neighbourhood polish on a town at once: nine square blocks of houses (about 450), polish switched on over all of them; the step polishIdle reports how long until every house was looked at and the frame cost meanwhile (Citymaker.log 'polish idle'). Send with tools/hot/Send-Hot.ps1 -File suite/scenarios/polish-perf.json.",
   "scenarios": [
     {
       "id": "perf-town",

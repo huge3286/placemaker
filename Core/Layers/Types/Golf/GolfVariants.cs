@@ -8,11 +8,11 @@
 //    yardage sign), safety netting round the outline and screen planting at the edges only.
 
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Golf
+namespace Citymaker.Core.Layers.Types.Golf
 {
     public sealed partial class GolfLayer
     {
@@ -94,7 +94,7 @@ namespace Placemaker.Core.Layers.Types.Golf
             // Number them in walking order: along the promenade from the entrance end.
             var start = spine.Count > 0 ? (math.distance(spine[0].a, home) < math.distance(spine[0].b, home) ? spine[0].a : spine[0].b) : home;
             lanes.Sort((x, y) => math.distance(x.Center, start).CompareTo(math.distance(y.Center, start)));
-            if (lanes.Count < wanted) ctx.Issue(IssueSeverity.Info, "Placemaker.Golf.Issue.FewerHoles", lanes.Count, wanted);
+            if (lanes.Count < wanted) ctx.Issue(IssueSeverity.Info, "Citymaker.Golf.Issue.FewerHoles", lanes.Count, wanted);
             ctx.Check();
 
             var felt = GolfAssets.FeltRef(ctx.S("greenSurface"));
@@ -143,7 +143,7 @@ namespace Placemaker.Core.Layers.Types.Golf
                     {
                         var rim = LeisureKit.Blob(pc, 6.2f, Hashing.Mix(ctx.Seed, 0x90Eu), 14, 0.2f);
                         var pond = LeisureKit.Blob(pc, 5f, Hashing.Mix(ctx.Seed, 0x90Eu), 14, 0.2f);
-                        ctx.Surface(rim, SurfaceRole.Decorative, AssetMix.One("Terrain Surfaces Pack Rock gaga TTP - Pebbles 1 Surface", "Sand Surface 02"), Placemaker.Core.Build.SurfaceCategories.Gravel);
+                        ctx.Surface(rim, SurfaceRole.Decorative, AssetMix.One("Terrain Surfaces Pack Rock gaga TTP - Pebbles 1 Surface", "Sand Surface 02"), Citymaker.Core.Build.SurfaceCategories.Gravel);
                         float shore = float.MaxValue;
                         foreach (var q in pond) shore = math.min(shore, ctx.H(q));
                         float level = shore - 0.3f;
@@ -153,7 +153,7 @@ namespace Placemaker.Core.Layers.Types.Golf
                             WaterLevel = level, WaterAnchor = new float3(pc.x, level, pc.y),
                         });
                         ctx.Surface(pond, SurfaceRole.Water, new AssetRef("", System.Array.Empty<string>()));
-                        ctx.Issue(IssueSeverity.Warning, "Placemaker.Park.Issue.LakePermanent");
+                        ctx.Issue(IssueSeverity.Warning, "Citymaker.Park.Issue.LakePermanent");
                         occ.Take(pc, 7f, 70); deco++;
                     }
                     if (AssetAvailability.Has(AssetCategories.Rock))
@@ -186,7 +186,7 @@ namespace Placemaker.Core.Layers.Types.Golf
 
             EmitGreenRegions(ctx, occ);
             CommonStats(ctx);
-            ctx.Stat("Placemaker.Stat.Holes", lanes.Count, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Holes", lanes.Count, Keys.UnitCount);
             ctx.Plan.Facts["holes"] = lanes.Count;
             ctx.Plan.Facts["decorations"] = deco;
         }
@@ -281,7 +281,7 @@ namespace Placemaker.Core.Layers.Types.Golf
                 }
             }
             int targets = 0;
-            if (!haveStrip) ctx.Issue(IssueSeverity.Warning, "Placemaker.Golf.Issue.NoHoles");
+            if (!haveStrip) ctx.Issue(IssueSeverity.Warning, "Citymaker.Golf.Issue.NoHoles");
             else
             {
                 float vSign = math.dot(strip.Side, dir) > 0f ? 1f : -1f;
@@ -321,7 +321,7 @@ namespace Placemaker.Core.Layers.Types.Golf
                 var (signAsset, signCat) = GolfAssets.Prop("", AssetCategories.GolfTee, AssetMix.One("SportParkTrainingPole01"), AssetCategories.Sports);
                 // (rf-sports) The range is one grass surface: target greens on top of it need the overlay copy (drawn above
                 // every vanilla surface), else they vanished under it and only their bunkers showed.
-                var green = string.IsNullOrEmpty(ctx.S("greenSurface")) ? AssetMix.One("Placemaker Overlay (Grass Surface 02)", "Grass Surface 02") : GolfAssets.GreenRef(ctx.S("greenSurface"));
+                var green = string.IsNullOrEmpty(ctx.S("greenSurface")) ? AssetMix.One("Citymaker Overlay (Grass Surface 02)", "Grass Surface 02") : GolfAssets.GreenRef(ctx.S("greenSurface"));
                 var sand = GolfAssets.BunkerRef(ctx.S("bunkerSurface"));
                 bool warned = false;
                 float runFrom = math.dot(strip.Center - centre, dir);
@@ -396,8 +396,8 @@ namespace Placemaker.Core.Layers.Types.Golf
 
             EmitGreenRegions(ctx, occ);
             CommonStats(ctx);
-            ctx.Stat("Placemaker.Stat.Bays", bays, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Targets", targets, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Bays", bays, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Targets", targets, Keys.UnitCount);
             ctx.Plan.Facts["bays"] = bays;
             ctx.Plan.Facts["targets"] = targets;
         }

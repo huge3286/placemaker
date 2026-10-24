@@ -37,16 +37,16 @@ import s from "./design.module.scss";
 export const layerName = (t: TFunc, l: LayerType) => t(l.name, humanize(l.name || l.id));
 
 export function targetLabel(t: TFunc, target: string): string {
-    if (!target) return t("Placemaker.UI.Target.Same", "whole area");
+    if (!target) return t("Citymaker.UI.Target.Same", "whole area");
     const { tag, index } = regionLabelArgs(target);
-    const tagName = t("Placemaker.UI.Tag." + tag, humanize(tag).toLowerCase());
-    if (index !== null) return t("Placemaker.UI.Target.One", "{0} {1}", [tagName, index]);
-    return t("Placemaker.UI.Target.Each", "each {0}", [tagName]);
+    const tagName = t("Citymaker.UI.Tag." + tag, humanize(tag).toLowerCase());
+    if (index !== null) return t("Citymaker.UI.Target.One", "{0} {1}", [tagName, index]);
+    return t("Citymaker.UI.Target.Each", "each {0}", [tagName]);
 }
 
 export function regionName(t: TFunc, key: string): string {
     const { tag, index } = regionLabelArgs(key);
-    const tagName = t("Placemaker.UI.Tag." + tag, humanize(tag).toLowerCase());
+    const tagName = t("Citymaker.UI.Tag." + tag, humanize(tag).toLowerCase());
     const cap = tagName.charAt(0).toUpperCase() + tagName.slice(1);
     return index !== null ? `${cap} ${index}` : cap;
 }
@@ -55,22 +55,22 @@ export function regionName(t: TFunc, key: string): string {
 export function stepHeading(t: TFunc, catalog: Catalog, root: StepView | null, step: StepView): string {
     const name = layerName(t, layerOf(catalog, step.layer));
     const ov = isOverridePath(root, step.path);
-    if (ov) return t("Placemaker.UI.Heading.Override", "{0} — {1}", [regionName(t, ov), name]);
+    if (ov) return t("Citymaker.UI.Heading.Override", "{0} — {1}", [regionName(t, ov), name]);
     if (!step.target) return name;
     const { tag, index } = regionLabelArgs(step.target);
-    if (index !== null) return t("Placemaker.UI.Heading.InOne", "{0} — {1}", [name, regionName(t, step.target)]);
-    return t("Placemaker.UI.Heading.InEach", "{0} in each {1}", [name, t("Placemaker.UI.Tag." + tag, humanize(tag).toLowerCase())]);
+    if (index !== null) return t("Citymaker.UI.Heading.InOne", "{0} — {1}", [name, regionName(t, step.target)]);
+    return t("Citymaker.UI.Heading.InEach", "{0} in each {1}", [name, t("Citymaker.UI.Tag." + tag, humanize(tag).toLowerCase())]);
 }
 
 // ───────────── marker kinds (entrances) ─────────────
 
 const MARKER_FALLBACK: Record<string, [string, string, string]> = {
-    entrance: ["Placemaker.UI.Marker.TwoWay", "Two-way", "twoWay"],
-    twoway: ["Placemaker.UI.Marker.TwoWay", "Two-way", "twoWay"],
-    entry: ["Placemaker.UI.Marker.Entry", "Entry only", "entry"],
-    exit: ["Placemaker.UI.Marker.Exit", "Exit only", "exit"],
-    alley: ["Placemaker.UI.Marker.Alley", "Alley", "alley"],
-    footpath: ["Placemaker.UI.Marker.Footpath", "Footpath", "footpath"],
+    entrance: ["Citymaker.UI.Marker.TwoWay", "Two-way", "twoWay"],
+    twoway: ["Citymaker.UI.Marker.TwoWay", "Two-way", "twoWay"],
+    entry: ["Citymaker.UI.Marker.Entry", "Entry only", "entry"],
+    exit: ["Citymaker.UI.Marker.Exit", "Exit only", "exit"],
+    alley: ["Citymaker.UI.Marker.Alley", "Alley", "alley"],
+    footpath: ["Citymaker.UI.Marker.Footpath", "Footpath", "footpath"],
 };
 
 type MarkerKind = { kind: string; label: string; icon?: string; tooltip?: string; crosswalk?: boolean };
@@ -83,17 +83,17 @@ export function markerLabel(t: TFunc, k: MarkerKind): string {
 
 /** Short button caption ("In" for "Entry only"), full name in the tooltip. */
 const MARKER_SHORT: Record<string, [string, string]> = {
-    entrance: ["Placemaker.UI.Marker.TwoWayShort", "2-way"],
-    twoway: ["Placemaker.UI.Marker.TwoWayShort", "2-way"],
-    entry: ["Placemaker.UI.Marker.EntryShort", "In"],
-    exit: ["Placemaker.UI.Marker.ExitShort", "Out"],
-    alley: ["Placemaker.UI.Marker.AlleyShort", "Alley"],
-    footpath: ["Placemaker.UI.Marker.FootpathShort", "Path"],
-    pedestrian: ["Placemaker.UI.Marker.PedestrianShort", "Walk-in"],
-    bike: ["Placemaker.UI.Marker.BikeShort", "Bike"],
-    main: ["Placemaker.UI.Marker.MainShort", "Main"],
-    service: ["Placemaker.UI.Marker.ServiceShort", "Service"],
-    access: ["Placemaker.UI.Marker.AccessShort", "Access"],
+    entrance: ["Citymaker.UI.Marker.TwoWayShort", "2-way"],
+    twoway: ["Citymaker.UI.Marker.TwoWayShort", "2-way"],
+    entry: ["Citymaker.UI.Marker.EntryShort", "In"],
+    exit: ["Citymaker.UI.Marker.ExitShort", "Out"],
+    alley: ["Citymaker.UI.Marker.AlleyShort", "Alley"],
+    footpath: ["Citymaker.UI.Marker.FootpathShort", "Path"],
+    pedestrian: ["Citymaker.UI.Marker.PedestrianShort", "Walk-in"],
+    bike: ["Citymaker.UI.Marker.BikeShort", "Bike"],
+    main: ["Citymaker.UI.Marker.MainShort", "Main"],
+    service: ["Citymaker.UI.Marker.ServiceShort", "Service"],
+    access: ["Citymaker.UI.Marker.AccessShort", "Access"],
 };
 
 function markerShort(t: TFunc, k: MarkerKind): string {
@@ -107,11 +107,11 @@ export function markerIcon(k: { kind: string; icon?: string }): string {
 }
 
 const MARKER_TIPS: Record<string, [string, string]> = {
-    entrance: ["Placemaker.UI.Marker.TwoWayTip", "Cars drive in and out here."],
-    entry: ["Placemaker.UI.Marker.EntryTip", "Cars only drive in here."],
-    exit: ["Placemaker.UI.Marker.ExitTip", "Cars only drive out here."],
-    alley: ["Placemaker.UI.Marker.AlleyTip", "A small road junction through the edge."],
-    footpath: ["Placemaker.UI.Marker.FootpathTip", "A footpath joins here."],
+    entrance: ["Citymaker.UI.Marker.TwoWayTip", "Cars drive in and out here."],
+    entry: ["Citymaker.UI.Marker.EntryTip", "Cars only drive in here."],
+    exit: ["Citymaker.UI.Marker.ExitTip", "Cars only drive out here."],
+    alley: ["Citymaker.UI.Marker.AlleyTip", "A small road junction through the edge."],
+    footpath: ["Citymaker.UI.Marker.FootpathTip", "A footpath joins here."],
 };
 
 /**
@@ -155,8 +155,8 @@ const Entrances = ({ step, state }: { step: StepView; state: ToolState }) => {
         >
             <SectionHead
                 icon="entrance"
-                title={t("Placemaker.UI.Entrances.Title", "Entrances")}
-                tip={t("Placemaker.UI.Markers.Note", "Pick a type, then click the outline by a road.")}
+                title={t("Citymaker.UI.Entrances.Title", "Entrances")}
+                tip={t("Citymaker.UI.Markers.Note", "Pick a type, then click the outline by a road.")}
                 testId={`entrances-${step.path}`}
                 tone={missing ? "warn" : undefined}
                 count={missing ? undefined : have}
@@ -164,7 +164,7 @@ const Entrances = ({ step, state }: { step: StepView; state: ToolState }) => {
                     missing ? (
                         <div className={s.required} data-testid="entrance-required">
                             <div className={s.requiredText}>
-                                {need > 1 ? t("Placemaker.UI.Markers.NeedNShort", "Add {0} to build", [need]) : t("Placemaker.UI.Markers.NeedOneShort", "Add one to build")}
+                                {need > 1 ? t("Citymaker.UI.Markers.NeedNShort", "Add {0} to build", [need]) : t("Citymaker.UI.Markers.NeedOneShort", "Add one to build")}
                             </div>
                         </div>
                     ) : undefined
@@ -172,15 +172,15 @@ const Entrances = ({ step, state }: { step: StepView; state: ToolState }) => {
                 right={
                     walks ? (
                         <Tip
-                            title={t("Placemaker.UI.Markers.Crosswalk", "Crosswalk")}
+                            title={t("Citymaker.UI.Markers.Crosswalk", "Crosswalk")}
                             description={t(
-                                "Placemaker.UI.Markers.CrosswalkTip",
+                                "Citymaker.UI.Markers.CrosswalkTip",
                                 "On: the entrances you place next get a crosswalk across the street (the path joins the road at a new junction). Off: the path stops at the sidewalk and the game joins it, with no crosswalk and no cut in the road. Each placed entrance has its own switch below."
                             )}
                         >
                             <div className={s.headCross} data-testid="marker-crosswalk-wrap" data-on={crossing ? "true" : "false"}>
                                 <Icon name="crosswalk" size={14} tint={crossing ? "light" : "dim"} />
-                                <div className={s.headCrossLabel}>{t("Placemaker.UI.Markers.Crosswalk", "Crosswalk")}</div>
+                                <div className={s.headCrossLabel}>{t("Citymaker.UI.Markers.Crosswalk", "Crosswalk")}</div>
                                 <Switch testId="marker-crosswalk" on={crossing} onChange={(v) => act.setMarkerCrosswalk(step.path, -1, v)} />
                             </div>
                         </Tip>
@@ -215,7 +215,7 @@ const Entrances = ({ step, state }: { step: StepView; state: ToolState }) => {
                     <div className={s.placingHint} data-testid="marker-placing">
                         <Icon name="info" size={12} tint="warn" />
                         <div className={s.placingText}>
-                            {t("Placemaker.UI.Markers.Placing", "Click the outline by a road to place one. Right-click removes one. Esc when done.")}
+                            {t("Citymaker.UI.Markers.Placing", "Click the outline by a road to place one. Right-click removes one. Esc when done.")}
                         </div>
                     </div>
                 ) : null}
@@ -234,8 +234,8 @@ const Entrances = ({ step, state }: { step: StepView; state: ToolState }) => {
                                     <div className={s.placedGap} />
                                     {k.crosswalk ? (
                                         <Tip
-                                            title={m.crosswalk ? t("Placemaker.UI.Markers.CrosswalkOn", "Crosswalk: on") : t("Placemaker.UI.Markers.CrosswalkOff", "Crosswalk: off")}
-                                            description={t("Placemaker.UI.Markers.CrosswalkItemTip", "On: a crosswalk across the street here. Off: the path stops at the sidewalk.")}
+                                            title={m.crosswalk ? t("Citymaker.UI.Markers.CrosswalkOn", "Crosswalk: on") : t("Citymaker.UI.Markers.CrosswalkOff", "Crosswalk: off")}
+                                            description={t("Citymaker.UI.Markers.CrosswalkItemTip", "On: a crosswalk across the street here. Off: the path stops at the sidewalk.")}
                                         >
                                             <div className={s.placedCross}>
                                                 <Icon name="crosswalk" size={12} tint={m.crosswalk ? "light" : "dim"} />
@@ -243,8 +243,8 @@ const Entrances = ({ step, state }: { step: StepView; state: ToolState }) => {
                                             </div>
                                         </Tip>
                                     ) : null}
-                                    <Btn icon="eye" iconSize={13} className={s.markerBtn} title={t("Placemaker.UI.Markers.Show", "Show on map")} onClick={() => act.locate(m.position)} testId={`marker-show-${m.index}`} />
-                                    <Btn icon="close" iconSize={13} className={s.markerBtn} title={t("Placemaker.UI.Markers.Remove", "Remove")} onClick={() => act.removeMarker(step.path, m.index)} testId={`marker-remove-${m.index}`} />
+                                    <Btn icon="eye" iconSize={13} className={s.markerBtn} title={t("Citymaker.UI.Markers.Show", "Show on map")} onClick={() => act.locate(m.position)} testId={`marker-show-${m.index}`} />
+                                    <Btn icon="close" iconSize={13} className={s.markerBtn} title={t("Citymaker.UI.Markers.Remove", "Remove")} onClick={() => act.removeMarker(step.path, m.index)} testId={`marker-remove-${m.index}`} />
                                 </div>
                             );
                         })}
@@ -266,12 +266,12 @@ const PlacesInside = () => {
     if (!(window as any).__pmPlacesInside) return null;
     return (
         <Section
-            title={t("Placemaker.UI.Places.Title", "Places inside")}
+            title={t("Citymaker.UI.Places.Title", "Places inside")}
             icon="layers"
             testId="places-inside"
-            right={<Btn icon="plus" iconSize={12} variant="solid" label={t("Placemaker.UI.Places.Add", "Add")} disabled testId="places-add" />}
+            right={<Btn icon="plus" iconSize={12} variant="solid" label={t("Citymaker.UI.Places.Add", "Add")} disabled testId="places-add" />}
         >
-            <div className={s.placesEmpty}>{t("Placemaker.UI.Places.Empty", "Coming soon")}</div>
+            <div className={s.placesEmpty}>{t("Citymaker.UI.Places.Empty", "Coming soon")}</div>
         </Section>
     );
 };
@@ -285,11 +285,11 @@ function featureStep(root: StepView | null, parent: StepView, f: FeatureView): S
 
 /** Short verdict of a fit ("9/16 fit", "Reduced", "No room"); "" for ok. */
 function fitLabel(t: TFunc, fit: FeatureFit): string {
-    if (fit.kind === "failed") return t("Placemaker.UI.Fit.NoRoom", "No room");
+    if (fit.kind === "failed") return t("Citymaker.UI.Fit.NoRoom", "No room");
     if (fit.kind === "reduced") {
         const a = fit.text?.args;
-        if (fit.text?.key === "Placemaker.UI.Feature.SomeMissing" && a && a.length >= 2) return t("Placemaker.UI.Fit.Part", "{0}/{1} fit", [a[0], a[1]]);
-        return t("Placemaker.UI.Fit.Reduced", "Reduced");
+        if (fit.text?.key === "Citymaker.UI.Feature.SomeMissing" && a && a.length >= 2) return t("Citymaker.UI.Fit.Part", "{0}/{1} fit", [a[0], a[1]]);
+        return t("Citymaker.UI.Fit.Reduced", "Reduced");
     }
     return "";
 }
@@ -297,7 +297,7 @@ function fitLabel(t: TFunc, fit: FeatureFit): string {
 /** Why, from the plan (the feature layer's own issue), or what to do about "no room". */
 function fitDetail(t: TFunc, fit: FeatureFit): string {
     if (!fit.text || !fit.text.key) return "";
-    if (fit.text.key === "Placemaker.UI.Feature.NoRoom") return t("Placemaker.UI.Fit.NoRoomHint", "Make the area bigger or turn other extras off.");
+    if (fit.text.key === "Citymaker.UI.Feature.NoRoom") return t("Citymaker.UI.Fit.NoRoomHint", "Make the area bigger or turn other extras off.");
     return t(fit.text.key, humanize(fit.text.key), fit.text.args);
 }
 
@@ -407,7 +407,7 @@ const Extras = ({ catalog, design, state, step }: { catalog: Catalog; design: De
     const list = step.features ?? [];
     if (!list.length) return null;
     const cols = layout.width >= 380 ? 2 : 1;
-    const auto = t("Placemaker.UI.Picker.Auto", "Automatic");
+    const auto = t("Citymaker.UI.Picker.Auto", "Automatic");
     const models: ExtraModel[] = list.map((f) => {
         const layer = layerOf(catalog, f.layer);
         const name = f.label ? t(f.label, layerName(t, layer)) : layerName(t, layer);
@@ -437,8 +437,8 @@ const Extras = ({ catalog, design, state, step }: { catalog: Catalog; design: De
         <div className={s.extras} data-testid="features">
             <SectionHead
                 icon="addon"
-                title={t("Placemaker.UI.Extras", "Extras")}
-                sub={t("Placemaker.UI.Extras.Sub", "optional add-ons")}
+                title={t("Citymaker.UI.Extras", "Extras")}
+                sub={t("Citymaker.UI.Extras.Sub", "optional add-ons")}
                 count={on || undefined}
                 right={<MisfitChip step={step} catalog={catalog} />}
             />
@@ -475,7 +475,7 @@ const Extras = ({ catalog, design, state, step }: { catalog: Catalog; design: De
                     }}
                 >
                     <Icon name={more ? "chevronUp" : "chevronDown"} size={10} tint="dim" />
-                    <div className={s.moreText}>{more ? t("Placemaker.UI.Extras.Fewer", "Fewer") : t("Placemaker.UI.Extras.MoreN", "{0} more", [hidden])}</div>
+                    <div className={s.moreText}>{more ? t("Citymaker.UI.Extras.Fewer", "Fewer") : t("Citymaker.UI.Extras.MoreN", "{0} more", [hidden])}</div>
                 </button>
             ) : null}
         </div>
@@ -512,10 +512,10 @@ const MisfitChip = ({ step, catalog }: { step: StepView; catalog: Catalog }) => 
         })
         .join("\n");
     return (
-        <Tip title={t("Placemaker.UI.Fit.CountTitle", "Not everything fits")} description={names}>
+        <Tip title={t("Citymaker.UI.Fit.CountTitle", "Not everything fits")} description={names}>
             <div className={classNames(s.misfit, failed ? s.misfitFailed : s.misfitReduced)} data-testid={`misfits-${step.path}`} data-count={list.length}>
                 <Icon name="warning" size={11} tint={failed ? "danger" : "warn"} />
-                <div className={s.misfitText}>{list.length === 1 ? t("Placemaker.UI.Fit.CountOne", "1 didn't fit") : t("Placemaker.UI.Fit.Count", "{0} didn't fit", [list.length])}</div>
+                <div className={s.misfitText}>{list.length === 1 ? t("Citymaker.UI.Fit.CountOne", "1 didn't fit") : t("Citymaker.UI.Fit.Count", "{0} didn't fit", [list.length])}</div>
             </div>
         </Tip>
     );
@@ -575,7 +575,7 @@ const ZoningShape = ({ step, layer, state, scope }: { step: StepView; layer: Lay
     };
     return (
         <div className={s.shape} data-testid="zoning">
-            <SectionHead icon="zone" title={t("Placemaker.UI.Zoning", "Zoning")} sub={t("Placemaker.UI.Zoning.Sub2", "zones, and how their lots outgrow")} />
+            <SectionHead icon="zone" title={t("Citymaker.UI.Zoning", "Zoning")} sub={t("Citymaker.UI.Zoning.Sub2", "zones, and how their lots outgrow")} />
             <ErrorBoundary name="zoning">
                 <ZoneMix
                     step={step}
@@ -610,8 +610,8 @@ const StepOptions = ({ catalog, design, state, step }: { catalog: Catalog; desig
                             <Switch on={step.enabled} onChange={(v) => act.setStepEnabled(step.path, v)} testId={`enable-${step.path}`} />
                         </div>
                     ) : null}
-                    <Btn icon="shuffle" iconSize={13} title={t("Placemaker.UI.Randomize", "Shuffle")} onClick={() => act.randomize(step.path)} testId={`randomize-${step.path}`} />
-                    <Btn icon="reset" iconSize={13} title={t("Placemaker.UI.ResetStep", "Reset all")} onClick={() => act.resetStep(step.path)} testId={`reset-step-${step.path}`} />
+                    <Btn icon="shuffle" iconSize={13} title={t("Citymaker.UI.Randomize", "Shuffle")} onClick={() => act.randomize(step.path)} testId={`randomize-${step.path}`} />
+                    <Btn icon="reset" iconSize={13} title={t("Citymaker.UI.ResetStep", "Reset all")} onClick={() => act.resetStep(step.path)} testId={`reset-step-${step.path}`} />
                 </div>
             ) : null}
             {step.enabled ? (
@@ -631,7 +631,7 @@ const StepOptions = ({ catalog, design, state, step }: { catalog: Catalog; desig
                         <ZoningShape step={step} layer={layer} state={state} scope={scope} />
                     ) : (
                         <div className={s.shape} data-testid="shape">
-                            {parent ? null : <SectionHead icon="cube" title={t("Placemaker.UI.Shape", "Shape")} sub={t("Placemaker.UI.Shape.Sub", "how it's built")} />}
+                            {parent ? null : <SectionHead icon="cube" title={t("Citymaker.UI.Shape", "Shape")} sub={t("Citymaker.UI.Shape.Sub", "how it's built")} />}
                             <ErrorBoundary name="controls">
                                 <ControlList step={step} layer={layer} state={state} scope={scope} exclude={featureOptionIds(step)} />
                             </ErrorBoundary>
@@ -662,7 +662,7 @@ export const DesignStage = ({ catalog, design, state }: { catalog: Catalog; desi
             </ErrorBoundary>
             <PlacesInside />
             {!root ? (
-                <div className={s.emptyNote}>{t("Placemaker.UI.PickRecipe", "Nothing picked yet: pick a category to start")}</div>
+                <div className={s.emptyNote}>{t("Citymaker.UI.PickRecipe", "Nothing picked yet: pick a category to start")}</div>
             ) : (
                 <div className={s.options} data-testid="options">
                     <ErrorBoundary name="preset-bar">

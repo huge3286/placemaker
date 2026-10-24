@@ -1,4 +1,4 @@
-// Placemaker — engine-free contracts shared by every area generator.
+// Citymaker — engine-free contracts shared by every area generator.
 //
 // Everything in Core/ is pure .NET + Unity.Mathematics: no Game.*, Colossal.*, Unity.Entities.
 // That keeps generators runnable off the main thread and testable without the game.
@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core
+namespace Citymaker.Core
 {
     // ───────────────────────────── Input ─────────────────────────────
 
@@ -205,7 +205,7 @@ namespace Placemaker.Core
     }
 
     /// <summary>
-    /// Entrance variants stored in the marker kind (no save format change: an older Placemaker sees an unknown kind and
+    /// Entrance variants stored in the marker kind (no save format change: an older Citymaker sees an unknown kind and
     /// leaves the marker out). "pedestrian+crosswalk" = a pedestrian entrance whose path splits the street and gets a crosswalk.
     /// </summary>
     public static class MarkerVariants
@@ -516,7 +516,7 @@ namespace Placemaker.Core
     public sealed class Readiness
     {
         public bool Ready = true;
-        public string NextStepKey = "";        // e.g. "Placemaker.Step.PlaceEntrance"
+        public string NextStepKey = "";        // e.g. "Citymaker.Step.PlaceEntrance"
         public string ReasonKey = "";          // tooltip when not ready
         public object[] ReasonArgs = Array.Empty<object>();
     }
@@ -921,7 +921,7 @@ namespace Placemaker.Core
         public bool Dropped;
     }
 
-    /// <summary>One line in the summary card, e.g. ("Placemaker.Stat.Stalls", 312, "count").</summary>
+    /// <summary>One line in the summary card, e.g. ("Citymaker.Stat.Stalls", 312, "count").</summary>
     public struct PlanStat
     {
         public string Key;

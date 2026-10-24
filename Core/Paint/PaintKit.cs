@@ -1,4 +1,4 @@
-// Placemaker — terrain paint toolkit: emit PaintShapes as PlannedPaints (s33, docs/TERRAIN-PAINT.md). GPL-3.0.
+// Citymaker — terrain paint toolkit: emit PaintShapes as PlannedPaints (s33, docs/TERRAIN-PAINT.md). GPL-3.0.
 //
 // One PaintKit per layer (or dressing group): it knows where paints go (an AreaPlan's Paint list), the ground height,
 // a seed, an optional MASK (where bare terrain shows: off paths, surfaces, water, cutouts — paint under a surface is
@@ -17,11 +17,11 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Paint
+namespace Citymaker.Core.Paint
 {
     public sealed class PaintKit
     {

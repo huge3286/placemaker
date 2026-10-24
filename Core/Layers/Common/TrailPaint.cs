@@ -1,4 +1,4 @@
-// Placemaker — paths painted into the terrain (s33, docs/TERRAIN-PAINT.md). GPL-3.0.
+// Citymaker — paths painted into the terrain (s33, docs/TERRAIN-PAINT.md). GPL-3.0.
 //
 // A painted trail is a dirt stroke in the ground texture (frayed edge, breathing width, a trampled dry-grass verge)
 // instead of a path net. Cims never walk on paint: a trail is either VISUAL ONLY or paired with an invisible
@@ -7,16 +7,16 @@
 // ground goes through the same stroke (knockout: a lawn tint under it gives way, so it stays a path, not a smudge).
 
 using System.Collections.Generic;
-using Placemaker.Core.Paint;
+using Citymaker.Core.Paint;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Common
+namespace Citymaker.Core.Layers.Common
 {
     public static class TrailPaint
     {
         /// <summary>Invisible pedestrian path prefabs, best first (only these: never a drivable invisible path).</summary>
         public static readonly string[] WalkableIds = { "Invisible Pedestrian Path", "PLT Invisible Pedestrian Path", "PLT Flat Invisible Pedestrian Path" };
-        public const string VisualOnlyKey = "Placemaker.Paint.Issue.TrailVisualOnly";
+        public const string VisualOnlyKey = "Citymaker.Paint.Issue.TrailVisualOnly";
 
         /// <summary>The invisible pedestrian path this playset has, or null.</summary>
         public static string WalkableNet(SiteContext site)

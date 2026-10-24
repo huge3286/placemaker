@@ -1,4 +1,4 @@
-// Mock "game" shell: the real Placemaker UI module (src/index.tsx) registered into a stand-in module
+// Mock "game" shell: the real Citymaker UI module (src/index.tsx) registered into a stand-in module
 // registry, a 2D map, a fake vanilla toolbar and selected-info panel, and a small dev bar.
 import React, { useEffect, useReducer, useState } from "react";
 import { createRoot } from "react-dom/client";
@@ -67,7 +67,7 @@ const InfoPanel = () => {
                 <Section
                     groupId={g.id}
                     name={g.customName}
-                    recipeNameKey={g.recipeName.key === "Placemaker.UI.Literal" ? String(g.recipeName.args?.[0]) : g.recipeName.key}
+                    recipeNameKey={g.recipeName.key === "Citymaker.UI.Literal" ? String(g.recipeName.args?.[0]) : g.recipeName.key}
                     stats={g.stats}
                     upkeep={g.upkeep}
                     memberCount={g.plan.layers.reduce((n, l) => n + l.objects.length + l.nets.length, 0)}
@@ -85,7 +85,7 @@ const DevBar = ({ uiScale, setUiScale }: { uiScale: number; setUiScale: (v: numb
     const real = b.layers.filter((l) => (l as any).real).length;
     return (
         <div className="devbar" data-testid="devbar">
-            <strong>Placemaker mock</strong>
+            <strong>Citymaker mock</strong>
             <span data-testid="host-status" className={b.hostUp ? "ok" : "warn"}>
                 {b.hostUp ? `Core host · ${real} real layer${real === 1 ? "" : "s"}` : "No host · fake planner"}
             </span>
@@ -105,7 +105,7 @@ const DevBar = ({ uiScale, setUiScale }: { uiScale: number; setUiScale: (v: numb
             <label>
                 <input type="checkbox" checked={showKeys} onChange={(e) => setShowKeys(e.target.checked)} /> keys
             </label>
-            <button onClick={() => trigger("Placemaker", "toggleTool")}>toggle tool</button>
+            <button onClick={() => trigger("citymaker", "toggleTool")}>toggle tool</button>
         </div>
     );
 };
@@ -130,11 +130,11 @@ const App = () => {
         const onKey = (e: KeyboardEvent) => {
             const tag = (e.target as HTMLElement)?.tagName;
             if (tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA") return;
-            if (e.key === "Enter") trigger("Placemaker", "primary");
-            else if (e.ctrlKey && (e.key === "z" || e.key === "Z") && !e.shiftKey) trigger("Placemaker", "undo");
-            else if (e.ctrlKey && (e.key === "y" || ((e.key === "z" || e.key === "Z") && e.shiftKey))) trigger("Placemaker", "redo");
-            else if (e.key === "Escape") trigger("Placemaker", backend.markerMode ? "endMarkers" : "close");
-            else if (e.ctrlKey && e.shiftKey && (e.key === "a" || e.key === "A")) trigger("Placemaker", "toggleTool");
+            if (e.key === "Enter") trigger("citymaker", "primary");
+            else if (e.ctrlKey && (e.key === "z" || e.key === "Z") && !e.shiftKey) trigger("citymaker", "undo");
+            else if (e.ctrlKey && (e.key === "y" || ((e.key === "z" || e.key === "Z") && e.shiftKey))) trigger("citymaker", "redo");
+            else if (e.key === "Escape") trigger("citymaker", backend.markerMode ? "endMarkers" : "close");
+            else if (e.ctrlKey && e.shiftKey && (e.key === "a" || e.key === "A")) trigger("citymaker", "toggleTool");
             else return;
             e.preventDefault();
         };

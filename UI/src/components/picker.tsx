@@ -39,7 +39,7 @@ export const PickerContext = createContext<{ open: (r: PickerRequest) => void; c
 
 export const usePicker = () => useContext(PickerContext);
 
-const RECENT_KEY = "placemaker.recentAssets";
+const RECENT_KEY = "citymaker.recentAssets";
 
 function loadRecent(): Record<string, string[]> {
     try {
@@ -91,10 +91,10 @@ interface Tab {
 }
 
 const surfaceTabs = (t: TFunc): [string, string][] => [
-    ["surface.grass", t("Placemaker.UI.Surface.Grass", "Grass")],
-    ["surface.paving", t("Placemaker.UI.Surface.Paving", "Paving")],
-    ["surface.natural", t("Placemaker.UI.Surface.Natural", "Natural")],
-    ["surface.asphalt", t("Placemaker.UI.Surface.Asphalt", "Asphalt")],
+    ["surface.grass", t("Citymaker.UI.Surface.Grass", "Grass")],
+    ["surface.paving", t("Citymaker.UI.Surface.Paving", "Paving")],
+    ["surface.natural", t("Citymaker.UI.Surface.Natural", "Natural")],
+    ["surface.asphalt", t("Citymaker.UI.Surface.Asphalt", "Asphalt")],
 ];
 
 /**
@@ -110,12 +110,12 @@ export function tabsFor(category: string, list: AssetItem[], t: TFunc): Tab[] {
         for (const a of list) for (const tag of a.tags ?? []) if (tag.startsWith("theme:") && !themes.includes(tag)) themes.push(tag);
         tabs = themes.map((tag) => {
             const name = tag.slice("theme:".length);
-            return { id: tag, label: t("Placemaker.UI.Theme." + name, humanize(name)), match: (a: AssetItem) => (a.tags ?? []).includes(tag) };
+            return { id: tag, label: t("Citymaker.UI.Theme." + name, humanize(name)), match: (a: AssetItem) => (a.tags ?? []).includes(tag) };
         });
     }
     tabs = tabs.filter((tab) => list.some(tab.match));
     if (tabs.length < 2) return [];
-    return [{ id: "", label: t("Placemaker.UI.Picker.TabAll", "All"), match: () => true }, ...tabs];
+    return [{ id: "", label: t("Citymaker.UI.Picker.TabAll", "All"), match: () => true }, ...tabs];
 }
 
 // ───────────── names & lists ─────────────
@@ -324,10 +324,10 @@ export const AssetPickerCard = ({ req, onClose }: { req: PickerRequest; onClose:
     const hint =
         req.mode === "multi"
             ? selected.length
-                ? t("Placemaker.UI.Picker.SelectedN", "{0} selected", [selected.length])
-                : t("Placemaker.UI.Picker.AutoMixHint", "None: automatic mix")
+                ? t("Citymaker.UI.Picker.SelectedN", "{0} selected", [selected.length])
+                : t("Citymaker.UI.Picker.AutoMixHint", "None: automatic mix")
             : req.onPreview
-            ? t("Placemaker.UI.Picker.HoverHint", "Hover to preview, click to use")
+            ? t("Citymaker.UI.Picker.HoverHint", "Hover to preview, click to use")
             : "";
 
     return (
@@ -335,7 +335,7 @@ export const AssetPickerCard = ({ req, onClose }: { req: PickerRequest; onClose:
             <div className={s.head}>
                 <div className={s.headRow}>
                     <div className={s.title}>{req.title}</div>
-                    <Tip title={t("Placemaker.UI.Close", "Close")} description={<Keys keys={["Esc"]} />}>
+                    <Tip title={t("Citymaker.UI.Close", "Close")} description={<Keys keys={["Esc"]} />}>
                         <button
                             type="button"
                             className={s.closeBtn}
@@ -356,7 +356,7 @@ export const AssetPickerCard = ({ req, onClose }: { req: PickerRequest; onClose:
                         className={s.searchInput}
                         data-testid="asset-search"
                         value={query}
-                        placeholder={t("Placemaker.UI.Picker.Search", "Search")}
+                        placeholder={t("Citymaker.UI.Picker.Search", "Search")}
                         onChange={(e) => setQuery(e.target.value)}
                         onKeyDown={(e) => {
                             e.stopPropagation();
@@ -386,19 +386,19 @@ export const AssetPickerCard = ({ req, onClose }: { req: PickerRequest; onClose:
             </div>
             <ScrollArea className={s.body} testId="asset-grid" onMouseLeave={unhover}>
                 {list === undefined ? (
-                    <div className={s.empty}>{t("Placemaker.UI.Picker.Loading", "Loading assets…")}</div>
+                    <div className={s.empty}>{t("Citymaker.UI.Picker.Loading", "Loading assets…")}</div>
                 ) : (
                     <>
                         {recent.length ? (
                             <>
-                                <div className={s.section}>{t("Placemaker.UI.Picker.Recent", "Recent")}</div>
+                                <div className={s.section}>{t("Citymaker.UI.Picker.Recent", "Recent")}</div>
                                 <div className={s.grid}>{recent.map((a) => tile(a, "r-"))}</div>
                             </>
                         ) : null}
                         <div className={s.section}>
                             {q
-                                ? t("Placemaker.UI.Picker.Results", "{0} results", [items.length])
-                                : t("Placemaker.UI.Picker.All", "All ({0})", [items.length])}
+                                ? t("Citymaker.UI.Picker.Results", "{0} results", [items.length])
+                                : t("Citymaker.UI.Picker.All", "All ({0})", [items.length])}
                         </div>
                         <div className={s.grid}>
                             {req.allowAutomatic && !q ? (
@@ -416,23 +416,23 @@ export const AssetPickerCard = ({ req, onClose }: { req: PickerRequest; onClose:
                                     {req.autoItem ? <Thumb item={req.autoItem} size={thumbSize} /> : <AutoMosaic items={pool} size={thumbSize} />}
                                     <div className={s.tileName}>
                                         {req.mode === "multi"
-                                            ? t("Placemaker.UI.Picker.AutoMix", "Auto mix")
+                                            ? t("Citymaker.UI.Picker.AutoMix", "Auto mix")
                                             : req.autoItem
-                                              ? t("Placemaker.UI.Picker.AutoIs", "Automatic · {0}", [req.autoItem.name || req.autoItem.id])
-                                              : t("Placemaker.UI.Picker.Auto", "Automatic")}
+                                              ? t("Citymaker.UI.Picker.AutoIs", "Automatic · {0}", [req.autoItem.name || req.autoItem.id])
+                                              : t("Citymaker.UI.Picker.Auto", "Automatic")}
                                     </div>
                                 </button>
                             ) : null}
                             {items.map((a) => tile(a))}
                         </div>
-                        {items.length === 0 ? <div className={s.empty}>{t("Placemaker.UI.Picker.None", "Nothing matches.")}</div> : null}
+                        {items.length === 0 ? <div className={s.empty}>{t("Citymaker.UI.Picker.None", "Nothing matches.")}</div> : null}
                     </>
                 )}
             </ScrollArea>
             {hint || req.mode === "multi" ? (
                 <div className={s.foot}>
                     <div className={s.footInfo}>{hint}</div>
-                    {req.mode === "multi" ? <Btn variant="accent" label={t("Placemaker.UI.Done", "Done")} onClick={onClose} testId="asset-picker-done" /> : null}
+                    {req.mode === "multi" ? <Btn variant="accent" label={t("Citymaker.UI.Done", "Done")} onClick={onClose} testId="asset-picker-done" /> : null}
                 </div>
             ) : null}
         </div>

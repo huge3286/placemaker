@@ -8,12 +8,12 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Parking;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Parking;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Commercial
+namespace Citymaker.Core.Layers.Commercial
 {
     public sealed partial class Mall
     {
@@ -39,8 +39,8 @@ namespace Placemaker.Core.Layers.Commercial
         /// <summary>Spine front ends (where a walk from the street should arrive): point on the lane and the lane.</summary>
         public readonly List<(float2 at, Lane lane)> SpineFronts = new List<(float2, Lane)>();
 
-        public const string NoLaneKey = "Placemaker.Commercial.Issue.EntranceNoLane";
-        public const string NoStreetKey = "Placemaker.Commercial.Issue.EntranceNoStreet";
+        public const string NoLaneKey = "Citymaker.Commercial.Issue.EntranceNoLane";
+        public const string NoStreetKey = "Citymaker.Commercial.Issue.EntranceNoStreet";
 
         /// <summary>A row band held for later (LaneRows after the lots): its land is taken meanwhile.</summary>
         public float2[] HoldRow(float2[] rect)

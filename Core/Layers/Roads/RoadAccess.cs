@@ -1,4 +1,4 @@
-// Placemaker roads layer (s34) — access management on main roads.
+// Citymaker roads layer (s34) — access management on main roads.
 //
 // Playtest (image 61): the main street of a generated village had a side street every 40–60 m. A designer keeps the
 // junctions on a main road far apart (here: "Junction spacing on main roads", default 120 m) and lets the side
@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads
+namespace Citymaker.Core.Layers.Roads
 {
     internal static class RoadAccess
     {

@@ -1,4 +1,4 @@
-// Placemaker — what a decal IS (s21 decal overhaul, docs/DECALS.md). GPL-3.0.
+// Citymaker — what a decal IS (s21 decal overhaul, docs/DECALS.md). GPL-3.0.
 //
 // CS2 1.6.2 ships 211 decal objects and every one of them is functional: parking stalls and icons,
 // road arrows, letters/numbers, sports courts, playground pads, Chirper logos. Every decorative decal
@@ -13,9 +13,9 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Build;
+using Citymaker.Core.Build;
 
-namespace Placemaker.Core.Decals
+namespace Citymaker.Core.Decals
 {
     public enum DecalFamily
     {

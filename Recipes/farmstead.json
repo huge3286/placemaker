@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "farmstead",
-  "nameKey": "Placemaker.Recipe.Farmstead",
-  "descriptionKey": "Placemaker.Recipe.Farmstead.Description",
+  "nameKey": "Citymaker.Recipe.Farmstead",
+  "descriptionKey": "Citymaker.Recipe.Farmstead.Description",
   "icon": "Media/Game/Resources/Grain.svg",
   "root": {
     "layer": "farmstead",

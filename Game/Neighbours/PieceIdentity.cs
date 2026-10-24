@@ -1,4 +1,4 @@
-// Placemaker neighbourhood polish — when a piece a plan wants is one the house already has (GPL-3.0).
+// Citymaker neighbourhood polish — when a piece a plan wants is one the house already has (GPL-3.0).
 //
 // One rule for both sides: Finish keeps a piece the plan still wants and deletes the rest; the object and surface systems
 // make a wanted piece only when the house has no such piece. An object (bush, rock, fence or hedge piece) is the same when
@@ -11,7 +11,7 @@ using System;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Neighbours
+namespace Citymaker.Game.Neighbours
 {
     public static class PieceIdentity
     {

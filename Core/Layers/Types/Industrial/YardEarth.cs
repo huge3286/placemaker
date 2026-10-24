@@ -16,12 +16,12 @@
 // the standing stones and stone heads are monuments, not yard stone.
 
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Types.Scrapyard;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Types.Scrapyard;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Yards
+namespace Citymaker.Core.Layers.Types.Yards
 {
     public static class YardEarth
     {

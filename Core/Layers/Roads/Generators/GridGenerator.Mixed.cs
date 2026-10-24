@@ -1,12 +1,12 @@
-// Placemaker roads layer — mixed pattern (radial core + organic).
-// Adapted from Grid Road Generator (Ti4goc), Core/GridGenerator.Mixed.cs; part of Placemaker (GPL-3.0).
-// Changes for Placemaker: no static caches or global lock (thread-safe, reentrant), cooperative
+// Citymaker roads layer — mixed pattern (radial core + organic).
+// Adapted from Grid Road Generator (Ti4goc), Core/GridGenerator.Mixed.cs; part of Citymaker (GPL-3.0).
+// Changes for Citymaker: no static caches or global lock (thread-safe, reentrant), cooperative
 // cancellation through GridParameters.Cancel, per-call diagnostics objects instead of statics.
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads.Generators
+namespace Citymaker.Core.Layers.Roads.Generators
 {
     /// <summary>
     /// Mixed pattern (user feedback: "Radial in the centre and Organic around it"): a central circle

@@ -1,4 +1,4 @@
-// Placemaker — what the area tools stop at, as polygons (the area overhaul's one wall source).
+// Citymaker — what the area tools stop at, as polygons (the area overhaul's one wall source).
 //
 // Every tool (Points, Paint bucket, Paint area) cuts its outline with the same walls, picked by the shared "Stops at"
 // rules (Core BrushRules):
@@ -6,7 +6,7 @@
 //     (EdgeGeometry) and its two ends at the junctions (Start/EndNodeGeometry, as Game.Zones.CellBlockJobs blocks zone
 //     cells with them) — so junction corners, roundabouts and dead ends' turning circles are exact. The old bucket
 //     joined the curbs straight across junctions and skipped the turning circle ("cul-de-sacs don't work");
-//   * buildings, lots, other Placemaker builds and zone cells (BlockObstacles);
+//   * buildings, lots, other Citymaker builds and zone cells (BlockObstacles);
 //   * water (a point test sampled once into a grid, BlockObstacles.Water).
 // Bridges and tunnels are not walls, nor are nets inside a building's lot or the group being edited.
 // Read-only, bounded queries on the search trees; main thread only. Sets are cached a few seconds per box.
@@ -18,11 +18,11 @@ using Game.Common;
 using Game.Net;
 using Game.Prefabs;
 using Game.Tools;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Selection
+namespace Citymaker.Game.Selection
 {
     public sealed class AreaWalls
     {
@@ -72,7 +72,7 @@ namespace Placemaker.Game.Selection
             var list = new List<BrushObstacle>();
             int nets = 0;
             try { nets = Nets(gmin, gmax, ignoreGroup, list); }
-            catch (Exception e) { Mod.Log.Warn("Placemaker: area walls could not read the roads: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker: area walls could not read the roads: " + e.Message); }
             list.AddRange(_obstacles.Gather(gmin, gmax, ignoreGroup, true));
             _set = list;
             _min = gmin;

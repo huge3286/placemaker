@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "highStreet",
-  "nameKey": "Placemaker.Recipe.HighStreet",
-  "descriptionKey": "Placemaker.Recipe.HighStreet.Description",
+  "nameKey": "Citymaker.Recipe.HighStreet",
+  "descriptionKey": "Citymaker.Recipe.HighStreet.Description",
   "icon": "Media/Game/Icons/Pedestrian.svg",
   "root": {
     "layer": "highStreet",

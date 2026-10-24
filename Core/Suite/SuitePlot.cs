@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Suite
+namespace Citymaker.Core.Suite
 {
     public sealed class SuitePlot
     {
@@ -319,9 +319,9 @@ namespace Placemaker.Core.Suite
             else
             {
                 var outline = Outline();
-                var grown = Placemaker.Core.Geometry.Poly.Offset(Placemaker.Core.Geometry.Poly.EnsureCcw(outline), -Gap);
+                var grown = Citymaker.Core.Geometry.Poly.Offset(Citymaker.Core.Geometry.Poly.EnsureCcw(outline), -Gap);
                 float2[] best = null; float area = 0f;
-                foreach (var g in grown) { float a = Placemaker.Core.Geometry.Poly.Area(g); if (a > area) { area = a; best = g; } }
+                foreach (var g in grown) { float a = Citymaker.Core.Geometry.Poly.Area(g); if (a > area) { area = a; best = g; } }
                 if (best == null) return r;
                 foreach (var p in best)
                 {

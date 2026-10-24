@@ -639,13 +639,13 @@
     margin-left: 10rem;
 }
 
-// the header's Placemaker | Outgrow switcher, in the title's place
+// the header's Citymaker | Outgrow switcher, in the title's place
 .headMode {
     flex-shrink: 0;
     margin-left: 6rem;
 }
 
-// under the header (Placemaker's Design and Review): Sketch | Real across the panel
+// under the header (Citymaker's Design and Review): Sketch | Real across the panel
 .subRow {
     @include row;
     flex-shrink: 0;

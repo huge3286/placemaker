@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "zoningTownCentre",
-  "nameKey": "Placemaker.Zoning.Type.townCentre",
-  "descriptionKey": "Placemaker.Zoning.Type.townCentre.Tooltip",
+  "nameKey": "Citymaker.Zoning.Type.townCentre",
+  "descriptionKey": "Citymaker.Zoning.Type.townCentre.Tooltip",
   "icon": "Media/Game/Icons/Zones.svg",
   "root": {
     "layer": "zoningTownCentre",

@@ -1,4 +1,4 @@
-// Placemaker — cut obstacle footprints (building lots) out of a selection ring (s15).
+// Citymaker — cut obstacle footprints (building lots) out of a selection ring (s15).
 //
 // Plain Paint (and the build safety pass for rings) must never cover an existing building. CS2 areas
 // cannot have holes, so a lot enclosed by the ring is opened to the outside with a narrow corridor
@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Geometry
+namespace Citymaker.Core.Geometry
 {
     public static class ObstacleCut
     {

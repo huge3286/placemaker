@@ -1,0 +1,10 @@
+{
+  "Citymaker.Issue.CutoutNotZonable": "商店地块不面向游戏区的道路。这是留给公园的。",
+  "Citymaker.Issue.BuildingsKept": "{0}建筑物挡道。它们被保留下来：它们的土地上没有建造任何东西。",
+  "Citymaker.Issue.BuildingsLeftOut": "{0}部件被省略或削减以避开现有建筑物。",
+  "Citymaker.Problem.OnlyBuildings": "画笔规则仅阻止的东西是在油漆下面（建筑物、其他建筑物、分区、水）。在其他地方画画，或者改变规则。",
+  "Citymaker.Hint.BuildingsKept": "{0}选择停留中的建筑物：其地块上没有建造任何东西。",
+  "Citymaker.Settings.PaintAvoidBuildings": "涂选时避开建筑",
+  "Citymaker.Settings.PaintAvoidBuildings.Desc": "普通涂料将建筑用地从涂漆区域中切掉(涂漆时呈红色阴影)。关闭=旧行为：轮廓覆盖了建筑物，并且建造仍然让它们站立。",
+  "Citymaker.Why.AreaTooSmall": "需要更大的面积（至少{0}平方米）。"
+}

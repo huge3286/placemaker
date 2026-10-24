@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Placemaker.Core.Tool
+namespace Citymaker.Core.Tool
 {
     public enum SelectionMode { Draw = 0, Block = 1, Paint = 2, Perimeter = 3, BlockPaint = 4 }
 
@@ -84,7 +84,7 @@ namespace Placemaker.Core.Tool
         public Unity.Mathematics.float2[] Ring;
         /// <summary>That fill's closed gaps (overlay).</summary>
         public List<Unity.Mathematics.float2[]> Doors;
-        public Placemaker.Core.Geometry.BrushMask.Snapshot Mask;
+        public Citymaker.Core.Geometry.BrushMask.Snapshot Mask;
         /// <summary>Open box (One block off, or no fill under the first stroke): Ring is null, Seed is where it started.</summary>
         public bool Open;
         public Unity.Mathematics.float2 Seed;
@@ -128,7 +128,7 @@ namespace Placemaker.Core.Tool
     {
         public SelectionMode Mode;
         public PolygonEditor.Snapshot Draw = new PolygonEditor.Snapshot();
-        public Placemaker.Core.Geometry.BrushMask.Snapshot Paint;
+        public Citymaker.Core.Geometry.BrushMask.Snapshot Paint;
         public BlockSelectionState Block = new BlockSelectionState();
         public PerimeterSelectionState Perimeter = new PerimeterSelectionState();
         public BlockPaintState BlockPaint = new BlockPaintState();

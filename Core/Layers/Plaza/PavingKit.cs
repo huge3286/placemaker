@@ -14,11 +14,11 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Plaza
+namespace Citymaker.Core.Layers.Plaza
 {
     /// <summary>
     /// The art-pass palettes other paved types still use (market square, transit plaza, fairground,

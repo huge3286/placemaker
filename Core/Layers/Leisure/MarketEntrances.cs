@@ -1,4 +1,4 @@
-// rf-shops3 — the market square's entrances, as in ParkingLotTool and Placemaker's parking type. The user: "I want to be able to
+// rf-shops3 — the market square's entrances, as in ParkingLotTool and Citymaker's parking type. The user: "I want to be able to
 // set entrances and exits almost exactly like I can in the parking lot tool. And it wouldn't do anything unless I did."
 //
 // The player places them on the outline; nothing is suggested and Build waits for the first one. A market is for people, so
@@ -14,12 +14,12 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Commercial;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Commercial;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Leisure
+namespace Citymaker.Core.Layers.Leisure
 {
     public static class MarketEntrances
     {
@@ -29,7 +29,7 @@ namespace Placemaker.Core.Layers.Leisure
         public const string Footpath = "footpath";
         /// <summary>Marker kinds in display order (the first is what "Add an entrance" places).</summary>
         public static readonly string[] Kinds = { Access, Entrance, Entry, Exit, Alley, AlleyIn, AlleyOut };
-        private const string K = "Placemaker.Market.";
+        private const string K = "Citymaker.Market.";
 
         public static bool IsKind(string k) => k == Footpath || Array.IndexOf(Kinds, k) >= 0;
         public static bool ForPeople(string k) => k == Access || k == Footpath;
@@ -45,7 +45,7 @@ namespace Placemaker.Core.Layers.Leisure
             foreach (var k in Kinds)
             {
                 // The gate is the market's own; the car and driveway kinds keep the parking type's words (the tips say what they make here).
-                string label = k == Access ? K + "Marker.Access" : "Placemaker.Parking.Marker." + Tool.MarkerKinds.Pascal(k);
+                string label = k == Access ? K + "Marker.Access" : "Citymaker.Parking.Marker." + Tool.MarkerKinds.Pascal(k);
                 m.Options.Add(new ControlOption { Value = k, LabelKey = label, TooltipKey = K + "Marker." + Tool.MarkerKinds.Pascal(k) + ".Tip", Icon = Tool.MarkerKinds.IconFor(k) });
             }
             return m;

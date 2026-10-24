@@ -1,4 +1,4 @@
-// Placemaker — recognising our temporaries, game validation, adoption into the group (GPL-3.0).
+// Citymaker — recognising our temporaries, game validation, adoption into the group (GPL-3.0).
 // Error capture adapted from ParkManager's ParkBuildValidation (tomkpunkt, GPL-3.0). (s59) The error-to-piece
 // exclusion/retry loop is gone: BuildService.Verdicts decides once.
 
@@ -9,14 +9,14 @@ using Game.Common;
 using Game.Net;
 using Game.Prefabs;
 using Game.Tools;
-using Placemaker.Core;
-using Placemaker.Core.Build;
-using Placemaker.Game.Groups;
+using Citymaker.Core;
+using Citymaker.Core.Build;
+using Citymaker.Game.Groups;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Build
+namespace Citymaker.Game.Build
 {
     public sealed partial class BuildService
     {
@@ -215,7 +215,7 @@ namespace Placemaker.Game.Build
                 {
                     var at = EntityManager.HasComponent<global::Game.Objects.Transform>(e)
                         ? EntityManager.GetComponentData<global::Game.Objects.Transform>(e).m_Position : (float3?)null;
-                    NoteSkip("Placemaker.Build.Hidden.Object", at);
+                    NoteSkip("Citymaker.Build.Hidden.Object", at);
                 }
                 if (role == MemberRole.ParkingAisle && carrier)
                     EntityManager.GetBuffer<global::Game.Net.SubNet>(_carrier).Add(new global::Game.Net.SubNet(e));
@@ -237,14 +237,14 @@ namespace Placemaker.Game.Build
                 if (!EntityManager.Exists(node) || !EntityManager.HasComponent<Temp>(node) || !IsOwnCandidate(node, out _)) continue;
                 Tag(node, MemberKind.Node, MemberRole.Generic);
             }
-            if (_carrierOwned > 0) Mod.Log.Info($"Placemaker: {_carrierOwned} props/trees/chargers share the parking carrier owner (the game does not pair them with the markings).");
-            Mod.Log.Info($"Placemaker tagged {_tagged.Count} temporary parts for group {_groupId}"
+            if (_carrierOwned > 0) Mod.Log.Info($"Citymaker: {_carrierOwned} props/trees/chargers share the parking carrier owner (the game does not pair them with the markings).");
+            Mod.Log.Info($"Citymaker tagged {_tagged.Count} temporary parts for group {_groupId}"
                 + (unmatched > 0 ? $" ({unmatched} objects/areas adopted without a plan match)" : "")
                 + (unmatchedEdges > 0 ? $"; {unmatchedEdges} unmatched new edges left to the city" : "") + ".");
             int markings = PlanWork.StallMarkings(_request?.Plan);
             if (markings > 0)
             {
-                string msg = $"Placemaker parking: {_taggedBays} of {markings} stall markings built" + (carrier ? "" : " (no carrier)") + (_keptDespite > 0 ? $"; {_keptDespite} piece(s) built despite game errors" : "") + ".";
+                string msg = $"Citymaker parking: {_taggedBays} of {markings} stall markings built" + (carrier ? "" : " (no carrier)") + (_keptDespite > 0 ? $"; {_keptDespite} piece(s) built despite game errors" : "") + ".";
                 if (_taggedBays < markings) Mod.Log.Warn(msg); else Mod.Log.Info(msg);
             }
             return _tagged.Count;
@@ -275,7 +275,7 @@ namespace Placemaker.Game.Build
                 EntityManager.AddComponentData(e, new Owner(_carrier));
                 _carrierOwned++;
             }
-            catch (Exception ex) { Mod.Log.Warn("Placemaker: carrier owner failed: " + ex.Message); }
+            catch (Exception ex) { Mod.Log.Warn("Citymaker: carrier owner failed: " + ex.Message); }
         }
 
         /// <summary>Top-level object or area (sub-elements go with their owner; nodes are decided by their edges).</summary>
@@ -300,7 +300,7 @@ namespace Placemaker.Game.Build
             for (int i = 0; i < temps.Length; i++)
             {
                 var e = temps[i];
-                if (EntityManager.HasComponent<PlacemakerMember>(e) || !IsOwnCandidate(e, out _)) continue;
+                if (EntityManager.HasComponent<CitymakerMember>(e) || !IsOwnCandidate(e, out _)) continue;
                 if (EntityManager.HasComponent<Edge>(e))
                 {
                     if (TryMatch(e, out long key, out _) && key != OwnerKey && _itemByKey.TryGetValue(key, out var lw)) { Tag(e, MemberKind.Edge, MemberRole.Generic, lw.Loose); late++; }
@@ -308,7 +308,7 @@ namespace Placemaker.Game.Build
                 }
                 if (IsAdoptable(e, out var kind)) { Tag(e, kind, MemberRole.Generic, LooseBuild); late++; }
             }
-            if (late > 0) Mod.Log.Info($"Placemaker tagged {late} late temporary parts on the Apply frame.");
+            if (late > 0) Mod.Log.Info($"Citymaker tagged {late} late temporary parts on the Apply frame.");
             return late;
         }
 
@@ -370,11 +370,11 @@ namespace Placemaker.Game.Build
             var strays = new List<Entity>();
             ForObjectsInOutline((e, prefab) =>
             {
-                if (_preexisting.Contains(e) || !_usedPrefabs.Contains(prefab) || EntityManager.HasComponent<PlacemakerMember>(e)) return;
+                if (_preexisting.Contains(e) || !_usedPrefabs.Contains(prefab) || EntityManager.HasComponent<CitymakerMember>(e)) return;
                 strays.Add(e);
             });
             foreach (var e in strays) Tag(e, MemberKind.Object, MemberRole.Generic);
-            if (strays.Count > 0) Mod.Log.Warn($"Placemaker adopted {strays.Count} untagged objects this build created (tag lost on Apply).");
+            if (strays.Count > 0) Mod.Log.Warn($"Citymaker adopted {strays.Count} untagged objects this build created (tag lost on Apply).");
             return strays.Count;
         }
 
@@ -394,7 +394,7 @@ namespace Placemaker.Game.Build
         private bool TemporariesDuplicated()
         {
             if (!BuildVerification.Duplicated(PlannedNow(), _taggedCounts, out var why)) return false;
-            Mod.Log.Warn($"Placemaker: temporaries look duplicated before Apply ({why}; {_taggedCounts}).");
+            Mod.Log.Warn($"Citymaker: temporaries look duplicated before Apply ({why}; {_taggedCounts}).");
             return true;
         }
 
@@ -419,21 +419,21 @@ namespace Placemaker.Game.Build
                 }
                 var planned = PlannedNow();
                 var issues = BuildVerification.Compare(planned, counts, looseNets: _work != null && !_work.AnyGrouped);
-                if (issues.Count == 0) Mod.Log.Info($"Placemaker verified group {_groupId}: {counts}.");
-                else Mod.Log.Warn($"Placemaker group {_groupId} member check ({counts}): {string.Join("; ", issues)}.");
+                if (issues.Count == 0) Mod.Log.Info($"Citymaker verified group {_groupId}: {counts}.");
+                else Mod.Log.Warn($"Citymaker group {_groupId} member check ({counts}): {string.Join("; ", issues)}.");
                 if (BuildVerification.Duplicated(planned, counts, out var why))
                 {
                     if (LooseBuild)
                     {
                         // Loose parts are city content without a group to roll back; the pre-Apply check is the guard.
-                        Mod.Log.Warn($"Placemaker loose build came out doubled ({why}); parts are ordinary city roads now.");
+                        Mod.Log.Warn($"Citymaker loose build came out doubled ({why}); parts are ordinary city roads now.");
                         return false;
                     }
-                    Mod.Log.Warn($"Placemaker group {_groupId} was built twice ({why}); rolling it back.");
+                    Mod.Log.Warn($"Citymaker group {_groupId} was built twice ({why}); rolling it back.");
                     return true;
                 }
             }
-            catch (Exception e) { Mod.Log.Warn("Placemaker member verification failed: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker member verification failed: " + e.Message); }
             return false;
         }
 
@@ -476,8 +476,8 @@ namespace Placemaker.Game.Build
             if (!_claimed.Add(e)) return;   // exactly once per entity (late passes revisit untagged loose parts)
             if (!loose && _groupId != 0)
             {
-                var tag = new PlacemakerMember { GroupId = _groupId, Kind = kind, Role = role };
-                if (EntityManager.HasComponent<PlacemakerMember>(e)) EntityManager.SetComponentData(e, tag);
+                var tag = new CitymakerMember { GroupId = _groupId, Kind = kind, Role = role };
+                if (EntityManager.HasComponent<CitymakerMember>(e)) EntityManager.SetComponentData(e, tag);
                 else EntityManager.AddComponentData(e, tag);
             }
             _tagged.Add(e);
@@ -540,9 +540,9 @@ namespace Placemaker.Game.Build
             EntityManager.AddBuffer<global::Game.Objects.SubObject>(_carrier);
             EntityManager.AddBuffer<global::Game.Net.SubNet>(_carrier);
             EntityManager.AddBuffer<global::Game.Areas.SubArea>(_carrier);
-            EntityManager.AddComponentData(_carrier, new PlacemakerMember { GroupId = _groupId, Kind = MemberKind.Auxiliary, Role = MemberRole.Carrier });
+            EntityManager.AddComponentData(_carrier, new CitymakerMember { GroupId = _groupId, Kind = MemberKind.Auxiliary, Role = MemberRole.Carrier });
             // Deliberately no Created/Updated: CS2 would try to regenerate the bare carrier (PLT).
-            var g = EntityManager.GetComponentData<PlacemakerGroup>(_record);
+            var g = EntityManager.GetComponentData<CitymakerGroup>(_record);
             g.Carrier = _carrier;
             EntityManager.SetComponentData(_record, g);
         }
@@ -560,8 +560,8 @@ namespace Placemaker.Game.Build
 
         private void RemoveUnderConstruction()
         {
-            if (_record != Entity.Null && EntityManager.Exists(_record) && EntityManager.HasComponent<PlacemakerUnderConstruction>(_record))
-                EntityManager.RemoveComponent<PlacemakerUnderConstruction>(_record);
+            if (_record != Entity.Null && EntityManager.Exists(_record) && EntityManager.HasComponent<CitymakerUnderConstruction>(_record))
+                EntityManager.RemoveComponent<CitymakerUnderConstruction>(_record);
         }
 
         private void DeleteRecordAndCarrier()
@@ -604,14 +604,14 @@ namespace Placemaker.Game.Build
             if (EntityManager.Exists(_record))
             {
                 _registry.WriteRecord(_record, rec);
-                var g = EntityManager.GetComponentData<PlacemakerGroup>(_record);
+                var g = EntityManager.GetComponentData<CitymakerGroup>(_record);
                 g.BuiltMembers = _registry.CountMembers(_groupId, false);
                 EntityManager.SetComponentData(_record, g);
             }
             RemoveUnderConstruction();
             _registry.MarkDirty();
             try { World.GetOrCreateSystemManaged<Economy.ParkingEconomySystem>().OnGroupBuilt(_groupId); }
-            catch (Exception e) { Mod.Log.Warn("Placemaker parking economy setup failed (build kept): " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker parking economy setup failed (build kept): " + e.Message); }
         }
     }
 }

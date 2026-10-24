@@ -4,9 +4,9 @@
 // a rule only claims an asset when the name clearly says what it is.
 
 using System.Collections.Generic;
-using Placemaker.Core.Build;
+using Citymaker.Core.Build;
 
-namespace Placemaker.Core
+namespace Citymaker.Core
 {
     public static partial class AssetCategories
     {
@@ -23,7 +23,7 @@ namespace Placemaker.Core
     }
 }
 
-namespace Placemaker.Core.Layers.Types.Transport
+namespace Citymaker.Core.Layers.Types.Transport
 {
     public sealed class TransportCategoryRules : ICategoryRules
     {

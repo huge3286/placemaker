@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "natureReserve",
-  "nameKey": "Placemaker.Recipe.NatureReserve",
-  "descriptionKey": "Placemaker.Recipe.NatureReserve.Description",
+  "nameKey": "Citymaker.Recipe.NatureReserve",
+  "descriptionKey": "Citymaker.Recipe.NatureReserve.Description",
   "icon": "Media/Game/Icons/Trees.svg",
   "root": {
     "layer": "natureReserve",

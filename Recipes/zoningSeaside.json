@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "zoningSeaside",
-  "nameKey": "Placemaker.Zoning.Type.seaside",
-  "descriptionKey": "Placemaker.Zoning.Type.seaside.Tooltip",
+  "nameKey": "Citymaker.Zoning.Type.seaside",
+  "descriptionKey": "Citymaker.Zoning.Type.seaside.Tooltip",
   "icon": "Media/Game/Icons/Zones.svg",
   "root": {
     "layer": "zoningSeaside",

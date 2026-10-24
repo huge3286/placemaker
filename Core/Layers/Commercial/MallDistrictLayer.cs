@@ -7,11 +7,11 @@
 // Presets: district · pedestrian · mixedUse · dense · village.
 
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Commercial
+namespace Citymaker.Core.Layers.Commercial
 {
     [AreaGenerator(23, Group = Group)]
     public sealed partial class MallDistrictLayer : CommercialLayer

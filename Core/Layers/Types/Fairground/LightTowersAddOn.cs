@@ -3,11 +3,11 @@
 // lit at night. Light tower, else floodlight, else a plain lamp.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.AddOns;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.AddOns;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Events
+namespace Citymaker.Core.Layers.Types.Events
 {
     [AreaGenerator(171)]
     public sealed class LightTowersAddOn : AddOnLayer
@@ -56,7 +56,7 @@ namespace Placemaker.Core.Layers.Types.Events
             var centre = ctx.LayerRegion.Centroid;
             foreach (var p in spots)
                 if (EventKit.Put(ctx, occ, p, LeisureKit.Yaw(p, centre), cat, asset, 0.8f, Hashing.Mix(ctx.Seed, 0x1700u + (uint)n), 0.5f, 0.2f)) n++;
-            if (n == 0) NoSpace(ctx, "Placemaker.Feature.lightTowers");
+            if (n == 0) NoSpace(ctx, "Citymaker.Feature.lightTowers");
             ctx.Stat(Keys.StatLamps, n, Keys.UnitCount);
         }
     }

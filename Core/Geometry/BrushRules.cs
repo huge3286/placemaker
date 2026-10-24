@@ -1,11 +1,11 @@
-// Placemaker — what the Block paint brush stops at, player-configurable ("Brush rules").
+// Citymaker — what the Block paint brush stops at, player-configurable ("Brush rules").
 //
 // Each obstacle kind can be switched off, the block lock too, and the curb snap distance and edge
 // smoothing are sliders. With every stop and the block lock off the brush is plain Paint (no fence,
 // Paint's outline pipeline), so the old behaviour is always one click away.
 // s27: the rules are shared by every paint tool: plain Paint cuts the active obstacles out of its outline
-// (Cut), Draw / Roads / Block always keep off other Placemaker builds and, with DrawClip, off everything
-// the polygon stops name (water is brush-only). New stop: other Placemaker builds (their owner lot + zone
+// (Cut), Draw / Roads / Block always keep off other Citymaker builds and, with DrawClip, off everything
+// the polygon stops name (water is brush-only). New stop: other Citymaker builds (their owner lot + zone
 // blocks). New master toggle "Paint over anything" (Anything) switches every stop and the block lock off.
 // Area overhaul (2026-10-17): ONE set of stops for Points, Paint bucket and Paint area ("Stops at, keep off, whatever,
 // you get it"): roads, paths, bike paths, rail and tram, water, buildings, lots, my builds and zoning (off / built on /
@@ -16,9 +16,9 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Geometry
+namespace Citymaker.Core.Geometry
 {
-    public enum BrushObstacleKind { Road = 0, Building = 1, Lot = 2, ZonedCell = 3, EmptyZoneCell = 4, PlacemakerBuild = 5, UnbuiltZonedCell = 6, Path = 7, Bike = 8, Track = 9, Water = 10 }
+    public enum BrushObstacleKind { Road = 0, Building = 1, Lot = 2, ZonedCell = 3, EmptyZoneCell = 4, CitymakerBuild = 5, UnbuiltZonedCell = 6, Path = 7, Bike = 8, Track = 9, Water = 10 }
 
     /// <summary>A polygon the brush may stop at, tagged with what it is (rules decide whether it counts).</summary>
     public struct BrushObstacle
@@ -45,7 +45,7 @@ namespace Placemaker.Core.Geometry
         public float Gap = FillOptions.DefaultGap;
         /// <summary>(Area overhaul) How far (m) the Paint bucket spreads from the click.</summary>
         public float Reach = FillOptions.DefaultReach;
-        /// <summary>(s27) Other Placemaker builds: their owner lot outline and zone-block lots (never the group being edited).</summary>
+        /// <summary>(s27) Other Citymaker builds: their owner lot outline and zone-block lots (never the group being edited).</summary>
         public bool Builds = true;
         /// <summary>(s27) "Paint over anything": every stop and the block lock off, whatever the other toggles say.</summary>
         public bool Anything;
@@ -87,7 +87,7 @@ namespace Placemaker.Core.Geometry
                 case BrushObstacleKind.ZonedCell: return Zoned;
                 case BrushObstacleKind.EmptyZoneCell: return EmptyZones;
                 case BrushObstacleKind.UnbuiltZonedCell: return AllZoned;
-                case BrushObstacleKind.PlacemakerBuild: return Builds;
+                case BrushObstacleKind.CitymakerBuild: return Builds;
                 case BrushObstacleKind.Path: return Paths;
                 case BrushObstacleKind.Bike: return Bikes;
                 case BrushObstacleKind.Track: return Tracks;

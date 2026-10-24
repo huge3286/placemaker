@@ -1,16 +1,16 @@
 // Game runner (rf-beach): the lake beside a plot of land made to order ("land": {"water": ...}), for the shore types
 // (beach, waterfront). The plot's ground already has the lake bed (Core/Suite/SuitePlot); here its water sources go in
-// the way Placemaker's own lakes do (BuildService.Terrain CreateWaterSource), and the depth is read back from the water
+// the way Citymaker's own lakes do (BuildService.Terrain CreateWaterSource), and the depth is read back from the water
 // simulation to know when it is full.
 
 using System.Collections.Generic;
 using Game.Common;
 using Game.Simulation;
-using Placemaker.Core.Suite;
+using Citymaker.Core.Suite;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     internal sealed partial class SuiteFixture
     {

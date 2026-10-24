@@ -6,9 +6,9 @@
 // before tables), so each feature names what it actually wants. Explicit ids that are not installed
 // fall back through the list, then to the category (AutoAssets).
 
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 
-namespace Placemaker.Core.Layers.AddOns
+namespace Citymaker.Core.Layers.AddOns
 {
     public static class AddOnAssets
     {

@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "transitPlaza",
-  "nameKey": "Placemaker.Recipe.TransitPlaza",
-  "descriptionKey": "Placemaker.Recipe.TransitPlaza.Description",
+  "nameKey": "Citymaker.Recipe.TransitPlaza",
+  "descriptionKey": "Citymaker.Recipe.TransitPlaza.Description",
   "icon": "Media/Game/Icons/BusShelter.svg",
   "root": {
     "layer": "transitPlaza",

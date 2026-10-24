@@ -21,12 +21,12 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.AddOns;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.AddOns;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Plaza
+namespace Citymaker.Core.Layers.Plaza
 {
     public enum PlazaTier { Micro = 0, Small = 1, Medium = 2, Large = 3 }
 
@@ -123,7 +123,7 @@ namespace Placemaker.Core.Layers.Plaza
                     }
                     if (objR <= 0f || objR + 1.2f > inner - 0.8f) { objR = 0f; asset = default; }
                 }
-                else if (tooBig) ctx.Issue(IssueSeverity.Info, "Placemaker.Plaza.Issue.CenterpieceDoesNotFit");
+                else if (tooBig) ctx.Issue(IssueSeverity.Info, "Citymaker.Plaza.Issue.CenterpieceDoesNotFit");
                 if (objR > 0f && occ.Free(focal, objR, 0.5f, 0.3f))
                 {
                     ctx.Object(focal, yaw0, role, asset, variant, -1, cat);

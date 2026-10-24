@@ -207,11 +207,11 @@ test("Review is compact: issues as short chips (tooltip has the sentence), +N mo
     // Seven long issues (NoRoom = "{0}: no free spot left, skipped.") and a two-layer breakdown.
     await page.evaluate((text) => {
         const raw = (window as any).pm.backend.summary();
-        raw.issues = Array.from({ length: 7 }, (_, i) => ({ severity: ["error", "warning", "info"][i % 3], text: { key: "Placemaker.Test.Issue" + i, args: [text + " #" + i] }, stepPath: "0", at: [600, 0, 380] }));
+        raw.issues = Array.from({ length: 7 }, (_, i) => ({ severity: ["error", "warning", "info"][i % 3], text: { key: "Citymaker.Test.Issue" + i, args: [text + " #" + i] }, stepPath: "0", at: [600, 0, 380] }));
         // s45: the same issue from two layers is one chip
-        raw.issues.push({ severity: "warning", text: { key: "Placemaker.Test.Issue1", args: [text + " again"] }, stepPath: "0" });
+        raw.issues.push({ severity: "warning", text: { key: "Citymaker.Test.Issue1", args: [text + " again"] }, stepPath: "0" });
         raw.layers = [{ stepPath: "0", layer: "park", regionKey: "root", stats: [], cost: 1000, upkeep: 10 }, { stepPath: "0/0", layer: "plaza", regionKey: "core", stats: [], cost: 2000, upkeep: 20 }];
-        (window as any).pmPublish("Placemaker", "summary", JSON.stringify(raw));
+        (window as any).pmPublish("citymaker", "summary", JSON.stringify(raw));
     }, long);
     const issues = page.getByTestId("issues");
     await expect(page.getByTestId("issues-more")).toHaveText("+2 more");
@@ -287,14 +287,14 @@ test("Make: many types — the browser opens on the selected type's category; ch
     await panelShot(page, "r4-make-grouped");
     await page.getByTestId("make-group-shops").click();
     await page.reload();
-    await expect(page.getByTestId("placemaker-panel")).toBeVisible();
+    await expect(page.getByTestId("citymaker-panel")).toBeVisible();
     await drawPolygon(page, FIELD);
     await page.getByTestId("primary").click();
     await page.evaluate(() => (window as any).pm.backend.addMoreTypes());
     await expect(page.getByTestId("make-group-shops")).toHaveAttribute("aria-pressed", "true");
 });
 
-// (core) The game switches a shelved LAST pick to the first type shown when it restores it (PlacemakerToolSystem.EnsureInitialized,
+// (core) The game switches a shelved LAST pick to the first type shown when it restores it (CitymakerToolSystem.EnsureInitialized,
 // checked in the game runner). A shelved type picked on purpose (the game runner by id, editing an old build) stays: the panel
 // shows no chip for it but still shows its styles.
 test("Make: a shelved type picked by id stays, with no tile, and its styles still show", async ({ page }) => {

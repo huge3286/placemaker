@@ -1,4 +1,4 @@
-// Placemaker — triangulation.
+// Citymaker — triangulation.
 //
 // Two triangulators on purpose:
 //  * Triangulate: robust ear clipping in double for our own meshes (filled previews, rescue splits).
@@ -15,7 +15,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Geometry
+namespace Citymaker.Core.Geometry
 {
     /// <summary>Ear clipping. Returns false on failure.</summary>
     public static class EarClip

@@ -1,4 +1,4 @@
-// Placemaker roads layer (s61) — obstacle avoidance that resolves before it drops.
+// Citymaker roads layer (s61) — obstacle avoidance that resolves before it drops.
 //
 // Playtest: "several grid pieces near the markers are missing" and a perimeter that did not close: a building or a
 // pond near a street removed the WHOLE street piece (up to 90 m of perimeter). Now a blocked piece first tries to
@@ -8,10 +8,10 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads
+namespace Citymaker.Core.Layers.Roads
 {
     internal static class RoadDetour
     {

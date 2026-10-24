@@ -3,7 +3,7 @@
 // Every subcategory degrades through a fallback chain in the layers (e.g. cabin → garden shed →
 // shelter), so a site still builds something sensible with whatever is installed.
 
-namespace Placemaker.Core
+namespace Citymaker.Core
 {
     public static partial class AssetCategories
     {

@@ -1,4 +1,4 @@
-// Placemaker neighbourhood polish — taking away planted pieces a garden no longer has (GPL-3.0).
+// Citymaker neighbourhood polish — taking away planted pieces a garden no longer has (GPL-3.0).
 //
 // A bed, path or bush the polish gave a house earlier and a newer plan no longer wants (the garden changed: a neighbour
 // came or went) is deleted here, at PostTool, where the game deletes a building's own pieces (SubElementDeleteSystem):
@@ -12,7 +12,7 @@ using Game.Common;
 using Unity.Entities;
 using UnityEngine.Scripting;
 
-namespace Placemaker.Game.Neighbours
+namespace Citymaker.Game.Neighbours
 {
     public sealed partial class NeighbourDeleteSystem : GameSystemBase
     {
@@ -37,7 +37,7 @@ namespace Placemaker.Game.Neighbours
                     TotalDeleted++;
                 }
             }
-            catch (Exception e) { Mod.Log.Warn("Placemaker neighbourhood clean-up failed: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker neighbourhood clean-up failed: " + e.Message); }
             Queue.Clear();
         }
     }

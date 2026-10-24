@@ -20,14 +20,14 @@ using Game.Net;
 using Game.Prefabs;
 using Game.Tools;
 using Newtonsoft.Json.Linq;
-using Placemaker.Core.Geometry;
-using Placemaker.Game.Neighbours;
-using Placemaker.Game.Selection;
+using Citymaker.Core.Geometry;
+using Citymaker.Game.Neighbours;
+using Citymaker.Game.Selection;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     public sealed partial class SuiteRunner
     {
@@ -63,7 +63,7 @@ namespace Placemaker.Game.Suite
             // above the ground: lower than the room Outgrow leaves under a deck it is a crack
             var decks = new List<(float2[] Ring, float2 Lo, float2 Hi, float Height)>();
             var deckPieces = new List<(float2[] Ring, float Height)>();
-            float room = NeighbourPolishSystem.Settings.Knob("deckClearance", Placemaker.Core.Neighbours.PolishLooks.Defaults["deckClearance"]);
+            float room = NeighbourPolishSystem.Settings.Knob("deckClearance", Citymaker.Core.Neighbours.PolishLooks.Defaults["deckClearance"]);
             var terrainHeights = _world.GetOrCreateSystemManaged<global::Game.Simulation.TerrainSystem>().GetHeightData(true);
             var pieces = new List<(float2[] Ring, bool Round)>();
             using (var q = em.CreateEntityQuery(ComponentType.ReadOnly<Edge>(), ComponentType.ReadOnly<EdgeGeometry>(), ComponentType.ReadOnly<Curve>(), ComponentType.Exclude<Deleted>(), ComponentType.Exclude<Temp>()))
@@ -357,18 +357,18 @@ namespace Placemaker.Game.Suite
             rec["coveredPastLotM2"] = Math.Round(covered, 0);
             rec["landPastLotM2"] = Math.Round(landPastLot, 0);
             rec["worst"] = new JArray(houses.OrderByDescending(h => ((double)h["overRoadM2"] + (double)h["underDeckM2"]) * 4 + (double)h["openFenceM"] + (double)h["hiddenFenceM"] + (int)h["bareM2"] * 0.2).Take(12));
-            Mod.Log.Info($"Placemaker lab: outgrow check: {considered} gardens; {overCount} over roads ({overRoad:F1} m², {roundCount} over round ends {overRound:F1} m²); "
+            Mod.Log.Info($"Citymaker lab: outgrow check: {considered} gardens; {overCount} over roads ({overRoad:F1} m², {roundCount} over round ends {overRound:F1} m²); "
                 + $"fence {edge:F0} m of edges, {open:F1} m open, {hiddenFence:F1} m hidden by the game; fence lanes {lanes} ({lanesHidden} hidden), fence pieces {piecesAll} ({piecesHidden} hidden; Outgrow's {ourPieces}, {ourPiecesHidden} hidden); "
                 + $"{painted} painted gardens, {misfits} with lawn or paving short of the fence ({bare:F0} m² bare inside, {covered:F0} m² covered past the lot)");
             if (decks.Count > 0)
-                Mod.Log.Info($"Placemaker lab: outgrow check: {decks.Count} deck pieces overhead ({decks.Min(d => d.Height):F1}-{decks.Max(d => d.Height):F1} m up; {decks.Count(d => d.Height < room)} lower than {room:F1} m: cracks); "
+                Mod.Log.Info($"Citymaker lab: outgrow check: {decks.Count} deck pieces overhead ({decks.Min(d => d.Height):F1}-{decks.Max(d => d.Height):F1} m up; {decks.Count(d => d.Height < room)} lower than {room:F1} m: cracks); "
                     + $"in cracks: {deckCount} gardens ({underDeck:F1} m²), {piecesUnderDecks} Outgrow pieces"
                     + (underDeckNames.Count > 0 ? " (" + string.Join(", ", underDeckNames.OrderByDescending(kv => kv.Value).Take(8).Select(kv => $"{kv.Key} x{kv.Value}")) + ")" : "")
                     + $"; under high decks: {highCount} gardens ({underHigh:F1} m²), {piecesUnderHighDecks} Outgrow pieces"
                     + (underHighNames.Count > 0 ? " (" + string.Join(", ", underHighNames.OrderByDescending(kv => kv.Value).Take(8).Select(kv => $"{kv.Key} x{kv.Value}")) + ")" : "")
                     + $"; {treesByDecks} Outgrow trees under or within 3 m of a deck");
-            foreach (var h in rec["worst"]) Mod.Log.Info("Placemaker lab: outgrow check: " + h.ToString(Newtonsoft.Json.Formatting.None));
-            foreach (var w in whyHidden) Mod.Log.Info("Placemaker lab: outgrow check: hidden " + w);
+            foreach (var h in rec["worst"]) Mod.Log.Info("Citymaker lab: outgrow check: " + h.ToString(Newtonsoft.Json.Formatting.None));
+            foreach (var w in whyHidden) Mod.Log.Info("Citymaker lab: outgrow check: hidden " + w);
             rec["whyHidden"] = new JArray(whyHidden);
 
             // close-ups of the worst spots

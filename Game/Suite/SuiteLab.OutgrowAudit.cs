@@ -15,12 +15,12 @@ using Game.Common;
 using Game.Prefabs;
 using Game.Tools;
 using Newtonsoft.Json.Linq;
-using Placemaker.Game.Neighbours;
+using Citymaker.Game.Neighbours;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     public sealed partial class SuiteRunner
     {
@@ -93,14 +93,14 @@ namespace Placemaker.Game.Suite
                 ["byKindLook"] = new JObject(byLook.OrderBy(k => k.Key).Select(k => new JProperty(k.Key, $"{k.Value.Yes} outgrown, {k.Value.Pieces} with pieces, {k.Value.Empty} without"))),
                 ["problems"] = worst,
             };
-            Mod.Log.Info($"Placemaker lab: outgrow audit{(label != null ? " (" + label + ")" : "")}: {yes} outgrown ({building} being built), {planned} planned, {lotOnly} with a plot of only their lot, "
+            Mod.Log.Info($"Citymaker lab: outgrow audit{(label != null ? " (" + label + ")" : "")}: {yes} outgrown ({building} being built), {planned} planned, {lotOnly} with a plot of only their lot, "
                 + $"{withPieces} with pieces ({pieces} pieces); never planned {rec["neverPlanned"]}, land past the lot but nothing on it {rec["landButNothing"]}, "
                 + $"car park look with land and no paving {rec["carParkLookNoPaving"]}; plans that took every piece away: {NeighbourPolishSystem.TotalEmptiedAsked} asked, "
                 + $"{NeighbourPolishSystem.TotalEmptiedNeighbour} as a neighbour; {NeighbourPolishSystem.TotalDropped} dirty houses dropped before a plan; "
                 + $"the game took {NeighbourPolishSystem.TotalLostObjects} objects and {NeighbourPolishSystem.TotalLostAreas} surfaces of ours from standing buildings ({NeighbourPolishSystem.TotalRemade} objects made again), "
                 + $"{NeighbourPolishSystem.TotalRebuilt} rebuilt buildings planned again, {NeighbourPolishSystem.TotalHealed} found empty after a load");
-            foreach (var kv in byLook.OrderBy(k => k.Key)) Mod.Log.Info($"Placemaker lab: outgrow audit: {kv.Key}: {kv.Value.Yes} outgrown, {kv.Value.Pieces} with pieces, {kv.Value.Empty} without");
-            foreach (var w in worst.Take(20)) Mod.Log.Info("Placemaker lab: outgrow audit: " + w.ToString(Newtonsoft.Json.Formatting.None));
+            foreach (var kv in byLook.OrderBy(k => k.Key)) Mod.Log.Info($"Citymaker lab: outgrow audit: {kv.Key}: {kv.Value.Yes} outgrown, {kv.Value.Pieces} with pieces, {kv.Value.Empty} without");
+            foreach (var w in worst.Take(20)) Mod.Log.Info("Citymaker lab: outgrow audit: " + w.ToString(Newtonsoft.Json.Formatting.None));
             return rec;
         }
 
@@ -135,7 +135,7 @@ namespace Placemaker.Game.Suite
                 asked++;
             }
             foreach (var kv in byLook) NeighbourPolishSystem.Stamp(kv.Value, true, kv.Key, null);
-            Mod.Log.Info($"Placemaker lab: outgrow repaint: {asked} outgrown buildings{(onlyEmpty ? " with no pieces" : "")} stamped again with their look");
+            Mod.Log.Info($"Citymaker lab: outgrow repaint: {asked} outgrown buildings{(onlyEmpty ? " with no pieces" : "")} stamped again with their look");
             yield return PolishIdle(rec, (float?)step["wait"] ?? 120f);
             var after = OutgrowAudits(st, sys);
             int gained = 0, lost = 0, stillEmpty = 0, piecesBefore = 0, piecesAfter = 0;
@@ -165,8 +165,8 @@ namespace Placemaker.Game.Suite
             rec["piecesBefore"] = piecesBefore;
             rec["piecesAfter"] = piecesAfter;
             rec["gainedLots"] = gainedList;
-            Mod.Log.Info($"Placemaker lab: outgrow repaint: {asked} stamped again; {gained} of them got pieces now (they were empty by a fault), {stillEmpty} still have none, {lost} others lost all theirs; pieces {piecesBefore} before, {piecesAfter} after");
-            foreach (var g in gainedList.Take(20)) Mod.Log.Info("Placemaker lab: outgrow repaint: gained " + g.ToString(Newtonsoft.Json.Formatting.None));
+            Mod.Log.Info($"Citymaker lab: outgrow repaint: {asked} stamped again; {gained} of them got pieces now (they were empty by a fault), {stillEmpty} still have none, {lost} others lost all theirs; pieces {piecesBefore} before, {piecesAfter} after");
+            foreach (var g in gainedList.Take(20)) Mod.Log.Info("Citymaker lab: outgrow repaint: gained " + g.ToString(Newtonsoft.Json.Formatting.None));
             var r = OutgrowAuditRecord(st, after, "after repaint");
             rec["after"] = r;
         }

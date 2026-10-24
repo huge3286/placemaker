@@ -1,4 +1,4 @@
-// Placemaker — name/trait heuristics for asset classification (GPL-3.0).
+// Citymaker — name/trait heuristics for asset classification (GPL-3.0).
 // Adapted from ParkManager's ParkAssetCatalogSystem (tomkpunkt, GPL-3.0). Gameplay components
 // decide first (the game layer passes them in as AssetTraits); names are only the fallback,
 // because custom assets name things in every language and convention.
@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     [Flags]
     public enum AssetTraits
@@ -60,7 +60,7 @@ namespace Placemaker.Core.Build
 
         /// <summary>
         /// Every category this prefab belongs to (an asset can be several, e.g. a bush is also a
-        /// planter candidate). Empty list = not useful to Placemaker.
+        /// planter candidate). Empty list = not useful to Citymaker.
         /// </summary>
         public static List<string> Classify(string name, AssetTraits t)
         {

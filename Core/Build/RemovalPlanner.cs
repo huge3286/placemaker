@@ -1,4 +1,4 @@
-// Placemaker — ordering of group removal (GPL-3.0).
+// Citymaker — ordering of group removal (GPL-3.0).
 // Encodes the engine rules from RESEARCH-NOTES 11–12 (learned the hard way by ParkingLotTool and
 // ParkManager): objects/areas first, then edges in bounded passes; a node is deleted only in
 // the same pass as its last remaining edge and never while a foreign edge uses it.
@@ -6,7 +6,7 @@
 
 using System.Collections.Generic;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     public enum MemberKind : byte
     {

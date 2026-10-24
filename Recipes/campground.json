@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "campground",
-  "nameKey": "Placemaker.Recipe.Campground",
-  "descriptionKey": "Placemaker.Recipe.Campground.Description",
+  "nameKey": "Citymaker.Recipe.Campground",
+  "descriptionKey": "Citymaker.Recipe.Campground.Description",
   "icon": "Media/Game/Icons/Forest.svg",
   "root": {
     "layer": "campground",

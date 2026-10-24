@@ -14,12 +14,12 @@
 // What does not fit a rectangle (corners of odd outlines) stays plain yard ground: tidy, never scattered with junk.
 
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Types.Scrapyard;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Types.Scrapyard;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Yards
+namespace Citymaker.Core.Layers.Types.Yards
 {
     /// <summary>A storage block: a rectangle in the site frame between aisles.</summary>
     public sealed class YardBlock

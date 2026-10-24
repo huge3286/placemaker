@@ -1,4 +1,4 @@
-// Placemaker — polygon operations built on the planar arrangement: booleans, normalisation,
+// Citymaker — polygon operations built on the planar arrangement: booleans, normalisation,
 // robust offset, splitting by a polyline, clipping segments, opening holes.
 //
 // Offset method (same idea as Clipper's offsetter, written from scratch): every edge is shifted by
@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Geometry
+namespace Citymaker.Core.Geometry
 {
     public static partial class Poly
     {

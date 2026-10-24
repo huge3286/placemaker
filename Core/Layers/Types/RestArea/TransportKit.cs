@@ -9,11 +9,11 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Transport
+namespace Citymaker.Core.Layers.Types.Transport
 {
     public sealed class SubLot
     {
@@ -35,7 +35,7 @@ namespace Placemaker.Core.Layers.Types.Transport
     public static class TransportKit
     {
         public const string ParkingLayerId = "parking";
-        public const string NoLotKey = "Placemaker.Transport.Issue.NoLot";
+        public const string NoLotKey = "Citymaker.Transport.Issue.NoLot";
 
         /// <summary>Largest outer ring of a boolean result (holes ignored), or null below <paramref name="minArea"/>.</summary>
         public static float2[] Largest(List<Region> pieces, float minArea)
@@ -121,7 +121,7 @@ namespace Placemaker.Core.Layers.Types.Transport
                 plan.Objects.Add(o);
             }
             foreach (var i in sub.Issues)
-                if (i.Severity != IssueSeverity.Error && i.Key != "Placemaker.Parking.Issue.NoEntrance") plan.Issues.Add(i);
+                if (i.Severity != IssueSeverity.Error && i.Key != "Citymaker.Parking.Issue.NoEntrance") plan.Issues.Add(i);
             plan.Stats.AddRange(sub.Stats);
             plan.Facts["capacity"] = stalls;
             plan.Facts["evCapacity"] = ev;

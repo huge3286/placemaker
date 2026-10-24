@@ -1,4 +1,4 @@
-// Placemaker — the preview's layers and legend (s22).
+// Citymaker — the preview's layers and legend (s22).
 //
 // Playtest s22 (a curved park between four streets): "It's getting crazy; hard to even see what's happening …
 // I need a legend: a little window where I can hover an entry and it hides everything except that thing." Every
@@ -9,11 +9,11 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Roads;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Roads;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     public static class PreviewLegend
     {
@@ -51,7 +51,7 @@ namespace Placemaker.Core.Build
         public static bool IsRoad(string id) => id != null && id.StartsWith(RoadPrefix, StringComparison.Ordinal);
 
         public static string LabelKey(string id) =>
-            IsRoad(id) ? RoadRoles.LabelKey(id.Substring(RoadPrefix.Length)) : "Placemaker.Legend." + id;
+            IsRoad(id) ? RoadRoles.LabelKey(id.Substring(RoadPrefix.Length)) : "Citymaker.Legend." + id;
 
         /// <summary>Swatch / overlay colour "#rrggbb" of a layer (roads: the s16 role colours).</summary>
         public static string Color(string id)

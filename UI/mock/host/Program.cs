@@ -1,4 +1,4 @@
-// Placemaker UI mock host.
+// Citymaker UI mock host.
 //
 // Serves the browser harness (UI/mock) and exposes the REAL engine-free Core over HTTP so the
 // mock panel shows genuine plans while UX is iterated in a browser instead of the game:
@@ -23,12 +23,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
-using Placemaker.Core;
-using Placemaker.Core.Build;
-using Placemaker.Core.Layers.Roads;
+using Citymaker.Core;
+using Citymaker.Core.Build;
+using Citymaker.Core.Layers.Roads;
 using Unity.Mathematics;
 
-namespace Placemaker.MockHost
+namespace Citymaker.MockHost
 {
     public static class Program
     {
@@ -83,7 +83,7 @@ namespace Placemaker.MockHost
                 return Json(Api.Ready(body));
             });
 
-            Console.WriteLine($"Placemaker mock host: http://127.0.0.1:{port}/  (layers: {GeneratorRegistry.All.Count}, root: {root})");
+            Console.WriteLine($"Citymaker mock host: http://127.0.0.1:{port}/  (layers: {GeneratorRegistry.All.Count}, root: {root})");
             app.Run();
         }
 
@@ -110,16 +110,16 @@ namespace Placemaker.MockHost
         /// <summary>(core) The shelf, read as the game reads it (Core/Tool/Shelf.cs). (shops2) The mock's own fixed test shelf
         /// (UI/mock/shelf/*.json) when it is there, so the product's shelf decisions (Recipes/shelf: hidden types and styles) never
         /// change what the UI tests see; else the product's.</summary>
-        private static Placemaker.Core.Tool.Shelf Shelf(string repo)
+        private static Citymaker.Core.Tool.Shelf Shelf(string repo)
         {
             var files = new List<KeyValuePair<string, string>>();
-            var dir = Path.Combine(repo ?? ".", "UI", "mock", Placemaker.Core.Tool.Shelf.FolderName);
-            if (!Directory.Exists(dir)) dir = Path.Combine(repo ?? ".", "Recipes", Placemaker.Core.Tool.Shelf.FolderName);
+            var dir = Path.Combine(repo ?? ".", "UI", "mock", Citymaker.Core.Tool.Shelf.FolderName);
+            if (!Directory.Exists(dir)) dir = Path.Combine(repo ?? ".", "Recipes", Citymaker.Core.Tool.Shelf.FolderName);
             if (Directory.Exists(dir))
                 foreach (var f in Directory.GetFiles(dir, "*.json").OrderBy(x => x, StringComparer.OrdinalIgnoreCase))
                     files.Add(new KeyValuePair<string, string>(Path.GetFileName(f), File.ReadAllText(f)));
-            var shelf = Placemaker.Core.Tool.Shelf.Parse(files);
-            Placemaker.Core.Tool.Shelf.Current = shelf;
+            var shelf = Citymaker.Core.Tool.Shelf.Parse(files);
+            Citymaker.Core.Tool.Shelf.Current = shelf;
             return shelf;
         }
 
@@ -279,7 +279,7 @@ namespace Placemaker.MockHost
             foreach (var p in g.Presets ?? Array.Empty<PresetInfo>())
             {
                 var po = new JsonObject { ["id"] = p.Id, ["name"] = p.LabelKey, ["icon"] = p.Icon ?? "", ["values"] = Bag(p.Values) };
-                if (Placemaker.Core.Tool.Shelf.Current.IsStyleShelved(g.Id, GeneratorGroups.Of(g), p.Id)) po["shelved"] = true;
+                if (Citymaker.Core.Tool.Shelf.Current.IsStyleShelved(g.Id, GeneratorGroups.Of(g), p.Id)) po["shelved"] = true;
                 presets.Add(po);
             }
             // Built-in features (Core.IHasFeatures) and Make-row visibility (AreaGenerator Hidden).
@@ -320,7 +320,7 @@ namespace Placemaker.MockHost
             // s17 park stats: the player's overrides travel with each compose request.
             if (body?["parkStats"] is JsonObject ps)
             {
-                recipe.ParkStats = new Placemaker.Core.Build.ParkStatsSettings { KeepVanilla = ps["keepVanilla"]?.GetValue<bool>() ?? true };
+                recipe.ParkStats = new Citymaker.Core.Build.ParkStatsSettings { KeepVanilla = ps["keepVanilla"]?.GetValue<bool>() ?? true };
                 if (ps["overrides"] is JsonObject ov)
                     foreach (var kv in ov) if (kv.Value != null) recipe.ParkStats.Overrides[kv.Key] = kv.Value.GetValue<double>();
             }
@@ -343,7 +343,7 @@ namespace Placemaker.MockHost
                 catch (OperationCanceledException)
                 {
                     plan = new ComposedPlan();
-                    plan.Issues.Add(new PlanIssue { Severity = IssueSeverity.Error, Key = "Placemaker.UI.Mock.Timeout" });
+                    plan.Issues.Add(new PlanIssue { Severity = IssueSeverity.Error, Key = "Citymaker.UI.Mock.Timeout" });
                 }
             }
 
@@ -364,7 +364,7 @@ namespace Placemaker.MockHost
                     }).ToArray()),
                     ["surfaces"] = new JsonArray(l.Surfaces.Select(s => (JsonNode)new JsonObject
                     {
-                        ["role"] = s.Role.ToString(), ["ring"] = Ring2(s.Ring), ["lg"] = Placemaker.Core.Build.PreviewLegend.Of(s),
+                        ["role"] = s.Role.ToString(), ["ring"] = Ring2(s.Ring), ["lg"] = Citymaker.Core.Build.PreviewLegend.Of(s),
                     }).ToArray()),
                     ["areas"] = new JsonArray(l.Areas.Select(s => (JsonNode)new JsonObject
                     {
@@ -378,12 +378,12 @@ namespace Placemaker.MockHost
                         // s16: road role colour (same as the in-game preview and the panel legend); null for other nets.
                         ["roleColor"] = RoadRoles.Of(n.Role) != null && (n.Role != NetRole.Pathway || n.Control != null) ? RoadRoles.Color(RoadRoles.Of(n.Role)) : null,
                         // s22: the preview legend layer (Core PreviewLegend), so the mock map isolates / hides exactly like the game.
-                        ["lg"] = Placemaker.Core.Build.PreviewLegend.Of(n, l.GeneratorId),
+                        ["lg"] = Citymaker.Core.Build.PreviewLegend.Of(n, l.GeneratorId),
                     }).ToArray()),
                     ["objects"] = new JsonArray(l.Objects.Select(o => (JsonNode)new JsonObject
                     {
                         ["role"] = o.Role.ToString(), ["p"] = P(o.Position), ["yaw"] = o.Yaw,
-                        ["r"] = Composer.DefaultRadius(o.Role), ["lg"] = Placemaker.Core.Build.PreviewLegend.Of(o),
+                        ["r"] = Composer.DefaultRadius(o.Role), ["lg"] = Citymaker.Core.Build.PreviewLegend.Of(o),
                     }).ToArray()),
                     ["zoning"] = new JsonArray(l.Zoning.Select(z => (JsonNode)new JsonObject
                     {
@@ -409,15 +409,15 @@ namespace Placemaker.MockHost
             var permanent = new JsonArray();
             foreach (var l in plan.Layers)
                 foreach (var t in l.Terraform)
-                    if (t.Permanent) permanent.Add(new JsonObject { ["key"] = "Placemaker.UI.Permanent.Terraform" });
+                    if (t.Permanent) permanent.Add(new JsonObject { ["key"] = "Citymaker.UI.Permanent.Terraform" });
 
             JsonNode parkStats = null;
-            var stats = Placemaker.Core.Build.ParkStatsEstimator.Estimate(
-                Placemaker.Core.Build.ParkStatsInput.From(plan, Pricing.PolygonArea(shape.Ring), recipe), recipe.ParkStats);
+            var stats = Citymaker.Core.Build.ParkStatsEstimator.Estimate(
+                Citymaker.Core.Build.ParkStatsInput.From(plan, Pricing.PolygonArea(shape.Ring), recipe), recipe.ParkStats);
             // No nearby roads in the mock site: the companion has no frontage, like a build without a road edge.
-            Placemaker.Core.Build.ParkStatsEstimator.WithCompanion(stats, true,
-                Placemaker.Core.Build.ParkCompanionPlanner.Find(Placemaker.Core.Geometry.Poly.To2D(shape.Ring), site.NearbyNets));
-            if (stats.Applicable) parkStats = JsonNode.Parse(Placemaker.Core.Tool.UiModels.ParkStats(stats).ToString());
+            Citymaker.Core.Build.ParkStatsEstimator.WithCompanion(stats, true,
+                Citymaker.Core.Build.ParkCompanionPlanner.Find(Citymaker.Core.Geometry.Poly.To2D(shape.Ring), site.NearbyNets));
+            if (stats.Applicable) parkStats = JsonNode.Parse(Citymaker.Core.Tool.UiModels.ParkStats(stats).ToString());
 
 
             // s16: per UI step path, what Automatic became and the roads by role (UiModels, as the game sends them).
@@ -429,11 +429,11 @@ namespace Placemaker.MockHost
                 if (at >= 0) path = path.Substring(0, at);
                 if (path.Length == 0 || steps.ContainsKey(path)) continue;
                 var gen = GeneratorRegistry.Get(l.GeneratorId);
-                Func<string, string, Placemaker.Core.Tool.AssetLabel> label = (cat, id) => new Placemaker.Core.Tool.AssetLabel { Name = RoadRoles.NameOf(id) };
+                Func<string, string, Citymaker.Core.Tool.AssetLabel> label = (cat, id) => new Citymaker.Core.Tool.AssetLabel { Name = RoadRoles.NameOf(id) };
                 steps[path] = new JsonObject
                 {
-                    ["resolvedAssets"] = JsonNode.Parse(Placemaker.Core.Tool.UiModels.ResolvedAssets(plan, path, gen, label).ToString()),
-                    ["netLegend"] = JsonNode.Parse(Placemaker.Core.Tool.UiModels.NetLegend(plan, path, label).ToString()),
+                    ["resolvedAssets"] = JsonNode.Parse(Citymaker.Core.Tool.UiModels.ResolvedAssets(plan, path, gen, label).ToString()),
+                    ["netLegend"] = JsonNode.Parse(Citymaker.Core.Tool.UiModels.NetLegend(plan, path, label).ToString()),
                 };
             }
 
@@ -449,7 +449,7 @@ namespace Placemaker.MockHost
                 ["upkeep"] = Math.Round(upkeep),
                 ["costBuckets"] = FakeBuckets(plan),
                 ["permanent"] = permanent,
-                ["legend"] = JsonNode.Parse(Placemaker.Core.Tool.UiModels.Legend(plan, recipe, (cat, id) => new Placemaker.Core.Tool.AssetLabel { Name = RoadRoles.NameOf(id) }).ToString()),
+                ["legend"] = JsonNode.Parse(Citymaker.Core.Tool.UiModels.Legend(plan, recipe, (cat, id) => new Citymaker.Core.Tool.AssetLabel { Name = RoadRoles.NameOf(id) }).ToString()),
                 ["ms"] = sw.Elapsed.TotalMilliseconds,
             };
         }
@@ -519,7 +519,7 @@ namespace Placemaker.MockHost
             var items = new Dictionary<string, AssetInfo>(StringComparer.Ordinal);
             try
             {
-                var root = JsonNode.Parse(File.ReadAllText(Path.Combine(Repo ?? ".", "Tests", "Placemaker.Tests", "Fixtures", "catalog-bounds.json")));
+                var root = JsonNode.Parse(File.ReadAllText(Path.Combine(Repo ?? ".", "Tests", "Citymaker.Tests", "Fixtures", "catalog-bounds.json")));
                 foreach (var kv in root["pools"].AsObject()) pools[kv.Key] = kv.Value.AsArray().Select(x => (string)x).ToList();
                 foreach (var kv in root["items"].AsObject())
                 {

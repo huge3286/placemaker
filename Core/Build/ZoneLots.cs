@@ -1,4 +1,4 @@
-// Placemaker — zoning-first shop plots (s40).
+// Citymaker — zoning-first shop plots (s40).
 //
 // Playtest s40 (image 70): "There's a mismatch between what gets planned and where the zones actually are. Shouldn't it
 // be snug against where it knows it can zone?" Hosts planned shop plots as free rectangles along the frontage; the
@@ -14,10 +14,10 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     public static class ZoneLots
     {

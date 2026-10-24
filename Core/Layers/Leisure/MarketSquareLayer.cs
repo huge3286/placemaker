@@ -10,13 +10,13 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Commercial;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Plaza;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Commercial;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Plaza;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Leisure
+namespace Citymaker.Core.Layers.Leisure
 {
     [AreaGenerator(57, Group = "squares")]
     public sealed class MarketSquareLayer : LeisureLayer, ILinkedControls
@@ -141,7 +141,7 @@ namespace Placemaker.Core.Layers.Leisure
                     if (((iu + iv) & 1) != 0) continue;
                     var q = c + axis * u + side * v;
                     const float R = 11f;
-                    if (!region.Contains(q) || Placemaker.Core.Geometry.Poly.DistanceToBoundary(region.Ring, q) < R + 4f) continue;
+                    if (!region.Contains(q) || Citymaker.Core.Geometry.Poly.DistanceToBoundary(region.Ring, q) < R + 4f) continue;
                     // The court: a tree in each corner, cafe seating between them, benches facing in.
                     for (int k = 0; k < 4; k++)
                     {
@@ -335,7 +335,7 @@ namespace Placemaker.Core.Layers.Leisure
                 if (stalls > 0)
                     pave.Add(new OrientedRect { Center = block.Center, Axis = block.Axis, HalfLength = block.HalfLength + 2.5f, HalfWidth = block.HalfWidth + 1.5f }.Ring,
                         SurfaceRole.Plaza, palette.Accent, AssetCategories.SurfacePaving);
-                if (stalls < asked && !fill) ctx.Issue(IssueSeverity.Info, "Placemaker.Market.Issue.Fewer", stalls, asked);
+                if (stalls < asked && !fill) ctx.Issue(IssueSeverity.Info, "Citymaker.Market.Issue.Fewer", stalls, asked);
             }
             ctx.Check();
 
@@ -349,7 +349,7 @@ namespace Placemaker.Core.Layers.Leisure
             ctx.AddRegion(region.Ring, "paved", RegionTags.Paved);
             if (coreR > 0f) ctx.AddRegion(LayerRegion.Circle(centre, coreR, 20), "core", RegionTags.Core, RegionTags.Paved);
             CommonStats(ctx);
-            ctx.Stat("Placemaker.Stat.Stalls", stalls, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Stalls", stalls, Keys.UnitCount);
         }
 
         /// <summary>(rf-shops3) Big market: the market quarter (MarketQuarter) on what the car parks and service lanes leave.</summary>
@@ -369,8 +369,8 @@ namespace Placemaker.Core.Layers.Leisure
             pave.Emit(ctx, region.Ring, SurfaceRole.Plaza, palette.Field, AssetCategories.SurfacePaving);
             ctx.AddRegion(region.Ring, "paved", RegionTags.Paved);
             CommonStats(ctx);
-            ctx.Stat("Placemaker.Stat.Stalls", stalls, Keys.UnitCount);
-            if (stalls == 0) ctx.Issue(IssueSeverity.Info, "Placemaker.Market.Issue.Fewer", 0, ctx.I("stalls"));
+            ctx.Stat("Citymaker.Stat.Stalls", stalls, Keys.UnitCount);
+            if (stalls == 0) ctx.Issue(IssueSeverity.Info, "Citymaker.Market.Issue.Fewer", 0, ctx.I("stalls"));
         }
     }
 }

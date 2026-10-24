@@ -4,10 +4,10 @@
 // entrance (shelter, picnic tables, water tank) and a fence round it all.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Leisure
+namespace Citymaker.Core.Layers.Leisure
 {
     [AreaGenerator(56, Group = "gardens")]
     public sealed class CommunityGardenLayer : LeisureLayer
@@ -166,13 +166,13 @@ namespace Placemaker.Core.Layers.Leisure
                     sheds++;
                 }
             }
-            if (plots.Count == 0) ctx.Issue(IssueSeverity.Warning, "Placemaker.Allotments.Issue.NoPlots");
+            if (plots.Count == 0) ctx.Issue(IssueSeverity.Warning, "Citymaker.Allotments.Issue.NoPlots");
 
             if (ctx.B("fence")) Fence(ctx, gates, AssetMix.One(ctx.S("fenceAsset")), 2.5f);
             EmitGreenRegions(ctx, occ, 60f);
             CommonStats(ctx);
-            ctx.Stat("Placemaker.Stat.Plots", plots.Count, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Sheds", sheds, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Plots", plots.Count, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Sheds", sheds, Keys.UnitCount);
             ctx.Plan.Facts["cropItems"] = crops;
         }
     }

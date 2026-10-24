@@ -11,9 +11,9 @@
 //    stamped once instead of painting the lines piece by piece.
 
 using System.Collections.Generic;
-using Placemaker.Core.Build;
+using Citymaker.Core.Build;
 
-namespace Placemaker.Core
+namespace Citymaker.Core
 {
     public static partial class AssetCategories
     {
@@ -24,7 +24,7 @@ namespace Placemaker.Core
     }
 }
 
-namespace Placemaker.Core.Layers.AddOns.Fields
+namespace Citymaker.Core.Layers.AddOns.Fields
 {
     public sealed class FieldMarkingCategoryRules : ICategoryRules
     {

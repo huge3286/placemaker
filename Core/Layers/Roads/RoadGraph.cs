@@ -1,13 +1,13 @@
-// Placemaker roads layer (s34) — graph helpers shared by the network passes (connectivity, access management,
+// Citymaker roads layer (s34) — graph helpers shared by the network passes (connectivity, access management,
 // walkways, lanes, junction geometry): components, edge splitting, arc-length parameters, crossing and clearance
 // queries against the planned network. Pure and deterministic.
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads
+namespace Citymaker.Core.Layers.Roads
 {
     internal static class RoadGraph
     {

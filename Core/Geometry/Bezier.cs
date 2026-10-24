@@ -1,4 +1,4 @@
-// Placemaker — cubic Bézier helpers (CS2 net courses are cubic Béziers in 3D).
+// Citymaker — cubic Bézier helpers (CS2 net courses are cubic Béziers in 3D).
 //
 // FitCubics follows P. J. Schneider, "An Algorithm for Automatically Fitting Digitized Curves"
 // (Graphics Gems, 1990): least-squares control points with fixed end tangents, Newton
@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Geometry
+namespace Citymaker.Core.Geometry
 {
     /// <summary>Cubic Bézier in 3D (same layout as the game's Bezier4x3: A start, B/C handles, D end).</summary>
     public struct CubicBezier

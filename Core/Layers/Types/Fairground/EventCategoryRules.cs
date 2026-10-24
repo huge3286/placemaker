@@ -6,7 +6,7 @@
 
 using System.Collections.Generic;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     public sealed class EventCategoryRules : ICategoryRules
     {

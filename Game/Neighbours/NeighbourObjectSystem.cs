@@ -1,4 +1,4 @@
-// Placemaker neighbourhood polish — bushes planted in stitched gardens, owned by the house (GPL-3.0).
+// Citymaker neighbourhood polish — bushes planted in stitched gardens, owned by the house (GPL-3.0).
 //
 // YardStitch plans beds along the new fences and hedges with bushes on them (StitchPlan.Bushes). Each bush is created the
 // way the game spawns a growable's pieces (ZoneSpawnSystem): a CreationDefinition flagged Permanent, with the house as
@@ -22,7 +22,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine.Scripting;
 
-namespace Placemaker.Game.Neighbours
+namespace Citymaker.Game.Neighbours
 {
     public sealed partial class NeighbourObjectSystem : GameSystemBase
     {
@@ -115,7 +115,7 @@ namespace Placemaker.Game.Neighbours
                     TotalMade++;
                 }
             }
-            catch (Exception e) { Mod.Log.Warn("Placemaker neighbourhood bushes failed: " + e.Message); Queue.Clear(); return; }
+            catch (Exception e) { Mod.Log.Warn("Citymaker neighbourhood bushes failed: " + e.Message); Queue.Clear(); return; }
             Queue.RemoveRange(0, Math.Min(Queue.Count, MaxPerFrame));
         }
 
@@ -139,7 +139,7 @@ namespace Placemaker.Game.Neighbours
         private void Index()
         {
             _byName = new Dictionary<string, Entity>(StringComparer.OrdinalIgnoreCase);
-            var wanted = new HashSet<string>(Placemaker.Core.Neighbours.YardStitch.BushKinds, StringComparer.OrdinalIgnoreCase);
+            var wanted = new HashSet<string>(Citymaker.Core.Neighbours.YardStitch.BushKinds, StringComparer.OrdinalIgnoreCase);
             _pieces = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             using (var q = EntityManager.CreateEntityQuery(ComponentType.ReadOnly<PrefabData>(), ComponentType.ReadOnly<ObjectGeometryData>()))
             using (var all = q.ToEntityArray(Allocator.Temp))
@@ -153,7 +153,7 @@ namespace Placemaker.Game.Neighbours
                     if (piece) _pieces.Add(n);
                     if (wanted.Contains(n) || piece) _byName[n] = e;
                 }
-            Mod.Log.Info($"Placemaker neighbourhood bushes: {_byName.Count} of {wanted.Count} kinds found");
+            Mod.Log.Info($"Citymaker neighbourhood bushes: {_byName.Count} of {wanted.Count} kinds found");
         }
     }
 }

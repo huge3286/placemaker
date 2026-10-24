@@ -1,4 +1,4 @@
-// Placemaker roads layer (s34) — the walking network and the small roads: walkways, back lanes, gravel tips.
+// Citymaker roads layer (s34) — the walking network and the small roads: walkways, back lanes, gravel tips.
 //
 // Playtest (image 63): the player drew the missing footpaths by hand — cul-de-sac bulbs to each other and to the
 // next street. A designer does that from the start: every cul-de-sac gets a footpath to the nearest street or bulb
@@ -13,10 +13,10 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads
+namespace Citymaker.Core.Layers.Roads
 {
     internal static class RoadWalkways
     {

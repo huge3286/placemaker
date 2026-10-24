@@ -1,4 +1,4 @@
-// Placemaker — graph algorithms over the existing road network (engine-free).
+// Citymaker — graph algorithms over the existing road network (engine-free).
 //
 // Adapted from Grid Road Generator (Ti4goc), Core/NetworkGraph.cs: INetworkGraph abstraction,
 // Dijkstra path fill between two clicked nodes, and the "hug the wall" closed-boundary trace with
@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Geometry
+namespace Citymaker.Core.Geometry
 {
     /// <summary>
     /// Outgoing edge of a network node: the neighbour reached, the cost for shortest paths (edge

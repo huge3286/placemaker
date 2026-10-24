@@ -1,7 +1,7 @@
 // Game runner: boot → main menu → window at the shot size → new game on a vanilla map → the readable, deterministic
 // look (SuiteLook) → the set is read, checked against the schema and the grid sized for it → fixture (heightmap, road
 // grid, zoning, plops, pre-grow only when a scenario wants grown housing) → exposure and noise-floor calibration →
-// pinned Placemaker settings → every scenario's steps on its own block, with its pictures → summary.json / summary.md /
+// pinned Citymaker settings → every scenario's steps on its own block, with its pictures → summary.json / summary.md /
 // contact.html → the queue (optional) → the game's own clean quit. It does what the steps say and takes the pictures;
 // it judges nothing (the logs are the evidence). If the game is closed early, the quit hook writes what is known,
 // marked incomplete. A MonoBehaviour with coroutines; exists only when SuiteGate opened (command-line token + armed
@@ -22,15 +22,15 @@ using Game.Simulation;
 using Game.Tools;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Placemaker.Core;
-using Placemaker.Core.Suite;
-using Placemaker.Core.Tool;
-using Placemaker.Game.Tool;
+using Citymaker.Core;
+using Citymaker.Core.Suite;
+using Citymaker.Core.Tool;
+using Citymaker.Game.Tool;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     public sealed partial class SuiteRunner : MonoBehaviour
     {
@@ -62,18 +62,18 @@ namespace Placemaker.Game.Suite
         private readonly List<string> _errorLines = new List<string>();
         private readonly List<string> _otherLines = new List<string>();
 
-        /// <summary>Errors are Placemaker's when its log, message or stack names it; every other error is counted too.</summary>
+        /// <summary>Errors are Citymaker's when its log, message or stack names it; every other error is counted too.</summary>
         private static bool Ours(ILog log, string message, Exception e) =>
-            (log?.name ?? "").IndexOf("Placemaker", StringComparison.OrdinalIgnoreCase) >= 0
-            || (message ?? "").IndexOf("Placemaker", StringComparison.OrdinalIgnoreCase) >= 0
-            || (e?.StackTrace ?? "").IndexOf("Placemaker", StringComparison.Ordinal) >= 0;
+            (log?.name ?? "").IndexOf("citymaker", StringComparison.OrdinalIgnoreCase) >= 0
+            || (message ?? "").IndexOf("citymaker", StringComparison.OrdinalIgnoreCase) >= 0
+            || (e?.StackTrace ?? "").IndexOf("citymaker", StringComparison.Ordinal) >= 0;
 
         /// <summary>Known noise of a clean profile that no scenario causes.</summary>
         private static bool Whitelisted(string line) =>
             line.IndexOf("ModsSettings", StringComparison.OrdinalIgnoreCase) >= 0 && line.IndexOf("C2VM", StringComparison.OrdinalIgnoreCase) >= 0;
 
         private World _world;
-        private PlacemakerToolSystem _tool;
+        private CitymakerToolSystem _tool;
         private SuiteFixture _fixture;
         private SuiteLookup _lookup;
 
@@ -187,7 +187,7 @@ namespace Placemaker.Game.Suite
 
         private void Say(string s)
         {
-            Mod.Log.Info("Placemaker suite: " + s);
+            Mod.Log.Info("Citymaker suite: " + s);
             try { _log?.WriteLine($"{DateTime.UtcNow:HH:mm:ss.fff} [{_phase}/{_scenario}] {s}"); } catch (Exception) { }
         }
 
@@ -231,15 +231,15 @@ namespace Placemaker.Game.Suite
 
         private static string _dllHash;
 
-        /// <summary>The Placemaker.dll the game loaded at boot (Mods/Placemaker; the assembly itself has no file location in CS2).</summary>
+        /// <summary>The Citymaker.dll the game loaded at boot (Mods/Citymaker; the assembly itself has no file location in CS2).</summary>
         private static string DllPath()
         {
             string loc = typeof(SuiteRunner).Assembly.Location;
             if (!string.IsNullOrEmpty(loc) && File.Exists(loc)) return loc;
-            return Path.Combine(Colossal.PSI.Environment.EnvPath.kUserDataPath, "Mods", "Placemaker", "Placemaker.dll");
+            return Path.Combine(Colossal.PSI.Environment.EnvPath.kUserDataPath, "Mods", "citymaker", "Citymaker.dll");
         }
 
-        /// <summary>First 8 hex digits of the SHA-256 of the Placemaker.dll this game loaded.</summary>
+        /// <summary>First 8 hex digits of the SHA-256 of the Citymaker.dll this game loaded.</summary>
         private static string OwnDllHash()
         {
             if (_dllHash != null) return _dllHash;
@@ -384,8 +384,8 @@ namespace Placemaker.Game.Suite
             catch (Exception e) { Say("mod list: " + e.Message); }
             yield return Frames(10);
             _world = World.DefaultGameObjectInjectionWorld;
-            _tool = _world.GetExistingSystemManaged<PlacemakerToolSystem>();
-            if (_tool == null) throw new Exception("PlacemakerToolSystem missing");
+            _tool = _world.GetExistingSystemManaged<CitymakerToolSystem>();
+            if (_tool == null) throw new Exception("CitymakerToolSystem missing");
             _look = new SuiteLook(_world, _cfg);
             _summary["look"] = _look.Record;
             yield return _look.Window(Say);
@@ -394,7 +394,7 @@ namespace Placemaker.Game.Suite
             {
                 // the user's playground at the main menu: nothing started, nothing run, never quit
                 _phase = "playground";
-                PlacemakerToolSystem.SuiteInputOnly = false;
+                CitymakerToolSystem.SuiteInputOnly = false;
                 _summary["playground"] = new JObject { ["menu"] = true };
                 Say("playground ready at the main menu: the controls are yours; the suite does nothing more");
                 WriteSummary();
@@ -422,7 +422,7 @@ namespace Placemaker.Game.Suite
             }
 
             _phase = "fixture";
-            PlacemakerToolSystem.SuiteInputOnly = true;   // from here the tool hears only the suite's scripted mouse and keys
+            CitymakerToolSystem.SuiteInputOnly = true;   // from here the tool hears only the suite's scripted mouse and keys
             int nx = _cfg.nx, nz = _cfg.nz;
             if (scenarios != null && nx == 0) nx = GridFor(scenarios, set, nz);
             _fixture = new SuiteFixture(_world, nx, nz) { Spacing = _cfg.spacing ?? "checker" };
@@ -481,7 +481,7 @@ namespace Placemaker.Game.Suite
             _summary["hostDllHash"] = _cfg.dllHash;
             if (!string.IsNullOrEmpty(_cfg.dllHash) && !string.Equals(_cfg.dllHash, own, StringComparison.OrdinalIgnoreCase))
             {
-                _summary["wrongBuild"] = $"the game loaded Placemaker.dll {own}, the host deployed {_cfg.dllHash}";
+                _summary["wrongBuild"] = $"the game loaded Citymaker.dll {own}, the host deployed {_cfg.dllHash}";
                 _abortBatch = "wrong build: " + _summary["wrongBuild"];
                 Say("WRONG BUILD: " + _summary["wrongBuild"]);
             }
@@ -534,7 +534,7 @@ namespace Placemaker.Game.Suite
             float span = math.max(math.abs(L.LineX(L.NX) - L.LineX(0)), math.abs(L.LineZ(L.NZ) - L.LineZ(0)));
             var rec = new JObject();
             yield return Guard(CameraTo(pivot, 25f, 45f, math.max(400f, span * 0.9f), rec, null), e => Say("playground camera: " + e.Message));
-            PlacemakerToolSystem.SuiteInputOnly = false;   // the user's mouse and keys work again
+            CitymakerToolSystem.SuiteInputOnly = false;   // the user's mouse and keys work again
             try { _world.GetOrCreateSystemManaged<SimulationSystem>().selectedSpeed = 1f; } catch (Exception e) { Say("playground speed: " + e.Message); }
             rec["testMode"] = PlaygroundTestMode();
             _summary["playground"] = rec;
@@ -605,7 +605,7 @@ namespace Placemaker.Game.Suite
 
             var city = _world.GetOrCreateSystemManaged<CityConfigurationSystem>();
             city.overrideLoadedOptions = true;
-            city.overrideCityName = "Placemaker Suite";
+            city.overrideCityName = "Citymaker Suite";
             city.overrideThemeName = null;
             city.overrideLeftHandTraffic = false;
             city.overrideNaturalDisasters = false;
@@ -666,11 +666,11 @@ namespace Placemaker.Game.Suite
             Mark("lookDoneSec");
         }
 
-        /// <summary>Placemaker's settings for the run: its defaults (unless -UserModSettings), the set's pins, all recorded.</summary>
+        /// <summary>Citymaker's settings for the run: its defaults (unless -UserModSettings), the set's pins, all recorded.</summary>
         private void PinSettings(ScenarioSet set)
         {
             var s = ToolRegistration.Settings;
-            if (s == null) { _summary["placemakerSettings"] = "unavailable"; return; }
+            if (s == null) { _summary["citymakerSettings"] = "unavailable"; return; }
             var user = new JObject();
             var props = s.GetType().GetProperties().Where(p => p.CanRead && p.CanWrite && (p.PropertyType.IsPrimitive || p.PropertyType.IsEnum || p.PropertyType == typeof(string))).ToList();
             foreach (var p in props) { try { user[p.Name] = JToken.FromObject(p.GetValue(s) ?? ""); } catch (Exception) { } }
@@ -698,7 +698,7 @@ namespace Placemaker.Game.Suite
                 }
                 catch (Exception) { }
             }
-            _summary["placemakerSettings"] = new JObject { ["source"] = _cfg.userModSettings ? "the user's" : "Placemaker defaults (pinned)", ["effective"] = eff, ["differsFromUser"] = differs };
+            _summary["citymakerSettings"] = new JObject { ["source"] = _cfg.userModSettings ? "the user's" : "Citymaker defaults (pinned)", ["effective"] = eff, ["differsFromUser"] = differs };
             _tool.ReloadRecipes();
         }
 
@@ -903,7 +903,7 @@ namespace Placemaker.Game.Suite
         {
             var r = new List<Scenario>();
             var catalog = new JArray();
-            var shelf = Placemaker.Game.Recipes.RecipeStore.EnsureShelf();
+            var shelf = Citymaker.Game.Recipes.RecipeStore.EnsureShelf();
             foreach (var g in GeneratorRegistry.All)
             {
                 if (GeneratorRegistry.IsHidden(g)) continue;
@@ -1006,7 +1006,7 @@ namespace Placemaker.Game.Suite
                 var grp = GeneratorGroups.Of(g);
                 if (!string.IsNullOrEmpty(spec.layer)) { if (g.Id == spec.layer) yield return g; continue; }
                 if (!string.IsNullOrEmpty(spec.group)) { if (grp == spec.group) yield return g; continue; }   // a group named on purpose: hidden types too
-                if (!string.IsNullOrEmpty(grp) && !Placemaker.Core.Tool.Shelf.Current.IsTypeShelved(g.Id, grp)) yield return g;   // "types": every type offered in the Make row (the shelf's hidden ones left out)
+                if (!string.IsNullOrEmpty(grp) && !Citymaker.Core.Tool.Shelf.Current.IsTypeShelved(g.Id, grp)) yield return g;   // "types": every type offered in the Make row (the shelf's hidden ones left out)
             }
         }
 
@@ -1037,7 +1037,7 @@ namespace Placemaker.Game.Suite
 
         private static string LayerAliasesCanonical(string layer)
         {
-            try { return Placemaker.Core.Layers.Common.LayerAliases.Canonical(layer); } catch (Exception) { return layer; }
+            try { return Citymaker.Core.Layers.Common.LayerAliases.Canonical(layer); } catch (Exception) { return layer; }
         }
     }
 }

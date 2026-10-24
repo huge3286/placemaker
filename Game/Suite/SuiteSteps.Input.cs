@@ -10,16 +10,16 @@ using System.Linq;
 using Game.Common;
 using Game.Tools;
 using Newtonsoft.Json.Linq;
-using Placemaker.Core;
-using Placemaker.Core.Suite;
-using Placemaker.Core.Tool;
-using Placemaker.Game.Tool;
+using Citymaker.Core;
+using Citymaker.Core.Suite;
+using Citymaker.Core.Tool;
+using Citymaker.Game.Tool;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     public sealed partial class SuiteRunner
     {
@@ -30,10 +30,10 @@ namespace Placemaker.Game.Suite
 
         private IEnumerator Feed(JObject rec, float timeout = 20f)
         {
-            yield return WaitFor(rec, "input", () => PlacemakerToolSystem.SuiteFramesPending == 0, timeout);
+            yield return WaitFor(rec, "input", () => CitymakerToolSystem.SuiteFramesPending == 0, timeout);
             if (_timedOut)
             {
-                int n = PlacemakerToolSystem.SuiteResetInput();
+                int n = CitymakerToolSystem.SuiteResetInput();
                 rec["error"] = $"scripted input not consumed in {timeout:F0} s ({n} frames dropped): the tool was not running";
             }
             yield return Frames(3);
@@ -160,10 +160,10 @@ namespace Placemaker.Game.Suite
             pr["hitEntity"] = owner == Entity.Null ? "" : _lookup.KindOf(owner) + " " + _lookup.PrefabName(owner);
             pr["hitOffM"] = Math.Round(math.distance(h.m_HitPosition.xz, target.xz), 2);
             // the cursor arrives: from where it rests, or from the panel side when it is over the panel
-            var from = PlacemakerToolSystem.SuiteCursor ?? (h.m_HitPosition + new float3(40f, 0f, 0f));
+            var from = CitymakerToolSystem.SuiteCursor ?? (h.m_HitPosition + new float3(40f, 0f, 0f));
             int glide = st.Pace == "human" ? 8 : st.Pace == "user" ? 3 : 4;
-            PlacemakerToolSystem.SuiteHover(from, h.m_HitPosition, glide);
-            PlacemakerToolSystem.SuiteClickHit(owner, h, right, shift);
+            CitymakerToolSystem.SuiteHover(from, h.m_HitPosition, glide);
+            CitymakerToolSystem.SuiteClickHit(owner, h, right, shift);
             yield return Feed(rec);
             float pause = StepPause(st);
             if (pause > 0f) yield return Seconds(pause);
@@ -186,8 +186,8 @@ namespace Placemaker.Game.Suite
             var mode = tool == "paint" ? SelectionMode.BlockPaint : tool == "points" || tool == "draw" ? SelectionMode.Draw : SelectionMode.Block;
             yield return UiSetAreaMode(rec, mode);
             var at = P3(Pt(step["at"], b, abs));
-            var from = PlacemakerToolSystem.SuiteCursor ?? (at + new float3(30f, 0f, 0f));
-            PlacemakerToolSystem.SuiteHover(from, at, 8);
+            var from = CitymakerToolSystem.SuiteCursor ?? (at + new float3(30f, 0f, 0f));
+            CitymakerToolSystem.SuiteHover(from, at, 8);
             // After the glide the cursor rests there (the last scripted position repeats until new input).
             float wait = (float?)step["seconds"] ?? 2f;
             yield return Feed(rec);
@@ -205,7 +205,7 @@ namespace Placemaker.Game.Suite
 
         private IEnumerator StepArea(ScenarioState st, JObject step, JObject rec)
         {
-            // a lab step (a street, a bulldozer) may have left the runner's own tool active: Placemaker's tool picks the area
+            // a lab step (a street, a bulldozer) may have left the runner's own tool active: Citymaker's tool picks the area
             if (!_tool.IsActive) yield return OpenTool();
             var b = st.S.Block;
             bool abs = (bool?)step["abs"] ?? false;
@@ -304,8 +304,8 @@ namespace Placemaker.Game.Suite
                         var why = Clickable(p, out _);
                         if (why != null) { rec["error"] = $"stroke point ({p.x:F0},{p.z:F0}) is {why}"; st.Result["status"] = "no-outline"; yield break; }
                     }
-                    var from = PlacemakerToolSystem.SuiteCursor ?? (path[0] + new float3(40f, 0f, 0f));
-                    PlacemakerToolSystem.SuiteHover(from, path[0], 6);
+                    var from = CitymakerToolSystem.SuiteCursor ?? (path[0] + new float3(40f, 0f, 0f));
+                    CitymakerToolSystem.SuiteHover(from, path[0], 6);
                     if (st.Pace == "human")
                     {
                         // a person drags about 30 m/s at 60 Hz: a point every 0.5 m, held for the frames a 60 Hz frame lasts here
@@ -316,15 +316,15 @@ namespace Placemaker.Game.Suite
                             int n = math.max(1, (int)math.ceil(math.distance(path[i - 1], path[i]) / 0.5f));
                             for (int k = 1; k <= n; k++) for (int r = 0; r < hold; r++) pts.Add(math.lerp(path[i - 1], path[i], k / (float)n));
                         }
-                        PlacemakerToolSystem.SuiteQueue(new PlacemakerToolSystem.SuiteFrame { At = path[0], LeftDown = true, LeftHeld = true });
-                        foreach (var p in pts) PlacemakerToolSystem.SuiteQueue(new PlacemakerToolSystem.SuiteFrame { At = p, LeftHeld = true });
-                        PlacemakerToolSystem.SuiteQueue(new PlacemakerToolSystem.SuiteFrame { At = path[path.Count - 1] });
+                        CitymakerToolSystem.SuiteQueue(new CitymakerToolSystem.SuiteFrame { At = path[0], LeftDown = true, LeftHeld = true });
+                        foreach (var p in pts) CitymakerToolSystem.SuiteQueue(new CitymakerToolSystem.SuiteFrame { At = p, LeftHeld = true });
+                        CitymakerToolSystem.SuiteQueue(new CitymakerToolSystem.SuiteFrame { At = path[path.Count - 1] });
                         rec["strokeFrames"] = pts.Count + 2;
                     }
                     else
                     {
                         int per = (int)math.ceil(math.max(1f, path.Count > 1 ? math.distance(path[0], path[1]) / math.max(2f, size * 0.25f) : 1f));
-                        PlacemakerToolSystem.SuiteDrag(path.ToArray(), per);
+                        CitymakerToolSystem.SuiteDrag(path.ToArray(), per);
                     }
                     rec["brush"] = size;
                     yield return Feed(rec, 60f);
@@ -373,7 +373,7 @@ namespace Placemaker.Game.Suite
             }
             st.Ring = _tool.Shape.Ring2D();
             rec["mode"] = _tool.Mode.ToString();
-            float area = math.abs(Placemaker.Core.Geometry.Poly.SignedArea(st.Ring));
+            float area = math.abs(Citymaker.Core.Geometry.Poly.SignedArea(st.Ring));
             rec["areaM2"] = Math.Round(area);
             rec["corners"] = st.Ring.Length;
             st.Result["areaM2"] = rec["areaM2"];
@@ -588,9 +588,9 @@ namespace Placemaker.Game.Suite
         /// <summary>A key through the tool's own key handling (Enter = the main button, Esc = the Esc chain, undo/redo).</summary>
         private IEnumerator KeyPress(string key)
         {
-            PlacemakerToolSystem.SuiteKey(key);
+            CitymakerToolSystem.SuiteKey(key);
             float until = Time.realtimeSinceStartup + 5f;
-            while (PlacemakerToolSystem.SuiteKeyPending && Time.realtimeSinceStartup < until) yield return null;
+            while (CitymakerToolSystem.SuiteKeyPending && Time.realtimeSinceStartup < until) yield return null;
             yield return Frames(2);
         }
 
@@ -601,7 +601,7 @@ namespace Placemaker.Game.Suite
             var before = (_tool.Stage, _tool.ViewVersion);
             yield return KeyPress(key);
             rec["stage"] = _tool.Stage.ToString();
-            if (PlacemakerToolSystem.SuiteKeyPending) { rec["error"] = "the key was never handled (the tool was not running)"; yield break; }
+            if (CitymakerToolSystem.SuiteKeyPending) { rec["error"] = "the key was never handled (the tool was not running)"; yield break; }
             if (_tool.ViewVersion == before.ViewVersion && _tool.Stage == before.Stage) rec["note"] = "the key changed nothing";
             yield return WaitPlan(st, rec);
         }

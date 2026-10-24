@@ -1,4 +1,4 @@
-// Placemaker — automatic decal pools for dressing (s21). GPL-3.0.
+// Citymaker — automatic decal pools for dressing (s21). GPL-3.0.
 //
 // The catalog's theme pools (decal.leaves, decal.dirt, …) are word themes: "dirt" held stains, rust,
 // sand and oil alike. Dressing needs to say WHAT it wants where — oil in a parking bay, a lined leaf
@@ -13,9 +13,9 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Build;
+using Citymaker.Core.Build;
 
-namespace Placemaker.Core.Decals
+namespace Citymaker.Core.Decals
 {
     public static class DecalPools
     {
@@ -248,7 +248,7 @@ namespace Placemaker.Core.Decals
             }
         }
 
-        public const string NoPacksKey = "Placemaker.Dress.NoPacks";
+        public const string NoPacksKey = "Citymaker.Dress.NoPacks";
 
         private static bool _registered;
         private static readonly object Gate = new object();

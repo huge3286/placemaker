@@ -1,4 +1,4 @@
-// Builds Lang/en-US.ui.json from the English fallbacks in the code (t("Placemaker.UI.X", "English"))
+// Builds Lang/en-US.ui.json from the English fallbacks in the code (t("Citymaker.UI.X", "English"))
 // plus src/lang/protocol.en.json (keys C# sends as LocText). One source of truth, no drift.
 //   node tools/extract-lang.js          write the file
 //   node tools/extract-lang.js --check  exit 1 if the file is out of date (used by tests)
@@ -25,7 +25,7 @@ function unquote(s) {
 function extract() {
     const strings = {};
     // t("Key", "Fallback" …) / t('Key', 'Fallback' …), also fallbacks spanning a newline after the comma.
-    const re = /\bt\(\s*(["'])(Placemaker\.UI\.[A-Za-z0-9_.]+)\1\s*,\s*(["'])((?:\\.|(?!\3).)*)\3/g;
+    const re = /\bt\(\s*(["'])(Citymaker\.UI\.[A-Za-z0-9_.]+)\1\s*,\s*(["'])((?:\\.|(?!\3).)*)\3/g;
     for (const f of files(SRC)) {
         const text = fs.readFileSync(f, "utf8");
         let m;
@@ -38,14 +38,14 @@ function extract() {
         }
     }
     // Stage names and other keys referenced through tables.
-    const tables = /\{\s*id:\s*"[a-z]+",\s*key:\s*"(Placemaker\.UI\.[A-Za-z.]+)",\s*en:\s*"([^"]+)"\s*\}/g;
+    const tables = /\{\s*id:\s*"[a-z]+",\s*key:\s*"(Citymaker\.UI\.[A-Za-z.]+)",\s*en:\s*"([^"]+)"\s*\}/g;
     for (const f of files(SRC)) {
         const text = fs.readFileSync(f, "utf8");
         let m;
         while ((m = tables.exec(text))) if (strings[m[1]] === undefined) strings[m[1]] = m[2];
     }
-    // ["Placemaker.UI.Key", "English"] pairs in lookup tables.
-    const pairs = /\[\s*"(Placemaker\.UI\.[A-Za-z0-9_.]+)"\s*,\s*"((?:\\.|[^"\\])*)"\s*\]/g;
+    // ["Citymaker.UI.Key", "English"] pairs in lookup tables.
+    const pairs = /\[\s*"(Citymaker\.UI\.[A-Za-z0-9_.]+)"\s*,\s*"((?:\\.|[^"\\])*)"\s*\]/g;
     for (const f of files(SRC)) {
         const text = fs.readFileSync(f, "utf8");
         let m;

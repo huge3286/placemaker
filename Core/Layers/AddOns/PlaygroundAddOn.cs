@@ -3,10 +3,10 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns
+namespace Citymaker.Core.Layers.AddOns
 {
     [AreaGenerator(110)]
     public sealed class PlaygroundAddOn : AddOnLayer
@@ -52,11 +52,11 @@ namespace Placemaker.Core.Layers.AddOns
                 float cluster = spacing * 0.55f * math.sqrt(items) + itemRadius + 1f;
                 float outer = cluster + (ctx.B("benches") ? 3f : 1f);
                 if (!Spots.Find(occ, outer, Spots.Preference.NearPaths, ctx.Seed, out var centre, null, 0f, 2f)) continue;
-                if (si != sizeIndex) ctx.Issue(IssueSeverity.Info, "Placemaker.AddOn.Playground.Issue.Smaller");
+                if (si != sizeIndex) ctx.Issue(IssueSeverity.Info, "Citymaker.AddOn.Playground.Issue.Smaller");
                 Build(ctx, occ, centre, items, itemRadius, spacing, cluster, ids);
                 return;
             }
-            NoSpace(ctx, "Placemaker.AddOn.Playground.Name");
+            NoSpace(ctx, "Citymaker.AddOn.Playground.Name");
         }
 
         private static void Build(LayerContext ctx, Occupancy occ, float2 centre, int items, float itemRadius, float spacing,
@@ -103,7 +103,7 @@ namespace Placemaker.Core.Layers.AddOns
                     var p = centre + new float2(math.cos(a), math.sin(a)) * (cluster + 1.6f);
                     if (!occ.Free(p, 1.3f, 0.3f, 0.2f)) continue;
                     // A bench on a bank tilts: the play area may sit on a slope its rim does not share.
-                    if (Common.TerrainSurvey.Grade(ctx.G, p, 1f) > global::Placemaker.Core.Build.SiteHarmony.FurnitureGrade) continue;
+                    if (Common.TerrainSurvey.Grade(ctx.G, p, 1f) > global::Citymaker.Core.Build.SiteHarmony.FurnitureGrade) continue;
                     ctx.Object(p, Facing(p, centre), ObjectRole.Bench, bench, Hashing.Mix(ctx.Seed, 0xBE00u + (uint)i));
                     occ.Take(p, 1.3f, 1);
                     benches++;

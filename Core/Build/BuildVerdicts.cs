@@ -1,4 +1,4 @@
-// Placemaker — s59: what the build does with the game's validation verdicts, in ONE pass (GPL-3.0).
+// Citymaker — s59: what the build does with the game's validation verdicts, in ONE pass (GPL-3.0).
 //
 // Root cause of "nine times out of ten it says parts overlap" (docs/proposals/s59.md): every piece we emit is a separate,
 // top-level, Essential temporary (GenerateObjectsSystem gives every CreationDefinition TempFlags.Essential), so the game's
@@ -24,7 +24,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     public enum VerdictKind { Net, Object, Decal, Surface, Area, Other }
 

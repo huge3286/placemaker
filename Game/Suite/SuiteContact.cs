@@ -11,7 +11,7 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     public sealed partial class SuiteRunner
     {

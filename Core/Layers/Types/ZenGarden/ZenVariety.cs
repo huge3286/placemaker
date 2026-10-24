@@ -3,9 +3,9 @@
 // PlannedObject.Variation (up to AutoAssets.MaxVariety prefabs per step).
 
 using System.Collections.Generic;
-using Placemaker.Core.Build;
+using Citymaker.Core.Build;
 
-namespace Placemaker.Core.Layers.Types.ZenGarden
+namespace Citymaker.Core.Layers.Types.ZenGarden
 {
     public sealed class ZenVariety : IVarietyCategories
     {

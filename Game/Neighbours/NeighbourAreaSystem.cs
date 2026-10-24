@@ -1,4 +1,4 @@
-// Placemaker neighbourhood polish — ground surfaces on shared land no house takes (GPL-3.0).
+// Citymaker neighbourhood polish — ground surfaces on shared land no house takes (GPL-3.0).
 //
 // The middle a ring of houses leaves (YardStitch StitchPlan.Commons) becomes a shared green: a lawn and a mulch bed, vanilla
 // surfaces (the base game has no decorative ground decals: docs/DECALS.md). A house with land no lawn of its own reaches
@@ -21,7 +21,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine.Scripting;
 
-namespace Placemaker.Game.Neighbours
+namespace Citymaker.Game.Neighbours
 {
     public sealed partial class NeighbourAreaSystem : GameSystemBase
     {
@@ -91,7 +91,7 @@ namespace Placemaker.Game.Neighbours
                     TotalMade++;
                 }
             }
-            catch (Exception e) { Mod.Log.Warn("Placemaker neighbourhood surfaces failed: " + e.Message); Queue.Clear(); return; }
+            catch (Exception e) { Mod.Log.Warn("Citymaker neighbourhood surfaces failed: " + e.Message); Queue.Clear(); return; }
             Queue.RemoveRange(0, Math.Min(Queue.Count, MaxPerFrame));
         }
 

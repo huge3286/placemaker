@@ -1,4 +1,4 @@
-// Placemaker — how strong a decal is drawn (s23 decal art pass). GPL-3.0.
+// Citymaker — how strong a decal is drawn (s23 decal art pass). GPL-3.0.
 //
 // User: "a lot more transparent, blend with the terrain … most of them ~80 % transparent; some are fine like the sand
 // ones". Each decorative pool has an opacity (DecalPools); the game builds see-through clones per opacity TIER
@@ -6,7 +6,7 @@
 
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Decals
+namespace Citymaker.Core.Decals
 {
     public static class DecalLook
     {
@@ -28,12 +28,12 @@ namespace Placemaker.Core.Decals
         }
 
         // ── s37: names of the see-through clones ──
-        // The 16:37 build named clones "Placemaker Decal 15% (<original>)" and their surface assets after them. The asset
+        // The 16:37 build named clones "Citymaker Decal 15% (<original>)" and their surface assets after them. The asset
         // database unescapes asset names with '%' as the escape character (Colossal.IO.AssetDatabase.Internal.EscapeUtils,
         // reserved <>:"/\|?*%.), so "% (" threw UriFormatException in ManagedBatchSystem.CreateMaterial every frame. Clone,
         // render-prefab and surface-asset names now hold only ASCII letters, digits, spaces, '-' and '_'.
 
-        public const string ClonePrefix = "Placemaker Decal ";
+        public const string ClonePrefix = "Citymaker Decal ";
 
         /// <summary>Only ASCII letters, digits, space, '-' and '_' (runs of anything else become one space). When anything had
         /// to change, a short stable hash of the original is appended so two originals never share a name.</summary>

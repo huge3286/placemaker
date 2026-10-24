@@ -1,9 +1,9 @@
-// Placemaker — seam for gameplay effects of built groups (GPL-3.0).
+// Citymaker — seam for gameplay effects of built groups (GPL-3.0).
 // FUTURE: parks giving leisure/wellbeing (e.g. via a hidden companion building like the parking
 // economy, or via the Park Adventures DLC's own park areas once they exist). Nothing implements
 // this yet on purpose; the build service and registry never depend on it.
 
-namespace Placemaker.Game.Economy
+namespace Citymaker.Game.Economy
 {
     public interface IEffectProvider
     {

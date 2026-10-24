@@ -1,4 +1,4 @@
-// Placemaker — filled polygons for the preview (selected area, planned surfaces/areas, hovered block).
+// Citymaker — filled polygons for the preview (selected area, planned surfaces/areas, hovered block).
 //
 // CS2's overlay buffer can only draw curves and circles, and AreaBatchSystem skips Temp areas
 // (RESEARCH-NOTES rule 9), so filled previews are our own meshes drawn with the game's overlay
@@ -13,13 +13,13 @@ using Game;
 using Game.Prefabs;
 using Game.Rendering;
 using Game.Simulation;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Scripting;
 
-namespace Placemaker.Game.Overlay
+namespace Citymaker.Game.Overlay
 {
     public sealed partial class FilledPreviewSystem : GameSystemBase
     {
@@ -72,7 +72,7 @@ namespace Placemaker.Game.Overlay
             }
             catch (Exception e)
             {
-                if (!_reported) { _reported = true; Mod.Log.Warn("Placemaker: overlay material unavailable, filled previews off (" + e.Message + ")"); }
+                if (!_reported) { _reported = true; Mod.Log.Warn("Citymaker: overlay material unavailable, filled previews off (" + e.Message + ")"); }
                 _templateAttempts = 999;
                 return false;
             }
@@ -145,7 +145,7 @@ namespace Placemaker.Game.Overlay
 
         private void ApplyStyle(Layer layer, Color color, float priority)
         {
-            layer.Material ??= new Material(_template) { hideFlags = HideFlags.HideAndDontSave, name = "Placemaker fill" };
+            layer.Material ??= new Material(_template) { hideFlags = HideFlags.HideAndDontSave, name = "Citymaker fill" };
             if (layer.Data != null && layer.Color.Equals(color) && math.abs(layer.Priority - priority) < 0.001f) return;
             layer.Color = color;
             layer.Priority = priority;
@@ -251,7 +251,7 @@ namespace Placemaker.Game.Overlay
                 try { Draw(l); }
                 catch (Exception e)
                 {
-                    if (!_reported) { _reported = true; Mod.Log.Warn("Placemaker: filled preview draw failed: " + e.Message); }
+                    if (!_reported) { _reported = true; Mod.Log.Warn("Citymaker: filled preview draw failed: " + e.Message); }
                 }
             }
         }

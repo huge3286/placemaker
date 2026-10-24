@@ -20,7 +20,7 @@ function load(ctx: any): Record<string, string> {
 }
 
 // One context per tint: webpack appends the query to every file, the tint loader bakes the colour in
-// and files land in images/placemaker/<name>-<tint>.<hash>.svg (namespaced on the shared ui-mods host).
+// and files land in images/citymaker/<name>-<tint>.<hash>.svg (namespaced on the shared ui-mods host).
 const TINTED: Record<Tint, Record<string, string>> = {
     light: load(require.context("../assets/icons?tint=light", false, /\.svg$/)),
     dark: load(require.context("../assets/icons?tint=dark", false, /\.svg$/)),
@@ -144,7 +144,7 @@ export function entityIcon(id: string, declared?: string): string {
     return declared || id;
 }
 
-/** Stat key → icon ("Placemaker.Stat.Trees" → tree). */
+/** Stat key → icon ("Citymaker.Stat.Trees" → tree). */
 export function statIcon(key: string): string {
     const last = (key.split(".").pop() ?? "").toLowerCase();
     const map: Record<string, string> = {

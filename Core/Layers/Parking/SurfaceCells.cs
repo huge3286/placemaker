@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Parking
+namespace Citymaker.Core.Layers.Parking
 {
     internal static class SurfaceCells
     {

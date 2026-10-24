@@ -5,12 +5,12 @@
 // Used by the urbanRuins type and the "dirtJumps" feature.
 
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Types.Ruins;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Types.Ruins;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.UrbanRuins
+namespace Citymaker.Core.Layers.Types.UrbanRuins
 {
     public static class DirtJumps
     {
@@ -40,7 +40,7 @@ namespace Placemaker.Core.Layers.Types.UrbanRuins
                     ctx.AddRegion(r.Ring, Place, Place);
                     return true;
                 }
-            ctx.Issue(IssueSeverity.Info, "Placemaker.AddOn.DirtJumps.Issue.NoPlace");
+            ctx.Issue(IssueSeverity.Info, "Citymaker.AddOn.DirtJumps.Issue.NoPlace");
             return false;
         }
 

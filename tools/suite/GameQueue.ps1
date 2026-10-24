@@ -2,14 +2,14 @@
   The machine-wide game queue: shared by the clients (Run-Suite.ps1, Show.ps1, Send-Suite.ps1, Play.ps1, Queue.ps1)
   and the dispatcher (Game-Dispatcher.ps1). Dot-source it.
 
-  Only one Cities2.exe can run, and every build installs into the same Mods\Placemaker folder, so every agent's game
-  work goes through one line at %USERPROFILE%\.placemaker\game-queue (not under AppData\Local or Roaming: the agents'
+  Only one Cities2.exe can run, and every build installs into the same Mods\Citymaker folder, so every agent's game
+  work goes through one line at %USERPROFILE%\.citymaker\game-queue (not under AppData\Local or Roaming: the agents'
   command sandbox gives every session its own private copy of those, so the line would not be shared):
     requests\<id>\request.json + payload.json   waiting in line (delete the folder to leave the line)
     active\<id>\                                being run now
     done\<id>\result.json                       finished: the client prints it and exits
     bundles\<hash>\                             frozen builds (mod\ = what Deploy copies, host\ = the runner scripts)
-    user-build\, install.json, install.lock     the user's build and what Mods\Placemaker holds (ModsInstall.ps1)
+    user-build\, install.json, install.lock     the user's build and what Mods\Citymaker holds (ModsInstall.ps1)
     dispatcher.lock, status.json, history.json, dispatcher.log, launches.log, session.json
   A request carries a frozen snapshot of the requester's build; the dispatcher runs requests with the same build in one
   open game, back to back, and relaunches only to switch builds. See suite/README.md, "The game queue".
@@ -21,10 +21,10 @@
 # 4: the game host is the dispatcher's own copy of Run-Suite.ps1 and ModsInstall.ps1 (a request's frozen build gives
 #    only the mod and the game's inputs), only CS2's Paradox launcher counts, the plan no longer decides the real order.
 $script:QVersion = 4
-$script:QRoot = if ($env:PLACEMAKER_GAME_QUEUE) { $env:PLACEMAKER_GAME_QUEUE } else { Join-Path $env:USERPROFILE '.placemaker\game-queue' }
+$script:QRoot = if ($env:CITYMAKER_GAME_QUEUE) { $env:CITYMAKER_GAME_QUEUE } else { Join-Path $env:USERPROFILE '.citymaker\game-queue' }
 # tests only: a fake game host script instead of Run-Suite, and only with a stand-in queue root (never on the real line)
-$script:QFake = if ($env:PLACEMAKER_GAME_QUEUE) { $env:PLACEMAKER_GAME_QUEUE_FAKE } else { '' }
-if ($env:PLACEMAKER_GAME_QUEUE_FAKE -and -not $env:PLACEMAKER_GAME_QUEUE) { Write-Host 'queue: PLACEMAKER_GAME_QUEUE_FAKE is ignored without PLACEMAKER_GAME_QUEUE (a test must use its own queue folder)' }
+$script:QFake = if ($env:CITYMAKER_GAME_QUEUE) { $env:CITYMAKER_GAME_QUEUE_FAKE } else { '' }
+if ($env:CITYMAKER_GAME_QUEUE_FAKE -and -not $env:CITYMAKER_GAME_QUEUE) { Write-Host 'queue: CITYMAKER_GAME_QUEUE_FAKE is ignored without CITYMAKER_GAME_QUEUE (a test must use its own queue folder)' }
 $script:Q = @{
     Root = $script:QRoot
     Requests = Join-Path $script:QRoot 'requests'
@@ -43,7 +43,7 @@ $script:Q = @{
 }
 $script:QUserData = Join-Path $env:USERPROFILE 'AppData\LocalLow\Colossal Order\Cities Skylines II'
 # Run-Suite's default ResultsRoot (one suite lock for every worktree); a stand-in only with a stand-in queue root (tests)
-$script:QMainRuns = if ($env:PLACEMAKER_GAME_QUEUE -and $env:PLACEMAKER_GAME_QUEUE_RUNS) { $env:PLACEMAKER_GAME_QUEUE_RUNS } else { 'C:\Users\jack\cs2-area-tool\.forensics\suite\runs' }
+$script:QMainRuns = if ($env:CITYMAKER_GAME_QUEUE -and $env:CITYMAKER_GAME_QUEUE_RUNS) { $env:CITYMAKER_GAME_QUEUE_RUNS } else { 'C:\Users\jack\cs2-area-tool\.forensics\suite\runs' }
 # ETA model (seconds): a build = base + pictures x pic (+ land when it has its own land); a request adds overhead.
 $script:QDefaults = @{ boot = 60.0; quit = 15.0; base = 8.0; pic = 4.5; land = 6.0; overhead = 3.0 }
 # The game's inputs a session is run with: only these (and the mod) make a build's identity. The runner scripts are the
@@ -421,12 +421,12 @@ function Q-HashText([string]$s) { return (MI-Hash $s) }
 
 function Q-Touch([string]$dir) { try { (Get-Item -LiteralPath $dir -Force).LastWriteTime = Get-Date } catch { } }
 
-# A frozen build that can be installed: bundle.json and mod\Placemaker.dll (the game host that installs it is the
+# A frozen build that can be installed: bundle.json and mod\Citymaker.dll (the game host that installs it is the
 # dispatcher's own Run-Suite.ps1, never the bundle's).
 function Q-BundleOk([string]$dir) {
     if (-not $dir) { return 'no frozen build' }
     if (-not (Test-Path -LiteralPath (Join-Path $dir 'bundle.json'))) { return "its frozen build is gone ($dir)" }
-    if (-not (Test-Path -LiteralPath (Join-Path $dir 'mod\Placemaker.dll'))) { return "its frozen build has no Placemaker.dll ($dir)" }
+    if (-not (Test-Path -LiteralPath (Join-Path $dir 'mod\Citymaker.dll'))) { return "its frozen build has no Citymaker.dll ($dir)" }
     return ''
 }
 
@@ -435,7 +435,7 @@ function Q-BundleOk([string]$dir) {
 # bundles\<hash>: copied first, then hashed, so the hash is exactly what was frozen. The hash is the build's identity.
 function Q-Snapshot([string]$repo, [switch]$NoBuild) {
     Q-Init
-    $mutex = [Threading.Mutex]::new($false, ('Local\PlacemakerBuild-' + (Q-HashText $repo.ToLowerInvariant()).Substring(0, 16)))
+    $mutex = [Threading.Mutex]::new($false, ('Local\CitymakerBuild-' + (Q-HashText $repo.ToLowerInvariant()).Substring(0, 16)))
     $held = $false
     try {
         try { $held = $mutex.WaitOne(0) } catch [Threading.AbandonedMutexException] { $held = $true }
@@ -446,13 +446,13 @@ function Q-Snapshot([string]$repo, [switch]$NoBuild) {
             $t0 = Get-Date
             Q-Say "building $repo (not installed: the queue installs it when your turn comes) ..."
             $prev = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
-            $out = & dotnet build (Join-Path $repo 'Placemaker.csproj') -c Release -p:Deploy=false 2>&1 | ForEach-Object { "$_" }
+            $out = & dotnet build (Join-Path $repo 'citymaker.csproj') -c Release -p:Deploy=false 2>&1 | ForEach-Object { "$_" }
             $code = $LASTEXITCODE
             $ErrorActionPreference = $prev
             if ($code -ne 0) { return [pscustomobject]@{ code = 3; message = 'build failed'; tail = @($out | Select-Object -Last 30) } }
             Q-Say ("build ok in {0}" -f (Q-Duration ((Get-Date) - $t0).TotalSeconds))
         }
-        if (-not (Test-Path -LiteralPath (Join-Path $bin 'Placemaker.dll'))) { return [pscustomobject]@{ code = 3; message = "no build in $bin (run without -NoBuild)"; tail = @() } }
+        if (-not (Test-Path -LiteralPath (Join-Path $bin 'Citymaker.dll'))) { return [pscustomobject]@{ code = 3; message = "no build in $bin (run without -NoBuild)"; tail = @() } }
         $tmp = Join-Path $script:Q.Bundles ('.snap-' + $PID + '-' + [guid]::NewGuid().ToString('N').Substring(0, 6))
         try {
             New-Item -ItemType Directory -Force -Path (Join-Path $tmp 'mod'), (Join-Path $tmp 'host\tools\suite'), (Join-Path $tmp 'host\suite\scenarios') | Out-Null
@@ -470,7 +470,7 @@ function Q-Snapshot([string]$repo, [switch]$NoBuild) {
             $bytes = [int64]0
             $lines = foreach ($k in $keys) { $bytes += $items[$k].Length; $k + ':' + (Get-FileHash -LiteralPath $items[$k].FullName -Algorithm SHA256).Hash }
             $hash = (Q-HashText (@($lines) -join "`n")).Substring(0, 12)
-            $dllHash = (Get-FileHash -LiteralPath (Join-Path $tmp 'mod\Placemaker.dll') -Algorithm SHA256).Hash.Substring(0, 8).ToLowerInvariant()
+            $dllHash = (Get-FileHash -LiteralPath (Join-Path $tmp 'mod\Citymaker.dll') -Algorithm SHA256).Hash.Substring(0, 8).ToLowerInvariant()
             $git = ''
             try {
                 $git = "$(& git -C $repo rev-parse --short HEAD 2>$null)".Trim()
@@ -518,7 +518,7 @@ function Q-DispatcherInfo {
 # worktree that started it: a worktree removed or edited later cannot break it (Run-Suite -RestoreOnly included), and a
 # copy that does not parse is never started. dispatcher\good.json names the last copy that ran well (a fallback).
 # Run-Suite.ps1, ModsInstall.ps1 and Contact-Suite.ps1 are also the game host's: the dispatcher starts every game host
-# from this copy, so the code that touches the user's settings and Mods\Placemaker is this checked copy, not a requester's.
+# from this copy, so the code that touches the user's settings and Mods\Citymaker is this checked copy, not a requester's.
 $script:QDispFiles = @('Game-Dispatcher.ps1', 'GameQueue.ps1', 'ModsInstall.ps1', 'Run-Suite.ps1', 'Contact-Suite.ps1')
 
 function Q-ParseErrors([string]$file) {
@@ -877,8 +877,8 @@ function Invoke-QueuedSend([string]$repo, [string]$text, [string]$base, [hashtab
     $o.ResultsRoot = Q-FullPath $o.ResultsRoot
     $doc = $text | ConvertFrom-Json
     $who = if ($o.Who) { $o.Who } else { Q-Who $repo }
-    $noBuild = -not $o.Build -and (Test-Path -LiteralPath (Join-Path $repo 'bin\Release\Placemaker.dll'))
-    if ($noBuild) { Q-Say "using the build in bin\Release as it is ($((Get-Item -LiteralPath (Join-Path $repo 'bin\Release\Placemaker.dll')).LastWriteTime.ToString('yyyy-MM-dd HH:mm')); -Build rebuilds it first)" }
+    $noBuild = -not $o.Build -and (Test-Path -LiteralPath (Join-Path $repo 'bin\Release\Citymaker.dll'))
+    if ($noBuild) { Q-Say "using the build in bin\Release as it is ($((Get-Item -LiteralPath (Join-Path $repo 'bin\Release\Citymaker.dll')).LastWriteTime.ToString('yyyy-MM-dd HH:mm')); -Build rebuilds it first)" }
     $snap = Q-Snapshot $repo -NoBuild:$noBuild
     if ($snap.code -ne 0) { $snap.tail | ForEach-Object { Write-Host $_ }; Write-Host "STOP: $($snap.message)"; return @{ code = 2 } }
     $needs = Q-Needs $doc $repo

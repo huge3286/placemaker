@@ -1,4 +1,4 @@
-// Placemaker — what the Paint bucket (Block mode) treats as a WALL (s43).
+// Citymaker — what the Paint bucket (Block mode) treats as a WALL (s43).
 //
 // Playtest: "it's not following paths; some streets it's even ignoring; it goes over streets and roads and
 // paths. I want to customize what it sees and doesn't see". The bucket traces the face of a planar graph; until
@@ -14,7 +14,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Geometry
+namespace Citymaker.Core.Geometry
 {
     [Flags]
     public enum FillWall
@@ -29,7 +29,7 @@ namespace Placemaker.Core.Geometry
         /// <summary>Train, tram and subway tracks at ground level.</summary>
         Tracks = 8,
         Water = 16,
-        /// <summary>Building lots, other lots (parks, extractors, other mods) and other Placemaker builds.</summary>
+        /// <summary>Building lots, other lots (parks, extractors, other mods) and other Citymaker builds.</summary>
         Lots = 32,
         /// <summary>Zoned cells.</summary>
         Zoned = 64,
@@ -63,7 +63,7 @@ namespace Placemaker.Core.Geometry
             {
                 case BrushObstacleKind.Building:
                 case BrushObstacleKind.Lot:
-                case BrushObstacleKind.PlacemakerBuild: return Has(set, FillWall.Lots);
+                case BrushObstacleKind.CitymakerBuild: return Has(set, FillWall.Lots);
                 case BrushObstacleKind.UnbuiltZonedCell:
                 case BrushObstacleKind.ZonedCell: return Has(set, FillWall.Zoned);
                 default: return false;

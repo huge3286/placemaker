@@ -1,4 +1,4 @@
-// Placemaker — the walls around a click as a grid (the area tools' shared fill engine, AreaFill).
+// Citymaker — the walls around a click as a grid (the area tools' shared fill engine, AreaFill).
 //
 // The user (area overhaul): "if an opening is 10 meters across, it should still paint bucket and consider that closed",
 // "sometimes it goes inside tiny little cracks", "a distance threshold ... if I paint bucket in an empty flat area".
@@ -15,7 +15,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Geometry
+namespace Citymaker.Core.Geometry
 {
     public sealed class WallField
     {

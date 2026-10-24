@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "golf",
-  "nameKey": "Placemaker.Recipe.Golf",
-  "descriptionKey": "Placemaker.Recipe.Golf.Description",
+  "nameKey": "Citymaker.Recipe.Golf",
+  "descriptionKey": "Citymaker.Recipe.Golf.Description",
   "icon": "Media/Game/Icons/LargeSportsParks.svg",
   "root": {
     "layer": "golf",

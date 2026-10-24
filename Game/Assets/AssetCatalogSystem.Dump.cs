@@ -1,5 +1,5 @@
-// Placemaker — asset survey dump (GPL-3.0).
-// After every catalog scan (and when icons change) ModsData/Placemaker/catalog-dump.json is written:
+// Citymaker — asset survey dump (GPL-3.0).
+// After every catalog scan (and when icons change) ModsData/Citymaker/catalog-dump.json is written:
 // { "version", "written", "categories": { category: [ {id, displayName, tags, auto, vanilla, bounds,
 // icon, iconSource}, … ] } } so the content team can design new park types from real assets.
 // See docs/ASSET-SURVEY-HOWTO.md.
@@ -9,9 +9,9 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Placemaker.Game.Settings;
+using Citymaker.Game.Settings;
 
-namespace Placemaker.Game.Assets
+namespace Citymaker.Game.Assets
 {
     public sealed partial class AssetCatalogSystem
     {
@@ -37,7 +37,7 @@ namespace Placemaker.Game.Assets
             }
             catch (Exception e)
             {
-                Mod.Log.Warn("Placemaker could not write the asset survey dump: " + e.Message);
+                Mod.Log.Warn("Citymaker could not write the asset survey dump: " + e.Message);
             }
         }
 

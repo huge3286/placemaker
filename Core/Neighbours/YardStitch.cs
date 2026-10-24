@@ -1,4 +1,4 @@
-// Placemaker neighbourhood polish — yard stitching (pure geometry, engine-free).
+// Citymaker neighbourhood polish — yard stitching (pure geometry, engine-free).
 //
 // The game's houses are fixed models on rectangular lots, each with its own fence/hedge lines and its own lawn. Side by
 // side they never join up. Version 2 (after "fences and lawns each doing their own thing look wrong"): ONE plot per house
@@ -18,10 +18,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Neighbours
+namespace Citymaker.Core.Neighbours
 {
     public static partial class YardStitch
     {
@@ -40,10 +40,10 @@ namespace Placemaker.Core.Neighbours
             "TrashContainerEmpty02", "TrashContainerEmpty03", "LargeOpenContainer01", "Pallet03", "CratePile03",
             "CardboardBoxPile01", "CardboardBoxPile03", "GasBottlePallet01", "ToolShed03", "ShippingContainer01", "BackupGenerator01",
             "ParkingLotDecal01",
-            // 41-53 parked cars and vans (Placemaker's vehicle props, Game/Assets/VehiclePropSystem)
-            "Placemaker Vehicle Car 1", "Placemaker Vehicle Car 2", "Placemaker Vehicle Car 3", "Placemaker Vehicle Car 4", "Placemaker Vehicle Car 5",
-            "Placemaker Vehicle Car 6", "Placemaker Vehicle Car 7", "Placemaker Vehicle Car 8", "Placemaker Vehicle Car 9", "Placemaker Vehicle Car 10",
-            "Placemaker Vehicle Van 1", "Placemaker Vehicle Van 2", "Placemaker Vehicle Van 3",
+            // 41-53 parked cars and vans (Citymaker's vehicle props, Game/Assets/VehiclePropSystem)
+            "Citymaker Vehicle Car 1", "Citymaker Vehicle Car 2", "Citymaker Vehicle Car 3", "Citymaker Vehicle Car 4", "Citymaker Vehicle Car 5",
+            "Citymaker Vehicle Car 6", "Citymaker Vehicle Car 7", "Citymaker Vehicle Car 8", "Citymaker Vehicle Car 9", "Citymaker Vehicle Car 10",
+            "Citymaker Vehicle Van 1", "Citymaker Vehicle Van 2", "Citymaker Vehicle Van 3",
             // 54-56 trees along a shop yard's fence
             "EU_PoplarTree01", "BirchTree01", "NA_LindenTree01",
         };
@@ -1869,7 +1869,7 @@ namespace Placemaker.Core.Neighbours
             float want = Poly.Area(ring);
             foreach (float tol in new[] { 0.05f, 0.25f, 0.6f })
             {
-                var r = Placemaker.Core.Build.AreaRings.PrepareSurface(Poly.Simplify(ring, tol), Placemaker.Core.Build.AreaRings.SurfaceMinNodeDistance)
+                var r = Citymaker.Core.Build.AreaRings.PrepareSurface(Poly.Simplify(ring, tol), Citymaker.Core.Build.AreaRings.SurfaceMinNodeDistance)
                     .OrderByDescending(x => Poly.Area(x)).FirstOrDefault();
                 if (r != null && r.Length >= 3 && Poly.Area(r) >= want * 0.6f) return r;
             }
@@ -1959,7 +1959,7 @@ namespace Placemaker.Core.Neighbours
         }
 
         private static void Paint(StitchPlan plan, float2[] ring, int layer, float strength, float feather, float noise, float noiseScale, uint seed) =>
-            plan.Paints.Add(new Placemaker.Core.PlannedPaint
+            plan.Paints.Add(new Citymaker.Core.PlannedPaint
             {
                 Ring = ring.Select(p => new float3(p.x, 0f, p.y)).ToArray(), Layer = layer, Strength = strength, Feather = feather, Noise = noise, NoiseScale = noiseScale, Seed = seed,
             });

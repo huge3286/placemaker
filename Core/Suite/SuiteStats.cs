@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Suite
+namespace Citymaker.Core.Suite
 {
     public static class SuiteStats
     {

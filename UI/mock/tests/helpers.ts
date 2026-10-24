@@ -18,13 +18,13 @@ export async function open(page: Page, opts: { width?: number; height?: number; 
     await page.goto(opts.real ? "/" : "/?fake=1");
     await page.evaluate(() => {
         try {
-            localStorage.removeItem("placemaker.panelPos.v2");
-            localStorage.removeItem("placemaker.panelWidth.v1");
+            localStorage.removeItem("citymaker.panelPos.v2");
+            localStorage.removeItem("citymaker.panelWidth.v1");
         } catch {
             /* ignore */
         }
     });
-    await expect(page.getByTestId("placemaker-panel")).toBeVisible();
+    await expect(page.getByTestId("citymaker-panel")).toBeVisible();
     // make builds quick and deterministic for tests
     await page.evaluate(() => ((window as any).pm.backend.buildStepMs = 40));
     return errors;
@@ -75,7 +75,7 @@ export async function panelShot(page: Page, name: string) {
     fs.mkdirSync(SHOTS, { recursive: true });
     await page.mouse.move(5, 300);
     await page.waitForTimeout(250);
-    const box = await page.getByTestId("placemaker-panel").boundingBox();
+    const box = await page.getByTestId("citymaker-panel").boundingBox();
     if (!box) throw new Error("panel not visible");
     const flyout = page.getByTestId("picker-flyout");
     const fly = (await flyout.count()) ? await flyout.boundingBox() : null;
@@ -89,7 +89,7 @@ export async function panelShot(page: Page, name: string) {
 }
 
 export function stage(page: Page) {
-    return page.getByTestId("placemaker-panel").getAttribute("data-stage");
+    return page.getByTestId("citymaker-panel").getAttribute("data-stage");
 }
 
 /**
@@ -99,7 +99,7 @@ export function stage(page: Page) {
  */
 export async function noTextOverflow(page: Page, where: string) {
     const bad = await page.evaluate(() => {
-        const root = document.querySelector('[data-testid="placemaker-wrap"]') as HTMLElement;
+        const root = document.querySelector('[data-testid="citymaker-wrap"]') as HTMLElement;
         const out: string[] = [];
         const seen = new Set<Element>();
         const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
@@ -123,7 +123,7 @@ export async function noTextOverflow(page: Page, where: string) {
                 }
                 // the panel and the picker flyout beside it are the outermost boxes
                 const id = a.getAttribute("data-testid");
-                if (id === "placemaker-panel" || id === "picker-flyout" || id === "legend-window") break;
+                if (id === "citymaker-panel" || id === "picker-flyout" || id === "legend-window") break;
             }
         }
         return out;

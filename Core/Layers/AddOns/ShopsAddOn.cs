@@ -4,10 +4,10 @@
 // (cafe seating: seating.cafe, else picnic tables, else benches).
 
 using System;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns
+namespace Citymaker.Core.Layers.AddOns
 {
     [AreaGenerator(126)]
     public sealed class ShopsAddOn : AddOnLayer
@@ -78,10 +78,10 @@ namespace Placemaker.Core.Layers.AddOns
                     if (LeisureKit.Put(ctx, occ, p, LeisureKit.Yaw(p, a.Toward), role, seatAsset, seatCat, 1.4f, Hashing.Mix(v, (uint)(k + 3)))) seats++;
                 }
             }
-            if (placed == 0) NoSpace(ctx, "Placemaker.AddOn.Shops.Name");
-            else if (placed < wanted) ctx.Issue(IssueSeverity.Info, "Placemaker.AddOn.Shops.Issue.Fewer", placed, wanted);
-            ctx.Stat("Placemaker.Stat.Kiosks", placed, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Seats", seats, Keys.UnitCount);
+            if (placed == 0) NoSpace(ctx, "Citymaker.AddOn.Shops.Name");
+            else if (placed < wanted) ctx.Issue(IssueSeverity.Info, "Citymaker.AddOn.Shops.Issue.Fewer", placed, wanted);
+            ctx.Stat("Citymaker.Stat.Kiosks", placed, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Seats", seats, Keys.UnitCount);
         }
     }
 }

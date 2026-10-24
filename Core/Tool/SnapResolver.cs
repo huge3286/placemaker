@@ -1,4 +1,4 @@
-// Placemaker — snap candidate scoring for draw mode, engine-free.
+// Citymaker — snap candidate scoring for draw mode, engine-free.
 //
 // Port of ParkingLotTool's ParkingLotSnapping.cs (KruemelGames, GPL-3.0), which itself mirrors
 // how vanilla CS2 tools rank snaps: every candidate carries a level (areas > nets/objects >
@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Tool
+namespace Citymaker.Core.Tool
 {
     public enum SnapKind { None = 0, RoadEdge = 1, ObjectSide = 2, AreaEdge = 3, Direction = 4, Guide = 5, ZoneGrid = 6, Crossing = 7, RoadNode = 8 }
 

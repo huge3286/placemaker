@@ -1,6 +1,6 @@
-// Placemaker roads layer — concentric and radial patterns.
-// Adapted from Grid Road Generator (Ti4goc), Core/ConcentricGenerator.cs; part of Placemaker (GPL-3.0).
-// Changes for Placemaker: no static caches or global lock (thread-safe, reentrant), cooperative
+// Citymaker roads layer — concentric and radial patterns.
+// Adapted from Grid Road Generator (Ti4goc), Core/ConcentricGenerator.cs; part of Citymaker (GPL-3.0).
+// Changes for Citymaker: no static caches or global lock (thread-safe, reentrant), cooperative
 // cancellation through GridParameters.Cancel, per-call diagnostics objects instead of statics.
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads.Generators
+namespace Citymaker.Core.Layers.Roads.Generators
 {
     /// <summary>
     /// Concentric mode (user feedback: "a mode that copies the outer shape inwards, where we can

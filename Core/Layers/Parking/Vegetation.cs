@@ -15,7 +15,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Parking
+namespace Citymaker.Core.Layers.Parking
 {
     internal sealed class Species
     {

@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "polishGarden",
-  "nameKey": "Placemaker.UI.Painter.Theme.garden",
-  "descriptionKey": "Placemaker.UI.Painter.ThemeTip.garden",
+  "nameKey": "Citymaker.UI.Painter.Theme.garden",
+  "descriptionKey": "Citymaker.UI.Painter.ThemeTip.garden",
   "icon": "Media/Game/Icons/Zones.svg",
   "root": {
     "layer": "polishGarden",

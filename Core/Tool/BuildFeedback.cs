@@ -1,4 +1,4 @@
-// Placemaker — what the player sees about the last build attempt (message + red markers).
+// Citymaker — what the player sees about the last build attempt (message + red markers).
 //
 // Playtest 1: a failed build left its red error markers on the map while the player started the
 // next area. Rule (FEEDBACK-1 US8): the failure shows where and why, and everything about it
@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Tool
+namespace Citymaker.Core.Tool
 {
     public sealed class BuildFeedback
     {
@@ -17,7 +17,7 @@ namespace Placemaker.Core.Tool
         private readonly List<PlanIssue> _notes = new List<PlanIssue>();
 
         /// <summary>(s53) What the last build left out, with reasons (until the next change).</summary>
-        public Placemaker.Core.Build.BuildAudit Audit { get; private set; }
+        public Citymaker.Core.Build.BuildAudit Audit { get; private set; }
 
         /// <summary>What the last successful build repaired or left out (BuildStatus.Warnings), until the next change.</summary>
         public IReadOnlyList<PlanIssue> Notes => _notes;
@@ -47,7 +47,7 @@ namespace Placemaker.Core.Tool
         public void Started() => Clear();
 
         /// <summary>Build done: failure gone; keeps what the build service fixed or skipped so the player is told.</summary>
-        public void Succeeded(IEnumerable<PlanIssue> warnings = null, Placemaker.Core.Build.BuildAudit audit = null)
+        public void Succeeded(IEnumerable<PlanIssue> warnings = null, Citymaker.Core.Build.BuildAudit audit = null)
         {
             Clear();
             if (audit != null && audit.Entries.Count > 0) { Audit = audit; Version++; }
@@ -62,7 +62,7 @@ namespace Placemaker.Core.Tool
         /// <summary>The player moved to another stage (the tool's own Building→Review transition is not reported here).</summary>
         public void StageChanged() => Clear();
 
-        public void Failed(string messageKey, object[] args, IEnumerable<float3> positions, string fallbackKey = "Placemaker.Issue.BuildFailed")
+        public void Failed(string messageKey, object[] args, IEnumerable<float3> positions, string fallbackKey = "Citymaker.Issue.BuildFailed")
         {
             _errors.Clear();
             if (positions != null) _errors.AddRange(positions);

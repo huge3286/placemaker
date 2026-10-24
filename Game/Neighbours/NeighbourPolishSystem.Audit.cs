@@ -1,4 +1,4 @@
-// Placemaker neighbourhood polish — what an outgrown building really has (GPL-3.0).
+// Citymaker neighbourhood polish — what an outgrown building really has (GPL-3.0).
 //
 // For the game runner (lab ops "outgrowAudit" and "outgrowRepaint"): per outgrown building, whether a plan ever wrote its
 // garden, how much land past its lot the garden has, and the pieces it owns. "Outgrown but empty" (the lens shows it
@@ -9,11 +9,11 @@ using System;
 using System.Collections.Generic;
 using Game.Common;
 using Game.Prefabs;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Neighbours
+namespace Citymaker.Game.Neighbours
 {
     public sealed partial class NeighbourPolishSystem
     {
@@ -51,7 +51,7 @@ namespace Placemaker.Game.Neighbours
                 if (look != null)
                 {
                     var v = look.Values();
-                    a.HardLook = v.TryGetValue("fill", out var fill) && math.round(fill) >= Placemaker.Core.Neighbours.PolishLooks.FillCarPark;
+                    a.HardLook = v.TryGetValue("fill", out var fill) && math.round(fill) >= Citymaker.Core.Neighbours.PolishLooks.FillCarPark;
                 }
             }
             if (EntityManager.HasComponent<BuildingData>(prefab))
@@ -95,7 +95,7 @@ namespace Placemaker.Game.Neighbours
         {
             if (asked) TotalEmptiedAsked++; else TotalEmptiedNeighbour++;
             if (s_emptiedLogged++ >= 40) return;
-            Mod.Log.Info($"Placemaker neighbourhood polish: {id} ({zone}) loses all its {had} pieces: {(asked ? "asked" : "a neighbour re-planned")}, "
+            Mod.Log.Info($"Citymaker neighbourhood polish: {id} ({zone}) loses all its {had} pieces: {(asked ? "asked" : "a neighbour re-planned")}, "
                 + $"{(inPlots ? "planned (a plot)" : "not stitched in this pass (no plot)")}");
         }
     }

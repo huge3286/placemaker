@@ -3,11 +3,11 @@
 // trail at the highest point, wildlife spawners and painted forest floor. No lamps, few benches.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Park;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Park;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Leisure
+namespace Citymaker.Core.Layers.Leisure
 {
     [AreaGenerator(54, Group = "nature")]
     public sealed class NatureReserveLayer : LeisureLayer

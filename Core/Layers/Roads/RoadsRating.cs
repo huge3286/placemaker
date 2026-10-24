@@ -1,4 +1,4 @@
-// Placemaker roads layer — rates a finished road plan the way a road designer would, as numbers the planner can
+// Citymaker roads layer — rates a finished road plan the way a road designer would, as numbers the planner can
 // compare and a person can read. Six parts, each 0–100, and a total:
 //
 //   Grades     how steep the roads are: the steepest 16 m window of every piece, the share of road over the design grade.
@@ -12,16 +12,16 @@
 //              crowding alongside a spine, no small road continued as a bigger one, the junction spacing on big roads.
 //
 // Works on the plan's nets (what the game builds) and the site snapshot only. Marks says where each problem is, for the
-// harness pictures (Tests/Placemaker.RoadLab) and the tests.
+// harness pictures (Tests/Citymaker.RoadLab) and the tests.
 
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads
+namespace Citymaker.Core.Layers.Roads
 {
     public sealed class RoadsRating
     {

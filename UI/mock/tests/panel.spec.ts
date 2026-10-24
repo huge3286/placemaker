@@ -11,14 +11,14 @@ const UI = path.join(__dirname, "..", "..");
 async function iconButtonsHaveIcons(page: Page) {
     const find = () => page.evaluate(() => {
         const out: string[] = [];
-        document.querySelectorAll('[data-testid="placemaker-wrap"] [data-icon-button="true"]').forEach((b) => {
+        document.querySelectorAll('[data-testid="citymaker-wrap"] [data-icon-button="true"]').forEach((b) => {
             const img = b.querySelector("img") as HTMLImageElement | null;
             if (!img || !img.getAttribute("src") || !img.complete || img.naturalWidth === 0) out.push((b.getAttribute("data-testid") || b.className) + " → " + (img?.getAttribute("src") ?? "no <img>"));
         });
         return out;
     });
     await expect.poll(find, { timeout: 4000 }).toEqual([]);
-    const count = await page.locator('[data-testid="placemaker-wrap"] [data-icon-button="true"]').count();
+    const count = await page.locator('[data-testid="citymaker-wrap"] [data-icon-button="true"]').count();
     expect(count).toBeGreaterThan(2);
 }
 
@@ -26,7 +26,7 @@ async function iconButtonsHaveIcons(page: Page) {
 async function allImagesLoaded(page: Page) {
     await page.waitForTimeout(150);
     const bad = await page.evaluate(() =>
-        Array.from(document.querySelectorAll('[data-testid="placemaker-wrap"] img'))
+        Array.from(document.querySelectorAll('[data-testid="citymaker-wrap"] img'))
             .filter((i) => !(i as HTMLImageElement).complete || (i as HTMLImageElement).naturalWidth === 0)
             .map((i) => i.getAttribute("src")),
     );
@@ -35,7 +35,7 @@ async function allImagesLoaded(page: Page) {
 
 test("docked right, tall, near-opaque; header drag moves it, position is remembered, double-click re-docks", async ({ page }) => {
     await open(page);
-    const wrap = page.getByTestId("placemaker-wrap");
+    const wrap = page.getByTestId("citymaker-wrap");
     const vp = page.viewportSize()!;
     let b = (await wrap.boundingBox())!;
     expect(vp.width - (b.x + b.width)).toBeLessThan(20); // right edge
@@ -54,7 +54,7 @@ test("docked right, tall, near-opaque; header drag moves it, position is remembe
             const p = m[1].split(",").map((x) => parseFloat(x));
             return p.length === 4 ? p[3] : 1;
         };
-        const panel = document.querySelector('[data-testid="placemaker-panel"]')!;
+        const panel = document.querySelector('[data-testid="citymaker-panel"]')!;
         const tint = panel.firstElementChild!;
         return 1 - (1 - a(panel)) * (1 - a(tint));
     });
@@ -75,7 +75,7 @@ test("docked right, tall, near-opaque; header drag moves it, position is remembe
 
     // remembered across reloads
     await page.reload();
-    await expect(page.getByTestId("placemaker-panel")).toBeVisible();
+    await expect(page.getByTestId("citymaker-panel")).toBeVisible();
     const b2 = (await wrap.boundingBox())!;
     expect(Math.abs(b2.x - b.x)).toBeLessThan(4);
     expect(Math.abs(b2.y - b.y)).toBeLessThan(4);
@@ -124,17 +124,17 @@ test("every icon button shows an icon, in every stage; icon files are namespaced
     await allImagesLoaded(page);
 
     // the icons are plain <img> of namespaced, baked-colour SVGs (no CSS masks)
-    const srcs = await page.evaluate(() => Array.from(document.querySelectorAll('[data-testid="placemaker-wrap"] img')).map((i) => i.getAttribute("src") || ""));
+    const srcs = await page.evaluate(() => Array.from(document.querySelectorAll('[data-testid="citymaker-wrap"] img')).map((i) => i.getAttribute("src") || ""));
     const ours = srcs.filter((x) => !x.startsWith("Media/"));
     expect(ours.length).toBeGreaterThan(10);
-    for (const src of ours) expect(src).toMatch(/images\/placemaker\/[A-Za-z]+-(light|dark|dim|accent|warn|danger|ok)\.[0-9a-f]{6}\.svg$/);
+    for (const src of ours) expect(src).toMatch(/images\/citymaker\/[A-Za-z]+-(light|dark|dim|accent|warn|danger|ok)\.[0-9a-f]{6}\.svg$/);
 
     // game bundle: namespaced output, never the invalid lower-case GameUI host
     const build = path.join(UI, "build");
-    if (fs.existsSync(path.join(build, "Placemaker.mjs"))) {
-        const js = fs.readFileSync(path.join(build, "Placemaker.mjs"), "utf8");
+    if (fs.existsSync(path.join(build, "Citymaker.mjs"))) {
+        const js = fs.readFileSync(path.join(build, "Citymaker.mjs"), "utf8");
         expect(js.toLowerCase()).not.toContain("coui://gameui");
-        expect(fs.readdirSync(path.join(build, "images")).filter((n) => n !== "placemaker")).toEqual([]);
+        expect(fs.readdirSync(path.join(build, "images")).filter((n) => n !== "citymaker")).toEqual([]);
     }
 });
 

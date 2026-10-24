@@ -39,7 +39,7 @@
     "webpack": "5.97.1",
     "webpack-cli": "4.10.0"
   },
-  "name": "placemaker-ui",
+  "name": "citymaker-ui",
   "private": true,
   "version": "0.1.0"
 }

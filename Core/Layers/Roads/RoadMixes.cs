@@ -1,4 +1,4 @@
-// Placemaker roads — "road mixes": named combinations of which road goes in each role (s16, lead request).
+// Citymaker roads — "road mixes": named combinations of which road goes in each role (s16, lead request).
 // The mix is one choice control (RoadsIds.RoadMix) that WRITES the per-role road-type controls and the
 // street/avenue upgrade toggles; its own value is DERIVED from them (any other combination = "custom"),
 // so old saves, presets and manual picks always show the right mix. The planner never reads the mix.
@@ -7,7 +7,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Placemaker.Core.Layers.Roads
+namespace Citymaker.Core.Layers.Roads
 {
     public sealed class RoadMix
     {

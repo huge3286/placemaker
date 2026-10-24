@@ -6,7 +6,7 @@
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Common
+namespace Citymaker.Core.Layers.Common
 {
     public static class Fences
     {
@@ -84,7 +84,7 @@ namespace Placemaker.Core.Layers.Common
         /// overlapping props). Each piece sits centred in an equal cell of length/count ≥ piece + gap, so
         /// small, even gaps replace the overlaps. Used by the build for prop fences and hedge pieces.
         /// </summary>
-        public static int SpacedPieceCount(float length, float piece, float gap = Placemaker.Core.Build.Declutter.Gap)
+        public static int SpacedPieceCount(float length, float piece, float gap = Citymaker.Core.Build.Declutter.Gap)
         {
             if (!(length > 0f) || !(piece > 0f)) return 0;
             return math.max(1, (int)math.floor(length / (piece + gap) + 1e-4f));

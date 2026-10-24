@@ -1,6 +1,6 @@
 {
-    "id": "Placemaker",
-    "author": "Placemaker contributors",
-    "version": "0.1.0",
+    "id": "citymaker",
+    "author": "citymaker, based on Placemaker by jackwrichards and contributors",
+    "version": "0.2.0-baseline.1",
     "dependencies": []
 }

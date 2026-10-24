@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "constructionSite",
-  "nameKey": "Placemaker.Recipe.ConstructionSite",
-  "descriptionKey": "Placemaker.Recipe.ConstructionSite.Description",
+  "nameKey": "Citymaker.Recipe.ConstructionSite",
+  "descriptionKey": "Citymaker.Recipe.ConstructionSite.Description",
   "icon": "Media/Game/Icons/Build.svg",
   "root": {
     "layer": "constructionSite",

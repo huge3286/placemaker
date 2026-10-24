@@ -19,12 +19,12 @@
 // blended back to the original ground at the outline.
 
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Leisure;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Leisure;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Scrapyard
+namespace Citymaker.Core.Layers.Types.Scrapyard
 {
     [AreaGenerator(310, Group = "industrial")]
     public sealed class ScrapyardLayer : LeisureLayer
@@ -34,7 +34,7 @@ namespace Placemaker.Core.Layers.Types.Scrapyard
 
         public const string LayerId = "scrapyard";
         public static readonly string[] Styles = { "scrapyard", "salvage", "containers", "tires", "cars" };
-        public const string NoCoreKey = "Placemaker.Scrapyard.Issue.NoCore";
+        public const string NoCoreKey = "Citymaker.Scrapyard.Issue.NoCore";
 
         protected override string Area => "Scrapyard";
         public override string Id => LayerId;
@@ -46,7 +46,7 @@ namespace Placemaker.Core.Layers.Types.Scrapyard
         {
             Feature(JunkPilesAddOn.LayerId), Feature("skipRow"),
             Feature("decals", ("theme", "dirt"), ("density", 1.5), ("clustering", 70.0)),
-            Feature("rocks", ("size", "small"), ("clusters", 3.0)), YardKit.Labelled(Feature("bigtrees", ("density", 1.0)), "Placemaker.Scrapyard.Feature.bigtrees"),
+            Feature("rocks", ("size", "small"), ("clusters", 3.0)), YardKit.Labelled(Feature("bigtrees", ("density", 1.0)), "Citymaker.Scrapyard.Feature.bigtrees"),
             StreetShopsFeature(Area),
         };
 
@@ -192,14 +192,14 @@ namespace Placemaker.Core.Layers.Types.Scrapyard
             YardKit.Settle(ctx, terrain);
 
             CommonStats(ctx);
-            ctx.Stat("Placemaker.Stat.Heaps", y.Heaps, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Wrecks", y.Wrecks, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Containers", y.Containers, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Machines", y.Machines, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Bays", y.Bays, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.JunkItems", y.Junk, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Heaps", y.Heaps, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Wrecks", y.Wrecks, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Containers", y.Containers, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Machines", y.Machines, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Bays", y.Bays, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.JunkItems", y.Junk, Keys.UnitCount);
             ctx.Plan.Facts["cabins"] = cabins;
-            if (terrain.Cells > 0) ctx.Stat("Placemaker.Stat.TerrainChange", System.Math.Round(math.max(terrain.MaxOffset, -terrain.MinOffset), 1), Keys.UnitM);
+            if (terrain.Cells > 0) ctx.Stat("Citymaker.Stat.TerrainChange", System.Math.Round(math.max(terrain.MaxOffset, -terrain.MinOffset), 1), Keys.UnitM);
         }
 
         // ───────────── ground & circulation ─────────────

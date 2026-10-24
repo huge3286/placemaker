@@ -26,7 +26,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     internal sealed class SuiteLook
     {
@@ -215,7 +215,7 @@ namespace Placemaker.Game.Suite
 
         private void Volume()
         {
-            _volume = VolumeHelper.CreateVolume("PlacemakerSuiteLook", 1500);
+            _volume = VolumeHelper.CreateVolume("CitymakerSuiteLook", 1500);
             var profile = _volume.profile;
             _exposure = profile.Add<Exposure>();
             _exposure.active = true;
@@ -231,7 +231,7 @@ namespace Placemaker.Game.Suite
             wind.windGlobalStrengthScale.value = 0f;
             wind.windGlobalStrengthScale2.overrideState = true;
             wind.windGlobalStrengthScale2.value = 0f;
-            Record["volume"] = "PlacemakerSuiteLook priority 1500: exposure fixed, indirect diffuse x1.3, wind 0";
+            Record["volume"] = "CitymakerSuiteLook priority 1500: exposure fixed, indirect diffuse x1.3, wind 0";
         }
 
         public void SetEv(float ev)

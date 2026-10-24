@@ -16,10 +16,10 @@
 // height, clamped by slope towards the outline) but on elliptical radii.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns.Monuments
+namespace Citymaker.Core.Layers.AddOns.Monuments
 {
     [AreaGenerator(176)]
     public sealed class TerraceGardenAddOn : MonumentAddOn
@@ -312,7 +312,7 @@ namespace Placemaker.Core.Layers.AddOns.Monuments
             ctx.Plan.Facts["flowerbeds"] = beds;
             ctx.Stat(Keys.StatBenches, benches + seats, Keys.UnitCount);
             ctx.Stat(Keys.StatTrees, trees, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Seats", seats, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Seats", seats, Keys.UnitCount);
         }
 
         /// <summary>Points every <paramref name="spacing"/> metres (approximately) round the ellipse at normalised radius rho.</summary>

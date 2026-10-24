@@ -11,14 +11,14 @@
 // sorted piles, intact site fence), Squatter camp (shacks round a fire), Fenced wasteland (graded
 // gravel behind an intact chain-link fence, waiting for a developer).
 
-using Placemaker.Core.Layers.Types.Scrapyard;
+using Citymaker.Core.Layers.Types.Scrapyard;
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Leisure;
-using Placemaker.Core.Layers.Types.UrbanRuins;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Leisure;
+using Citymaker.Core.Layers.Types.UrbanRuins;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Ruins
+namespace Citymaker.Core.Layers.Types.Ruins
 {
     [AreaGenerator(310, Group = "industrial")]
     public sealed class AbandonedLotLayer : LeisureLayer
@@ -42,7 +42,7 @@ namespace Placemaker.Core.Layers.Types.Ruins
         {
             Feature(DebrisAddOn.LayerId, ("mix", "junk"), ("where", "edges")),
             DirtJumps.InPlace(Feature(DirtJumpsAddOn.LayerId, ("lines", 1.0), ("height", 1.25))),
-            DecayKit.Relabel(Feature("bigtrees", ("density", 1.5)), "Placemaker.Abandoned.Feature.bigtrees"),
+            DecayKit.Relabel(Feature("bigtrees", ("density", 1.5)), "Citymaker.Abandoned.Feature.bigtrees"),
             Feature("rocks", ("size", "small"), ("clusters", 3.0)),
             Feature("decals", ("theme", "dirt"), ("ground", "lawn"), ("density", 1.5)),
             Feature("terrain", ("shape", "mounds"), ("height", 1.0)),
@@ -277,7 +277,7 @@ namespace Placemaker.Core.Layers.Types.Ruins
                     if (ctx.B("desirePaths") && gates.Count > 0)
                         DecayKit.DesirePath(ctx, occ, region, gates[0].Position, camp, paintLayer, 0xD352u);
                 }
-                else ctx.Issue(IssueSeverity.Info, "Placemaker.Abandoned.Issue.NoCampSpot");
+                else ctx.Issue(IssueSeverity.Info, "Citymaker.Abandoned.Issue.NoCampSpot");
             }
             ctx.Check();
 
@@ -377,11 +377,11 @@ namespace Placemaker.Core.Layers.Types.Ruins
 
             EmitGreenRegions(ctx, occ, 80f);
             CommonStats(ctx);
-            ctx.Stat("Placemaker.Stat.RubblePiles", rubbleTotal.Piles + rubbleTotal.Chunks, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.JunkItems", junkItems, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Foundations", slabs.Count, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.RubblePiles", rubbleTotal.Piles + rubbleTotal.Chunks, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.JunkItems", junkItems, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Foundations", slabs.Count, Keys.UnitCount);
             ctx.Stat(Keys.StatBushes, weeds + crackWeeds, Keys.UnitCount);
-            if (hasCamp) ctx.Stat("Placemaker.Stat.Shelters", sheltersPlaced, Keys.UnitCount);
+            if (hasCamp) ctx.Stat("Citymaker.Stat.Shelters", sheltersPlaced, Keys.UnitCount);
             ctx.Plan.Facts["foundations"] = slabs.Count;
             ctx.Plan.Facts["walls"] = walls;
             ctx.Plan.Facts["rubblePiles"] = rubbleTotal.Piles;
@@ -393,7 +393,7 @@ namespace Placemaker.Core.Layers.Types.Ruins
             ctx.Plan.Facts["graffiti"] = graffitiCount;
             ctx.Plan.Facts["shelters"] = sheltersPlaced;
             ctx.Plan.Facts["moundCells"] = moundCells;
-            if (wantedSlabs > slabs.Count) ctx.Issue(IssueSeverity.Info, "Placemaker.Abandoned.Issue.FewerFoundations", slabs.Count, wantedSlabs);
+            if (wantedSlabs > slabs.Count) ctx.Issue(IssueSeverity.Info, "Citymaker.Abandoned.Issue.FewerFoundations", slabs.Count, wantedSlabs);
         }
 
         private static OrientedRect Grow(OrientedRect r, float d) =>

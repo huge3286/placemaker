@@ -6,7 +6,7 @@
 
 using System;
 
-namespace Placemaker.Core.Layers.Parking
+namespace Citymaker.Core.Layers.Parking
 {
     internal static class ParkingAssets
     {
@@ -28,7 +28,7 @@ namespace Placemaker.Core.Layers.Parking
         /// (built-in, bus TransportStopData with passengers, RouteConnection Road, not "Integrated", prefer a "Sign").
         /// Unresolved it falls back to an invisible marker object (ObjectRole.Marker).
         /// </summary>
-        public const string BusStop = "Placemaker:BusStop";
+        public const string BusStop = "Citymaker:BusStop";
         public const string PedestrianPath = "Invisible Pedestrian Path";
 
         public const string Decal = "ParkingLotDecal01";

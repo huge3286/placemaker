@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "waterfront",
-  "nameKey": "Placemaker.Recipe.Waterfront",
-  "descriptionKey": "Placemaker.Recipe.Waterfront.Description",
+  "nameKey": "Citymaker.Recipe.Waterfront",
+  "descriptionKey": "Citymaker.Recipe.Waterfront.Description",
   "icon": "Media/Game/Icons/LeisurePier01Medium.svg",
   "root": {
     "layer": "waterfront",

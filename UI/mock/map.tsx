@@ -305,7 +305,7 @@ export function MapView({ backend }: { backend: MockBackend }) {
                 return;
             }
             if (!right && vi >= 0) {
-                b.beginGesture({ key: "Placemaker.UI.History.MoveCorner" });
+                b.beginGesture({ key: "Citymaker.UI.History.MoveCorner" });
                 drag.current = { kind: "corner", index: vi };
                 return;
             }
@@ -336,14 +336,14 @@ export function MapView({ backend }: { backend: MockBackend }) {
                 return;
             }
             case "paint":
-                b.beginGesture({ key: right ? "Placemaker.UI.History.Erase" : "Placemaker.UI.History.Paint" });
+                b.beginGesture({ key: right ? "Citymaker.UI.History.Erase" : "Citymaker.UI.History.Paint" });
                 drag.current = { kind: right ? "erase" : "paint" };
                 b.paintAt(p, right);
                 return;
             case "blockPaint": {
                 // Mock: no road graph, so no fence; Shift+drag erases like the game.
                 const erase = right || e.shiftKey;
-                b.beginGesture({ key: erase ? "Placemaker.UI.History.Erase" : "Placemaker.UI.History.Paint" });
+                b.beginGesture({ key: erase ? "Citymaker.UI.History.Erase" : "Citymaker.UI.History.Paint" });
                 drag.current = { kind: erase ? "erase" : "paint" };
                 b.paintAt(p, erase);
                 return;

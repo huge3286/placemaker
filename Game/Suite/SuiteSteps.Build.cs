@@ -1,5 +1,5 @@
 // Game runner: build, select, delete (panel, bulldozer, info panel), grow. Each step does what a person does and waits
-// until the game is done with it; what the build contains is in Placemaker's log and its build audit.
+// until the game is done with it; what the build contains is in Citymaker's log and its build audit.
 
 using System;
 using System.Collections;
@@ -8,16 +8,16 @@ using System.Linq;
 using Game.Common;
 using Game.Tools;
 using Newtonsoft.Json.Linq;
-using Placemaker.Core;
-using Placemaker.Core.Tool;
-using Placemaker.Game.Groups;
-using Placemaker.Game.Tool;
+using Citymaker.Core;
+using Citymaker.Core.Tool;
+using Citymaker.Game.Groups;
+using Citymaker.Game.Tool;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     public sealed partial class SuiteRunner
     {
@@ -54,7 +54,7 @@ namespace Placemaker.Game.Suite
                 rec["ghostPendingAtPress"] = _tool.GhostPending;
             }
             var primary = _tool.SuitePrimaryInfo();
-            if (!primary.Enabled && primary.Reason == "Placemaker.Reason.AcknowledgePermanent")
+            if (!primary.Enabled && primary.Reason == "Citymaker.Reason.AcknowledgePermanent")
             {
                 yield return UiAct(st, rec, "OK, permanent", "ack-permanent", "acknowledgePermanent", new object[] { true }, () => _tool.PermanentAcknowledged, () => _tool.AcknowledgePermanent(true));
                 primary = _tool.SuitePrimaryInfo();
@@ -73,8 +73,8 @@ namespace Placemaker.Game.Suite
             // what the build leaves: "fresh" (default, the area cleared as every scenario expects), "keep" (the area kept,
             // back to Design: the player's Build & keep area) or "close" (Build & close)
             string after = ((string)step["after"] ?? "fresh").ToLowerInvariant();
-            _tool.SuiteNextAfterBuild = after == "keep" ? PlacemakerToolSystem.AfterBuild.KeepArea
-                : after == "close" ? PlacemakerToolSystem.AfterBuild.Close : PlacemakerToolSystem.AfterBuild.Fresh;
+            _tool.SuiteNextAfterBuild = after == "keep" ? CitymakerToolSystem.AfterBuild.KeepArea
+                : after == "close" ? CitymakerToolSystem.AfterBuild.Close : CitymakerToolSystem.AfterBuild.Fresh;
             string via = ((string)step["via"] ?? "panel").ToLowerInvariant();
             if (via == "enter") { yield return KeyPress("enter"); rec["ui"] = new JArray(new JObject { ["action"] = "Build", ["path"] = "key Enter" }); }
             else yield return UiPrimary(st, rec, "Build");
@@ -205,8 +205,8 @@ namespace Placemaker.Game.Suite
             Entity victim = Entity.Null;
             foreach (var m in members)
             {
-                if (!em.Exists(m) || em.HasComponent<Deleted>(m) || !em.HasComponent<PlacemakerMember>(m)) continue;
-                var role = em.GetComponentData<PlacemakerMember>(m).Role;
+                if (!em.Exists(m) || em.HasComponent<Deleted>(m) || !em.HasComponent<CitymakerMember>(m)) continue;
+                var role = em.GetComponentData<CitymakerMember>(m).Role;
                 if (target == "owner" && role == MemberRole.OwnerArea) { victim = m; break; }
                 if (target == "part" && role == MemberRole.Generic && em.HasComponent<global::Game.Objects.Object>(m)) { victim = m; break; }
             }
@@ -236,7 +236,7 @@ namespace Placemaker.Game.Suite
             yield return OpenTool();
         }
 
-        /// <summary>The vanilla selected-info panel's Edit / Remove, with the Placemaker tool closed (how a person finds a build later).</summary>
+        /// <summary>The vanilla selected-info panel's Edit / Remove, with the Citymaker tool closed (how a person finds a build later).</summary>
         private IEnumerator StepInfo(ScenarioState st, JObject step, JObject rec, bool edit)
         {
             if (!st.Built || st.Group == 0) { rec["error"] = "nothing built"; yield break; }
@@ -244,7 +244,7 @@ namespace Placemaker.Game.Suite
             yield return CloseTool();
             var em = _world.EntityManager;
             var members = _lookup.MemberSet(g);
-            Entity owner = members.FirstOrDefault(m => em.Exists(m) && em.HasComponent<PlacemakerMember>(m) && em.GetComponentData<PlacemakerMember>(m).Role == MemberRole.OwnerArea);
+            Entity owner = members.FirstOrDefault(m => em.Exists(m) && em.HasComponent<CitymakerMember>(m) && em.GetComponentData<CitymakerMember>(m).Role == MemberRole.OwnerArea);
             if (owner == Entity.Null) owner = members.FirstOrDefault(m => em.Exists(m) && !em.HasComponent<Deleted>(m));
             var sel = _world.GetExistingSystemManaged<global::Game.UI.InGame.SelectedInfoUISystem>();
             try { sel?.SetSelection(owner); } catch (Exception e) { rec["selectError"] = e.Message; }
@@ -291,7 +291,7 @@ namespace Placemaker.Game.Suite
 
         /// <summary>
         /// (shops) Which road every grown building inside the build's outline faces (its Building.m_RoadEdge): one of the
-        /// build's own lanes, or a city street. Logged to Placemaker.log as "grow census" so a run says, without pictures,
+        /// build's own lanes, or a city street. Logged to Citymaker.log as "grow census" so a run says, without pictures,
         /// whether the shops face the site's lanes.
         /// </summary>
         private JObject GrowCensus(ScenarioState st)
@@ -324,7 +324,7 @@ namespace Placemaker.Game.Suite
                 }
             }
             string Fmt(Dictionary<string, int> d) => string.Join(", ", d.Select(kv => $"{kv.Value} {kv.Key}"));
-            Mod.Log.Info($"Placemaker grow census ({st.S.Id}, group {st.Group}): {ours + city + none} buildings in the outline; {ours} face the build's own lanes ({Fmt(ourRoads)}), {city} face city streets ({Fmt(cityRoads)}){(cityAt.Count > 0 ? " at " + string.Join(" ", cityAt) : "")}{(none > 0 ? $", {none} with no road" : "")}.");
+            Mod.Log.Info($"Citymaker grow census ({st.S.Id}, group {st.Group}): {ours + city + none} buildings in the outline; {ours} face the build's own lanes ({Fmt(ourRoads)}), {city} face city streets ({Fmt(cityRoads)}){(cityAt.Count > 0 ? " at " + string.Join(" ", cityAt) : "")}{(none > 0 ? $", {none} with no road" : "")}.");
             // (rf-shops3) Trees of the build after the growth: the shops types plant trees on their own plots; a building that grows
             // over them should hide (Overridden) or remove what is in its way. Measurement only.
             int trees = 0, hidden = 0, underBuildings = 0;
@@ -336,18 +336,18 @@ namespace Placemaker.Game.Suite
                     var p = em.GetComponentData<global::Game.Objects.Transform>(b).m_Position.xz;
                     if (Inside(p)) lots.Add(p);
                 }
-            using (var q = em.CreateEntityQuery(ComponentType.ReadOnly<PlacemakerMember>(), ComponentType.ReadOnly<global::Game.Objects.Tree>(), ComponentType.ReadOnly<global::Game.Objects.Transform>(), ComponentType.Exclude<Deleted>(), ComponentType.Exclude<Temp>()))
+            using (var q = em.CreateEntityQuery(ComponentType.ReadOnly<CitymakerMember>(), ComponentType.ReadOnly<global::Game.Objects.Tree>(), ComponentType.ReadOnly<global::Game.Objects.Transform>(), ComponentType.Exclude<Deleted>(), ComponentType.Exclude<Temp>()))
             using (var ents = q.ToEntityArray(Allocator.Temp))
                 foreach (var t in ents)
                 {
-                    if (em.GetComponentData<PlacemakerMember>(t).GroupId != st.Group) continue;
+                    if (em.GetComponentData<CitymakerMember>(t).GroupId != st.Group) continue;
                     trees++;
                     bool hid = em.HasComponent<global::Game.Common.Overridden>(t);
                     if (hid) hidden++;
                     var p = em.GetComponentData<global::Game.Objects.Transform>(t).m_Position.xz;
                     if (!hid) foreach (var c in lots) if (math.distance(c, p) < 7f) { underBuildings++; break; }
                 }
-            Mod.Log.Info($"Placemaker grow census trees ({st.S.Id}, group {st.Group}): {trees} trees of the build after the growth, {hidden} hidden by the game (Overridden: something over them), {underBuildings} still shown within 7 m of a grown building's centre.");
+            Mod.Log.Info($"Citymaker grow census trees ({st.S.Id}, group {st.Group}): {trees} trees of the build after the growth, {hidden} hidden by the game (Overridden: something over them), {underBuildings} still shown within 7 m of a grown building's centre.");
             return new JObject { ["buildings"] = ours + city + none, ["ourLanes"] = ours, ["cityStreets"] = city, ["noRoad"] = none, ["cityRoads"] = Fmt(cityRoads), ["ourRoads"] = Fmt(ourRoads), ["trees"] = trees, ["treesHidden"] = hidden, ["treesUnderBuildings"] = underBuildings };
         }
     }

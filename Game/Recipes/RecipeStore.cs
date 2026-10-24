@@ -1,15 +1,15 @@
-// Placemaker — the "Make" row: shipped recipes (Recipes/*.json in the mod folder), player recipes
-// (ModsData/Placemaker/recipes/*.json) and a synthesized one-layer recipe for every registered
+// Citymaker — the "Make" row: shipped recipes (Recipes/*.json in the mod folder), player recipes
+// (ModsData/Citymaker/recipes/*.json) and a synthesized one-layer recipe for every registered
 // Fill layer that has no shipped file, so a new layer shows up without anyone writing JSON.
 
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Placemaker.Core;
-using Placemaker.Core.Tool;
-using Placemaker.Game.Settings;
+using Citymaker.Core;
+using Citymaker.Core.Tool;
+using Citymaker.Game.Settings;
 
-namespace Placemaker.Game.Recipes
+namespace Citymaker.Game.Recipes
 {
     public sealed class RecipeStore
     {
@@ -67,7 +67,7 @@ namespace Placemaker.Game.Recipes
                     foreach (var p in paths) files.Add(new KeyValuePair<string, string>(Path.GetFileName(p), File.ReadAllText(p)));
                 }
             }
-            catch (Exception e) { Mod.Log.Warn("Placemaker: cannot read the shelf in " + dir + ": " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker: cannot read the shelf in " + dir + ": " + e.Message); }
             var shelf = Shelf.Parse(files);
             Shelf.Current = shelf;
             s_shelfLoaded = true;
@@ -79,8 +79,8 @@ namespace Placemaker.Game.Recipes
                 foreach (var kv in c.HiddenStyles) styles += kv.Value.Count;
                 shown.Add(c.Hidden ? c.Id + " (hidden)" : c.Id);
             }
-            Mod.Log.Info($"Placemaker shelf: {shelf.Categories.Count} categories from {files.Count} file(s) [{string.Join(", ", shown)}], {types} hidden type(s), {styles} hidden style(s).");
-            foreach (var w in shelf.Warnings) Mod.Log.Warn("Placemaker shelf: " + w);
+            Mod.Log.Info($"Citymaker shelf: {shelf.Categories.Count} categories from {files.Count} file(s) [{string.Join(", ", shown)}], {types} hidden type(s), {styles} hidden style(s).");
+            foreach (var w in shelf.Warnings) Mod.Log.Warn("Citymaker shelf: " + w);
             return shelf;
         }
 
@@ -136,7 +136,7 @@ namespace Placemaker.Game.Recipes
                     seen.Add(r.Id);
                     _entries.Add(new Entry { Recipe = r, Order = LayerOrder(g.Id) });
                 }
-                catch (Exception ex) { Mod.Log.Warn("Placemaker: layer " + g.Id + " has no usable defaults: " + ex.Message); }
+                catch (Exception ex) { Mod.Log.Warn("Citymaker: layer " + g.Id + " has no usable defaults: " + ex.Message); }
             }
 
             foreach (var e in LoadFolder(ModPaths.PlayerRecipeFolder, true))
@@ -157,7 +157,7 @@ namespace Placemaker.Game.Recipes
             if (string.IsNullOrEmpty(folder) || !Directory.Exists(folder)) return list;
             string[] files;
             try { files = Directory.GetFiles(folder, "*.json"); }
-            catch (Exception e) { Mod.Log.Warn("Placemaker: cannot list " + folder + ": " + e.Message); return list; }
+            catch (Exception e) { Mod.Log.Warn("Citymaker: cannot list " + folder + ": " + e.Message); return list; }
             Array.Sort(files, StringComparer.OrdinalIgnoreCase);
             var editor = _editor();
             foreach (var path in files)
@@ -169,12 +169,12 @@ namespace Placemaker.Game.Recipes
                     if (file.FormatVersion > RecipeJson.CurrentFormatVersion)
                     {
                         // A newer format may mean something different: skip rather than build the wrong thing.
-                        Mod.Log.Warn("Placemaker: skipping " + Path.GetFileName(path) + " — format " + file.FormatVersion + " is newer than this version understands");
+                        Mod.Log.Warn("Citymaker: skipping " + Path.GetFileName(path) + " — format " + file.FormatVersion + " is newer than this version understands");
                         continue;
                     }
                     if (string.IsNullOrEmpty(r.Id)) r.Id = Path.GetFileNameWithoutExtension(path);
                     if (GeneratorRegistry.Get(r.Root.Layer) == null)
-                        Mod.Log.Info("Placemaker: recipe " + r.Id + " uses unknown layer '" + r.Root.Layer + "' (mod missing?) — listed, will report an issue");
+                        Mod.Log.Info("Citymaker: recipe " + r.Id + " uses unknown layer '" + r.Root.Layer + "' (mod missing?) — listed, will report an issue");
                     if (custom && string.IsNullOrEmpty(r.Name) && string.IsNullOrEmpty(r.NameKey)) r.Name = r.Id;
                     // Files hold overrides only (player recipes hold full values; overlaying is harmless).
                     editor.ApplyDefaults(r);
@@ -184,7 +184,7 @@ namespace Placemaker.Game.Recipes
                 }
                 catch (Exception e)
                 {
-                    Mod.Log.Warn("Placemaker: skipping recipe " + Path.GetFileName(path) + ": " + e.Message);
+                    Mod.Log.Warn("Citymaker: skipping recipe " + Path.GetFileName(path) + ": " + e.Message);
                 }
             }
             return list;
@@ -217,7 +217,7 @@ namespace Placemaker.Game.Recipes
             }
             catch (Exception e)
             {
-                Mod.Log.Warn("Placemaker: could not save recipe: " + e.Message);
+                Mod.Log.Warn("Citymaker: could not save recipe: " + e.Message);
                 return null;
             }
             Reload();
@@ -238,7 +238,7 @@ namespace Placemaker.Game.Recipes
             }
             catch (Exception ex)
             {
-                Mod.Log.Warn("Placemaker: could not delete recipe " + id + ": " + ex.Message);
+                Mod.Log.Warn("Citymaker: could not delete recipe " + id + ": " + ex.Message);
                 return false;
             }
             Reload();

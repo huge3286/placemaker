@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "zenGarden",
-  "nameKey": "Placemaker.Recipe.ZenGarden",
-  "descriptionKey": "Placemaker.Recipe.ZenGarden.Description",
+  "nameKey": "Citymaker.Recipe.ZenGarden",
+  "descriptionKey": "Citymaker.Recipe.ZenGarden.Description",
   "icon": "Media/Game/Icons/PropsStone.svg",
   "root": {
     "layer": "zenGarden",

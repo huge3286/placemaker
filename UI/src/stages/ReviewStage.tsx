@@ -72,16 +72,16 @@ type Bucket = { id: string; label: string; color: string; cost: number };
 
 /** (s45) Friendly cost categories from the DLL (summary.costBuckets), with their legend names and colours. */
 const BUCKET_TEXT: Record<string, { label: [string, string]; color: string }> = {
-    planting: { label: ["Placemaker.UI.Bucket.Planting", "Planting"], color: "#6cc56a" },
-    paths: { label: ["Placemaker.UI.Bucket.Paths", "Paths"], color: "#f5c542" },
-    roads: { label: ["Placemaker.UI.Bucket.Roads", "Roads"], color: "#8fe3ff" },
-    parking: { label: ["Placemaker.UI.Bucket.Parking", "Parking"], color: "#5f9dff" },
-    shops: { label: ["Placemaker.UI.Bucket.Shops", "Shops"], color: "#ff7c9c" },
-    water: { label: ["Placemaker.UI.Bucket.Water", "Water"], color: "#4fb8e8" },
-    play: { label: ["Placemaker.UI.Bucket.Play", "Play"], color: "#ff8f5a" },
-    ground: { label: ["Placemaker.UI.Bucket.Ground", "Ground"], color: "#c99a6b" },
-    extras: { label: ["Placemaker.UI.Bucket.Extras", "Extras"], color: "#b48cff" },
-    other: { label: ["Placemaker.UI.Bucket.Other", "Other"], color: "#9fb0b9" },
+    planting: { label: ["Citymaker.UI.Bucket.Planting", "Planting"], color: "#6cc56a" },
+    paths: { label: ["Citymaker.UI.Bucket.Paths", "Paths"], color: "#f5c542" },
+    roads: { label: ["Citymaker.UI.Bucket.Roads", "Roads"], color: "#8fe3ff" },
+    parking: { label: ["Citymaker.UI.Bucket.Parking", "Parking"], color: "#5f9dff" },
+    shops: { label: ["Citymaker.UI.Bucket.Shops", "Shops"], color: "#ff7c9c" },
+    water: { label: ["Citymaker.UI.Bucket.Water", "Water"], color: "#4fb8e8" },
+    play: { label: ["Citymaker.UI.Bucket.Play", "Play"], color: "#ff8f5a" },
+    ground: { label: ["Citymaker.UI.Bucket.Ground", "Ground"], color: "#c99a6b" },
+    extras: { label: ["Citymaker.UI.Bucket.Extras", "Extras"], color: "#b48cff" },
+    other: { label: ["Citymaker.UI.Bucket.Other", "Other"], color: "#9fb0b9" },
 };
 
 /** Layer-based fallback for an older DLL (no costBuckets): the type itself, or what kind of extra a layer is. */
@@ -149,11 +149,11 @@ const MoneyCard = ({ catalog, state, summary, pending }: { catalog: Catalog; sta
     return (
         <div className={classNames(s.money, { [s.shimmer]: pending })} data-testid="review-numbers">
             <div className={s.moneyRow}>
-                <div className={s.moneyLabel}>{t("Placemaker.UI.Review.Cost", "Cost")}</div>
+                <div className={s.moneyLabel}>{t("Citymaker.UI.Review.Cost", "Cost")}</div>
                 <div className={classNames(s.moneyValue, { [s.bad]: !summary.canAfford })} data-testid="review-cost">
                     <Money value={summary.cost} />
                 </div>
-                <div className={s.moneyLabel}>{t("Placemaker.UI.Review.Upkeep", "Upkeep")}</div>
+                <div className={s.moneyLabel}>{t("Citymaker.UI.Review.Upkeep", "Upkeep")}</div>
                 <div className={s.moneyValue} data-testid="review-upkeep">
                     <Money value={summary.upkeep} perMonth />
                 </div>
@@ -161,14 +161,14 @@ const MoneyCard = ({ catalog, state, summary, pending }: { catalog: Catalog; sta
                 {!summary.canAfford ? (
                     <div className={s.cantAfford} data-testid="cant-afford">
                         <Icon name="cost" size={11} tint="danger" />
-                        <div className={s.cantText}>{t("Placemaker.UI.Review.CantAffordShort", "Too expensive")}</div>
+                        <div className={s.cantText}>{t("Citymaker.UI.Review.CantAffordShort", "Too expensive")}</div>
                     </div>
                 ) : (
                     <div className={s.area}>{fmtArea(state.area.areaM2)}</div>
                 )}
             </div>
             {total > 0 && list.length ? (
-                <Tip title={t("Placemaker.UI.Review.Breakdown", "Cost breakdown")} description={detail}>
+                <Tip title={t("Citymaker.UI.Review.Breakdown", "Cost breakdown")} description={detail}>
                     <button
                         type="button"
                         className={s.barBtn}
@@ -226,7 +226,7 @@ const ALERTS_SHOWN = 5;
 
 /** The short chip label of a long text: its `.Short` key, else its first clause, cut to whole words (never "…"). */
 export function shortText(t: TFunc, loc: LocText | undefined): string {
-    if (!loc || !loc.key) return t("Placemaker.UI.Review.Issue", "Issue");
+    if (!loc || !loc.key) return t("Citymaker.UI.Review.Issue", "Issue");
     const short = t(loc.key + ".Short", "", loc.args);
     if (short) return short;
     const full = t(loc.key, humanize(loc.key), loc.args);
@@ -292,7 +292,7 @@ const Alerts = ({ summary }: { summary: Summary }) => {
         raw.push({
             kind: paintOnly ? "info" : "warn",
             text: "",
-            full: tl(p) + (paintOnly ? " " + t("Placemaker.UI.Review.PaintOnly", "Ground paint stays when the build is removed.") : ""),
+            full: tl(p) + (paintOnly ? " " + t("Citymaker.UI.Review.PaintOnly", "Ground paint stays when the build is removed.") : ""),
             permanent: true,
             loc: p,
         });
@@ -311,11 +311,11 @@ const Alerts = ({ summary }: { summary: Summary }) => {
             {shown.map((a, n) => {
                 const [icon, tint] = ALERT_ICON[a.kind];
                 const i = a.issue;
-                const action = i?.at ? t("Placemaker.UI.Review.ClickShow", "Click: show on map") : i?.stepPath ? t("Placemaker.UI.Review.ClickEdit", "Click: edit") : undefined;
+                const action = i?.at ? t("Citymaker.UI.Review.ClickShow", "Click: show on map") : i?.stepPath ? t("Citymaker.UI.Review.ClickEdit", "Click: edit") : undefined;
                 // (s61) The setting that made it happen: named with its value, one click to change it.
                 const cause = i?.cause;
                 const causeText = cause ? t(cause.label, humanize(cause.id)) + (cause.value ? " " + cause.value : "") : "";
-                const tipText = cause ? a.full + "\n" + t("Placemaker.UI.Review.CausedBy", "Caused by the setting {0}.", [causeText]) : a.full;
+                const tipText = cause ? a.full + "\n" + t("Citymaker.UI.Review.CausedBy", "Caused by the setting {0}.", [causeText]) : a.full;
                 return (
                     <React.Fragment key={n}>
                     <Tip title={tipText} description={action}>
@@ -338,7 +338,7 @@ const Alerts = ({ summary }: { summary: Summary }) => {
                         </button>
                     </Tip>
                     {cause && i?.stepPath ? (
-                        <Tip title={t("Placemaker.UI.Review.ChangeSetting", "Change setting")} description={causeText}>
+                        <Tip title={t("Citymaker.UI.Review.ChangeSetting", "Change setting")} description={causeText}>
                             <button
                                 type="button"
                                 className={classNames(s.alert, s.alert_info)}
@@ -366,7 +366,7 @@ const Alerts = ({ summary }: { summary: Summary }) => {
                         setAll(!all);
                     }}
                 >
-                    <div className={s.alertText}>{all ? t("Placemaker.UI.Review.Fewer", "Fewer") : t("Placemaker.UI.Review.PlusN", "+{0} more", [alerts.length - ALERTS_SHOWN])}</div>
+                    <div className={s.alertText}>{all ? t("Citymaker.UI.Review.Fewer", "Fewer") : t("Citymaker.UI.Review.PlusN", "+{0} more", [alerts.length - ALERTS_SHOWN])}</div>
                 </button>
             ) : null}
         </div>
@@ -383,14 +383,14 @@ export const ReviewStage = ({ catalog, state, summary }: { catalog: Catalog; sta
         <div className={s.stage} data-testid="stage-review">
             {!summary.ready ? (
                 <div className={classNames(s.emptyNote, s.shimmer)} data-testid="review-planning">
-                    {t("Placemaker.UI.Review.Planning", "Planning…")}
+                    {t("Citymaker.UI.Review.Planning", "Planning…")}
                 </div>
             ) : (
                 <>
                     {/* the same story as the Design page: what it costs, what you get, what to check */}
-                    <SectionHead first icon="cost" title={t("Placemaker.UI.Review.CostHead", "Cost")} sub={t("Placemaker.UI.Review.CostSub", "to build and to run")} testId="review-head-cost" />
+                    <SectionHead first icon="cost" title={t("Citymaker.UI.Review.CostHead", "Cost")} sub={t("Citymaker.UI.Review.CostSub", "to build and to run")} testId="review-head-cost" />
                     <MoneyCard catalog={catalog} state={state} summary={summary} pending={pending} />
-                    <SectionHead icon="layers" title={t("Placemaker.UI.Review.StatsHead", "What you get")} sub={t("Placemaker.UI.Review.StatsSub", "what will be built")} testId="review-head-stats" />
+                    <SectionHead icon="layers" title={t("Citymaker.UI.Review.StatsHead", "What you get")} sub={t("Citymaker.UI.Review.StatsSub", "what will be built")} testId="review-head-stats" />
                     <div className={classNames(s.stats, { [s.shimmer]: pending })} data-testid="review-stats">
                         {mergeStats(t, summary.stats).map((st) => (
                             <StatChip key={st.key + st.unit} k={st.key} value={st.value} unit={st.unit} />
@@ -398,10 +398,10 @@ export const ReviewStage = ({ catalog, state, summary }: { catalog: Catalog; sta
                     </div>
                     <SectionHead
                         icon={clean ? "check" : "warning"}
-                        title={t("Placemaker.UI.Review.ChecksHead", "Checks")}
+                        title={t("Citymaker.UI.Review.ChecksHead", "Checks")}
                         count={summary.issues.length + summary.permanent.length}
                         tone={clean ? undefined : "warn"}
-                        sub={clean ? t("Placemaker.UI.Review.AllGood", "No problems") : t("Placemaker.UI.Review.ChecksSub", "warnings and things to look at before building")}
+                        sub={clean ? t("Citymaker.UI.Review.AllGood", "No problems") : t("Citymaker.UI.Review.ChecksSub", "warnings and things to look at before building")}
                         testId="review-head-checks"
                     />
                     <Alerts summary={summary} />
@@ -419,14 +419,14 @@ export const BuildingStage = ({ state }: { state: ToolState }) => {
         <div className={s.stage} data-testid="stage-building">
             <div className={s.buildHead}>
                 <Icon name="building" size={14} tint="accent" />
-                <div className={s.buildTitle}>{t("Placemaker.UI.Building.Title", "Building…")}</div>
+                <div className={s.buildTitle}>{t("Citymaker.UI.Building.Title", "Building…")}</div>
                 <div className={s.flex} />
                 <div className={s.buildPct}>{Math.round(p * 100)}%</div>
             </div>
             <div className={s.progress}>
                 <div className={s.progressFill} style={{ width: p * 100 + "%" }} />
             </div>
-            <div className={s.buildHint}>{t("Placemaker.UI.Building.Hint", "You can keep playing")}</div>
+            <div className={s.buildHint}>{t("Citymaker.UI.Building.Hint", "You can keep playing")}</div>
         </div>
     );
 };

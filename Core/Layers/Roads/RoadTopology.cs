@@ -1,4 +1,4 @@
-// Placemaker roads layer (s34) — junction and bend geometry.
+// Citymaker roads layer (s34) — junction and bend geometry.
 //
 // Playtest: "corners look like a car cut off something". A street that turns at a node without a curve (a polyline
 // corner from the generators, a perimeter tie-in, a link added to a dead end) is drawn by CS2 as a sharp, clipped
@@ -8,10 +8,10 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads
+namespace Citymaker.Core.Layers.Roads
 {
     internal static class RoadTopology
     {

@@ -5,13 +5,13 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Park;
-using Placemaker.Core.Layers.Types.AdventurePlayground;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Park;
+using Citymaker.Core.Layers.Types.AdventurePlayground;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Leisure
+namespace Citymaker.Core.Layers.Leisure
 {
     [AreaGenerator(50, Group = "gardens")]
     public sealed class BotanicalGardenLayer : LeisureLayer
@@ -192,7 +192,7 @@ namespace Placemaker.Core.Layers.Leisure
                             LeisureKit.Put(ctx, occ, p, LeisureKit.Yaw(p, p + face), ObjectRole.Furniture, a, cat, r, Hashing.Mix(ctx.Seed, 0x6146u + (uint)k), 1f, 0.3f, 0);
                         }
                     }
-                    else ctx.Issue(IssueSeverity.Info, "Placemaker.Botanical.Issue.NoGlasshouse");
+                    else ctx.Issue(IssueSeverity.Info, "Citymaker.Botanical.Issue.NoGlasshouse");
                 }
             }
 

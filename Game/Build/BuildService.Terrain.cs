@@ -1,4 +1,4 @@
-// Placemaker — terraform brushes, lake water and zoning (GPL-3.0).
+// Citymaker — terraform brushes, lake water and zoning (GPL-3.0).
 // Terraform: the desired ground (Core TerraformRaster) is applied directly with
 // TerrainSystem.ApplyBrush (Shift kernel, one generated mask texture per tile) and verified against
 // the CPU height readback. Fallback and water adapted from ParkManager's ParkLakeBuild (tomkpunkt,
@@ -14,15 +14,15 @@ using Game.Common;
 using Game.Prefabs;
 using Game.Simulation;
 using Game.Tools;
-using Placemaker.Core;
-using Placemaker.Core.Build;
-using Placemaker.Core.Geometry;
-using Placemaker.Game.Groups;
+using Citymaker.Core;
+using Citymaker.Core.Build;
+using Citymaker.Core.Geometry;
+using Citymaker.Game.Groups;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Build
+namespace Citymaker.Game.Build
 {
     public sealed partial class BuildService
     {
@@ -130,14 +130,14 @@ namespace Placemaker.Game.Build
             }
             catch (Exception e)
             {
-                Mod.Log.Warn("Placemaker terraform raster failed: " + e.Message);
+                Mod.Log.Warn("Citymaker terraform raster failed: " + e.Message);
                 _tfRaster = null;
             }
             if (_tfRaster == null) { BeginTerraformDabs(items); return; }
             GuardPits();
             _tfMode = TfMode.Direct;
             _tfStartRms = _tfLastRms = -1f;
-            Mod.Log.Info($"Placemaker terraform: {items.Count} items, raster {_tfRaster.Width}x{_tfRaster.Height} @ {_tfRaster.Cell:F2} m (direct brush).");
+            Mod.Log.Info($"Citymaker terraform: {items.Count} items, raster {_tfRaster.Width}x{_tfRaster.Height} @ {_tfRaster.Cell:F2} m (direct brush).");
         }
 
         /// <summary>(s55) A lot is never meant to have a bowl in it (playtest 91): raise any pit of the target to its rim and log it.</summary>
@@ -146,11 +146,11 @@ namespace Placemaker.Game.Build
             try
             {
                 if (_tfRaster == null || _work == null || _request?.Plan == null) return;
-                if (TerraformPits.Intentional(_request.Plan)) { Mod.Log.Info("Placemaker pit guard: skipped (this build digs on purpose)."); return; }
+                if (TerraformPits.Intentional(_request.Plan)) { Mod.Log.Info("Citymaker pit guard: skipped (this build digs on purpose)."); return; }
                 int n = TerraformPits.Fill(_tfRaster, Height, PitDepth, out float deepest, out var at);
-                if (n > 0) Mod.Log.Warn($"Placemaker pit guard: raised {n} texel(s) of the target, deepest bowl {deepest:F2} m at ({at.x:F0}, {at.y:F0}) (a lot has no hollow).");
+                if (n > 0) Mod.Log.Warn($"Citymaker pit guard: raised {n} texel(s) of the target, deepest bowl {deepest:F2} m at ({at.x:F0}, {at.y:F0}) (a lot has no hollow).");
             }
-            catch (Exception e) { Mod.Log.Warn("Placemaker pit guard failed: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker pit guard failed: " + e.Message); }
         }
 
         /// <summary>A pit is a bowl lower than the ring round it by more than this (m).</summary>
@@ -164,15 +164,15 @@ namespace Placemaker.Game.Build
                 if (_tfRaster == null || !_tfVerified) return;
                 _heightsValid = false;   // read the terrain as it is now
                 var pits = TerraformPits.Worst(_tfRaster, Height, 0.5f);
-                if (pits.Count == 0) { Mod.Log.Info("Placemaker terrain check: no bowl deeper than 0.5 m in the built ground."); return; }
+                if (pits.Count == 0) { Mod.Log.Info("Citymaker terrain check: no bowl deeper than 0.5 m in the built ground."); return; }
                 foreach (var p in pits)
                 {
                     float planned = _tfRaster.TrySample(p.At, _ => p.Height, out float t) ? t : float.NaN;
-                    Mod.Log.Warn($"Placemaker terrain check: bowl {p.Depth:F2} m deep at ({p.At.x:F0}, {p.At.y:F0}); live ground {p.Height:F2} m, target there {planned:F2} m"
+                    Mod.Log.Warn($"Citymaker terrain check: bowl {p.Depth:F2} m deep at ({p.At.x:F0}, {p.At.y:F0}); live ground {p.Height:F2} m, target there {planned:F2} m"
                         + (math.abs(planned - p.Height) > 0.6f ? " (the game's ground differs from the target)" : " (the target itself has it)") + ".");
                 }
             }
-            catch (Exception e) { Mod.Log.Warn("Placemaker terrain check failed: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker terrain check failed: " + e.Message); }
         }
 
         private void DoTerraform(int frame)
@@ -215,13 +215,13 @@ namespace Placemaker.Game.Build
                 {
                     if (++_tfOrientationTries >= 4)
                     {
-                        Mod.Log.Warn("Placemaker direct terraform: no brush orientation converged; using level brushes.");
+                        Mod.Log.Warn("Citymaker direct terraform: no brush orientation converged; using level brushes.");
                         RevertLastApplied();
                         BeginTerraformDabs(TerraformItems());
                         _tfWaitUntil = frame + TerraformWaitFrames;
                         return;
                     }
-                    Mod.Log.Info($"Placemaker direct terraform: orientation {_tfOrientation} did not converge (rms {before:F2} -> {stats.Rms:F2}); reverting.");
+                    Mod.Log.Info($"Citymaker direct terraform: orientation {_tfOrientation} did not converge (rms {before:F2} -> {stats.Rms:F2}); reverting.");
                     RevertLastApplied();
                     _tfReverting = true;
                     _tfWaitUntil = frame + TerraformWaitFrames;
@@ -230,7 +230,7 @@ namespace Placemaker.Game.Build
                 if (improved && s_shiftOrientation < 0)
                 {
                     s_shiftOrientation = _tfOrientation;
-                    Mod.Log.Info($"Placemaker direct terraform: brush orientation {_tfOrientation} confirmed.");
+                    Mod.Log.Info($"Citymaker direct terraform: brush orientation {_tfOrientation} confirmed.");
                 }
                 DestroyTerraformTextures();
             }
@@ -260,10 +260,10 @@ namespace Placemaker.Game.Build
             _tfVerified = done;
             if (!done)
             {
-                _warnings.Add("Placemaker.Build.TerraformIncomplete");
-                Mod.Log.Warn($"Placemaker terraform incomplete ({why}).");
+                _warnings.Add("Citymaker.Build.TerraformIncomplete");
+                Mod.Log.Warn($"Citymaker terraform incomplete ({why}).");
             }
-            else Mod.Log.Info($"Placemaker terraform reached its target in {_tfPass} pass(es), {(DateTime.UtcNow - _terraformStart).TotalSeconds:F1} s"
+            else Mod.Log.Info($"Citymaker terraform reached its target in {_tfPass} pass(es), {(DateTime.UtcNow - _terraformStart).TotalSeconds:F1} s"
                 + $" (measured on the live terrain: {_tfFinal.InsideOff}/{_tfFinal.Inside} texels off, worst {_tfFinal.InsideMaxAbs:F2} m, rms {_tfFinal.Rms:F2} m).");
             SetProgress(0.18f);
             Go(AfterTerraform());
@@ -334,7 +334,7 @@ namespace Placemaker.Game.Build
             {
                 wrapMode = UnityEngine.TextureWrapMode.Clamp,
                 filterMode = UnityEngine.FilterMode.Bilinear,
-                name = "PlacemakerMask",
+                name = "CitymakerMask",
             };
             var pixels = new UnityEngine.Color[n * n];
             for (int i = 0; i < pixels.Length; i++)
@@ -389,14 +389,14 @@ namespace Placemaker.Game.Build
             _stepFrame = UnityEngine.Time.frameCount;
             if (!ResolveTerraformTools())
             {
-                _warnings.Add("Placemaker.Build.TerraformUnavailable");
+                _warnings.Add("Citymaker.Build.TerraformUnavailable");
                 Go(AfterTerraform());
                 return;
             }
             // A feature's own levelling inside a terraformed parent wins over the parent's cells there
             // (otherwise both targets are dabbed at once and never settle).
             foreach (var d in TerraformDabs.Merge(items, BrushRadius)) _dabs.Add(new Dab { P = d.P, Target = d.Target });
-            Mod.Log.Info($"Placemaker terraform fallback: {_dabs.Count} level-brush spots.");
+            Mod.Log.Info($"Citymaker terraform fallback: {_dabs.Count} level-brush spots.");
             if (_dabs.Count == 0) Go(AfterTerraform());
         }
 
@@ -425,8 +425,8 @@ namespace Placemaker.Game.Build
                 DiscardTerraformBrushes();
                 if (!done)
                 {
-                    _warnings.Add("Placemaker.Build.TerraformIncomplete");
-                    Mod.Log.Warn($"Placemaker terraform timed out with {pending}/{_dabs.Count} spots off target.");
+                    _warnings.Add("Citymaker.Build.TerraformIncomplete");
+                    Mod.Log.Warn($"Citymaker terraform timed out with {pending}/{_dabs.Count} spots off target.");
                 }
                 Go(AfterTerraform());
                 return;
@@ -495,7 +495,7 @@ namespace Placemaker.Game.Build
                 var t = _request.Plan.Layers[w.Layer].Terraform[w.Index];
                 if (!math.isfinite(t.WaterLevel)) continue;
                 try { CreateWaterSource(t); }
-                catch (Exception e) { Mod.Log.Warn("Placemaker could not add lake water: " + e.Message); _warnings.Add("Placemaker.Build.NoWater"); }
+                catch (Exception e) { Mod.Log.Warn("Citymaker could not add lake water: " + e.Message); _warnings.Add("Citymaker.Build.NoWater"); }
             }
         }
 
@@ -510,8 +510,8 @@ namespace Placemaker.Game.Build
             float bottom = Height(anchor);
             if (t.WaterLevel - bottom < 0.5f)
             {
-                _warnings.Add("Placemaker.Build.NoWater");
-                Mod.Log.Warn($"Placemaker lake basin not deep enough (ground {bottom:F2}, water {t.WaterLevel:F2}); no water added.");
+                _warnings.Add("Citymaker.Build.NoWater");
+                Mod.Log.Warn($"Citymaker lake basin not deep enough (ground {bottom:F2}, water {t.WaterLevel:F2}); no water added.");
                 return;
             }
             bool legacy = _water.UseLegacyWaterSources;
@@ -539,7 +539,7 @@ namespace Placemaker.Game.Build
             EntityManager.AddComponentData(e, new global::Game.Objects.Transform { m_Position = position, m_Rotation = quaternion.identity });
             EntityManager.AddComponent<Created>(e);
             EntityManager.AddComponent<Updated>(e);
-            EntityManager.AddComponentData(e, new PlacemakerMember { GroupId = _groupId, Kind = MemberKind.Auxiliary, Role = MemberRole.WaterSource });
+            EntityManager.AddComponentData(e, new CitymakerMember { GroupId = _groupId, Kind = MemberKind.Auxiliary, Role = MemberRole.WaterSource });
         }
 
         // ───────────────────────── zoning ─────────────────────────
@@ -598,8 +598,8 @@ namespace Placemaker.Game.Build
                 emitted++;
             }
             if (missing > 0)
-                Mod.Log.Warn($"Placemaker zoning: {missing} cutout quad(s) skipped, zone prefab not found: {string.Join(", ", missingIds)}.");
-            Mod.Log.Info($"Placemaker zoning: {emitted} zoning quad(s) emitted for group {_groupId} (Marquee, keeps existing zoning).");
+                Mod.Log.Warn($"Citymaker zoning: {missing} cutout quad(s) skipped, zone prefab not found: {string.Join(", ", missingIds)}.");
+            Mod.Log.Info($"Citymaker zoning: {emitted} zoning quad(s) emitted for group {_groupId} (Marquee, keeps existing zoning).");
             _zoningEmitted = emitted;
             Go(emitted > 0 ? Step.ZoningApply : Step.Finish);
         }
@@ -615,7 +615,7 @@ namespace Placemaker.Game.Build
             else if (elapsed >= ZoningVerifyFrames)
             {
                 try { VerifyZoning(); }
-                catch (Exception e) { Mod.Log.Warn("Placemaker zoning check failed: " + e.Message); }
+                catch (Exception e) { Mod.Log.Warn("Citymaker zoning check failed: " + e.Message); }
                 Go(Step.Finish);
             }
         }
@@ -685,7 +685,7 @@ namespace Placemaker.Game.Build
                         }
                 }
                 try { AuditZonePlots(plan, planned, state); }
-                catch (Exception ze) { Mod.Log.Warn("Placemaker zoning plot audit failed: " + ze.Message); }
+                catch (Exception ze) { Mod.Log.Warn("Citymaker zoning plot audit failed: " + ze.Message); }
                 for (int k = 0; k < planned.Count; k++)
                 {
                     int st = state[k];
@@ -702,14 +702,14 @@ namespace Placemaker.Game.Build
                 }
             }
             finally { results.Dispose(); }
-            string msg = $"Placemaker zoning: group {_groupId}: zoned {zoned} of {planned.Count} cutout cell(s) ({_zoningEmitted} quad(s)); "
+            string msg = $"Citymaker zoning: group {_groupId}: zoned {zoned} of {planned.Count} cutout cell(s) ({_zoningEmitted} quad(s)); "
                 + $"empty {empty}, blocked {blocked}, hidden {hidden}, not found {planned.Count - found}.";
             if (zoned < planned.Count) Mod.Log.Warn(msg); else Mod.Log.Info(msg);
             if (blocked > 0)
             {
                 var sb = new System.Text.StringBuilder();
                 foreach (var kv in causes) sb.Append(sb.Length > 0 ? ", " : "").Append(kv.Key).Append(" x").Append(kv.Value);
-                Mod.Log.Warn($"Placemaker zoning: blocked cutout cells by cause: {sb}. e.g. {string.Join("; ", examples)}.");
+                Mod.Log.Warn($"Citymaker zoning: blocked cutout cells by cause: {sb}. e.g. {string.Join("; ", examples)}.");
             }
         }
 
@@ -782,7 +782,7 @@ namespace Placemaker.Game.Build
                     var ring = new float2[nodes.Length];
                     for (int j = 0; j < ring.Length; j++) ring[j] = nodes[j].m_Position.xz;
                     if (!ObstacleCut.Overlaps(sq, ring)) continue;
-                    bool ours = EntityManager.HasComponent<PlacemakerMember>(a);
+                    bool ours = EntityManager.HasComponent<CitymakerMember>(a);
                     return (ours ? "our lot " : "lot ") + _prefabs.GetPrefabName(prefab);
                 }
             return null;

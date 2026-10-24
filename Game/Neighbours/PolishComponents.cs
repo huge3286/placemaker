@@ -1,4 +1,4 @@
-// Placemaker neighbourhood polish — what is saved with the city (GPL-3.0).
+// Citymaker neighbourhood polish — what is saved with the city (GPL-3.0).
 // Version-first ISerializable layouts (RESEARCH-NOTES rule 5, as Game/Groups/GroupComponents.cs): the serializer packs
 // components back to back without lengths, so a reader consumes exactly what its version wrote; fields are only appended.
 //
@@ -19,7 +19,7 @@ using Colossal.Serialization.Entities;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Neighbours
+namespace Citymaker.Game.Neighbours
 {
     public struct PolishedLot : IComponentData, IQueryTypeParameter, ISerializable
     {

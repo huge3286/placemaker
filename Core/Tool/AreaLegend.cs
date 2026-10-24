@@ -1,4 +1,4 @@
-// Placemaker — the legend while choosing the area (area overhaul).
+// Citymaker — the legend while choosing the area (area overhaul).
 //
 // The user: "things turn red when I move my mouse near them, which I guess is fine. I want to keep that, but it's not
 // super clear. Maybe the legend could handle that. We do legends for the design, we don't do it for painting, so it's
@@ -7,9 +7,9 @@
 // PreviewLegend.Visible rules; ids start with "area:").
 
 using System.Collections.Generic;
-using Placemaker.Core.Build;
+using Citymaker.Core.Build;
 
-namespace Placemaker.Core.Tool
+namespace Citymaker.Core.Tool
 {
     public static class AreaLegend
     {
@@ -33,7 +33,7 @@ namespace Placemaker.Core.Tool
             }
         }
 
-        public static string LabelKey(string id) => "Placemaker.Legend.Area." + id.Substring(id.IndexOf(':') + 1);
+        public static string LabelKey(string id) => "Citymaker.Legend.Area." + id.Substring(id.IndexOf(':') + 1);
 
         /// <summary>What the overlay shows right now, per tool.</summary>
         public sealed class Input

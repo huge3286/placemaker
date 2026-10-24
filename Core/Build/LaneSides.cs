@@ -1,4 +1,4 @@
-// Placemaker — our roads zone only where the build has shops (core, GPL-3.0).
+// Citymaker — our roads zone only where the build has shops (core, GPL-3.0).
 //
 // The user (playtest 12:12, docs/teardown/00): "the shops got put on the wrong side ... what if the streets themselves in whatever
 // you're touching could turn off their zoning". CS2 1.6 has that flag built in: CompositionFlags.Side.ZonesDisabled in the edge's
@@ -17,10 +17,10 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     public static class LaneSides
     {

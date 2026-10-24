@@ -12,12 +12,12 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Layers.AddOns;
-using Placemaker.Core.Layers.AddOns.Fields;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.AddOns;
+using Citymaker.Core.Layers.AddOns.Fields;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Leisure
+namespace Citymaker.Core.Layers.Leisure
 {
     [AreaGenerator(51, Group = "sports")]
     public sealed class SportsParkLayer : LeisureLayer
@@ -74,7 +74,7 @@ namespace Placemaker.Core.Layers.Leisure
             foreach (var f in Facilities())
                 list.Add(new FeatureInfo
                 {
-                    Layer = f, Target = Amenities.Place(f), LabelKey = "Placemaker.Feature." + f, TooltipKey = "Placemaker.Feature." + f + ".Tooltip",
+                    Layer = f, Target = Amenities.Place(f), LabelKey = "Citymaker.Feature." + f, TooltipKey = "Citymaker.Feature." + f + ".Tooltip",
                     Options = OptionsOf(f),
                     // One table per spot: the park's "how many" is the number of spots (no second count).
                     Preset = f == "tableTennis" ? new SettingsBag { Values = { ["tables"] = 1.0 } } : new SettingsBag(),

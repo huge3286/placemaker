@@ -6,9 +6,9 @@
 // no sign clutter in automatic pools).
 
 using System.Collections.Generic;
-using Placemaker.Core.Build;
+using Citymaker.Core.Build;
 
-namespace Placemaker.Core.Layers.AddOns
+namespace Citymaker.Core.Layers.AddOns
 {
     public sealed class AmenityCategoryRules : ICategoryRules
     {

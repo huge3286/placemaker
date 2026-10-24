@@ -1,4 +1,4 @@
-// Placemaker — hidden companion building for parking upkeep and employees (GPL-3.0).
+// Citymaker — hidden companion building for parking upkeep and employees (GPL-3.0).
 // Port of ParkingLotTool's "Wirtschaftsbegleiter" (ParkingLotBuildingEconomy*, ParkingLotEmployee-
 // System, ParkingLotEconomySystem — KruemelGames, GPL-3.0), reduced to the measured recipe.
 //
@@ -27,19 +27,19 @@ using Game.Objects;
 using Game.Prefabs;
 using Game.Simulation;
 using Game.Tools;
-using Placemaker.Core.Build;
-using Placemaker.Game.Groups;
+using Citymaker.Core.Build;
+using Citymaker.Game.Groups;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine.Scripting;
 
-namespace Placemaker.Game.Economy
+namespace Citymaker.Game.Economy
 {
     /// <summary>Registers the companion building prefab. Phase: PrefabUpdate, before PrefabInitializeSystem.</summary>
     public sealed partial class ParkingCompanionPrefabSystem : GameSystemBase
     {
-        public const string PrefabName = "Placemaker Parking Companion";
+        public const string PrefabName = "Citymaker Parking Companion";
         private static readonly string[] Sources = { "ParkingLot04", "ParkingLot01", "ParkingLot02", "ParkingLot03" };
         /// <summary>Upkeep basis: ServiceUsage = upkeep / basis (scale-with-usage money entry).</summary>
         public const int UpkeepBasis = 65536;
@@ -106,7 +106,7 @@ namespace Placemaker.Game.Economy
                 companion.Remove<ObjectSubLanes>();
                 companion.Remove<ObjectSubAreas>();
                 companion.Remove<ObsoleteIdentifiers>();
-                if (!Placemaker.Game.Assets.AssetCatalogSystem.AddOwnPrefab(_prefabs, companion))
+                if (!Citymaker.Game.Assets.AssetCatalogSystem.AddOwnPrefab(_prefabs, companion))
                 {
                     UnityEngine.Object.Destroy(companion);
                     _attempts = int.MaxValue;
@@ -114,11 +114,11 @@ namespace Placemaker.Game.Economy
                 }
                 Prefab = _prefabs.GetEntity(companion);
                 RegisteredFrame = UnityEngine.Time.frameCount;
-                Mod.Log.Info($"Placemaker registered the parking companion prefab (from {source.name}).");
+                Mod.Log.Info($"Citymaker registered the parking companion prefab (from {source.name}).");
             }
             catch (Exception e)
             {
-                Mod.Log.Warn("Placemaker parking companion prefab unavailable: " + e.Message);
+                Mod.Log.Warn("Citymaker parking companion prefab unavailable: " + e.Message);
                 _attempts = int.MaxValue;
             }
         }
@@ -169,7 +169,7 @@ namespace Placemaker.Game.Economy
             }
             catch (Exception e)
             {
-                Mod.Log.Error(e, "Placemaker parking companion failed; companions disabled for this session");
+                Mod.Log.Error(e, "Citymaker parking companion failed; companions disabled for this session");
                 _failed = true;
                 _pending.Clear();
             }
@@ -228,7 +228,7 @@ namespace Placemaker.Game.Economy
         private void CreateCompanion(int groupId, Entity prefab)
         {
             if (!_registry.TryGetRecordEntity(groupId, out var record)) return;
-            var g = EntityManager.GetComponentData<PlacemakerGroup>(record);
+            var g = EntityManager.GetComponentData<CitymakerGroup>(record);
             if (g.Companion != Entity.Null && EntityManager.Exists(g.Companion)) return;
             if (!TryFindRoadSide(groupId, out var position, out var rotation)) return;
 
@@ -245,10 +245,10 @@ namespace Placemaker.Game.Economy
             // UpdateFrame only because this is a real Building (UpdateGroupSystem supports buildings).
             if (EntityManager.HasComponent<UpdateFrame>(companion))
                 EntityManager.SetSharedComponent(companion, new UpdateFrame((uint)companion.Index & 0xFu));
-            EntityManager.AddComponentData(companion, new PlacemakerMember { GroupId = groupId, Kind = MemberKind.Auxiliary, Role = MemberRole.Companion });
+            EntityManager.AddComponentData(companion, new CitymakerMember { GroupId = groupId, Kind = MemberKind.Auxiliary, Role = MemberRole.Companion });
             g.Companion = companion;
             EntityManager.SetComponentData(record, g);
-            Mod.Log.Info($"Placemaker created the parking companion for group {groupId}.");
+            Mod.Log.Info($"Citymaker created the parking companion for group {groupId}.");
         }
 
         /// <summary>A dead-end aisle node (where the lot meets the road), facing away from the lot.</summary>
@@ -262,7 +262,7 @@ namespace Placemaker.Game.Economy
             foreach (var m in members)
             {
                 if (!EntityManager.HasComponent<Edge>(m)) continue;
-                var tag = EntityManager.GetComponentData<PlacemakerMember>(m);
+                var tag = EntityManager.GetComponentData<CitymakerMember>(m);
                 if (tag.Role != MemberRole.ParkingAisle) continue;
                 var edge = EntityManager.GetComponentData<Edge>(m);
                 degree[edge.m_Start] = (degree.TryGetValue(edge.m_Start, out var a) ? a : 0) + 1;
@@ -306,7 +306,7 @@ namespace Placemaker.Game.Economy
             _economy = World.GetOrCreateSystemManaged<ParkingEconomySystem>();
             _companions = GetEntityQuery(new EntityQueryDesc
             {
-                All = new[] { ComponentType.ReadOnly<PlacemakerMember>(), ComponentType.ReadOnly<Building>() },
+                All = new[] { ComponentType.ReadOnly<CitymakerMember>(), ComponentType.ReadOnly<Building>() },
                 None = new[] { ComponentType.ReadOnly<Deleted>(), ComponentType.ReadOnly<Temp>() },
             });
         }
@@ -321,7 +321,7 @@ namespace Placemaker.Game.Economy
                 for (int i = 0; i < list.Length; i++)
                 {
                     var e = list[i];
-                    var tag = EntityManager.GetComponentData<PlacemakerMember>(e);
+                    var tag = EntityManager.GetComponentData<CitymakerMember>(e);
                     if (tag.Role != MemberRole.Companion) continue;
                     int capacity = _economy.CapacityOf(tag.GroupId);
                     bool on = ParkingCompanionSystem.CompanionEnabled && ParkingEconomySystem.FeatureEnabled;
@@ -341,7 +341,7 @@ namespace Placemaker.Game.Economy
             }
             catch (Exception ex)
             {
-                Mod.Log.Error(ex, "Placemaker companion upkeep failed; companions disabled");
+                Mod.Log.Error(ex, "Citymaker companion upkeep failed; companions disabled");
                 ParkingCompanionSystem.CompanionEnabled = false;
             }
         }

@@ -7,10 +7,10 @@
 //   works      old heavy works: the plant with its tall chimney centre stage, low container stacks in front, rubble and
 //              stone heaps behind, pipes and cable drums in rows.
 
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Yards
+namespace Citymaker.Core.Layers.Types.Yards
 {
     [AreaGenerator(67, Group = "industrial")]
     public sealed class IndustrialWorksLayer : IndustrialYardLayer

@@ -1,7 +1,7 @@
-// s53 — "Placemaker anarchy": which planned objects overlap ANOTHER planned object (their own build).
+// s53 — "Citymaker anarchy": which planned objects overlap ANOTHER planned object (their own build).
 //
 // The game rejects an object whose collision box meets another's (OverlapExisting) — including the pieces of one and the
-// same Placemaker build (stall markings 3.2 m wide on a 3.0 m pitch, bushes in a bed, a lamp beside a bin). Those are our
+// same Citymaker build (stall markings 3.2 m wide on a 3.0 m pitch, bushes in a bed, a lamp beside a bin). Those are our
 // own planning, so with "Ignore collisions in my builds" the build keeps them: the error is not a reason to leave anything
 // out. An error on an object that overlaps nothing of ours is a collision with the city (building, road, foreign prop) and
 // stays a real error. Pure geometry (Declutter footprints) so it is unit-tested.
@@ -9,7 +9,7 @@
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     public sealed class OwnOverlap
     {

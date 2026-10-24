@@ -27,11 +27,11 @@
 // surface.natural, so a playset without the farming pack still gets the vanilla Agriculture Surface.
 
 using System.Collections.Generic;
-using Placemaker.Core.Build;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Build;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core
+namespace Citymaker.Core
 {
     public static partial class AssetCategories
     {
@@ -48,7 +48,7 @@ namespace Placemaker.Core
     }
 }
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     /// <summary>Name curation for the farm ground categories (surfaces + track decals). See GroundCover.</summary>
     public sealed class GroundCoverCategoryRules : ICategoryRules, ISurfaceCategoryRules
@@ -59,7 +59,7 @@ namespace Placemaker.Core.Build
 
         /// <summary>Clones / overlays that must never be an automatic field texture.</summary>
         public static bool NotAField(string lower) =>
-            lower.StartsWith("placemaker overlay", System.StringComparison.Ordinal) || lower.StartsWith("plt ", System.StringComparison.Ordinal)
+            lower.StartsWith("citymaker overlay", System.StringComparison.Ordinal) || lower.StartsWith("plt ", System.StringComparison.Ordinal)
             || Has(lower, "overlay", "hedgebase", "hedge base", "placeholder");
 
         public void ClassifySurface(string lower, List<string> r)
@@ -120,7 +120,7 @@ namespace Placemaker.Core.Build
     }
 }
 
-namespace Placemaker.Core.Layers.Common
+namespace Citymaker.Core.Layers.Common
 {
     public static class GroundCover
     {
@@ -128,7 +128,7 @@ namespace Placemaker.Core.Layers.Common
         public const string Soil = "soil", Plowed = "plowed", Rows = "rows", Green = "green", Straw = "straw",
             Flower = "flower", Lavender = "lavender", Yellow = "yellow";
 
-        public const string PaintedKey = "Placemaker.GroundCover.Issue.Painted";
+        public const string PaintedKey = "Citymaker.GroundCover.Issue.Painted";
 
         public static string CategoryFor(string kind)
         {

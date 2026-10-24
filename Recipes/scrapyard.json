@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "scrapyard",
-  "nameKey": "Placemaker.Recipe.Scrapyard",
-  "descriptionKey": "Placemaker.Recipe.Scrapyard.Description",
+  "nameKey": "Citymaker.Recipe.Scrapyard",
+  "descriptionKey": "Citymaker.Recipe.Scrapyard.Description",
   "icon": "Media/Game/Icons/PropsIndustrial.svg",
   "root": {
     "layer": "scrapyard",

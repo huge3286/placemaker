@@ -1,4 +1,4 @@
-// Placemaker — runtime "overlay" clones of surface prefabs (GPL-3.0).
+// Citymaker — runtime "overlay" clones of surface prefabs (GPL-3.0).
 // Ported from ParkingLotTool's ParkingLotApronPrefab + Flaechenklonname (KruemelGames, GPL-3.0).
 //
 // Why: vanilla surfaces draw at priority −100…−95 on the Terrain decal layer only, so a parking
@@ -12,7 +12,7 @@
 //    use = native crash).
 //  * Saves reference prefabs by name: every clone ever used must exist before a save loads.
 //    Clones of all built-in surfaces are created unconditionally at startup; clones of modded
-//    surfaces are remembered in ModsData/Placemaker/surface-overlays.txt and recreated at startup.
+//    surfaces are remembered in ModsData/Citymaker/surface-overlays.txt and recreated at startup.
 //  * Never inherit SpawnableArea (would join "Pavement Surface Placeholder" candidates → zoned
 //    houses got road-overdrawing pavement) or UIObject (would appear in the Surfaces menu).
 //
@@ -30,11 +30,11 @@ using Unity.Entities;
 using UnityEngine;
 using UnityEngine.Scripting;
 
-namespace Placemaker.Game.Build
+namespace Citymaker.Game.Build
 {
     public sealed partial class SurfaceCloneSystem : GameSystemBase
     {
-        public const string NamePrefix = "Placemaker Overlay (";
+        public const string NamePrefix = "Citymaker Overlay (";
         public const int OverlayPriority = -94;
         private const int ReadyDelayFrames = 3;
 
@@ -91,7 +91,7 @@ namespace Placemaker.Game.Build
             }
             catch (Exception e)
             {
-                Mod.Log.Warn("Placemaker overlay lookup failed: " + e.Message);
+                Mod.Log.Warn("Citymaker overlay lookup failed: " + e.Message);
             }
             return original;
         }
@@ -123,7 +123,7 @@ namespace Placemaker.Game.Build
             }
             catch (Exception e)
             {
-                Mod.Log.Error(e, "Placemaker surface overlay clones failed; parking surfaces use the originals");
+                Mod.Log.Error(e, "Citymaker surface overlay clones failed; parking surfaces use the originals");
                 FeatureEnabled = false;
             }
         }
@@ -187,7 +187,7 @@ namespace Placemaker.Game.Build
             if (rendered == null) { UnityEngine.Object.Destroy(clone); return; }
             rendered.m_DecalLayerMask |= DecalLayers.Terrain | DecalLayers.Roads;
             rendered.m_RendererPriority = OverlayPriority;
-            if (!Placemaker.Game.Assets.AssetCatalogSystem.AddOwnPrefab(_prefabs, clone))
+            if (!Citymaker.Game.Assets.AssetCatalogSystem.AddOwnPrefab(_prefabs, clone))
             {
                 UnityEngine.Object.Destroy(clone);
                 return;
@@ -200,7 +200,7 @@ namespace Placemaker.Game.Build
         // ───────────────────────── persistence of modded originals ─────────────────────────
 
         private static string RememberedPath =>
-            Path.Combine(Application.persistentDataPath, "ModsData", "Placemaker", "surface-overlays.txt");
+            Path.Combine(Application.persistentDataPath, "ModsData", "citymaker", "surface-overlays.txt");
 
         private void LoadRemembered()
         {
@@ -210,7 +210,7 @@ namespace Placemaker.Game.Build
                 foreach (var line in File.ReadAllLines(RememberedPath))
                     if (!string.IsNullOrWhiteSpace(line)) _remembered.Add(line.Trim());
             }
-            catch (Exception e) { Mod.Log.Warn("Placemaker could not read the surface overlay list: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker could not read the surface overlay list: " + e.Message); }
         }
 
         private void SaveRemembered()
@@ -222,7 +222,7 @@ namespace Placemaker.Game.Build
                 list.Sort(StringComparer.Ordinal);
                 File.WriteAllLines(RememberedPath, list);
             }
-            catch (Exception e) { Mod.Log.Warn("Placemaker could not write the surface overlay list: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker could not write the surface overlay list: " + e.Message); }
         }
     }
 }

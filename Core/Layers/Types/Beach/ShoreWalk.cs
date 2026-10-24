@@ -19,10 +19,10 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Beach
+namespace Citymaker.Core.Layers.Types.Beach
 {
     public sealed class ShoreWalk
     {

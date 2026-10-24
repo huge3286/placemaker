@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "industrialWorks",
-  "nameKey": "Placemaker.Recipe.IndustrialWorks",
-  "descriptionKey": "Placemaker.Recipe.IndustrialWorks.Description",
+  "nameKey": "Citymaker.Recipe.IndustrialWorks",
+  "descriptionKey": "Citymaker.Recipe.IndustrialWorks.Description",
   "icon": "Media/Game/Icons/ZoneIndustrialManufacturing.svg",
   "root": {
     "layer": "industrialWorks",

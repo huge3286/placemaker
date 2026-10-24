@@ -14,20 +14,20 @@
 // → basins (with causeways) → hides/lookout/terrace → reed belt → trees/bushes → paint/terrain.
 
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Leisure;
-using Placemaker.Core.Layers.Park;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Leisure;
+using Citymaker.Core.Layers.Park;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Wetland
+namespace Citymaker.Core.Layers.Types.Wetland
 {
     [AreaGenerator(611, Group = "nature")]
     public sealed class WetlandLayer : LeisureLayer
     {
         public const string LayerId = "wetland";
         public const string WaterPlace = "place:water";
-        public const string PermanentKey = "Placemaker.Wetland.Issue.WaterPermanent";
+        public const string PermanentKey = "Citymaker.Wetland.Issue.WaterPermanent";
         public static readonly string[] Subtypes = { "wetlandPark", "waterGarden", "reedMarsh", "rainGarden", "birdReserve" };
 
         protected override string Area => "Wetland";
@@ -47,7 +47,7 @@ namespace Placemaker.Core.Layers.Types.Wetland
         internal static FeatureInfo KioskFeature()
         {
             var f = Feature("kiosk", ("count", 1.0));
-            f.LabelKey = "Placemaker.AddOn.Kiosk.Name";
+            f.LabelKey = "Citymaker.AddOn.Kiosk.Name";
             return f;
         }
 
@@ -172,8 +172,8 @@ namespace Placemaker.Core.Layers.Types.Wetland
                 water.Grow(ctx, occ, spec, Hashing.Mix(ctx.Seed, 0x9014u));
             }
             water.Freeze(region);
-            if (water.Ponds.Count == 0) ctx.Issue(IssueSeverity.Info, "Placemaker.Wetland.Issue.NoRoom");
-            else if (water.Ponds.Count < ponds) ctx.Issue(IssueSeverity.Info, "Placemaker.Wetland.Issue.FewerPonds", water.Ponds.Count, ponds);
+            if (water.Ponds.Count == 0) ctx.Issue(IssueSeverity.Info, "Citymaker.Wetland.Issue.NoRoom");
+            else if (water.Ponds.Count < ponds) ctx.Issue(IssueSeverity.Info, "Citymaker.Wetland.Issue.FewerPonds", water.Ponds.Count, ponds);
             ctx.Check();
 
             // 3. Boardwalk crossings (largest ponds first), spurs end on a platform for a hide.
@@ -282,11 +282,11 @@ namespace Placemaker.Core.Layers.Types.Wetland
             EmitDryRegions(ctx, occ, water);
             CommonStats(ctx);
             ctx.Stat(Keys.StatLakeArea, System.Math.Round(water.TotalArea), Keys.UnitM2);
-            ctx.Stat("Placemaker.Stat.Ponds", water.Ponds.Count, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Islands", islands, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Boardwalk", System.Math.Round(boardLength), Keys.UnitM);
-            ctx.Stat("Placemaker.Stat.Hides", hides, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Reeds", reeds, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Ponds", water.Ponds.Count, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Islands", islands, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Boardwalk", System.Math.Round(boardLength), Keys.UnitM);
+            ctx.Stat("Citymaker.Stat.Hides", hides, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Reeds", reeds, Keys.UnitCount);
             ctx.Plan.Facts["waterArea"] = water.TotalArea;
             ctx.Plan.Facts["ponds"] = water.Ponds.Count;
             ctx.Plan.Facts["islands"] = islands;
@@ -371,7 +371,7 @@ namespace Placemaker.Core.Layers.Types.Wetland
                         LeisureKit.Path(ctx, occ, foot, door, NetRole.Pathway, AssetMix.One(ctx.S("trailAsset")));
                 }
             }
-            if (placed < wanted) ctx.Issue(IssueSeverity.Info, "Placemaker.Wetland.Issue.FewerHides", placed, wanted);
+            if (placed < wanted) ctx.Issue(IssueSeverity.Info, "Citymaker.Wetland.Issue.FewerHides", placed, wanted);
             return placed;
         }
 

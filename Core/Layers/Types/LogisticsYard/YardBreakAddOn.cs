@@ -1,11 +1,11 @@
 // Logistics yard feature "Break area": where the yard crew sits — a cabin (or shed), picnic tables
 // under a small shelter, a bin and a tree or two, tucked into leftover yard space near the edge.
 
-using Placemaker.Core.Layers.AddOns;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.AddOns;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Logistics
+namespace Citymaker.Core.Layers.Types.Logistics
 {
     [AreaGenerator(261)]
     public sealed class YardBreakAddOn : AddOnLayer
@@ -32,7 +32,7 @@ namespace Placemaker.Core.Layers.Types.Logistics
             if (!Spots.Find(occ, radius, Spots.Preference.NearBoundary, Hashing.Mix(ctx.Seed, 0xB4EAu), out var c, null, 0f, 0.5f, 2000)
                 && !Spots.Find(occ, radius * 0.6f, Spots.Preference.Open, Hashing.Mix(ctx.Seed, 0xB4EBu), out c, null, 0f, 0.5f, 2000))
             {
-                NoSpace(ctx, "Placemaker.AddOn.YardBreak.Name");
+                NoSpace(ctx, "Citymaker.AddOn.YardBreak.Name");
                 return;
             }
             var region = ctx.LayerRegion;
@@ -69,7 +69,7 @@ namespace Placemaker.Core.Layers.Types.Logistics
                     var p = c - side * (radius * 0.6f) + back * (i == 0 ? 2f : -3f);
                     LeisureKit.Put(ctx, occ, p, 0f, ObjectRole.Tree, AssetMix.One(""), null, 2.4f, Hashing.Mix(ctx.Seed, 40u + (uint)i), 1f, 0.3f, 3, 2);
                 }
-            if (placed == 0) NoSpace(ctx, "Placemaker.AddOn.YardBreak.Name");
+            if (placed == 0) NoSpace(ctx, "Citymaker.AddOn.YardBreak.Name");
         }
     }
 }

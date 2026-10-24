@@ -1,4 +1,4 @@
-// Placemaker — runs the area fill (Core AreaFill) for the Paint bucket and Paint area without freezing the game.
+// Citymaker — runs the area fill (Core AreaFill) for the Paint bucket and Paint area without freezing the game.
 //
 // The user (area overhaul): "and then lag, of course, we're trying to minimize that as well". A fill draws a window of
 // walls into a grid and measures it (tens of milliseconds, more for a big reach), so hovering runs it on a worker
@@ -12,10 +12,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Selection
+namespace Citymaker.Game.Selection
 {
     public sealed class AreaFillRunner
     {
@@ -169,7 +169,7 @@ namespace Placemaker.Game.Selection
             // Walls and water are read here, on the main thread; the worker only sees the snapshot.
             job.Walls = new List<BrushObstacle>();
             try { _walls.Counted(job.Min, job.Max, job.Group, job.Rules, job.Walls); }
-            catch (Exception e) { Mod.Log.Warn("Placemaker: fill walls failed: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker: fill walls failed: " + e.Message); }
             job.Water = _walls.Water(job.Min, job.Max, 2f, job.Rules);
             var walls = job.Walls;
             float2 bmin = job.Min, bmax = job.Max;

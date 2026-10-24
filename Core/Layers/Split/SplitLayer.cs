@@ -12,11 +12,11 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Split
+namespace Citymaker.Core.Layers.Split
 {
     [AreaGenerator(60, Hidden = true)]
     public sealed class SplitLayer : LayerBase
@@ -64,10 +64,10 @@ namespace Placemaker.Core.Layers.Split
             if (markers.Count >= 2)
             {
                 ok = CutByMarkers(parts, cuts, markers);
-                if (markers.Count % 2 == 1) ctx.Issue(IssueSeverity.Info, "Placemaker.Split.Issue.UnpairedMarker");
+                if (markers.Count % 2 == 1) ctx.Issue(IssueSeverity.Info, "Citymaker.Split.Issue.UnpairedMarker");
             }
             else ok = CutByRatio(ctx, region, parts, cuts);
-            if (!ok) ctx.Issue(IssueSeverity.Warning, "Placemaker.Split.Issue.CannotSplit");
+            if (!ok) ctx.Issue(IssueSeverity.Warning, "Citymaker.Split.Issue.CannotSplit");
             ctx.Check();
 
             for (int i = 0; i < parts.Count; i++)

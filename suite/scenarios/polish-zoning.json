@@ -1,5 +1,5 @@
 {
-  "_about": "The Zoning category in Placemaker (Phase 1): a street grown unpolished, its houses picked with Paint area, the Natural look picked in the Make row with its Sprawling style, Review and Build (the houses polished, nothing built), the City window from the header. Send with tools/hot/Send-Hot.ps1 -Build -File suite/scenarios/polish-zoning.json.",
+  "_about": "The Zoning category in Citymaker (Phase 1): a street grown unpolished, its houses picked with Paint area, the Natural look picked in the Make row with its Sprawling style, Review and Build (the houses polished, nothing built), the City window from the header. Send with tools/hot/Send-Hot.ps1 -Build -File suite/scenarios/polish-zoning.json.",
   "scenarios": [
     {
       "id": "polish-zoning",

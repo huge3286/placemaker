@@ -3,7 +3,7 @@
 // pool mixes tiles and concrete at random, both wrong for a quay; benches and lamps stay one model per run so
 // a promenade reads as designed street furniture. s20: quay and boardwalk nets (QuayCategories).
 
-namespace Placemaker.Core.Layers.Types.Waterfront
+namespace Citymaker.Core.Layers.Types.Waterfront
 {
     public static class WaterfrontArt
     {

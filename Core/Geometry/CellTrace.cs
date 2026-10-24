@@ -1,4 +1,4 @@
-// Placemaker — the outline of a set of grid cells as rings (AreaFill's region before the exact cut).
+// Citymaker — the outline of a set of grid cells as rings (AreaFill's region before the exact cut).
 //
 // Every cell side between a cell in the set and one outside becomes a directed edge with the set on its left, so
 // outer rings run counter-clockwise and holes clockwise. Where two cells only touch at a corner the walk turns left,
@@ -7,7 +7,7 @@
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Geometry
+namespace Citymaker.Core.Geometry
 {
     public static class CellTrace
     {

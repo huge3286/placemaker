@@ -1,4 +1,4 @@
-// Placemaker — minimal JSON DOM, parser and writer.
+// Citymaker — minimal JSON DOM, parser and writer.
 //
 // Why our own: Core must stay engine-free and unit-testable on net9 without the game's
 // Newtonsoft build, and the UI contract / recipe files need exact, culture-invariant output
@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 
-namespace Placemaker.Core.Tool
+namespace Citymaker.Core.Tool
 {
     public enum JsonKind { Null = 0, Bool = 1, Number = 2, String = 3, Array = 4, Object = 5 }
 

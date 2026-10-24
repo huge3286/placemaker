@@ -1,10 +1,10 @@
-// Placemaker — ghost preview: the plan as real game temporaries, never applied (GPL-3.0).
+// Citymaker — ghost preview: the plan as real game temporaries, never applied (GPL-3.0).
 //
 // Implements Game/Preview/IGhostPreview for the tool (GhostPreviewClient). Same emission code as the
 // build (EmitNets/EmitSurface/EmitArea/EmitObject + clearing), so the ghost shows exactly the prefabs,
 // seeds and colour variations the build will create. Vanilla tool cadence (decompiled ObjectToolSystem):
 // a refresh is ONE Clear frame in which the old definitions are destroyed and the new ones created;
-// afterwards the tool keeps applyMode = None and the temporaries stay. The active Placemaker tool calls
+// afterwards the tool keeps applyMode = None and the temporaries stay. The active Citymaker tool calls
 // Pump() once per frame and sets applyMode = Clear only when Pump returns true.
 //
 //  * Debounce: a new revision is emitted after GhostDebounceSeconds of no further Show calls (the first
@@ -31,14 +31,14 @@ using System.Collections.Generic;
 using Game;
 using Game.Common;
 using Game.Tools;
-using Placemaker.Core;
-using Placemaker.Core.Build;
-using Placemaker.Game.Preview;
+using Citymaker.Core;
+using Citymaker.Core.Build;
+using Citymaker.Game.Preview;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Build
+namespace Citymaker.Game.Build
 {
     /// <summary>Extra ghost facts for UI summaries (errors are never shown as icon spam).</summary>
     public struct GhostDetails
@@ -189,12 +189,12 @@ namespace Placemaker.Game.Build
             }
             catch (Exception e)
             {
-                Mod.Log.Error(e, "Placemaker ghost preview failed");
+                Mod.Log.Error(e, "Citymaker ghost preview failed");
                 bool had = _gHasContent;
                 try { DestroyGhostDefinitions(); } catch (Exception) { }
                 ResetGhost();
                 _gStep = GhostStep.Failed;
-                _gMessage = "Placemaker.Ghost.Failed";
+                _gMessage = "Citymaker.Ghost.Failed";
                 return had;
             }
         }
@@ -219,7 +219,7 @@ namespace Placemaker.Game.Build
             _startFrame = UnityEngine.Time.frameCount;
             _status = new BuildStatus { Phase = BuildPhase.Preparing, Progress = 0.1f, ErrorPositions = new List<float3>(), Warnings = new List<PlanIssue>() };
             Go(Step.ActivateTool);
-            Mod.Log.Info($"Placemaker instant build from the ghost (revision {revision}).");
+            Mod.Log.Info($"Citymaker instant build from the ghost (revision {revision}).");
             return true;
         }
 
@@ -301,16 +301,16 @@ namespace Placemaker.Game.Build
                 for (int i = 0; i < temps.Length; i++) if ((temps[i].m_Flags & TempFlags.Cancel) != 0) dropped++;
             _gDetails.Dropped = dropped;
             if (_gDetails.Errors > 0 || dropped > 0)
-                Mod.Log.Info($"Placemaker ghost {_gEmitting}: {_gDetails.Emitted}/{_gDetails.Planned} parts, {_gDetails.Errors} rejected, {dropped} optional objects dropped (collisions){(_gDetails.Partial ? ", partial" : "")}.");
+                Mod.Log.Info($"Citymaker ghost {_gEmitting}: {_gDetails.Emitted}/{_gDetails.Planned} parts, {_gDetails.Errors} rejected, {dropped} optional objects dropped (collisions){(_gDetails.Partial ? ", partial" : "")}.");
         }
 
-        /// <summary>Own definitions; while the Placemaker tool is active every definition is ours (CourseSplit derives unmarked ones).</summary>
+        /// <summary>Own definitions; while the Citymaker tool is active every definition is ours (CourseSplit derives unmarked ones).</summary>
         private void DestroyGhostDefinitions()
         {
             foreach (var d in _ownDefinitions)
                 if (EntityManager.Exists(d) && !EntityManager.HasComponent<Deleted>(d)) EntityManager.AddComponent<Deleted>(d);
             _ownDefinitions.Clear();
-            if (_toolSystem.activeTool is Placemaker.Game.Tool.PlacemakerToolSystem && !_definitionQuery.IsEmptyIgnoreFilter)
+            if (_toolSystem.activeTool is Citymaker.Game.Tool.CitymakerToolSystem && !_definitionQuery.IsEmptyIgnoreFilter)
                 EntityManager.AddComponent<Deleted>(_definitionQuery);
         }
 
@@ -326,9 +326,9 @@ namespace Placemaker.Game.Build
             {
                 DestroyGhostDefinitions();
                 World.GetOrCreateSystemManaged<UpdateSystem>().Update(SystemUpdatePhase.ClearTool);
-                Mod.Log.Info("Placemaker removed an orphaned ghost preview (the tool stopped driving it).");
+                Mod.Log.Info("Citymaker removed an orphaned ghost preview (the tool stopped driving it).");
             }
-            catch (Exception e) { Mod.Log.Warn("Placemaker ghost cleanup failed: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker ghost cleanup failed: " + e.Message); }
             ResetTransaction();
             ResetGhost();
         }

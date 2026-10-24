@@ -3,50 +3,50 @@
 // Lang keys; nothing here needs to change.
 //
 // Localisation key convention (checked by tests):
-//   layer name      Placemaker.<Area>.Name
-//   control label   Placemaker.<Area>.<controlId>
-//   control tooltip Placemaker.<Area>.<controlId>.Tooltip   (only when declared with .Tip())
-//   option label    Placemaker.<Area>.<controlId>.<optionValue>
-//   preset label    Placemaker.<Area>.Preset.<presetId>
-//   issues          Placemaker.<Area>.Issue.<Name>  /  shared ones in Keys
-//   stats           Placemaker.Stat.<Name> (shared so the composer can merge them)
+//   layer name      Citymaker.<Area>.Name
+//   control label   Citymaker.<Area>.<controlId>
+//   control tooltip Citymaker.<Area>.<controlId>.Tooltip   (only when declared with .Tip())
+//   option label    Citymaker.<Area>.<controlId>.<optionValue>
+//   preset label    Citymaker.<Area>.Preset.<presetId>
+//   issues          Citymaker.<Area>.Issue.<Name>  /  shared ones in Keys
+//   stats           Citymaker.Stat.<Name> (shared so the composer can merge them)
 
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 using Random = Unity.Mathematics.Random;
 
-namespace Placemaker.Core.Layers.Common
+namespace Citymaker.Core.Layers.Common
 {
     public static class Keys
     {
-        public const string NoAssetsIssue = "Placemaker.Common.Issue.NoAssets";
-        public const string InvalidArea = "Placemaker.Common.Issue.InvalidArea";
-        public const string AreaTooSmall = "Placemaker.Common.Issue.AreaTooSmall";
-        public const string AreaTooLarge = "Placemaker.Common.Issue.AreaTooLarge";
-        public const string SurfaceDropped = "Placemaker.Common.Issue.SurfaceDropped";
-        public const string NoSpace = "Placemaker.Common.Issue.NoSpace";
+        public const string NoAssetsIssue = "Citymaker.Common.Issue.NoAssets";
+        public const string InvalidArea = "Citymaker.Common.Issue.InvalidArea";
+        public const string AreaTooSmall = "Citymaker.Common.Issue.AreaTooSmall";
+        public const string AreaTooLarge = "Citymaker.Common.Issue.AreaTooLarge";
+        public const string SurfaceDropped = "Citymaker.Common.Issue.SurfaceDropped";
+        public const string NoSpace = "Citymaker.Common.Issue.NoSpace";
 
-        public const string StatArea = "Placemaker.Stat.Area";
-        public const string StatPathLength = "Placemaker.Stat.PathLength";
-        public const string StatTrees = "Placemaker.Stat.Trees";
-        public const string StatBushes = "Placemaker.Stat.Bushes";
-        public const string StatBenches = "Placemaker.Stat.Benches";
-        public const string StatLamps = "Placemaker.Stat.Lamps";
-        public const string StatBins = "Placemaker.Stat.Bins";
-        public const string StatFountains = "Placemaker.Stat.Fountains";
-        public const string StatPlayItems = "Placemaker.Stat.PlayItems";
-        public const string StatRestrooms = "Placemaker.Stat.Restrooms";
-        public const string StatPicnicTables = "Placemaker.Stat.PicnicTables";
-        public const string StatFlowerbeds = "Placemaker.Stat.Flowerbeds";
-        public const string StatPitches = "Placemaker.Stat.Pitches";
-        public const string StatParts = "Placemaker.Stat.Parts";
-        public const string StatLakeArea = "Placemaker.Stat.LakeArea";
+        public const string StatArea = "Citymaker.Stat.Area";
+        public const string StatPathLength = "Citymaker.Stat.PathLength";
+        public const string StatTrees = "Citymaker.Stat.Trees";
+        public const string StatBushes = "Citymaker.Stat.Bushes";
+        public const string StatBenches = "Citymaker.Stat.Benches";
+        public const string StatLamps = "Citymaker.Stat.Lamps";
+        public const string StatBins = "Citymaker.Stat.Bins";
+        public const string StatFountains = "Citymaker.Stat.Fountains";
+        public const string StatPlayItems = "Citymaker.Stat.PlayItems";
+        public const string StatRestrooms = "Citymaker.Stat.Restrooms";
+        public const string StatPicnicTables = "Citymaker.Stat.PicnicTables";
+        public const string StatFlowerbeds = "Citymaker.Stat.Flowerbeds";
+        public const string StatPitches = "Citymaker.Stat.Pitches";
+        public const string StatParts = "Citymaker.Stat.Parts";
+        public const string StatLakeArea = "Citymaker.Stat.LakeArea";
 
         /// <summary>Category label keys used as issue arguments ("no {0} installed").</summary>
-        public static string Category(string category) => "Placemaker.Category." + category;
+        public static string Category(string category) => "Citymaker.Category." + category;
 
         public const string UnitM2 = "m2";
         public const string UnitM = "m";
@@ -64,7 +64,7 @@ namespace Placemaker.Core.Layers.Common
 
         public ControlSet(string area) { _area = area; }
 
-        public string Key(string id) => "Placemaker." + _area + "." + id;
+        public string Key(string id) => "Citymaker." + _area + "." + id;
 
         private ControlSchema Add(string id, ControlKind kind, ControlTier tier, string group, object def)
         {
@@ -131,7 +131,7 @@ namespace Placemaker.Core.Layers.Common
     public static class ControlSchemaExtensions
     {
         public static ControlSchema Tip(this ControlSchema c) { c.TooltipKey = c.LabelKey + ".Tooltip"; return c; }
-        /// <summary>Puts the control in a section (heading "Placemaker.UI.Group.{group}").</summary>
+        /// <summary>Puts the control in a section (heading "Citymaker.UI.Group.{group}").</summary>
         public static ControlSchema In(this ControlSchema c, string group) { c.Group = group ?? ""; return c; }
         public static ControlSchema When(this ControlSchema c, string condition) { c.VisibleWhen = condition; return c; }
         public static ControlSchema Cheap(this ControlSchema c) { c.Cheap = true; return c; }
@@ -288,7 +288,7 @@ namespace Placemaker.Core.Layers.Common
         /// <summary>Localisation area ("Park", "Plaza", "AddOn.Fountain"…).</summary>
         protected abstract string Area { get; }
         public abstract string Id { get; }
-        public virtual string NameKey => "Placemaker." + Area + ".Name";
+        public virtual string NameKey => "Citymaker." + Area + ".Name";
         public abstract string Icon { get; }
         public abstract LayerKind Kind { get; }
         public virtual string[] Accepts => Array.Empty<string>();
@@ -323,7 +323,7 @@ namespace Placemaker.Core.Layers.Common
         /// <summary>Declares a preset; values not given keep the layer defaults.</summary>
         protected void Preset(string id, params (string key, object value)[] values)
         {
-            var p = new PresetInfo { Id = id, LabelKey = "Placemaker." + Area + ".Preset." + id, Values = Defaults() };
+            var p = new PresetInfo { Id = id, LabelKey = "Citymaker." + Area + ".Preset." + id, Values = Defaults() };
             // s21: a preset promises a look, decals included (an abandoned lot is gritty, a formal garden clean).
             if (Control(Decals.DressingControls.StyleId) != null)
                 p.Values.Values[Decals.DressingControls.StyleId] = Decals.DressingControls.Styles[(int)Decals.DressingProfiles.StyleFor(Id, id)];
@@ -708,7 +708,7 @@ namespace Placemaker.Core.Layers.Common
         public static readonly string[] ShopOptions = { StreetShops.AmountId, StreetShops.LayoutId, StreetShops.DepthId };
 
         /// <summary>Shared label keys: the street-shop controls read the same on every host.</summary>
-        private const string ShopKey = "Placemaker.Shops.";
+        private const string ShopKey = "Citymaker.Shops.";
 
         /// <summary>
         /// The street-shop controls (amount, layout, depth) with this type's defaults (StreetShops.Defaults).
@@ -741,8 +741,8 @@ namespace Placemaker.Core.Layers.Common
         /// <summary>FeatureInfo for "Shops along the street" on a host; on by default where StreetShops.Defaults says so.</summary>
         public static FeatureInfo StreetShopsFeature(string area, string layerId = null) => new FeatureInfo
         {
-            Layer = StreetShopsLayer, Target = StreetFrontage.ShopsTag, LabelKey = "Placemaker.Feature.streetShops",
-            TooltipKey = "Placemaker.Feature.streetShops.Tooltip", Options = ShopOptions,
+            Layer = StreetShopsLayer, Target = StreetFrontage.ShopsTag, LabelKey = "Citymaker.Feature.streetShops",
+            TooltipKey = "Citymaker.Feature.streetShops.Tooltip", Options = ShopOptions,
             Preset = new SettingsBag { Values = { ["depth"] = 48.0, [AddOns.EdgeZoningAddOn.CutoutSetting] = true } },
             DefaultOn = StreetShops.DefaultFor(layerId).on,
         };
@@ -763,10 +763,10 @@ namespace Placemaker.Core.Layers.Common
                 foreach (var m in SuggestMarkers(input)) gates.Add(m.Position.xz);
             var layout = StreetShops.Plan(region, input, gates, StreetShops.FeatureLayout(ctx.S(StreetShops.LayoutId)), ctx.S(StreetShops.AmountId), ctx.F(StreetShops.DepthId),
                 Hashing.Mix(ctx.Seed, Seeds.Hash("streetShops")));
-            if (layout.Shops.Count == 0) { ctx.Issue(IssueSeverity.Info, "Placemaker.Feature.streetShops.Issue.NoFrontage"); return null; }
+            if (layout.Shops.Count == 0) { ctx.Issue(IssueSeverity.Info, "Citymaker.Feature.streetShops.Issue.NoFrontage"); return null; }
             var carved = StreetShops.Carve(region, layout.Carve, MinArea);
             var rest = carved == null ? null : Common.LayerRegion.From(carved);
-            if (rest == null) { ctx.Issue(IssueSeverity.Info, "Placemaker.Feature.streetShops.Issue.TooSmall"); return null; }
+            if (rest == null) { ctx.Issue(IssueSeverity.Info, "Citymaker.Feature.streetShops.Issue.TooSmall"); return null; }
             ctx.LayerRegion = rest;
             // "place:shops" makes the composer reserve the shop land for the host's other features (big trees,
             // picnic…, which plan on the whole outline); the zoning feature filling a region still sees it free.

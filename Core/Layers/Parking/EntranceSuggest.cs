@@ -1,4 +1,4 @@
-// Entrance suggestions on adjacent roads (new for Placemaker; PLT asked the player to place every
+// Entrance suggestions on adjacent roads (new for Citymaker; PLT asked the player to place every
 // entrance by hand — "Automatic entrances are not available yet").
 //
 // Samples the outline every ~2 m, casts outward to the nearest road (same 40 m rule the build uses)
@@ -14,7 +14,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Parking
+namespace Citymaker.Core.Layers.Parking
 {
     internal static class EntranceSuggest
     {

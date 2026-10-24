@@ -1,4 +1,4 @@
-// Placemaker — reads the current map's terrain paint materials into a Core TerrainPalette (s33). GPL-3.0.
+// Citymaker — reads the current map's terrain paint materials into a Core TerrainPalette (s33). GPL-3.0.
 //
 // CS2 1.6.2f1 (decompiled): TerrainMaterialSystem.currentTerrainRenderSettings is the map's TerrainRenderSettingsPrefab
 // (vanilla maps: "DefaultTerrainRenderSettings"; custom maps may carry their own, edited in the map editor). Its
@@ -12,12 +12,12 @@ using System;
 using Game.Prefabs;
 using Game.Prefabs.Terrain;
 using Game.Rendering;
-using Placemaker.Core.Paint;
+using Citymaker.Core.Paint;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Placemaker.Game.Preview
+namespace Citymaker.Game.Preview
 {
     public static class TerrainPaletteReader
     {
@@ -44,12 +44,12 @@ namespace Placemaker.Game.Preview
                 if (e == s_entity && key == s_key && s_palette != null) return s_palette;
                 s_entity = e; s_key = key;
                 s_palette = Read(settings);
-                Mod.Log.Info("Placemaker terrain paint materials: " + s_palette.Describe());
+                Mod.Log.Info("Citymaker terrain paint materials: " + s_palette.Describe());
                 return s_palette;
             }
             catch (Exception ex)
             {
-                Mod.Log.Warn("Placemaker: reading the map's terrain materials failed (" + ex.Message + "); assuming the vanilla slots.");
+                Mod.Log.Warn("Citymaker: reading the map's terrain materials failed (" + ex.Message + "); assuming the vanilla slots.");
                 return s_palette;
             }
         }

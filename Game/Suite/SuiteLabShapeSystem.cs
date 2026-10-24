@@ -1,4 +1,4 @@
-﻿// Game runner lab (exploration, not a Placemaker feature): the "custom assets on the fly" spike. Turns a mesh generated
+// Game runner lab (exploration, not a Citymaker feature): the "custom assets on the fly" spike. Turns a mesh generated
 // in code into a real game object the game's own renderer draws (lit, shadowed, culled like any prop), the way
 // ExtraAssetsImporter builds its decal boxes, but as a solid 3D shape with a vanilla material:
 //   mesh (packed like the game's importer packs it: octahedral normals/tangents when the material asks for them)
@@ -29,13 +29,13 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Scripting;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
-    /// <summary>The lab's own file-backed asset database (ModsData/Placemaker/suite/lab-shapes).</summary>
+    /// <summary>The lab's own file-backed asset database (ModsData/Citymaker/suite/lab-shapes).</summary>
     public readonly struct LabShapeDatabase : IAssetDatabaseDescriptor<LabShapeDatabase>
     {
-        public static string RootPath => Path.Combine(EnvPath.kUserDataPath, "ModsData", "Placemaker", "suite", "lab-shapes");
-        public string name => "PlacemakerLab";
+        public static string RootPath => Path.Combine(EnvPath.kUserDataPath, "ModsData", "citymaker", "suite", "lab-shapes");
+        public string name => "CitymakerLab";
         public bool canWriteSettings => false;
         public DlcId dlcId => DlcId.Virtual;
         public IAssetFactory assetFactory => DefaultAssetFactory.instance;
@@ -97,12 +97,12 @@ namespace Placemaker.Game.Suite
                     if (t.IsFaulted) throw t.Exception;
                     db.PopulateFromDataSource(false, CancellationToken.None, new Colossal.TaskProgress(_ => { })).Wait();
                 });
-                Mod.Log.Info("Placemaker lab: shape database registering at " + LabShapeDatabase.RootPath);
+                Mod.Log.Info("Citymaker lab: shape database registering at " + LabShapeDatabase.RootPath);
             }
             catch (Exception e)
             {
                 _dbError = "failed: " + e.Message;
-                Mod.Log.Warn("Placemaker lab: shape database not registered: " + e);
+                Mod.Log.Warn("Citymaker lab: shape database not registered: " + e);
             }
         }
 
@@ -115,7 +115,7 @@ namespace Placemaker.Game.Suite
             catch (Exception e)
             {
                 r.Error = e.GetType().Name + ": " + e.Message;
-                Mod.Log.Warn("Placemaker lab: shape " + r.Name + " failed: " + e);
+                Mod.Log.Warn("Citymaker lab: shape " + r.Name + " failed: " + e);
             }
             r.Done = true;
         }
@@ -220,15 +220,15 @@ namespace Placemaker.Game.Suite
             render.surfaceArea = 0f;
             render.isImpostor = false;
             render.manualVTRequired = false;
-            if (!Placemaker.Game.Assets.AssetCatalogSystem.AddOwnPrefab(_prefabs, render)) { r.Error = "AddPrefab refused the render prefab"; return; }
+            if (!Citymaker.Game.Assets.AssetCatalogSystem.AddOwnPrefab(_prefabs, render)) { r.Error = "AddPrefab refused the render prefab"; return; }
 
             var obj = ScriptableObject.CreateInstance<StaticObjectPrefab>();
             obj.name = r.Name;
             obj.m_Meshes = new[] { new ObjectMeshInfo { m_Mesh = render, m_Position = float3.zero, m_Rotation = quaternion.identity } };
-            if (!Placemaker.Game.Assets.AssetCatalogSystem.AddOwnPrefab(_prefabs, obj)) { r.Error = "AddPrefab refused the object prefab"; return; }
+            if (!Citymaker.Game.Assets.AssetCatalogSystem.AddOwnPrefab(_prefabs, obj)) { r.Error = "AddPrefab refused the object prefab"; return; }
             r.Prefab = _prefabs.GetEntity(obj);
             r.ReadyFrame = UnityEngine.Time.frameCount + 3;
-            Mod.Log.Info($"Placemaker lab: made shape '{r.Name}': {mesh.vertexCount} vertices, bounds {b.size}, surface {surf.Label} ({surf.Template}, VT {surf.Vt}, octahedral {surf.Octo}), keywords [{string.Join(" ", surf.Keywords)}]");
+            Mod.Log.Info($"Citymaker lab: made shape '{r.Name}': {mesh.vertexCount} vertices, bounds {b.size}, surface {surf.Label} ({surf.Template}, VT {surf.Vt}, octahedral {surf.Octo}), keywords [{string.Join(" ", surf.Keywords)}]");
         }
 
         /// <summary>
@@ -249,11 +249,11 @@ namespace Placemaker.Game.Suite
             obj.m_Circular = original.m_Circular;
             foreach (var component in original.components)
                 if (component != null && !(component is UIObject) && !(component is ObsoleteIdentifiers)) obj.AddComponentFrom(component);
-            if (!Placemaker.Game.Assets.AssetCatalogSystem.AddOwnPrefab(_prefabs, obj)) { r.Error = "AddPrefab refused the copy"; return; }
+            if (!Citymaker.Game.Assets.AssetCatalogSystem.AddOwnPrefab(_prefabs, obj)) { r.Error = "AddPrefab refused the copy"; return; }
             r.Prefab = _prefabs.GetEntity(obj);
             r.ReadyFrame = UnityEngine.Time.frameCount + 3;
             r.Info["copyOf"] = original.name;
-            Mod.Log.Info($"Placemaker lab: made '{r.Name}', a copy of {original.GetType().Name} '{original.name}'");
+            Mod.Log.Info($"Citymaker lab: made '{r.Name}', a copy of {original.GetType().Name} '{original.name}'");
         }
 
         // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ vertex packing (as Colossal.AssetPipeline's AttributePackingPostProcessor) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

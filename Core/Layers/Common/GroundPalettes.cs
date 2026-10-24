@@ -22,7 +22,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Placemaker.Core.Layers.Common
+namespace Citymaker.Core.Layers.Common
 {
     /// <summary>Stones of one paved place, by role (see file header). Legacy palettes leave Focal/Path to Accent.</summary>
     public sealed class PavingPalette
@@ -172,9 +172,9 @@ namespace Placemaker.Core.Layers.Common
             return v;
         }
 
-        public static string LabelKey(string id) => "Placemaker.Palette." + id;
+        public static string LabelKey(string id) => "Citymaker.Palette." + id;
         /// <summary>The visible one-line description ("Pale granite slabs · slate border").</summary>
-        public static string DetailKey(string id) => "Placemaker.Palette." + id + ".Detail";
+        public static string DetailKey(string id) => "Citymaker.Palette." + id + ".Detail";
 
         /// <summary>
         /// Adds the palette chooser (at the current position: put it first in the ground section) and the
@@ -184,8 +184,8 @@ namespace Placemaker.Core.Layers.Common
         public static void DefineControls(ControlSet c, string group, string fieldControl, ControlTier overrides = ControlTier.More)
         {
             var ch = c.Choice(Control, Automatic, ControlTier.Essential, group, Values());
-            ch.LabelKey = "Placemaker.Palette";
-            ch.TooltipKey = "Placemaker.Palette.Tooltip";
+            ch.LabelKey = "Citymaker.Palette";
+            ch.TooltipKey = "Citymaker.Palette.Tooltip";
             foreach (var o in ch.Options)
             {
                 // s18 (on s16's option cards): the description is the card's visible line, the swatch its picture.
@@ -197,7 +197,7 @@ namespace Placemaker.Core.Layers.Common
             c.Fixed(Control);
             // The palette a Custom mix started from (written by OnValueSet / Derive); hidden, never rolled.
             var b = c.Choice(BaseControl, Automatic, ControlTier.More, group, BaseValues()).When(Control + "=legacy");
-            b.LabelKey = "Placemaker.Palette";
+            b.LabelKey = "Citymaker.Palette";
             foreach (var o in b.Options) o.LabelKey = LabelKey(o.Value);
             c.Fixed(BaseControl);
             DefineRoleControls(c, group, overrides);
@@ -272,7 +272,7 @@ namespace Placemaker.Core.Layers.Common
             foreach (var id in new[] { BorderControl, FocalControl, PathControl, InlayControl })
             {
                 var a = c.Asset(id, AssetCategories.SurfacePaving, tier, group);
-                a.LabelKey = "Placemaker.Palette.Role." + id;
+                a.LabelKey = "Citymaker.Palette.Role." + id;
                 a.TooltipKey = a.LabelKey + ".Tooltip";
             }
         }

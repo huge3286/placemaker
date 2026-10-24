@@ -225,16 +225,16 @@ const LotGrid = ({ w0, w1, d0, d1, colour, testId, onCommit, onDrag }: { w0: num
             data-testid={testId}
             data-w={a0 + "-" + a1}
             data-d={b0 + "-" + b1}
-            title={t("Placemaker.UI.ZoneMix.GridTip", "Its lots, in zone cells (one cell is 8 m), the road along the bottom: the solid block is the smallest lot, the lighter one the biggest; each lot picks a size between. Click or drag near a corner to move it.")}
+            title={t("Citymaker.UI.ZoneMix.GridTip", "Its lots, in zone cells (one cell is 8 m), the road along the bottom: the solid block is the smallest lot, the lighter one the biggest; each lot picks a size between. Click or drag near a corner to move it.")}
         >
             <div className={z.grid} ref={gridRef} onMouseDown={onDown}>
                 {rowsOut}
             </div>
             <div className={z.legend}>
                 <div className={z.legendSwatch} style={{ backgroundColor: colour }} />
-                <div className={z.legendText}>{t("Placemaker.UI.ZoneMix.Min", "min")}</div>
+                <div className={z.legendText}>{t("Citymaker.UI.ZoneMix.Min", "min")}</div>
                 <div className={classNames(z.legendSwatch, z.legendLight)} style={{ backgroundColor: colour }} />
-                <div className={z.legendText}>{t("Placemaker.UI.ZoneMix.Max", "max lot")}</div>
+                <div className={z.legendText}>{t("Citymaker.UI.ZoneMix.Max", "max lot")}</div>
             </div>
         </div>
     );
@@ -349,7 +349,7 @@ const ShareBar = ({ parts, onCommit, t }: { parts: Part[]; onCommit: (shares: Re
                     ) : null,
                 )}
                 {edges.map((at, i) => (
-                    <div key={"edge" + i} className={z.barEdge} style={{ left: Math.min(100, at) + "%" }} onMouseDown={(e) => onDown(e, i)} data-testid={"zonemix-edge-" + i} title={t("Placemaker.UI.ZoneMix.DragTip", "Drag to share the land")}>
+                    <div key={"edge" + i} className={z.barEdge} style={{ left: Math.min(100, at) + "%" }} onMouseDown={(e) => onDown(e, i)} data-testid={"zonemix-edge-" + i} title={t("Citymaker.UI.ZoneMix.DragTip", "Drag to share the land")}>
                         <div className={z.barGrip} />
                     </div>
                 ))}
@@ -400,7 +400,7 @@ export const ZoneMix = ({ step, layer, rows, found, outgrow }: { step: StepView;
     const scale = sum > 100 ? 100 / sum : 1;
     const parts: Part[] = used.map((x) => ({ key: x.sl, sl: x.sl, share: Math.round(x.share * scale), colour: colourOf(x.kind, x.asset), name: nameOf(x.kind, x.asset) }));
     const zoned = parts.reduce((n, p) => n + p.share, 0);
-    parts.push({ key: "empty", sl: null, share: Math.max(0, 100 - zoned), colour: "", name: t("Placemaker.UI.ZoneMix.Empty", "Empty") });
+    parts.push({ key: "empty", sl: null, share: Math.max(0, 100 - zoned), colour: "", name: t("Citymaker.UI.ZoneMix.Empty", "Empty") });
 
     const commitShares = (out: Record<string, number>) => {
         // a bar that was over 100 is written out as it is shown
@@ -444,7 +444,7 @@ export const ZoneMix = ({ step, layer, rows, found, outgrow }: { step: StepView;
         const cur = slots.find((x) => x.sl === sl);
         picker.open({
             category: "zone",
-            title: t("Placemaker.Polish.zoneAsset" + sl, "Exact zone"),
+            title: t("Citymaker.Polish.zoneAsset" + sl, "Exact zone"),
             mode: "single",
             selected: cur?.asset ? [cur.asset] : [],
             allowAutomatic: true,
@@ -468,7 +468,7 @@ export const ZoneMix = ({ step, layer, rows, found, outgrow }: { step: StepView;
             >
                 <div className={z.swatch} style={{ backgroundColor: colourOf(kind, asset) }} />
                 <div className={z.zoneName}>{nameOf(kind, asset)}</div>
-                {asset ? <div className={z.exactTag}>{t("Placemaker.UI.ZoneMix.Exact", "exact")}</div> : null}
+                {asset ? <div className={z.exactTag}>{t("Citymaker.UI.ZoneMix.Exact", "exact")}</div> : null}
                 <Icon name="chevronDown" size={9} tint="dim" />
             </button>
         );
@@ -478,7 +478,7 @@ export const ZoneMix = ({ step, layer, rows, found, outgrow }: { step: StepView;
         <div className={z.menu} data-testid={"zonemix-menu-" + id}>
             {KIND_GROUPS.map((g) => (
                 <div key={g.id} className={z.menuGroup}>
-                    <div className={z.menuTitle}>{t("Placemaker.UI.ZoneMix.Group." + g.id, g.en)}</div>
+                    <div className={z.menuTitle}>{t("Citymaker.UI.ZoneMix.Group." + g.id, g.en)}</div>
                     <div className={z.menuChips}>
                         {g.kinds.map((k) => {
                             const zone = zoneOf(k, "");
@@ -512,7 +512,7 @@ export const ZoneMix = ({ step, layer, rows, found, outgrow }: { step: StepView;
                 }}
             >
                 <Icon name="search" size={10} tint="dim" />
-                <div className={z.chipText}>{t("Placemaker.UI.ZoneMix.ExactPick", "Pick an exact zone (mods' too)…")}</div>
+                <div className={z.chipText}>{t("Citymaker.UI.ZoneMix.ExactPick", "Pick an exact zone (mods' too)…")}</div>
             </button>
         </div>
     );
@@ -527,14 +527,14 @@ export const ZoneMix = ({ step, layer, rows, found, outgrow }: { step: StepView;
     };
 
     const roadText = (a: number, b: number) =>
-        a <= 0 && b >= MAX_ROAD ? t("Placemaker.UI.ZoneMix.AnyRoad", "any") : a <= 0 ? "≤ " + b + " m" : b >= MAX_ROAD ? "≥ " + a + " m" : a + "–" + b + " m";
+        a <= 0 && b >= MAX_ROAD ? t("Citymaker.UI.ZoneMix.AnyRoad", "any") : a <= 0 ? "≤ " + b + " m" : b >= MAX_ROAD ? "≥ " + a + " m" : a + "–" + b + " m";
 
     return (
         <div className={z.mix} data-testid="zonemix">
             <div className={z.mode} data-testid="zonemix-mode">
                 {[
-                    { id: "zone", on: placing, icon: "zone", label: t("Placemaker.UI.ZoneMix.ModeZone", "Zone empty land"), tip: t("Placemaker.UI.ZoneMix.ModeZoneTip", "The empty zone cells of the area get these zones, as lots that start at the road; the buildings there outgrow their lots too.") },
-                    { id: "edit", on: !placing, icon: "building", label: t("Placemaker.UI.ZoneMix.ModeEdit", "Only edit existing"), tip: t("Placemaker.UI.ZoneMix.ModeEditTip", "Nothing is zoned: the buildings in the area outgrow their lots, each zone type by its own settings (a type not listed: the first one's).") },
+                    { id: "zone", on: placing, icon: "zone", label: t("Citymaker.UI.ZoneMix.ModeZone", "Zone empty land"), tip: t("Citymaker.UI.ZoneMix.ModeZoneTip", "The empty zone cells of the area get these zones, as lots that start at the road; the buildings there outgrow their lots too.") },
+                    { id: "edit", on: !placing, icon: "building", label: t("Citymaker.UI.ZoneMix.ModeEdit", "Only edit existing"), tip: t("Citymaker.UI.ZoneMix.ModeEditTip", "Nothing is zoned: the buildings in the area outgrow their lots, each zone type by its own settings (a type not listed: the first one's).") },
                 ].map((m) => (
                     <button
                         key={m.id}
@@ -562,16 +562,16 @@ export const ZoneMix = ({ step, layer, rows, found, outgrow }: { step: StepView;
                                   <div className={z.leftCol}>
                                       <div className={z.topRow}>
                                           <div className={z.zoneField}>
-                                              <div className={z.fieldLabel}>{t("Placemaker.UI.ZoneMix.CapZone", "Zone")}</div>
+                                              <div className={z.fieldLabel}>{t("Citymaker.UI.ZoneMix.CapZone", "Zone")}</div>
                                               <ZoneButton id={x.sl} kind={x.kind} asset={x.asset} />
                                           </div>
                                           {outgrowInline(key, x.sl)}
                                       </div>
                                       <div
                                           className={z.roadField}
-                                          title={t("Placemaker.UI.ZoneMix.RoadTip3", "Allowed road width: the roads this zone may line, by their width (two lanes 16 m, four lanes 24 m, six lanes 32 m). Its lots are only placed along roads in this range.")}
+                                          title={t("Citymaker.UI.ZoneMix.RoadTip3", "Allowed road width: the roads this zone may line, by their width (two lanes 16 m, four lanes 24 m, six lanes 32 m). Its lots are only placed along roads in this range.")}
                                       >
-                                          <div className={z.fieldLabel}>{t("Placemaker.UI.ZoneMix.CapRoads2", "Allowed road width")}</div>
+                                          <div className={z.fieldLabel}>{t("Citymaker.UI.ZoneMix.CapRoads2", "Allowed road width")}</div>
                                           <RangeSlider
                                               lo={x.r0}
                                               hi={x.r1}
@@ -607,7 +607,7 @@ export const ZoneMix = ({ step, layer, rows, found, outgrow }: { step: StepView;
                                           type="button"
                                           className={z.remove}
                                           data-testid={"zonemix-remove-" + x.sl}
-                                          title={t("Placemaker.UI.ZoneMix.Remove", "Remove this zone")}
+                                          title={t("Citymaker.UI.ZoneMix.Remove", "Remove this zone")}
                                           onClick={(e) => {
                                               e.stopPropagation();
                                               removeZone(x.sl);
@@ -625,7 +625,7 @@ export const ZoneMix = ({ step, layer, rows, found, outgrow }: { step: StepView;
                 : found.length === 0
                   ? (
                         <div className={z.none} data-testid="zonemix-none">
-                            {t("Placemaker.UI.ZoneMix.NoZones", "No zoned buildings in the selection: pick an area with buildings.")}
+                            {t("Citymaker.UI.ZoneMix.NoZones", "No zoned buildings in the selection: pick an area with buildings.")}
                         </div>
                     )
                   : found.map((f) => (
@@ -635,7 +635,7 @@ export const ZoneMix = ({ step, layer, rows, found, outgrow }: { step: StepView;
                                     {f.icon ? <Icon name={f.icon} size={14} fallback="zone" /> : <Icon name="zone" size={14} tint="dim" />}
                                     <div className={z.zoneName}>{foundName(f.zone)}</div>
                                 </div>
-                                <div className={z.foundCount}>{t("Placemaker.UI.ZoneMix.Buildings", "{0} buildings", [f.count])}</div>
+                                <div className={z.foundCount}>{t("Citymaker.UI.ZoneMix.Buildings", "{0} buildings", [f.count])}</div>
                                 {outgrowInline(f.key, f.key)}
                             </div>
                             {outgrowPick(f.key, f.key)}
@@ -652,7 +652,7 @@ export const ZoneMix = ({ step, layer, rows, found, outgrow }: { step: StepView;
                     }}
                 >
                     <Icon name="plus" size={10} tint="accent" />
-                    <div className={z.chipText}>{t("Placemaker.UI.ZoneMix.Add", "Mix in another zone")}</div>
+                    <div className={z.chipText}>{t("Citymaker.UI.ZoneMix.Add", "Mix in another zone")}</div>
                 </button>
             ) : null}
             {placing ? rows(val("zonePattern") === "clumps" ? ["zonePattern", "zoneGrain"] : ["zonePattern"]) : null}

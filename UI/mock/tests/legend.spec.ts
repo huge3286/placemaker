@@ -19,7 +19,7 @@ async function drawnSoon(page: Page, test: (layers: string[]) => boolean) {
 
 test("legend: layers of the plan, hover isolates one, click hides it, All resets", async ({ page }) => {
     const errors = await open(page);
-    await page.evaluate(() => localStorage.removeItem("placemaker.legendOpen.v1"));
+    await page.evaluate(() => localStorage.removeItem("citymaker.legendOpen.v1"));
     await toDesign(page, "park");
 
     const legend = page.getByTestId("legend-window");

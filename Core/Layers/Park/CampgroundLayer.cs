@@ -7,10 +7,10 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Park
+namespace Citymaker.Core.Layers.Park
 {
     [AreaGenerator(40, Group = "nature")]
     public sealed class CampgroundLayer : LayerBase, IHasFeatures
@@ -27,15 +27,15 @@ namespace Placemaker.Core.Layers.Park
 
         private static readonly FeatureInfo[] FeatureList =
         {
-            new FeatureInfo { Layer = "restrooms", LabelKey = "Placemaker.Campground.Feature.restrooms", TooltipKey = "Placemaker.Campground.Feature.restrooms.Tooltip", DefaultOn = true },
-            new FeatureInfo { Layer = "playground", Target = RegionTags.Core, LabelKey = "Placemaker.Campground.Feature.playground", Preset = ParkLayer.Bag(("size", "small")) },
+            new FeatureInfo { Layer = "restrooms", LabelKey = "Citymaker.Campground.Feature.restrooms", TooltipKey = "Citymaker.Campground.Feature.restrooms.Tooltip", DefaultOn = true },
+            new FeatureInfo { Layer = "playground", Target = RegionTags.Core, LabelKey = "Citymaker.Campground.Feature.playground", Preset = ParkLayer.Bag(("size", "small")) },
             // Not on by default: pitches already have tables, and the core clearing goes to the playground.
-            new FeatureInfo { Layer = "picnic", Target = RegionTags.Core, LabelKey = "Placemaker.Campground.Feature.picnic", Preset = ParkLayer.Bag(("groups", 2.0), ("shelter", true)) },
-            new FeatureInfo { Layer = "shops", LabelKey = "Placemaker.Feature.shops", TooltipKey = "Placemaker.Feature.shops.Tooltip", Preset = ParkLayer.Bag(("count", 1.0), ("where", "entrances")) },
+            new FeatureInfo { Layer = "picnic", Target = RegionTags.Core, LabelKey = "Citymaker.Campground.Feature.picnic", Preset = ParkLayer.Bag(("groups", 2.0), ("shelter", true)) },
+            new FeatureInfo { Layer = "shops", LabelKey = "Citymaker.Feature.shops", TooltipKey = "Citymaker.Feature.shops.Tooltip", Preset = ParkLayer.Bag(("count", 1.0), ("where", "entrances")) },
             StreetShopsFeature("Campground", "campground"),
-            new FeatureInfo { Layer = "rocks", LabelKey = "Placemaker.Feature.rocks" },
-            new FeatureInfo { Layer = "decals", LabelKey = "Placemaker.Feature.decals", Preset = ParkLayer.Bag(("theme", "leaves"), ("density", 0.4)), DefaultOn = true },
-            new FeatureInfo { Layer = "terrain", LabelKey = "Placemaker.Feature.terrain", TooltipKey = "Placemaker.Feature.terrain.Tooltip", Preset = ParkLayer.Bag(("shape", "mounds"), ("height", 1.5)) },
+            new FeatureInfo { Layer = "rocks", LabelKey = "Citymaker.Feature.rocks" },
+            new FeatureInfo { Layer = "decals", LabelKey = "Citymaker.Feature.decals", Preset = ParkLayer.Bag(("theme", "leaves"), ("density", 0.4)), DefaultOn = true },
+            new FeatureInfo { Layer = "terrain", LabelKey = "Citymaker.Feature.terrain", TooltipKey = "Citymaker.Feature.terrain.Tooltip", Preset = ParkLayer.Bag(("shape", "mounds"), ("height", 1.5)) },
         };
 
         public IReadOnlyList<FeatureInfo> Features => FeatureList;
@@ -241,7 +241,7 @@ namespace Placemaker.Core.Layers.Park
             ctx.Stat(Keys.StatPathLength, Math.Round(pathLength), Keys.UnitM);
             ctx.Stat(Keys.StatTrees, placedTrees, Keys.UnitCount);
             ctx.Stat(Keys.StatRestrooms, restrooms, Keys.UnitCount);
-            if (pitches.Count == 0 && canPitch) ctx.Issue(IssueSeverity.Warning, "Placemaker.Campground.Issue.NoPitches");
+            if (pitches.Count == 0 && canPitch) ctx.Issue(IssueSeverity.Warning, "Citymaker.Campground.Issue.NoPitches");
         }
 
         private static bool NearPitch(List<(float2 c, float2 t, float side)> pitches, float2 p, float size)

@@ -1,10 +1,10 @@
 // Kiosk add-on: food stands / kiosks along the edges of a square or park, spread apart, facing
 // the open middle, each with a couple of benches in front.
 
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns
+namespace Citymaker.Core.Layers.AddOns
 {
     [AreaGenerator(125)]
     public sealed class KioskAddOn : AddOnLayer
@@ -63,9 +63,9 @@ namespace Placemaker.Core.Layers.AddOns
                     seats++;
                 }
             }
-            if (placed == 0) NoSpace(ctx, "Placemaker.AddOn.Kiosk.Name");
-            else if (placed < wanted) ctx.Issue(IssueSeverity.Info, "Placemaker.AddOn.Kiosk.Issue.Fewer", placed, wanted);
-            ctx.Stat("Placemaker.Stat.Kiosks", placed, Keys.UnitCount);
+            if (placed == 0) NoSpace(ctx, "Citymaker.AddOn.Kiosk.Name");
+            else if (placed < wanted) ctx.Issue(IssueSeverity.Info, "Citymaker.AddOn.Kiosk.Issue.Fewer", placed, wanted);
+            ctx.Stat("Citymaker.Stat.Kiosks", placed, Keys.UnitCount);
             ctx.Stat(Keys.StatBenches, seats, Keys.UnitCount);
         }
     }

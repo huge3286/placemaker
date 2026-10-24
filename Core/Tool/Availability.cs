@@ -1,4 +1,4 @@
-// Placemaker — what the player can see but not use right now, and why (s15, playtest: "When I can't see
+// Citymaker — what the player can see but not use right now, and why (s15, playtest: "When I can't see
 // options, I should see them greyed out. Right now I don't understand why I'm only seeing certain things").
 //
 // Two sources, both generic so any layer (and s14's street shops) can adopt them without UI code:
@@ -11,12 +11,12 @@
 using System;
 using System.Collections.Generic;
 
-namespace Placemaker.Core.Tool
+namespace Citymaker.Core.Tool
 {
     public static class Availability
     {
         /// <summary>"Needs a bigger area ({0} m²)".</summary>
-        public const string AreaTooSmall = "Placemaker.Why.AreaTooSmall";
+        public const string AreaTooSmall = "Citymaker.Why.AreaTooSmall";
 
         /// <summary>Per step path: control id or "feature:&lt;layer&gt;" → reason. Steps without anything unavailable are left out.</summary>
         public static Dictionary<string, Dictionary<string, LocText>> For(Recipe recipe, AreaShape area, SiteContext site, Func<string, IAreaGenerator> generators)

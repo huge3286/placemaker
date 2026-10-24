@@ -1,4 +1,4 @@
-// Placemaker roads layer — connecting the planned network to existing roads.
+// Citymaker roads layer — connecting the planned network to existing roads.
 //
 // Adapted from Grid Road Generator (Ti4goc), Systems/GridRoadToolSystem.cs: MakeCoursePos,
 // FindInteriorExistingEdges, SplitSegmentsCrossingInteriorEdges and RingCrossings. The ECS parts
@@ -16,10 +16,10 @@
 //   the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Roads.Generators;
+using Citymaker.Core.Layers.Roads.Generators;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads
+namespace Citymaker.Core.Layers.Roads
 {
     /// <summary>An existing road edge the plan may connect to.</summary>
     internal struct ExistingRoad

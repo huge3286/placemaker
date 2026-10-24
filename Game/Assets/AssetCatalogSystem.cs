@@ -1,4 +1,4 @@
-// Placemaker — asset catalog (GPL-3.0).
+// Citymaker — asset catalog (GPL-3.0).
 // Classification adapted from ParkManager's ParkAssetCatalogSystem (tomkpunkt, GPL-3.0),
 // including its trick of reading vanilla park palettes from ParkData prefabs' sub-objects.
 //
@@ -14,14 +14,14 @@ using Game;
 using Game.Common;
 using Game.Prefabs;
 using Game.UI;
-using Placemaker.Core;
-using Placemaker.Core.Build;
+using Citymaker.Core;
+using Citymaker.Core.Build;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine.Scripting;
 
-namespace Placemaker.Game.Assets
+namespace Citymaker.Game.Assets
 {
     public sealed partial class AssetCatalogSystem : GameSystemBase, IAssetCatalog
     {
@@ -74,7 +74,7 @@ namespace Placemaker.Game.Assets
         public void RequestRescan() => _scanRequested = true;
 
         /// <summary>
-        /// (core) Prefab entities Placemaker registered itself (decal see-through copies, surface overlay copies, park and parking
+        /// (core) Prefab entities Citymaker registered itself (decal see-through copies, surface overlay copies, park and parking
         /// companions, the owner and zone-block lots). They never make the catalog rescan: teardown 09, a full synchronous Scan()
         /// of every prefab ran within 2 s of every first use of a decal tier (a 0.2-2 s freeze when switching styles or types),
         /// and its new version rebuilt the ghost a second time. They are never catalogue items either (ResolveName still finds
@@ -110,8 +110,8 @@ namespace Placemaker.Game.Assets
             return ok;
         }
 
-        /// <summary>Our own prefab (registered by Placemaker): never a catalogue item.</summary>
-        public static bool IsOwnPrefabName(string name) => name != null && name.StartsWith("Placemaker ", StringComparison.Ordinal);
+        /// <summary>Our own prefab (registered by Citymaker): never a catalogue item.</summary>
+        public static bool IsOwnPrefabName(string name) => name != null && name.StartsWith("Citymaker ", StringComparison.Ordinal);
 
         [Preserve]
         protected override void OnUpdate()
@@ -119,7 +119,7 @@ namespace Placemaker.Game.Assets
             if (_ready)
             {
                 try { UpdateIcons(); MaybeWriteDump(false); }
-                catch (Exception e) { Mod.Log.Warn("Placemaker icon update failed: " + e.Message); }
+                catch (Exception e) { Mod.Log.Warn("Citymaker icon update failed: " + e.Message); }
             }
             if (!_scanRequested && ++_framesSinceCheck < RecheckFrames) return;
             _framesSinceCheck = 0;
@@ -127,7 +127,7 @@ namespace Placemaker.Game.Assets
             int count = _prefabQuery.CalculateEntityCount() - s_ownPrefabs;
             if (!_scanRequested && count == _lastPrefabCount) return;
             if (!_scanRequested && _lastPrefabCount >= 0)
-                Mod.Log.Info($"Placemaker asset catalog: {count - _lastPrefabCount:+#;-#;0} prefab(s) from the game or other mods since the last scan; rescanning.");
+                Mod.Log.Info($"Citymaker asset catalog: {count - _lastPrefabCount:+#;-#;0} prefab(s) from the game or other mods since the last scan; rescanning.");
             _scanRequested = false;
             _lastPrefabCount = count;
             try
@@ -136,7 +136,7 @@ namespace Placemaker.Game.Assets
             }
             catch (Exception e)
             {
-                Mod.Log.Error(e, "Placemaker asset scan failed; keeping the previous catalog");
+                Mod.Log.Error(e, "Citymaker asset scan failed; keeping the previous catalog");
             }
         }
 
@@ -212,13 +212,13 @@ namespace Placemaker.Game.Assets
                     Core.Decals.DecalFit.Orient(plan, _infoMap);
                     var report = Declutter.Run(plan, _infoMap);
                     if (report.TotalDropped > 0 || report.TotalMoved > 0)
-                        Mod.Log.Info("Placemaker declutter: " + report);
+                        Mod.Log.Info("Citymaker declutter: " + report);
                 }
                 return resolved;
             }
             catch (Exception e)
             {
-                Mod.Log.Warn("Placemaker could not resolve automatic assets: " + e.Message);
+                Mod.Log.Warn("Citymaker could not resolve automatic assets: " + e.Message);
                 return 0;
             }
         }
@@ -320,7 +320,7 @@ namespace Placemaker.Game.Assets
 
         private void LogAutomatic(Dictionary<string, List<CatalogItem>> byCategory)
         {
-            var sb = new StringBuilder("Placemaker automatic pools (eligible/total: first picks):");
+            var sb = new StringBuilder("Citymaker automatic pools (eligible/total: first picks):");
             var keys = new List<string>(byCategory.Keys);
             keys.Sort(string.CompareOrdinal);
             foreach (var c in keys)
@@ -454,12 +454,12 @@ namespace Placemaker.Game.Assets
                 }
                 catch (Exception e)
                 {
-                    if (failed++ < 5) Mod.Log.Warn($"Placemaker skipped prefab {entity} while scanning assets: {e.Message}");
+                    if (failed++ < 5) Mod.Log.Warn($"Citymaker skipped prefab {entity} while scanning assets: {e.Message}");
                 }
             }
 
             try { ScanParkPalettes(entities, byName, tags); }
-            catch (Exception e) { Mod.Log.Warn("Placemaker could not read vanilla park palettes: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker could not read vanilla park palettes: " + e.Message); }
 
             foreach (var kv in byName) kv.Value.Tags = tags.TryGetValue(kv.Key, out var t) ? t.ToArray() : Array.Empty<string>();
 
@@ -483,14 +483,14 @@ namespace Placemaker.Game.Assets
 
             var summary = new StringBuilder();
             foreach (var kv in _byCategory) summary.Append(kv.Key).Append('=').Append(kv.Value.Count).Append(' ');
-            Mod.Log.Info($"Placemaker asset catalog v{_version}: {summary}({failed} skipped)");
+            Mod.Log.Info($"Citymaker asset catalog v{_version}: {summary}({failed} skipped)");
             // (s26) Which lane roads carry zone blocks (shops must front one that does).
             {
                 var zb = new System.Text.StringBuilder();
                 foreach (var id in new[] { "Alley", "Pedestrian Street", "Pedestrian Street Small", "Small Road", "Gravel Road" })
                     if (_infoMap.TryGetValue(id, out var ri))
                         zb.Append(zb.Length > 0 ? ", " : "").Append(id).Append(ri.ZoneBlocks == 1 ? " yes" : ri.ZoneBlocks == 2 ? " NO" : " ?");
-                if (zb.Length > 0) Mod.Log.Info("Placemaker zone blocks by road: " + zb + ".");
+                if (zb.Length > 0) Mod.Log.Info("Citymaker zone blocks by road: " + zb + ".");
             }
         }
 
@@ -511,7 +511,7 @@ namespace Placemaker.Game.Assets
                         var c = tag.Substring(5);
                         counts[c] = (counts.TryGetValue(c, out var n) ? n : 0) + 1;
                     }
-            Placemaker.Core.Layers.Common.AssetAvailability.Publish(counts);
+            Citymaker.Core.Layers.Common.AssetAvailability.Publish(counts);
         }
 
         private int _lastSignature;
@@ -708,7 +708,7 @@ namespace Placemaker.Game.Assets
                 CollectSubObjects(park, tag, visited, 0, byName, tags, ref found);
                 if (found > 0) palettes++;
             }
-            Mod.Log.Info($"Placemaker discovered {palettes} vanilla park palettes.");
+            Mod.Log.Info($"Citymaker discovered {palettes} vanilla park palettes.");
         }
 
         private void CollectSubObjects(PrefabBase parent, string tag, HashSet<Entity> visited, int depth,

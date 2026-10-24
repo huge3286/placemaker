@@ -1,4 +1,4 @@
-// Placemaker roads layer (s52) — "Hillside terraces": the street layout.
+// Citymaker roads layer (s52) — "Hillside terraces": the street layout.
 //
 // The user's picture (image 83): winding streets laid on the hill's contour lines, as with the vanilla Continuous tool —
 // but with the ground terraced under them first. One terrace = the street, the zone cells on both sides (1–6 × 8 m)
@@ -25,10 +25,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads.Terraces
+namespace Citymaker.Core.Layers.Roads.Terraces
 {
     /// <summary>One contour street (or one row on flat ground).</summary>
     internal sealed class TerraceStreet

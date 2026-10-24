@@ -1,4 +1,4 @@
-// Placemaker — runs Composer.Compose off the main thread.
+// Citymaker — runs Composer.Compose off the main thread.
 //
 // Latest request wins: a new request cancels the running one (CancellationToken) and only a
 // result whose revision matches the newest request is ever handed back (stale-revision guard),
@@ -11,9 +11,9 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using Placemaker.Core;
+using Citymaker.Core;
 
-namespace Placemaker.Game.Preview
+namespace Citymaker.Game.Preview
 {
     public sealed class PreviewWorker : IDisposable
     {
@@ -85,11 +85,11 @@ namespace Placemaker.Game.Preview
                     var plan = new ComposedPlan();
                     plan.Issues.Add(new PlanIssue
                     {
-                        Severity = IssueSeverity.Error, Key = "Placemaker.Issue.PlanFailed",
+                        Severity = IssueSeverity.Error, Key = "Citymaker.Issue.PlanFailed",
                         Args = new object[] { e.GetType().Name + ": " + e.Message },
                     });
-                    r = new Result { Revision = revision, Plan = plan, FailureKey = "Placemaker.Issue.PlanFailed", Milliseconds = sw.Elapsed.TotalMilliseconds };
-                    try { Mod.Log.Warn("Placemaker: planning failed: " + e); } catch (Exception) { }
+                    r = new Result { Revision = revision, Plan = plan, FailureKey = "Citymaker.Issue.PlanFailed", Milliseconds = sw.Elapsed.TotalMilliseconds };
+                    try { Mod.Log.Warn("Citymaker: planning failed: " + e); } catch (Exception) { }
                 }
                 lock (_lock)
                 {
@@ -109,8 +109,8 @@ namespace Placemaker.Game.Preview
                 {
                     _cts?.Cancel();
                     var plan = new ComposedPlan();
-                    plan.Issues.Add(new PlanIssue { Severity = IssueSeverity.Error, Key = "Placemaker.Issue.PlanTimeout", Args = new object[] { (int)TimeoutSeconds } });
-                    _finished = new Result { Revision = _runningRevision, Plan = plan, FailureKey = "Placemaker.Issue.PlanTimeout", Milliseconds = _running.Elapsed.TotalMilliseconds };
+                    plan.Issues.Add(new PlanIssue { Severity = IssueSeverity.Error, Key = "Citymaker.Issue.PlanTimeout", Args = new object[] { (int)TimeoutSeconds } });
+                    _finished = new Result { Revision = _runningRevision, Plan = plan, FailureKey = "Citymaker.Issue.PlanTimeout", Milliseconds = _running.Elapsed.TotalMilliseconds };
                     _running = null;
                     // Any late result of this revision is now stale.
                     _latestRevision = int.MinValue;

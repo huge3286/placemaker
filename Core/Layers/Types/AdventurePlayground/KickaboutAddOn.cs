@@ -1,11 +1,11 @@
 // Kickabout lawn (adventure playground feature): an open mown rectangle for ball games with a small
 // goal at each end and a couple of benches along one long side. Placed in the most open free spot.
 
-using Placemaker.Core.Layers.AddOns;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.AddOns;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.AdventurePlayground
+namespace Citymaker.Core.Layers.Types.AdventurePlayground
 {
     [AreaGenerator(219, Hidden = true)]
     public sealed class KickaboutAddOn : AddOnLayer
@@ -45,11 +45,11 @@ namespace Placemaker.Core.Layers.Types.AdventurePlayground
                     r.Axis = r.Side;
                     if (!LeisureKit.RectFits(ctx.LayerRegion, occ, r, 0.5f)) continue;
                 }
-                if (attempt > 0) ctx.Issue(IssueSeverity.Info, "Placemaker.AddOn.Kickabout.Issue.Smaller");
+                if (attempt > 0) ctx.Issue(IssueSeverity.Info, "Citymaker.AddOn.Kickabout.Issue.Smaller");
                 Build(ctx, occ, r);
                 return;
             }
-            NoSpace(ctx, "Placemaker.AddOn.Kickabout.Name");
+            NoSpace(ctx, "Citymaker.AddOn.Kickabout.Name");
         }
 
         private static void Build(LayerContext ctx, Occupancy occ, OrientedRect r)

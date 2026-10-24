@@ -1,9 +1,9 @@
-// Placemaker — zone blocking lots after the build is applied (s19, GPL-3.0).
+// Citymaker — zone blocking lots after the build is applied (s19, GPL-3.0).
 //
 // Playtest: zoned buildings grew over a plaza. CS2 only blocks zone cells under ground nets and PHYSICAL areas
 // (Game.Zones.CellBlockJobs, RESEARCH-NOTES-ADDENDUM 67–72); the owner lot overlaps by design and surfaces are
 // never physical. Core/Build/ZoneGuard plans ComposedPlan.ZoneBlockers = the footprint minus the zoned cells
-// and the existing building lots. They are built here as invisible physical "Placemaker Zone Block" lots, in
+// and the existing building lots. They are built here as invisible physical "Citymaker Zone Block" lots, in
 // their own transaction once everything else is permanent:
 //  * a physical lot reports overlaps with our nets / non-overridable objects / lots; they must not make the
 //    main build exclude its own parts, and Apply builds errored temporaries anyway (the tool gate is ours);
@@ -17,15 +17,15 @@ using System;
 using System.Collections.Generic;
 using Game.Common;
 using Game.Tools;
-using Placemaker.Core.Build;
-using Placemaker.Core.Geometry;
-using Placemaker.Game.Groups;
-using Placemaker.Game.Selection;
+using Citymaker.Core.Build;
+using Citymaker.Core.Geometry;
+using Citymaker.Game.Groups;
+using Citymaker.Game.Selection;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Build
+namespace Citymaker.Game.Build
 {
     public sealed partial class BuildService
     {
@@ -78,7 +78,7 @@ namespace Placemaker.Game.Build
                 _blockerRings.Clear();
                 double m2 = 0;
                 foreach (var r in _request.Plan.KerbBlockers) if (r != null && r.Length >= 3) { _blockerRings.Add(r); m2 += Poly.Area(r); }
-                Mod.Log.Info($"Placemaker kerb blocking: {_blockerRings.Count} strip(s), {m2:F0} m², in the first row of the city streets' zone blocks along the build (before the zoning refresh).");
+                Mod.Log.Info($"Citymaker kerb blocking: {_blockerRings.Count} strip(s), {m2:F0} m², in the first row of the city streets' zone blocks along the build (before the zoning refresh).");
                 _kerbStage = true;
                 _blockerRound = 0;
                 _blockerPhase = 0;
@@ -104,8 +104,8 @@ namespace Placemaker.Game.Build
             {
                 float2 min = new float2(float.MaxValue), max = new float2(float.MinValue);
                 foreach (var f in plan.Footprints) foreach (var p in f) { min = math.min(min, p); max = math.max(max, p); }
-                var grids = new List<Placemaker.Core.ZoneGrid>();
-                Placemaker.Game.Preview.SiteCapture.CaptureZoneBlocks(EntityManager, World.GetOrCreateSystemManaged<global::Game.Zones.SearchSystem>(), min - 60f, max + 60f, grids);
+                var grids = new List<Citymaker.Core.ZoneGrid>();
+                Citymaker.Game.Preview.SiteCapture.CaptureZoneBlocks(EntityManager, World.GetOrCreateSystemManaged<global::Game.Zones.SearchSystem>(), min - 60f, max + 60f, grids);
                 var before = new List<float2>();
                 foreach (var c in plan.ZoneCells) if (c.State == ZoneCellState.Zoned) before.Add(0.25f * (c.A + c.B + c.C + c.D));
                 _heightsValid = false;
@@ -126,20 +126,20 @@ namespace Placemaker.Game.Build
                     }
                     int ours = 0;
                     foreach (var g in grids) if (g.Ours) ours++;
-                    Mod.Log.Info($"Placemaker zoning refresh: {grids.Count} live zone block(s) ({ours} of the build's own roads); {after} cutout cell(s) (planned {before.Count}), "
+                    Mod.Log.Info($"Citymaker zoning refresh: {grids.Count} live zone block(s) ({ours} of the build's own roads); {after} cutout cell(s) (planned {before.Count}), "
                         + $"{moved} on a moved grid (road edges split by the build), {refreshed.Count} zoning quad(s).");
-                    Mod.Log.Info("Placemaker zoning refresh (s54): " + ZoneGuard.LastRefreshReport);
+                    Mod.Log.Info("Citymaker zoning refresh (s54): " + ZoneGuard.LastRefreshReport);
                     // Which road each plot zones from (playtest: shops grew facing the street behind the plaza's lane).
                     for (int i = 0; i < refreshed.Count && i < 40; i++)
                     {
                         var c = Poly.Centroid(refreshed[i].Corners);
-                        Mod.Log.Info($"Placemaker zoning: plot {i} at ({c.x:F0}, {c.y:F0}) zones from {RoadOfCell(c)}.");
+                        Mod.Log.Info($"Citymaker zoning: plot {i} at ({c.x:F0}, {c.y:F0}) zones from {RoadOfCell(c)}.");
                     }
                 }
             }
             catch (Exception e)
             {
-                Mod.Log.Warn("Placemaker zoning refresh failed (using the plan's cells): " + e.Message);
+                Mod.Log.Warn("Citymaker zoning refresh failed (using the plan's cells): " + e.Message);
                 _refreshedZoning = null;
             }
             ContinueAfterApply();
@@ -170,7 +170,7 @@ namespace Placemaker.Game.Build
                         var owner = EntityManager.GetComponentData<global::Game.Common.Owner>(e).m_Owner;
                         if (owner != Entity.Null && EntityManager.Exists(owner) && EntityManager.HasComponent<global::Game.Prefabs.PrefabRef>(owner))
                             road = "'" + _prefabs.GetPrefabName(EntityManager.GetComponentData<global::Game.Prefabs.PrefabRef>(owner).m_Prefab) + "'"
-                                + (EntityManager.HasComponent<PlacemakerMember>(owner) ? " (built by Placemaker)" : " (city)");
+                                + (EntityManager.HasComponent<CitymakerMember>(owner) ? " (built by Citymaker)" : " (city)");
                     }
                     // Prefer the block whose cell there is visible (the one the game zones).
                     var cells = EntityManager.GetBuffer<global::Game.Zones.Cell>(e, true);
@@ -209,7 +209,7 @@ namespace Placemaker.Game.Build
                         for (int i = 0; i < 4; i++) sq[i] += math.normalizesafe(centre - sq[i]) * 0.03f;
                         foreach (var r in _blockerRings) if (ObstacleCut.Overlaps(sq, r)) { touched++; break; }
                     }
-                Mod.Log.Info($"Placemaker zone blocking: {_blockerRings.Count} lot ring(s), {m2:F0} m², keeping {zonedCells} cutout cell(s) free"
+                Mod.Log.Info($"Citymaker zone blocking: {_blockerRings.Count} lot ring(s), {m2:F0} m², keeping {zonedCells} cutout cell(s) free"
                     + (touched > 0 ? $" — {touched} of them touched by a blocker (bug)." : "."));
                 _blockerRound = 0;
                 _blockerPhase = 0;
@@ -246,7 +246,7 @@ namespace Placemaker.Game.Build
                     _blockerPrefab = _ownerPrefabs != null ? _ownerPrefabs.ReadyBlockerPrefab : Entity.Null;
                     if (_blockerPrefab == Entity.Null || _blockerRings.Count == 0)
                     {
-                        if (_blockerPrefab == Entity.Null) Mod.Log.Warn("Placemaker: the zone block lot prefab is not available; zone cells under this build stay as they are.");
+                        if (_blockerPrefab == Entity.Null) Mod.Log.Warn("Citymaker: the zone block lot prefab is not available; zone cells under this build stay as they are.");
                         GoZoning();
                         return;
                     }
@@ -263,7 +263,7 @@ namespace Placemaker.Game.Build
                     if (!all && frame - _blockerSince < BlockerMaterializeFrames) return;
                     if (_blockerTemps.Count == 0)
                     {
-                        Mod.Log.Warn("Placemaker: no zone block lot materialised; zone cells under this build stay as they are.");
+                        Mod.Log.Warn("Citymaker: no zone block lot materialised; zone cells under this build stay as they are.");
                         ClearBlockers();
                         return;
                     }
@@ -284,19 +284,19 @@ namespace Placemaker.Game.Build
                         int dropped = before - _blockerRings.Count;
                         if (_blockerRound++ < BlockerRounds && (dropped > 0 || _blockerRings.Count > 0))
                         {
-                            Mod.Log.Info($"Placemaker: {lots.Count} building(s) stood under the zone blocking; left out {dropped} piece(s), retrying.");
+                            Mod.Log.Info($"Citymaker: {lots.Count} building(s) stood under the zone blocking; left out {dropped} piece(s), retrying.");
                             DestroyOwnDefinitions();
                             _tool.Requested = ApplyMode.Clear;
                             _blockerSince = frame;
                             _blockerPhase = 4;
                             return;
                         }
-                        Mod.Log.Warn("Placemaker: zone blocking would remove existing buildings; it is left out for this build.");
+                        Mod.Log.Warn("Citymaker: zone blocking would remove existing buildings; it is left out for this build.");
                         ClearBlockers();
                         return;
                     }
                     foreach (var t in _blockerTemps)
-                        if (EntityManager.Exists(t)) EntityManager.AddComponentData(t, new PlacemakerMember { GroupId = _groupId, Kind = MemberKind.Auxiliary, Role = MemberRole.ZoneBlocker });
+                        if (EntityManager.Exists(t)) EntityManager.AddComponentData(t, new CitymakerMember { GroupId = _groupId, Kind = MemberKind.Auxiliary, Role = MemberRole.ZoneBlocker });
                     _tool.Requested = ApplyMode.Apply;
                     _blockerSince = frame;
                     _blockerPhase = 3;
@@ -312,8 +312,8 @@ namespace Placemaker.Game.Build
                     _blockersBuilt = 0;
                     foreach (var t in _blockerTemps) if (EntityManager.Exists(t) && !EntityManager.HasComponent<Temp>(t) && !EntityManager.HasComponent<Deleted>(t)) _blockersBuilt++;
                     _registry.MarkDirty();
-                    Mod.Log.Info(_kerbStage ? $"Placemaker: {_blockersBuilt} kerb strip(s) block the city streets' zone cells along group {_groupId}."
-                        : $"Placemaker: {_blockersBuilt} zone block lot(s) keep zoned buildings off group {_groupId}.");
+                    Mod.Log.Info(_kerbStage ? $"Citymaker: {_blockersBuilt} kerb strip(s) block the city streets' zone cells along group {_groupId}."
+                        : $"Citymaker: {_blockersBuilt} zone block lot(s) keep zoned buildings off group {_groupId}.");
                     GoZoning();
                     return;
                 }

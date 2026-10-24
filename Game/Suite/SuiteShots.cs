@@ -20,15 +20,15 @@ using System.Linq;
 using Game.Rendering;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Placemaker.Core;
-using Placemaker.Core.Suite;
-using Placemaker.Core.Tool;
-using Placemaker.Game.Tool;
+using Citymaker.Core;
+using Citymaker.Core.Suite;
+using Citymaker.Core.Tool;
+using Citymaker.Game.Tool;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     public sealed partial class SuiteRunner
     {
@@ -393,7 +393,7 @@ namespace Placemaker.Game.Suite
             if (mode == "grab") mode = "overlay";
             if (mode != "render" && mode != "overlay" && mode != "ui") mode = _tool.IsActive && _tool.Stage != ToolStage.Manage ? "overlay" : "render";
             // the person moved the mouse off the map to look — except after a hover step, whose picture is of what the cursor shows
-            if (mode != "ui" && !((bool?)step["keepCursor"] ?? false)) PlacemakerToolSystem.SuiteCursorAway();
+            if (mode != "ui" && !((bool?)step["keepCursor"] ?? false)) CitymakerToolSystem.SuiteCursorAway();
             bool labels = (bool?)step["labels"] ?? false;
             if (labels) SuiteCapture.Labels(true);
             // zones: the game's zone grid is drawn only while the active tool asks for it; the runner's own tool does, for this picture

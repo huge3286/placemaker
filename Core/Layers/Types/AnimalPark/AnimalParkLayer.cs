@@ -14,15 +14,15 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Build;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Leisure;
-using Placemaker.Core.Layers.Park;
-using Placemaker.Core.Layers.Types.UrbanFarm;
+using Citymaker.Core.Build;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Leisure;
+using Citymaker.Core.Layers.Park;
+using Citymaker.Core.Layers.Types.UrbanFarm;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.AnimalPark
+namespace Citymaker.Core.Layers.Types.AnimalPark
 {
     [AreaGenerator(71, Group = "farms")]
     public sealed class AnimalParkLayer : LeisureLayer
@@ -268,7 +268,7 @@ namespace Placemaker.Core.Layers.Types.AnimalPark
 
             // 5. Pens: share the wanted count out by area, cut each space across its long axis.
             var pens = CutPens(ctx, interior, math.clamp(ctx.I("pens"), 1, MaxPens), pondR > 0f ? pondC : (float2?)null, pondR, kind);
-            if (pens.Count == 0) ctx.Issue(IssueSeverity.Warning, "Placemaker.AnimalPark.Issue.NoPens");
+            if (pens.Count == 0) ctx.Issue(IssueSeverity.Warning, "Citymaker.AnimalPark.Issue.NoPens");
             var penSet = new FarmKit.RingSet();
             for (int i = 0; i < pens.Count; i++) { penSet.Add(pens[i].Ring); ctx.AddRegion(pens[i].Ring, "pen:" + i, EnclosureTag); }
             ctx.Check();
@@ -317,9 +317,9 @@ namespace Placemaker.Core.Layers.Types.AnimalPark
             // 10. Regions for the features.
             EmitRegions(ctx, occ, penSet, hubOn ? hubRing : null);
             CommonStats(ctx);
-            ctx.Stat("Placemaker.Stat.Enclosures", pens.Count, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.AnimalSpawners", spawners, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Aviaries", aviaries, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Enclosures", pens.Count, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.AnimalSpawners", spawners, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Aviaries", aviaries, Keys.UnitCount);
             ctx.Plan.Facts["arena"] = hasArena ? 1 : 0;
         }
 
@@ -586,7 +586,7 @@ namespace Placemaker.Core.Layers.Types.AnimalPark
             var region = ctx.LayerRegion;
             var yard = FarmKit.Largest(FarmKit.Clip(LeisureKit.Blob(c, r * 0.8f, Hashing.Mix(ctx.Seed, 0x4B0u), 16, 0.12f), region.Ring, 20f));
             if (yard != null)
-                ctx.Surface(yard, SurfaceRole.Ground, AssetMix.One(AnimalParkArt.Yard, "Pavement Surface 02"), Placemaker.Core.Build.SurfaceCategories.Gravel);
+                ctx.Surface(yard, SurfaceRole.Ground, AssetMix.One(AnimalParkArt.Yard, "Pavement Surface 02"), Citymaker.Core.Build.SurfaceCategories.Gravel);
             var toGate = math.normalizesafe(gate - c, new float2(0, -1));
             var side = FarmKit.Perp(toGate);
             uint v = Hashing.Mix(ctx.Seed, 0x4B1u);

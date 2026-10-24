@@ -1,8 +1,8 @@
-// Placemaker — what Block paint must not paint over, gathered around one city block.
+// Citymaker — what Block paint must not paint over, gathered around one city block.
 //
 // Read-only, bounded queries on the game's search trees (never a scan of the map), main thread only:
 //   * building lots (8 m lot cells from BuildingData, like SiteCapture / SnapCollector),
-//   * lot-type areas (other Placemaker areas, parks, extractor lots…) as their node polygons,
+//   * lot-type areas (other Citymaker areas, parks, extractor lots…) as their node polygons,
 //   * zone grid cells: zoned ones (m_Zone != None) always, empty visible ones when the player asked
 //     for it. Cells are merged into runs along the block depth to keep the polygon count low,
 //   * water: a point predicate (WaterUtils depth) evaluated by Core at brush cell centres.
@@ -16,12 +16,12 @@ using Game.Common;
 using Game.Prefabs;
 using Game.Simulation;
 using Game.Tools;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Selection
+namespace Citymaker.Game.Selection
 {
     public sealed class BlockObstacles
     {
@@ -81,7 +81,7 @@ namespace Placemaker.Game.Selection
         }
 
         /// <summary>
-        /// Obstacle polygons (XZ) touching the box [min, max], tagged by kind (the brush rules pick which count). ignoreGroup: Placemaker group whose members are not obstacles (0 = none).
+        /// Obstacle polygons (XZ) touching the box [min, max], tagged by kind (the brush rules pick which count). ignoreGroup: Citymaker group whose members are not obstacles (0 = none).
         /// </summary>
         public List<BrushObstacle> Gather(float2 min, float2 max, int ignoreGroup, bool fresh = true)
         {
@@ -100,7 +100,7 @@ namespace Placemaker.Game.Selection
             var result = _cache.TryGet(min, max, ignoreGroup, now, false) ?? list;
             LastStats = ObstacleStats.Of(result);
             LastGatherMs = (float)sw.Elapsed.TotalMilliseconds;
-            Mod.Log.Info("Placemaker: obstacle set gathered in " + LastGatherMs.ToString("0.0") + " ms (box " + (int)(max.x - min.x) + "x" + (int)(max.y - min.y) + " m, ignoring group " + ignoreGroup + "): " + LastStats);
+            Mod.Log.Info("Citymaker: obstacle set gathered in " + LastGatherMs.ToString("0.0") + " ms (box " + (int)(max.x - min.x) + "x" + (int)(max.y - min.y) + " m, ignoring group " + ignoreGroup + "): " + LastStats);
             return result;
         }
 
@@ -115,17 +115,17 @@ namespace Placemaker.Game.Selection
         private void GatherInto(Bounds2 bounds, int ignoreGroup, List<BrushObstacle> list)
         {
             try { Buildings(bounds, ignoreGroup, list); }
-            catch (Exception e) { Mod.Log.Warn("Placemaker: block paint could not read buildings: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker: block paint could not read buildings: " + e.Message); }
             try { Lots(bounds, ignoreGroup, list); }
-            catch (Exception e) { Mod.Log.Warn("Placemaker: block paint could not read areas: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker: block paint could not read areas: " + e.Message); }
             try { ZoneCells(bounds, list); }
-            catch (Exception e) { Mod.Log.Warn("Placemaker: block paint could not read zoning: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker: block paint could not read zoning: " + e.Message); }
             try { BuildReceipts(bounds, ignoreGroup, list); }
-            catch (Exception e) { Mod.Log.Warn("Placemaker: could not read other builds: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker: could not read other builds: " + e.Message); }
         }
 
         /// <summary>
-        /// Lot areas (parks, extractor lots…) and every Placemaker build's outline touching the box, as the brush's "Lots" and
+        /// Lot areas (parks, extractor lots…) and every Citymaker build's outline touching the box, as the brush's "Lots" and
         /// "My builds" rules see them (neighbourhood polish: gardens never grow into them). No log line, no cache.
         /// </summary>
         public List<BrushObstacle> LotsAndBuildsIn(float2 min, float2 max)
@@ -134,9 +134,9 @@ namespace Placemaker.Game.Selection
             var bounds = new Bounds2(min, max);
             // our own owner lots count too: a build just made has its lot before its saved outline
             try { Lots(bounds, 0, list, includeHelpers: true); }
-            catch (Exception e) { Mod.Log.Warn("Placemaker: could not read areas: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker: could not read areas: " + e.Message); }
             try { BuildReceipts(bounds, 0, list); }
-            catch (Exception e) { Mod.Log.Warn("Placemaker: could not read other builds: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker: could not read other builds: " + e.Message); }
             return list;
         }
 
@@ -145,7 +145,7 @@ namespace Placemaker.Game.Selection
         {
             var list = new List<BrushObstacle>();
             try { Buildings(new Bounds2(min, max), ignoreGroup, list); }
-            catch (Exception e) { Mod.Log.Warn("Placemaker: could not read buildings: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker: could not read buildings: " + e.Message); }
             var rings = new List<float2[]>(list.Count);
             foreach (var o in list) rings.Add(o.Ring);
             return rings;
@@ -196,7 +196,7 @@ namespace Placemaker.Game.Selection
             }
             catch (Exception e)
             {
-                Mod.Log.Warn("Placemaker: block paint water check failed (" + e.Message + "); assuming dry ground");
+                Mod.Log.Warn("Citymaker: block paint water check failed (" + e.Message + "); assuming dry ground");
                 return null;
             }
         }
@@ -211,7 +211,7 @@ namespace Placemaker.Game.Selection
         private readonly Dictionary<int, float2[]> _receiptRings = new Dictionary<int, float2[]>();
 
         /// <summary>
-        /// (s27) Every Placemaker group's outline from its receipt — the footprint even when its owner lot is not
+        /// (s27) Every Citymaker group's outline from its receipt — the footprint even when its owner lot is not
         /// found in the area search tree (old saves, a lot the game dropped). Same kind as the owner lot.
         /// </summary>
         private void BuildReceipts(Bounds2 bounds, int ignoreGroup, List<BrushObstacle> into)
@@ -239,7 +239,7 @@ namespace Placemaker.Game.Selection
                 if (ring == null) continue;
                 Poly.Bounds(ring, out var mn, out var mx);
                 if (mn.x > bounds.max.x || mn.y > bounds.max.y || mx.x < bounds.min.x || mx.y < bounds.min.y) continue;
-                into.Add(new BrushObstacle(BrushObstacleKind.PlacemakerBuild, ring));
+                into.Add(new BrushObstacle(BrushObstacleKind.CitymakerBuild, ring));
             }
         }
 
@@ -271,8 +271,8 @@ namespace Placemaker.Game.Selection
                     if (!seen.Add(e)) continue;
                     if (!BuildingFootprints.IsBuilding(_em, e) || Skip(e, ignoreGroup)) continue;
                     BuildingFootprints.Of(_em, e, out var lot, out var footprint);
-                    // (s27) A building a Placemaker group placed (park companion…) belongs to that build.
-                    var kind = GroupOf(e) != 0 ? BrushObstacleKind.PlacemakerBuild : BrushObstacleKind.Building;
+                    // (s27) A building a Citymaker group placed (park companion…) belongs to that build.
+                    var kind = GroupOf(e) != 0 ? BrushObstacleKind.CitymakerBuild : BrushObstacleKind.Building;
                     if (lot != null) into.Add(new BrushObstacle(kind, lot));
                     if (footprint != null) into.Add(new BrushObstacle(kind, footprint));
                 }
@@ -296,29 +296,29 @@ namespace Placemaker.Game.Selection
                     var e = results[i];
                     if (e == Entity.Null || !seen.Add(e)) continue;
                     if (!_em.HasComponent<global::Game.Areas.Lot>(e) || !_em.HasBuffer<global::Game.Areas.Node>(e) || Skip(e, ignoreGroup)) continue;
-                    // (s57) Our helper lots (owner "Placemaker Area", "Placemaker Zone Block") are never obstacles: cell-shaped, they can poke
+                    // (s57) Our helper lots (owner "Citymaker Area", "Citymaker Zone Block") are never obstacles: cell-shaped, they can poke
                     // past the build. The build counts through its saved outline (BuildReceipts) only.
                     if (!includeHelpers && IsHelperLot(e)) continue;
                     var nodes = _em.GetBuffer<global::Game.Areas.Node>(e, true);
                     if (nodes.Length < 3) continue;
                     var ring = new float2[nodes.Length];
                     for (int n = 0; n < nodes.Length; n++) ring[n] = nodes[n].m_Position.xz;
-                    // (s27) Our owner lot "Placemaker Area" and the zone-block lots are members of their group: they are
-                    // "other Placemaker builds", a rule of their own (they used to count as plain lots).
-                    into.Add(new BrushObstacle(GroupOf(e) != 0 || IsHelperLot(e) ? BrushObstacleKind.PlacemakerBuild : BrushObstacleKind.Lot, ring));
+                    // (s27) Our owner lot "Citymaker Area" and the zone-block lots are members of their group: they are
+                    // "other Citymaker builds", a rule of their own (they used to count as plain lots).
+                    into.Add(new BrushObstacle(GroupOf(e) != 0 || IsHelperLot(e) ? BrushObstacleKind.CitymakerBuild : BrushObstacleKind.Lot, ring));
                 }
             }
             finally { results.Dispose(); }
         }
 
-        private global::Placemaker.Game.Groups.OwnerAreaPrefabSystem _ownerPrefabs;
+        private global::Citymaker.Game.Groups.OwnerAreaPrefabSystem _ownerPrefabs;
 
-        /// <summary>(s49) Our invisible "Placemaker Zone Block" / "Placemaker Area" lots, even when the group registry does not know them (they are "My builds", never plain Lots).</summary>
+        /// <summary>(s49) Our invisible "Citymaker Zone Block" / "Citymaker Area" lots, even when the group registry does not know them (they are "My builds", never plain Lots).</summary>
         private bool IsHelperLot(Entity e)
         {
             try
             {
-                _ownerPrefabs ??= _world.GetExistingSystemManaged<global::Placemaker.Game.Groups.OwnerAreaPrefabSystem>();
+                _ownerPrefabs ??= _world.GetExistingSystemManaged<global::Citymaker.Game.Groups.OwnerAreaPrefabSystem>();
                 if (_ownerPrefabs == null || !_em.HasComponent<PrefabRef>(e)) return false;
                 var prefab = _em.GetComponentData<PrefabRef>(e).m_Prefab;
                 return _ownerPrefabs.IsOwnerPrefab(prefab) || _ownerPrefabs.IsBlockerPrefab(prefab);

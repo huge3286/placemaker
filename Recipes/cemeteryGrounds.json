@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "cemeteryGrounds",
-  "nameKey": "Placemaker.Recipe.CemeteryGrounds",
-  "descriptionKey": "Placemaker.Recipe.CemeteryGrounds.Description",
+  "nameKey": "Citymaker.Recipe.CemeteryGrounds",
+  "descriptionKey": "Citymaker.Recipe.CemeteryGrounds.Description",
   "icon": "Media/Game/Icons/Deathcare.svg",
   "root": {
     "layer": "cemeteryGrounds",

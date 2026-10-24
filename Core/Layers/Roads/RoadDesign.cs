@@ -1,4 +1,4 @@
-// Placemaker roads layer (s34) — the network design passes between "generated + connected to the city" and output:
+// Citymaker roads layer (s34) — the network design passes between "generated + connected to the city" and output:
 //
 //   merge junctions that crowd each other → access management on main roads → connectivity guarantee (islands linked
 //   or dropped) → dead ends (stubs go, long ones become cul-de-sacs) → back lanes → square junctions → round bends →
@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads
+namespace Citymaker.Core.Layers.Roads
 {
     internal static class RoadDesign
     {

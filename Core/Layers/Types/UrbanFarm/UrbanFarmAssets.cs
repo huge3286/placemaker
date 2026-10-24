@@ -4,9 +4,9 @@
 // ("a vine, else a hedge piece, else a bush"), so an empty category only thins the look.
 
 using System.Collections.Generic;
-using Placemaker.Core.Build;
+using Citymaker.Core.Build;
 
-namespace Placemaker.Core
+namespace Citymaker.Core
 {
     public static partial class AssetCategories
     {
@@ -21,7 +21,7 @@ namespace Placemaker.Core
     }
 }
 
-namespace Placemaker.Core.Layers.Types.UrbanFarm
+namespace Citymaker.Core.Layers.Types.UrbanFarm
 {
     /// <summary>Name rules for the urban-farm categories (runs before the built-in heuristics).</summary>
     public sealed class UrbanFarmCategoryRules : ICategoryRules

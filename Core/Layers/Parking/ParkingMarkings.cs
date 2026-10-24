@@ -6,7 +6,7 @@
 
 using System;
 
-namespace Placemaker.Core.Layers.Parking
+namespace Citymaker.Core.Layers.Parking
 {
     internal static class ParkingMarkings
     {

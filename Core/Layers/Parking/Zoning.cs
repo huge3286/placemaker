@@ -19,10 +19,10 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Parking
+namespace Citymaker.Core.Layers.Parking
 {
     /// <summary>A zoned quad in world XZ: A→B along the outline edge, D→C on the lot side.</summary>
     internal struct ZoneQuad
@@ -48,7 +48,7 @@ namespace Placemaker.Core.Layers.Parking
 
     internal static class ParkingZoning
     {
-        private const string K = "Placemaker.Parking.";
+        private const string K = "Citymaker.Parking.";
         private const double SampleStep = 2.0;
         /// <summary>A frontage shorter than two cells grows nothing useful.</summary>
         private const double MinRun = 2 * ParkingSettings.ZoneCell;

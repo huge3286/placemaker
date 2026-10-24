@@ -21,14 +21,14 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Leisure;
-using Placemaker.Core.Layers.Park;
-using Placemaker.Core.Layers.Types.UrbanFarm;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Leisure;
+using Citymaker.Core.Layers.Park;
+using Citymaker.Core.Layers.Types.UrbanFarm;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Farmstead
+namespace Citymaker.Core.Layers.Types.Farmstead
 {
     [AreaGenerator(131, Group = "farms")]
     public sealed class FarmsteadLayer : LeisureLayer
@@ -320,7 +320,7 @@ namespace Placemaker.Core.Layers.Types.Farmstead
 
             // 1. Farmyard.
             bool hasYard = PlaceYard(ctx, region, res, gates, out var yard);
-            if (!hasYard) ctx.Issue(IssueSeverity.Info, "Placemaker.Farmstead.Issue.NoYard");
+            if (!hasYard) ctx.Issue(IssueSeverity.Info, "Citymaker.Farmstead.Issue.NoYard");
             var origin = hasYard ? yard.Center : centre;
             float frontSign = 1f;
             if (hasYard)
@@ -498,7 +498,7 @@ namespace Placemaker.Core.Layers.Types.Farmstead
                 }
                 if ((i & 7) == 7) ctx.Check();
             }
-            if (fields.Count == 0) ctx.Issue(IssueSeverity.Warning, "Placemaker.Farmstead.Issue.NoFields");
+            if (fields.Count == 0) ctx.Issue(IssueSeverity.Warning, "Citymaker.Farmstead.Issue.NoFields");
 
             // 7. Farmyard contents.
             int barns = 0, silos = 0;
@@ -571,12 +571,12 @@ namespace Placemaker.Core.Layers.Types.Farmstead
                 fieldHa += f.Region.Area / 10000.0;
                 if (f.Kind == FieldKind.Pasture || f.Kind == FieldKind.Hay) pasture++; else arable++;
             }
-            ctx.Stat("Placemaker.Stat.Fields", fields.Count, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.FieldArea", Math.Round(fieldHa, 1), "ha");
-            ctx.Stat("Placemaker.Stat.Paddocks", paddocks.Count + (penR > 0f ? 1 : 0), Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Barns", barns, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Silos", silos, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Hedgerow", Math.Round(hedgeLen), Keys.UnitM);
+            ctx.Stat("Citymaker.Stat.Fields", fields.Count, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.FieldArea", Math.Round(fieldHa, 1), "ha");
+            ctx.Stat("Citymaker.Stat.Paddocks", paddocks.Count + (penR > 0f ? 1 : 0), Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Barns", barns, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Silos", silos, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Hedgerow", Math.Round(hedgeLen), Keys.UnitM);
             ctx.Plan.Facts["fields"] = fields.Count;
             ctx.Plan.Facts["arableFields"] = arable;
             ctx.Plan.Facts["pastureFields"] = pasture;
@@ -630,7 +630,7 @@ namespace Placemaker.Core.Layers.Types.Farmstead
                     }
                 if (found) return true;
             }
-            ctx.Issue(IssueSeverity.Info, "Placemaker.Farmstead.Issue.NoPond");
+            ctx.Issue(IssueSeverity.Info, "Citymaker.Farmstead.Issue.NoPond");
             r = 0f;
             return false;
         }
@@ -676,7 +676,7 @@ namespace Placemaker.Core.Layers.Types.Farmstead
                 if (!placed) break;
                 ctx.Check();
             }
-            if (result.Count < wanted) ctx.Issue(IssueSeverity.Info, "Placemaker.Farmstead.Issue.FewerPaddocks", result.Count, wanted);
+            if (result.Count < wanted) ctx.Issue(IssueSeverity.Info, "Citymaker.Farmstead.Issue.FewerPaddocks", result.Count, wanted);
             if (wantPen)
             {
                 const float R = 9f;

@@ -1,4 +1,4 @@
-// Placemaker — icon paths the panel receives from C# (layers, recipes, options, presets, marker kinds).
+// Citymaker — icon paths the panel receives from C# (layers, recipes, options, presets, marker kinds).
 //
 // Vanilla icons are addressed like vanilla does: "Media/Game/Icons/X.svg" (relative to the game UI
 // host; the UI maps it to coui://GameUI/Media/...). Playtest 1 logged "Invalid host locations map"
@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Placemaker.Game.UI
+namespace Citymaker.Game.UI
 {
     public static class IconPaths
     {
@@ -47,7 +47,7 @@ namespace Placemaker.Game.UI
             var root = UiRoot();
             if (root != null && !File.Exists(Path.Combine(root, rel.Replace('/', Path.DirectorySeparatorChar))))
             {
-                Mod.Log.Warn("Placemaker: icon '" + icon + "' does not exist in this game version; showing none.");
+                Mod.Log.Warn("Citymaker: icon '" + icon + "' does not exist in this game version; showing none.");
                 return "";
             }
             return rel;

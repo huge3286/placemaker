@@ -1,4 +1,4 @@
-// Placemaker — where existing roads meet a drawn or painted outline.
+// Citymaker — where existing roads meet a drawn or painted outline.
 //
 // Block and perimeter selections know their bounding roads exactly (they were traced on the
 // road graph). Drawn and painted outlines only have geometry, so this computes the same
@@ -8,7 +8,7 @@
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Tool
+namespace Citymaker.Core.Tool
 {
     public static class AttachmentFinder
     {

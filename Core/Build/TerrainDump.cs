@@ -1,8 +1,8 @@
-// Placemaker — in-game terrain dump (s30, GPL-3.0).
+// Citymaker — in-game terrain dump (s30, GPL-3.0).
 //
 // Playtests 54–57 showed glitches the offline gallery never did (curtains where nets met the ground, quay pieces at
 // different heights). With "Debug: dump terrain after build" on, every finished build writes what the game really
-// built to ModsData/Placemaker/debug/<group>.json: the live heightmap and water depth around the build (sampled from
+// built to ModsData/Citymaker/debug/<group>.json: the live heightmap and water depth around the build (sampled from
 // TerrainSystem / WaterSystem after Apply), the ground before the build, the planned terraform raster's target, the
 // built nets (live curves) and objects, the plan's facts. The gallery renders such a file like its own shore renders
 // (hillshade, oblique view, cross sections, curtain and seat metrics): `--dump <file.json>`.
@@ -12,10 +12,10 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Placemaker.Core.Tool;
+using Citymaker.Core.Tool;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     public sealed class TerrainDump
     {

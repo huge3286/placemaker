@@ -9,10 +9,10 @@
 //             or a colossus (twice the scale, a taller base)
 //   backdrop  a half-ring of trees or hedge behind the plinth so the figure reads against green
 
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns.Monuments
+namespace Citymaker.Core.Layers.AddOns.Monuments
 {
     [AreaGenerator(171)]
     public sealed class BigStatueAddOn : MonumentAddOn
@@ -152,7 +152,7 @@ namespace Placemaker.Core.Layers.AddOns.Monuments
                 if (MonumentKit.Put(ctx, occ, q, MonumentKit.Yaw(P - q), ObjectRole.Bench, bench, null, 1.1f, Hashing.Mix(ctx.Seed, 0xBE0u + (uint)i)) != null) placed++;
             }
             ctx.Stat(Keys.StatBenches, placed, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Monuments", figures, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Monuments", figures, Keys.UnitCount);
         }
 
         private void Avenue(LayerContext ctx, Occupancy occ, float2 P, float2 d, float2 side, float outer, float front, AssetRef statueAsset, string statueCat, float scale)

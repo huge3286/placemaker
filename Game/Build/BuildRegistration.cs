@@ -1,12 +1,12 @@
-// Placemaker — system registration of the game-build workstream (GPL-3.0).
+// Citymaker — system registration of the game-build workstream (GPL-3.0).
 // Called once from Mod.OnLoad by the lead: BuildRegistration.Register(updateSystem).
 
 using Game;
-using Placemaker.Game.Assets;
-using Placemaker.Game.Economy;
-using Placemaker.Game.Groups;
+using Citymaker.Game.Assets;
+using Citymaker.Game.Economy;
+using Citymaker.Game.Groups;
 
-namespace Placemaker.Game.Build
+namespace Citymaker.Game.Build
 {
     public static class BuildRegistration
     {
@@ -19,16 +19,16 @@ namespace Placemaker.Game.Build
             updateSystem.UpdateBefore<SurfaceCloneSystem, global::Game.Prefabs.PrefabInitializeSystem>(SystemUpdatePhase.PrefabUpdate);
             updateSystem.UpdateBefore<ParkingCompanionPrefabSystem, global::Game.Prefabs.PrefabInitializeSystem>(SystemUpdatePhase.PrefabUpdate);
             // Industrial: the game's vehicles as static props (car yards, staff parking, machines), before any save loads.
-            updateSystem.UpdateBefore<Placemaker.Game.Assets.VehiclePropSystem, global::Game.Prefabs.PrefabInitializeSystem>(SystemUpdatePhase.PrefabUpdate);
+            updateSystem.UpdateBefore<Citymaker.Game.Assets.VehiclePropSystem, global::Game.Prefabs.PrefabInitializeSystem>(SystemUpdatePhase.PrefabUpdate);
             updateSystem.UpdateBefore<ParkCompanionPrefabSystem, global::Game.Prefabs.PrefabInitializeSystem>(SystemUpdatePhase.PrefabUpdate);
-            // "Placemaker Area" owner lot (US7): one selectable/bulldozable thing per build.
+            // "Citymaker Area" owner lot (US7): one selectable/bulldozable thing per build.
             updateSystem.UpdateBefore<OwnerAreaPrefabSystem, global::Game.Prefabs.PrefabInitializeSystem>(SystemUpdatePhase.PrefabUpdate);
 
             // ── Catalog & selection UI ─────────────────────────────────────────────────
             // UIUpdate ticks while the simulation is paused (GameSimulation does not), and
             // SelectedInfoUISystem drives its sections there.
             updateSystem.UpdateAt<AssetCatalogSystem>(SystemUpdatePhase.UIUpdate);
-            updateSystem.UpdateAt<PlacemakerGroupSection>(SystemUpdatePhase.UIUpdate);
+            updateSystem.UpdateAt<CitymakerGroupSection>(SystemUpdatePhase.UIUpdate);
 
             // ── Build transaction ───────────────────────────────────────────────────────
             // ToolUpdate: tools run here and ToolOutputSystem reads the active tool's applyMode right
@@ -42,19 +42,19 @@ namespace Placemaker.Game.Build
             // ── Neighbourhood polish ───────────────────────────────────────────────────
             // Modification4B: after LaneSystem's barrier (the houses' fence lanes exist and were just reset), before
             // Net.OverrideSystem, culling and rendering in Modification5+ (a rebuilt house is re-stitched in the same frame).
-            updateSystem.UpdateAt<global::Placemaker.Game.Neighbours.NeighbourPolishSystem>(SystemUpdatePhase.Modification4B);
+            updateSystem.UpdateAt<global::Citymaker.Game.Neighbours.NeighbourPolishSystem>(SystemUpdatePhase.Modification4B);
             // its lawn edits: next frame, before Areas.GeometrySystem re-triangulates Updated surfaces (Modification2B)
-            updateSystem.UpdateBefore<global::Placemaker.Game.Neighbours.NeighbourLawnSystem, global::Game.Areas.GeometrySystem>(SystemUpdatePhase.Modification2B);
+            updateSystem.UpdateBefore<global::Citymaker.Game.Neighbours.NeighbourLawnSystem, global::Game.Areas.GeometrySystem>(SystemUpdatePhase.Modification2B);
             // its ground paint: one terrain-material stamp per frame (as a build's paint step)
-            updateSystem.UpdateAt<global::Placemaker.Game.Neighbours.NeighbourPaintSystem>(SystemUpdatePhase.ToolUpdate);
+            updateSystem.UpdateAt<global::Citymaker.Game.Neighbours.NeighbourPaintSystem>(SystemUpdatePhase.ToolUpdate);
             // its shared-green surfaces: permanent definitions right before GenerateAreasSystem (as zone spawns are made)
-            updateSystem.UpdateBefore<global::Placemaker.Game.Neighbours.NeighbourAreaSystem, global::Game.Tools.GenerateAreasSystem>(SystemUpdatePhase.Modification1);
+            updateSystem.UpdateBefore<global::Citymaker.Game.Neighbours.NeighbourAreaSystem, global::Game.Tools.GenerateAreasSystem>(SystemUpdatePhase.Modification1);
             // pieces a garden no longer has: deleted at PostTool, where the game deletes a building's own pieces
-            updateSystem.UpdateAfter<global::Placemaker.Game.Neighbours.NeighbourDeleteSystem, global::Game.Objects.SubElementDeleteSystem>(SystemUpdatePhase.PostTool);
+            updateSystem.UpdateAfter<global::Citymaker.Game.Neighbours.NeighbourDeleteSystem, global::Game.Objects.SubElementDeleteSystem>(SystemUpdatePhase.PostTool);
             // its bushes: owned objects, permanent definitions right before GenerateObjectsSystem
-            updateSystem.UpdateBefore<global::Placemaker.Game.Neighbours.NeighbourObjectSystem, global::Game.Tools.GenerateObjectsSystem>(SystemUpdatePhase.Modification1);
+            updateSystem.UpdateBefore<global::Citymaker.Game.Neighbours.NeighbourObjectSystem, global::Game.Tools.GenerateObjectsSystem>(SystemUpdatePhase.Modification1);
             // its pieces the game hid this frame (Objects.OverrideSystem, Modification5): shown again before culling
-            updateSystem.UpdateAt<global::Placemaker.Game.Neighbours.NeighbourShowSystem>(SystemUpdatePhase.ModificationEnd);
+            updateSystem.UpdateAt<global::Citymaker.Game.Neighbours.NeighbourShowSystem>(SystemUpdatePhase.ModificationEnd);
 
             // ── Groups ─────────────────────────────────────────────────────────────────
             // Removal marks Deleted in PreTool: SubElementDeleteSystem (PostTool) cascades and

@@ -12,12 +12,12 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Leisure;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Leisure;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Golf
+namespace Citymaker.Core.Layers.Types.Golf
 {
     [AreaGenerator(207, Group = "sports")]
     public sealed partial class GolfLayer : LeisureLayer
@@ -33,7 +33,7 @@ namespace Placemaker.Core.Layers.Types.Golf
 
         public static readonly string[] Subtypes = { "course", "pitchPutt", "miniGolf", "drivingRange", "discGolf" };
 
-        /// <summary>A feature labelled with its layer name (no Placemaker.Feature.* key of its own).</summary>
+        /// <summary>A feature labelled with its layer name (no Citymaker.Feature.* key of its own).</summary>
         private static FeatureInfo Plain(string layer, params (string key, object value)[] preset)
         {
             var f = Feature(layer, preset);
@@ -48,8 +48,8 @@ namespace Placemaker.Core.Layers.Types.Golf
         {
             var practice = Feature(PuttingGreenAddOn.LayerId);
             practice.Target = PracticeTag;
-            practice.LabelKey = "Placemaker.Golf.Feature.practiceGreen";
-            practice.TooltipKey = "Placemaker.Golf.Feature.practiceGreen.Tooltip";
+            practice.LabelKey = "Citymaker.Golf.Feature.practiceGreen";
+            practice.TooltipKey = "Citymaker.Golf.Feature.practiceGreen.Tooltip";
             return new List<FeatureInfo>
             {
                 practice, Feature("restrooms"), Feature("shops", ("count", 1.0), ("where", "entrances")), StreetShopsFeature(Area),
@@ -190,8 +190,8 @@ namespace Placemaker.Core.Layers.Types.Golf
             }
             var holes = RouteBest(ctx, region, firstTees, home, fmt.Disc ? 3f : 7f, fmt, ref spec);
             foreach (var h in holes) GolfRouting.Take(occ, h, spec);
-            if (holes.Count < spec.Holes) ctx.Issue(IssueSeverity.Info, "Placemaker.Golf.Issue.FewerHoles", holes.Count, spec.Holes);
-            if (holes.Count == 0) ctx.Issue(IssueSeverity.Warning, "Placemaker.Golf.Issue.NoHoles");
+            if (holes.Count < spec.Holes) ctx.Issue(IssueSeverity.Info, "Citymaker.Golf.Issue.FewerHoles", holes.Count, spec.Holes);
+            if (holes.Count == 0) ctx.Issue(IssueSeverity.Warning, "Citymaker.Golf.Issue.NoHoles");
             foreach (var h in holes) { haz.Take(h.Green, spec.GreenRadius + 1f, GolfRouting.GreenKind); haz.Take(h.Tee, 3f, GolfRouting.TeeKind); }
             ctx.Check();
 
@@ -286,10 +286,10 @@ namespace Placemaker.Core.Layers.Types.Golf
             CommonStats(ctx);
             float total = 0f; int par = 0;
             foreach (var h in holes) { total += h.Length; par += h.Par; }
-            ctx.Stat("Placemaker.Stat.Holes", holes.Count, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.CourseLength", Math.Round(total), Keys.UnitM);
-            ctx.Stat("Placemaker.Stat.Par", par, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Bunkers", bunkers, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Holes", holes.Count, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.CourseLength", Math.Round(total), Keys.UnitM);
+            ctx.Stat("Citymaker.Stat.Par", par, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Bunkers", bunkers, Keys.UnitCount);
             ctx.Plan.Facts["holes"] = holes.Count;
             ctx.Plan.Facts["par"] = par;
             ctx.Plan.Facts["bunkers"] = bunkers;
@@ -657,10 +657,10 @@ namespace Placemaker.Core.Layers.Types.Golf
             }
             if (placed > 0)
             {
-                ctx.Issue(IssueSeverity.Warning, "Placemaker.Park.Issue.LakePermanent");
+                ctx.Issue(IssueSeverity.Warning, "Citymaker.Park.Issue.LakePermanent");
                 ctx.Stat(Keys.StatLakeArea, Math.Round(area), Keys.UnitM2);
             }
-            if (placed < wanted) ctx.Issue(IssueSeverity.Info, "Placemaker.Golf.Issue.FewerPonds", placed, wanted);
+            if (placed < wanted) ctx.Issue(IssueSeverity.Info, "Citymaker.Golf.Issue.FewerPonds", placed, wanted);
             return placed;
         }
 

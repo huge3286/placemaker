@@ -12,13 +12,13 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Common.Shore;
-using Placemaker.Core.Layers.Park;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common.Shore;
+using Citymaker.Core.Layers.Park;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns.Water
+namespace Citymaker.Core.Layers.AddOns.Water
 {
     public static class LakeDressing
     {
@@ -63,7 +63,7 @@ namespace Placemaker.Core.Layers.AddOns.Water
                 var inset = Poly.Clean(outer.InsetVertices(o.PromWidth), 0.3f);
                 if (inset.Length >= 3 && Poly.IsSimple(inset) && Poly.IsCcw(inset) && Poly.Area(inset) > math.max(250f, outer.Area * 0.3f))
                 { water = inset; promenade = true; }
-                else ctx.Issue(IssueSeverity.Info, "Placemaker.Pond.Issue.NoPromenade");
+                else ctx.Issue(IssueSeverity.Info, "Citymaker.Pond.Issue.NoPromenade");
             }
             var wr = LayerRegion.From(water) ?? outer;
             float shore = float.MaxValue;
@@ -91,7 +91,7 @@ namespace Placemaker.Core.Layers.AddOns.Water
                 if (!ok) break;
                 islands.Add(new Island { C = c, R = r, Ring = Poly.EnsureCcw(ring) });
             }
-            if (o.Islands > islands.Count) ctx.Issue(IssueSeverity.Info, "Placemaker.Pond.Issue.FewerIslands", islands.Count, o.Islands);
+            if (o.Islands > islands.Count) ctx.Issue(IssueSeverity.Info, "Citymaker.Pond.Issue.FewerIslands", islands.Count, o.Islands);
 
             // 3. Basin, islands raised back, water surface around them.
             var anchor = wr.DeepestPoint(out _, (p, cap) =>
@@ -122,7 +122,7 @@ namespace Placemaker.Core.Layers.AddOns.Water
                 }
                 catch (Exception) { /* the surface is decorative; the terraform makes the water */ }
             }
-            ctx.Issue(IssueSeverity.Warning, "Placemaker.Park.Issue.LakePermanent");
+            ctx.Issue(IssueSeverity.Warning, "Citymaker.Park.Issue.LakePermanent");
             ctx.Stat(Keys.StatLakeArea, Math.Round(waterArea), Keys.UnitM2);
             foreach (var isl in islands) occ.Take(isl.C, isl.R + 0.5f, 8);
             ctx.Check();
@@ -339,10 +339,10 @@ namespace Placemaker.Core.Layers.AddOns.Water
             ctx.Plan.Facts["boats"] = boats;
             ctx.Plan.Facts["islandTrees"] = islandTrees;
             ctx.Plan.Facts["lakePromenade"] = promenade ? 1 : 0;
-            if (islands.Count > 0) ctx.Stat("Placemaker.Stat.Islands", islands.Count, Keys.UnitCount);
-            if (bridges > 0) ctx.Stat("Placemaker.Stat.Bridges", bridges, Keys.UnitCount);
+            if (islands.Count > 0) ctx.Stat("Citymaker.Stat.Islands", islands.Count, Keys.UnitCount);
+            if (bridges > 0) ctx.Stat("Citymaker.Stat.Bridges", bridges, Keys.UnitCount);
             if (jets > 0) ctx.Stat(Keys.StatFountains, jets, Keys.UnitCount);
-            if (boats > 0) ctx.Stat("Placemaker.Stat.Boats", boats, Keys.UnitCount);
+            if (boats > 0) ctx.Stat("Citymaker.Stat.Boats", boats, Keys.UnitCount);
         }
 
         /// <summary>Where the ray from the island centre towards <paramref name="toward"/> leaves the island, 1 m inside its shore.</summary>
@@ -593,7 +593,7 @@ namespace Placemaker.Core.Layers.AddOns.Water
                 ctx.Plan.Facts["boathouse"] = 1;
                 return boats;
             }
-            ctx.Issue(IssueSeverity.Info, "Placemaker.Pond.Issue.NoBoathouse");
+            ctx.Issue(IssueSeverity.Info, "Citymaker.Pond.Issue.NoBoathouse");
             return 0;
         }
     }

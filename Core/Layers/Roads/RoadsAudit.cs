@@ -1,4 +1,4 @@
-// Placemaker roads layer (s34) — measures a finished road plan the way a reviewer would: is everything connected (to
+// Citymaker roads layer (s34) — measures a finished road plan the way a reviewer would: is everything connected (to
 // itself and to the city), are there bare dead ends, how close are the junctions on the main roads, do walkways land
 // on real nodes, how steep are the roads, are there crumbs (very short pieces) or knife-edge junctions. Used by the
 // tests (every pattern × preset × site) and the gallery summary. Works on the plan's nets only (what the game builds).
@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads
+namespace Citymaker.Core.Layers.Roads
 {
     public sealed class RoadsAudit
     {

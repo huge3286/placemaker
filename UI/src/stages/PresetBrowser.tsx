@@ -53,7 +53,7 @@ export function makeRecipes(catalog: Catalog): RecipeInfo[] {
 }
 
 export type MakeGroup = { id: string; key: string; en: string };
-const OTHER_GROUP: MakeGroup = { id: "other", key: "Placemaker.UI.MakeGroup.Other", en: "Other" };
+const OTHER_GROUP: MakeGroup = { id: "other", key: "Citymaker.UI.MakeGroup.Other", en: "Other" };
 
 /**
  * The categories of the Make row, in the shelf's order (Recipes/shelf/<category>.json: "fewer, better", user 2026-10-15),
@@ -67,7 +67,7 @@ export function makeGroups(catalog: Catalog): MakeGroup[] {
         const g = recipeGroup(r);
         if (g !== "other" && !seen.includes(g)) seen.push(g);
     }
-    return [...seen.map((g) => ({ id: g, key: "Placemaker.UI.MakeGroup." + g.charAt(0).toUpperCase() + g.slice(1), en: humanize(g) })), OTHER_GROUP];
+    return [...seen.map((g) => ({ id: g, key: "Citymaker.UI.MakeGroup." + g.charAt(0).toUpperCase() + g.slice(1), en: humanize(g) })), OTHER_GROUP];
 }
 
 /** Category of a recipe: the shelf's (RecipeInfo.category), else the group its type declares, else guessed from the id. */
@@ -98,7 +98,7 @@ function typeLayer(catalog: Catalog, r: RecipeInfo): LayerType | undefined {
 export const STANDARD_ID = "standard";
 
 export const presetName = (t: TFunc, p: PresetView) =>
-    p.custom ? p.name : p.id === STANDARD_ID && !p.name ? t("Placemaker.UI.Preset.Standard", "Standard") : t(p.name, humanize(p.name || p.id));
+    p.custom ? p.name : p.id === STANDARD_ID && !p.name ? t("Citymaker.UI.Preset.Standard", "Standard") : t(p.name, humanize(p.name || p.id));
 const recipeName = (t: TFunc, r: RecipeInfo) => (r.custom ? r.name : t(r.name, humanize(r.name || r.id)));
 const groupName = (t: TFunc, catalog: Catalog, id: string) => {
     const shelf = (catalog.categories ?? []).find((c) => c.id === id);
@@ -138,8 +138,8 @@ export function makeSummary(t: TFunc, catalog: Catalog, design: DesignState): st
 
 // ───────────── remembered choices ─────────────
 
-const CATEGORY_KEY = "placemaker.browserCategory.v2";
-const USE_KEY = "placemaker.categoryUse.v1";
+const CATEGORY_KEY = "citymaker.browserCategory.v2";
+const USE_KEY = "citymaker.categoryUse.v1";
 
 function load<T>(key: string, fallback: T): T {
     try {
@@ -265,7 +265,7 @@ export const TypeBrowser = ({ catalog, design, onNew }: { catalog: Catalog; desi
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [design.recipeId]);
     // A shelved last pick (e.g. Quarry, used before industry was hidden) is switched to the first type shown by the game when
-    // it restores the last type (PlacemakerToolSystem.EnsureInitialized), so a hidden type picked on purpose stays.
+    // it restores the last type (CitymakerToolSystem.EnsureInitialized), so a hidden type picked on purpose stays.
 
     // search hits
     type Hit = { r: RecipeInfo; layer: LayerType; p: PresetView };
@@ -357,7 +357,7 @@ export const TypeBrowser = ({ catalog, design, onNew }: { catalog: Catalog; desi
     const head = (
         <SectionHead
             icon="sparkle"
-            title={t("Placemaker.UI.Make.Title", "Pick what to make")}
+            title={t("Citymaker.UI.Make.Title", "Pick what to make")}
             first
             testId="make-head"
             fill={
@@ -368,7 +368,7 @@ export const TypeBrowser = ({ catalog, design, onNew }: { catalog: Catalog; desi
                             data-testid="browser-search"
                             autoFocus
                             value={query}
-                            placeholder={t("Placemaker.UI.Browser.SearchShort", "Search")}
+                            placeholder={t("Citymaker.UI.Browser.SearchShort", "Search")}
                             onChange={(e) => setQuery(e.target.value)}
                             onKeyDown={(e) => {
                                 if (e.key === "Escape") {
@@ -385,7 +385,7 @@ export const TypeBrowser = ({ catalog, design, onNew }: { catalog: Catalog; desi
                                 e.stopPropagation();
                             }}
                         />
-                        <Btn icon="close" iconSize={10} className={s.clear} title={t("Placemaker.UI.Browser.Clear", "Clear")} onClick={closeSearch} testId="browser-clear" />
+                        <Btn icon="close" iconSize={10} className={s.clear} title={t("Citymaker.UI.Browser.Clear", "Clear")} onClick={closeSearch} testId="browser-clear" />
                     </div>
                 ) : undefined
             }
@@ -395,7 +395,7 @@ export const TypeBrowser = ({ catalog, design, onNew }: { catalog: Catalog; desi
                     iconSize={12}
                     className={s.headBtn}
                     selected={searching}
-                    title={t("Placemaker.UI.Browser.Search", "Search types and styles")}
+                    title={t("Citymaker.UI.Browser.Search", "Search types and styles")}
                     onClick={() => (searching ? closeSearch() : setSearching(true))}
                     testId="browser-search-toggle"
                 />
@@ -421,12 +421,12 @@ export const TypeBrowser = ({ catalog, design, onNew }: { catalog: Catalog; desi
                 description={
                     p.custom
                         ? p.basedOn
-                            ? t("Placemaker.UI.Preset.BasedOn", "Your style, based on {0}", [humanize(p.basedOn)])
-                            : t("Placemaker.UI.Preset.Yours", "Your style")
+                            ? t("Citymaker.UI.Preset.BasedOn", "Your style, based on {0}", [humanize(p.basedOn)])
+                            : t("Citymaker.UI.Preset.Yours", "Your style")
                         : p.overridden
-                          ? t("Placemaker.UI.Preset.EditedTip", "You saved over this style.")
+                          ? t("Citymaker.UI.Preset.EditedTip", "You saved over this style.")
                           : p.id === STANDARD_ID
-                            ? t("Placemaker.UI.Preset.StandardTip", "The type as it comes.")
+                            ? t("Citymaker.UI.Preset.StandardTip", "The type as it comes.")
                             : undefined
                 }
                 extra={{ "data-layer": layer.id }}
@@ -447,12 +447,12 @@ export const TypeBrowser = ({ catalog, design, onNew }: { catalog: Catalog; desi
             <div className={s.browser} data-testid="type-browser" ref={root} onKeyDown={onKey}>
                 {q && !typeHits.length && !styleHits.length ? (
                     <div className={s.empty} data-testid="browser-empty">
-                        {t("Placemaker.UI.Browser.None", "Nothing matches “{0}”", [query.trim()])}
+                        {t("Citymaker.UI.Browser.None", "Nothing matches “{0}”", [query.trim()])}
                     </div>
                 ) : (
                     <>
                         <div className={s.row}>
-                            <RowLabel n={1} label={t("Placemaker.UI.Make.Category", "Category")} />
+                            <RowLabel n={1} label={t("Citymaker.UI.Make.Category", "Category")} />
                             <div className={s.chips} data-testid="make-groups">
                                 {visibleCats.map((c) => (
                                     <Chip
@@ -486,7 +486,7 @@ export const TypeBrowser = ({ catalog, design, onNew }: { catalog: Catalog; desi
                                         }}
                                     >
                                         <div className={s.chipName}>
-                                            {moreCats ? t("Placemaker.UI.Make.Fewer", "Fewer") : t("Placemaker.UI.Make.MoreN", "{0} more", [hiddenCats])}
+                                            {moreCats ? t("Citymaker.UI.Make.Fewer", "Fewer") : t("Citymaker.UI.Make.MoreN", "{0} more", [hiddenCats])}
                                         </div>
                                         <Icon name={moreCats ? "chevronLeft" : "chevronRight"} size={10} tint="dim" />
                                     </button>
@@ -495,7 +495,7 @@ export const TypeBrowser = ({ catalog, design, onNew }: { catalog: Catalog; desi
                         </div>
                         <div className={s.rule} />
                         <div className={s.row}>
-                            <RowLabel n={2} label={t("Placemaker.UI.Make.Type", "Type")} />
+                            <RowLabel n={2} label={t("Citymaker.UI.Make.Type", "Type")} />
                             <div className={s.chips} data-testid="recipes" data-grouped="true">
                                 {types.map((r) => {
                                     const layer = typeLayer(catalog, r);
@@ -519,7 +519,7 @@ export const TypeBrowser = ({ catalog, design, onNew }: { catalog: Catalog; desi
                         </div>
                         <div className={s.rule} />
                         <div className={s.row}>
-                            <RowLabel n={3} label={t("Placemaker.UI.Make.Style", "Style")} />
+                            <RowLabel n={3} label={t("Citymaker.UI.Make.Style", "Style")} />
                             {q ? (
                                 <div className={s.chips} data-testid="preset-hits">
                                     {styleHits.map((h) => styleChip(h.r, h.layer, h.p, true))}
@@ -533,8 +533,8 @@ export const TypeBrowser = ({ catalog, design, onNew }: { catalog: Catalog; desi
                                         icon="plus"
                                         color=""
                                         dashed
-                                        name={t("Placemaker.UI.Preset.New", "New")}
-                                        title={t("Placemaker.UI.Preset.SaveAsTip", "Save these settings as a new style")}
+                                        name={t("Citymaker.UI.Preset.New", "New")}
+                                        title={t("Citymaker.UI.Preset.SaveAsTip", "Save these settings as a new style")}
                                         onClick={onNew}
                                     />
                                 </div>
@@ -565,7 +565,7 @@ const NameField = ({ initial, onSave, onCancel, testId }: { initial: string; onS
                 autoFocus
                 value={value}
                 maxLength={48}
-                placeholder={t("Placemaker.UI.Preset.NamePlaceholder", "Style name")}
+                placeholder={t("Citymaker.UI.Preset.NamePlaceholder", "Style name")}
                 onChange={(e) => setValue(e.target.value)}
                 onKeyDown={(e) => {
                     e.stopPropagation();
@@ -573,8 +573,8 @@ const NameField = ({ initial, onSave, onCancel, testId }: { initial: string; onS
                     if (e.key === "Escape") onCancel();
                 }}
             />
-            <Btn variant="accent" label={t("Placemaker.UI.Save", "Save")} disabled={!ok} onClick={() => onSave(value.trim())} testId="preset-name-save" />
-            <Btn icon="close" iconSize={12} title={t("Placemaker.UI.Cancel", "Cancel")} onClick={onCancel} testId="preset-name-cancel" />
+            <Btn variant="accent" label={t("Citymaker.UI.Save", "Save")} disabled={!ok} onClick={() => onSave(value.trim())} testId="preset-name-save" />
+            <Btn icon="close" iconSize={12} title={t("Citymaker.UI.Cancel", "Cancel")} onClick={onCancel} testId="preset-name-cancel" />
         </div>
     );
 };
@@ -623,31 +623,31 @@ export const PresetBar = ({
     // Standard is a style like the others: undo, save over (reset to shipped), save as new all work on it.
     const shown = shownActive(layer, ap);
     const p = shown ? layer.presets.find((x) => x.id === shown) ?? null : null;
-    const name = p ? presetName(t, p) : t("Placemaker.UI.Preset.Standard", "Standard");
+    const name = p ? presetName(t, p) : t("Citymaker.UI.Preset.Standard", "Standard");
     const group = recipe ? recipeGroup(recipe) : "other";
     const tIcon = typeIcon(layer.id, group);
     const canSave = ap.modified && ap.canSave && !!p;
     const close = () => setMode("idle");
     const saveWhy = !ap.modified
-        ? t("Placemaker.UI.Preset.NothingToSave", "No changes to save")
+        ? t("Citymaker.UI.Preset.NothingToSave", "No changes to save")
         : !ap.canSave || !p
-          ? t("Placemaker.UI.Preset.CantSave", "This style can't be saved over")
+          ? t("Citymaker.UI.Preset.CantSave", "This style can't be saved over")
           : p.custom
-            ? t("Placemaker.UI.Preset.SaveTip", "Save changes to this style")
-            : t("Placemaker.UI.Preset.SaveBuiltIn", "Save over this style (reset any time)");
+            ? t("Citymaker.UI.Preset.SaveTip", "Save changes to this style")
+            : t("Citymaker.UI.Preset.SaveBuiltIn", "Save over this style (reset any time)");
     const revert = () => {
         if (ap.modified && p) act.selectPreset(layer.id, p.id);
     };
 
     const dialog = confirm ? (
         <Confirm
-            title={confirm === "delete" ? t("Placemaker.UI.Preset.DeleteTitle", "Delete “{0}”?", [name]) : t("Placemaker.UI.Preset.ResetTitle", "Reset “{0}”?", [name])}
+            title={confirm === "delete" ? t("Citymaker.UI.Preset.DeleteTitle", "Delete “{0}”?", [name]) : t("Citymaker.UI.Preset.ResetTitle", "Reset “{0}”?", [name])}
             message={
                 confirm === "delete"
-                    ? t("Placemaker.UI.Preset.DeleteText", "Your style is removed. Builds stay as they are.")
-                    : t("Placemaker.UI.Preset.ResetText", "Your changes to this style are dropped.")
+                    ? t("Citymaker.UI.Preset.DeleteText", "Your style is removed. Builds stay as they are.")
+                    : t("Citymaker.UI.Preset.ResetText", "Your changes to this style are dropped.")
             }
-            confirm={confirm === "delete" ? t("Placemaker.UI.Delete", "Delete") : t("Placemaker.UI.Preset.Reset", "Reset")}
+            confirm={confirm === "delete" ? t("Citymaker.UI.Delete", "Delete") : t("Citymaker.UI.Preset.Reset", "Reset")}
             danger
             onConfirm={() => {
                 setConfirm(null);
@@ -669,16 +669,16 @@ export const PresetBar = ({
         >
             <SectionHead
                 icon="edit"
-                title={t("Placemaker.UI.Editing", "Editing")}
+                title={t("Citymaker.UI.Editing", "Editing")}
                 testId="preset-bar-head"
                 sub={
                     ap.modified ? (
                         <div className={s.modified} data-testid="preset-modified">
                             <div className={s.modDot} />
-                            <div className={s.modText}>{t("Placemaker.UI.Preset.Unsaved", "unsaved changes")}</div>
+                            <div className={s.modText}>{t("Citymaker.UI.Preset.Unsaved", "unsaved changes")}</div>
                         </div>
                     ) : p?.overridden ? (
-                        t("Placemaker.UI.Preset.Edited", "edited")
+                        t("Citymaker.UI.Preset.Edited", "edited")
                     ) : undefined
                 }
             />
@@ -686,7 +686,7 @@ export const PresetBar = ({
                 {mode === "saveAs" ? (
                     <NameField
                         testId="preset-save-as-form"
-                        initial={p ? t("Placemaker.UI.Preset.CopyName", "{0} (mine)", [name]) : ""}
+                        initial={p ? t("Citymaker.UI.Preset.CopyName", "{0} (mine)", [name]) : ""}
                         onSave={(n) => {
                             act.savePresetAs(step.path, n);
                             close();
@@ -724,8 +724,8 @@ export const PresetBar = ({
                                 iconSize={13}
                                 className={s.tool}
                                 disabled={!ap.modified || !p}
-                                title={t("Placemaker.UI.Preset.Revert", "Undo changes")}
-                                description={ap.modified ? t("Placemaker.UI.Preset.RevertTip", "Back to “{0}” as saved", [name]) : t("Placemaker.UI.Preset.NoChanges", "No changes")}
+                                title={t("Citymaker.UI.Preset.Revert", "Undo changes")}
+                                description={ap.modified ? t("Citymaker.UI.Preset.RevertTip", "Back to “{0}” as saved", [name]) : t("Citymaker.UI.Preset.NoChanges", "No changes")}
                                 onClick={revert}
                                 testId="preset-revert"
                             />
@@ -733,8 +733,8 @@ export const PresetBar = ({
                                 icon="shuffle"
                                 iconSize={13}
                                 className={s.tool}
-                                title={t("Placemaker.UI.Randomize", "Shuffle")}
-                                description={t("Placemaker.UI.RandomizeTip", "New variation. Locked values stay.")}
+                                title={t("Citymaker.UI.Randomize", "Shuffle")}
+                                description={t("Citymaker.UI.RandomizeTip", "New variation. Locked values stay.")}
                                 onClick={() => act.randomize(step.path)}
                                 testId="randomize"
                             />
@@ -742,7 +742,7 @@ export const PresetBar = ({
                                 icon="plus"
                                 iconSize={13}
                                 className={s.tool}
-                                title={t("Placemaker.UI.Preset.SaveAs", "Save as new style")}
+                                title={t("Citymaker.UI.Preset.SaveAs", "Save as new style")}
                                 onClick={() => setMode("saveAs")}
                                 testId="preset-save-as"
                             />
@@ -752,7 +752,7 @@ export const PresetBar = ({
                                 variant={canSave ? "accent" : "ghost"}
                                 className={classNames(s.tool, { [s.toolPrimary]: canSave })}
                                 disabled={!canSave}
-                                title={t("Placemaker.UI.Save", "Save")}
+                                title={t("Citymaker.UI.Save", "Save")}
                                 description={saveWhy}
                                 onClick={() => act.savePreset(step.path, p ? p.id : ap.id)}
                                 testId="preset-save"
@@ -762,7 +762,7 @@ export const PresetBar = ({
                                 iconSize={13}
                                 className={s.tool}
                                 selected={mode === "menu"}
-                                title={t("Placemaker.UI.Preset.More", "More")}
+                                title={t("Citymaker.UI.Preset.More", "More")}
                                 onClick={() => setMode(mode === "menu" ? "idle" : "menu")}
                                 testId="preset-more"
                             />
@@ -773,11 +773,11 @@ export const PresetBar = ({
                     <div className={s.menu} data-testid="preset-menu">
                         {p?.custom ? (
                             <>
-                                <MenuItem icon="edit" label={t("Placemaker.UI.Preset.Rename", "Rename")} onClick={() => setMode("rename")} testId="preset-rename" />
+                                <MenuItem icon="edit" label={t("Citymaker.UI.Preset.Rename", "Rename")} onClick={() => setMode("rename")} testId="preset-rename" />
                                 <MenuItem
                                     icon="trash"
                                     danger
-                                    label={t("Placemaker.UI.Delete", "Delete")}
+                                    label={t("Citymaker.UI.Delete", "Delete")}
                                     onClick={() => {
                                         close();
                                         setConfirm("delete");
@@ -789,7 +789,7 @@ export const PresetBar = ({
                         {p?.overridden ? (
                             <MenuItem
                                 icon="reset"
-                                label={t("Placemaker.UI.Preset.ResetDefault", "Reset to shipped")}
+                                label={t("Citymaker.UI.Preset.ResetDefault", "Reset to shipped")}
                                 onClick={() => {
                                     close();
                                     setConfirm("reset");
@@ -799,7 +799,7 @@ export const PresetBar = ({
                         ) : null}
                         <MenuItem
                             icon="save"
-                            label={t("Placemaker.UI.Preset.Export", "Export styles")}
+                            label={t("Citymaker.UI.Preset.Export", "Export styles")}
                             onClick={() => {
                                 act.exportPresets();
                                 setExported(true);
@@ -813,8 +813,8 @@ export const PresetBar = ({
                     <div className={s.exported} data-testid="presets-file">
                         <div className={s.exportedHead}>
                             <Icon name="info" size={12} tint="accent" />
-                            <div className={s.exportedNote}>{t("Placemaker.UI.Preset.ExportNote", "Saved. Send this file to share your styles.")}</div>
-                            <Btn icon="close" iconSize={11} title={t("Placemaker.UI.Close", "Close")} onClick={() => setExported(false)} testId="presets-file-close" />
+                            <div className={s.exportedNote}>{t("Citymaker.UI.Preset.ExportNote", "Saved. Send this file to share your styles.")}</div>
+                            <Btn icon="close" iconSize={11} title={t("Citymaker.UI.Close", "Close")} onClick={() => setExported(false)} testId="presets-file-close" />
                         </div>
                         <div className={s.path} data-testid="presets-file-path">
                             {design.presetsFile}

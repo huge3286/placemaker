@@ -1,4 +1,4 @@
-// Placemaker — main-thread snapshot of the world around the selected area.
+// Citymaker — main-thread snapshot of the world around the selected area.
 //
 // Generators run on a worker thread (PreviewWorker) and must never touch ECS or the terrain
 // height data (both main-thread only). This copies what they need into plain arrays: a height
@@ -16,13 +16,13 @@ using Game.Net;
 using Game.Prefabs;
 using Game.Simulation;
 using Game.Tools;
-using Placemaker.Core;
-using Placemaker.Game.Selection;
+using Citymaker.Core;
+using Citymaker.Game.Selection;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Preview
+namespace Citymaker.Game.Preview
 {
     public sealed class SiteCapture
     {
@@ -77,7 +77,7 @@ namespace Placemaker.Game.Preview
             }
             catch (Exception e)
             {
-                Mod.Log.Warn("Placemaker: asset catalog InfoMap failed: " + e.Message);
+                Mod.Log.Warn("Citymaker: asset catalog InfoMap failed: " + e.Message);
             }
             return _assets;
         }
@@ -170,7 +170,7 @@ namespace Placemaker.Game.Preview
             }
             catch (Exception e)
             {
-                Mod.Log.Warn("Placemaker: water snapshot failed (" + e.Message + "); assuming dry ground");
+                Mod.Log.Warn("Citymaker: water snapshot failed (" + e.Message + "); assuming dry ground");
                 return _ => 0f;
             }
         }
@@ -341,14 +341,14 @@ namespace Placemaker.Game.Preview
                     if (_em.HasComponent<global::Game.Common.Owner>(e))
                     {
                         var owner = _em.GetComponentData<global::Game.Common.Owner>(e).m_Owner;
-                        ours = owner != Entity.Null && _em.Exists(owner) && _em.HasComponent<Placemaker.Game.Groups.PlacemakerMember>(owner);
+                        ours = owner != Entity.Null && _em.Exists(owner) && _em.HasComponent<Citymaker.Game.Groups.CitymakerMember>(owner);
                     }
                     into.Add(new ZoneGrid { Position = b.m_Position.xz, Direction = b.m_Direction, Size = b.m_Size, Cells = cells, Ours = ours });
                 }
             }
             catch (Exception ex)
             {
-                Mod.Log.Warn("Placemaker: zone block capture failed: " + ex.Message);
+                Mod.Log.Warn("Citymaker: zone block capture failed: " + ex.Message);
             }
             finally { results.Dispose(); }
         }

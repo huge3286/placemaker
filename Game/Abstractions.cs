@@ -4,11 +4,11 @@
 // accessor below (set in OnCreate of each implementation).
 
 using System.Collections.Generic;
-using Placemaker.Core;
+using Citymaker.Core;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game
+namespace Citymaker.Game
 {
     // ───────────────────────── Build ─────────────────────────
 
@@ -45,7 +45,7 @@ namespace Placemaker.Game
         /// </summary>
         public List<PlanIssue> Warnings;
         /// <summary>(s53) What did not make it into the build, with reasons (Done); null when the service has nothing to report.</summary>
-        public Placemaker.Core.Build.BuildAudit Audit;
+        public Citymaker.Core.Build.BuildAudit Audit;
     }
 
     public interface IBuildService

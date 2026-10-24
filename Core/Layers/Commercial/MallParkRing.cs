@@ -6,11 +6,11 @@
 // Garden square and Family park have a pond.
 
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Commercial
+namespace Citymaker.Core.Layers.Commercial
 {
     public sealed partial class MallParkLayer
     {
@@ -203,7 +203,7 @@ namespace Placemaker.Core.Layers.Commercial
         {
             var places = new List<PlannedRegion>();
             var children = ctx.B("playground") ? new[] { "playground" } : new string[0];
-            var targets = ctx.B("fountain") ? new[] { Placemaker.Core.Layers.Park.ParkLayer.PlazaPlace } : new string[0];
+            var targets = ctx.B("fountain") ? new[] { Citymaker.Core.Layers.Park.ParkLayer.PlazaPlace } : new string[0];
             bool pond = mall.X.Pond;
             bool parked = mall.FillOpen(park, "park", ctx.S("parkStyle"), doors, null, salt, b =>
             {
@@ -220,14 +220,14 @@ namespace Placemaker.Core.Layers.Commercial
             foreach (var place in places)
             {
                 var ring = Poly.To2D(place.Ring);
-                if (place.Key == Placemaker.Core.Layers.Park.ParkLayer.PlazaPlace)
+                if (place.Key == Citymaker.Core.Layers.Park.ParkLayer.PlazaPlace)
                 {
                     ctx.Surface(ring, SurfaceRole.Plaza, new AssetRef(""), AssetCategories.SurfacePaving);
                     mall.AddOn(ring, "fountain", s++);
                 }
                 else if (place.Key.EndsWith("playground")) mall.AddOn(ring, "playground", s++);
             }
-            if (ctx.B("fountain") && !places.Exists(p => p.Key == Placemaker.Core.Layers.Park.ParkLayer.PlazaPlace)) mall.AddOn(park, "fountain", s++);
+            if (ctx.B("fountain") && !places.Exists(p => p.Key == Citymaker.Core.Layers.Park.ParkLayer.PlazaPlace)) mall.AddOn(park, "fountain", s++);
             if (ctx.B("playground") && !places.Exists(p => p.Key.EndsWith("playground"))) mall.AddOn(park, "playground", s++, b => b.Values["size"] = "small");
         }
     }

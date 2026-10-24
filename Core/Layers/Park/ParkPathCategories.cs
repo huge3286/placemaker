@@ -12,9 +12,9 @@
 // categories may be empty and the name fallbacks do the work.
 
 using System.Collections.Generic;
-using Placemaker.Core.Build;
+using Citymaker.Core.Build;
 
-namespace Placemaker.Core
+namespace Citymaker.Core
 {
     public static partial class AssetCategories
     {
@@ -25,7 +25,7 @@ namespace Placemaker.Core
     }
 }
 
-namespace Placemaker.Core.Layers.Park
+namespace Citymaker.Core.Layers.Park
 {
     public static class ParkPathNets
     {

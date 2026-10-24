@@ -4,9 +4,9 @@
 // issue when nothing is installed.
 
 using System.Collections.Generic;
-using Placemaker.Core.Build;
+using Citymaker.Core.Build;
 
-namespace Placemaker.Core
+namespace Citymaker.Core
 {
     public static partial class AssetCategories
     {
@@ -17,7 +17,7 @@ namespace Placemaker.Core
     }
 }
 
-namespace Placemaker.Core.Layers.Types.Wetland
+namespace Citymaker.Core.Layers.Types.Wetland
 {
     public sealed class WetlandCategoryRules : ICategoryRules
     {

@@ -6,10 +6,10 @@
 // join one of its nodes.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns.Monuments
+namespace Citymaker.Core.Layers.AddOns.Monuments
 {
     [AreaGenerator(174)]
     public sealed class SculptureWalkAddOn : MonumentAddOn
@@ -149,7 +149,7 @@ namespace Placemaker.Core.Layers.AddOns.Monuments
                     }
                 }
             ctx.Plan.Facts["sculptures"] = placed;
-            ctx.Stat("Placemaker.Stat.Sculptures", placed, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Sculptures", placed, Keys.UnitCount);
             ctx.Stat(Keys.StatBenches, benches, Keys.UnitCount);
             ctx.Stat(Keys.StatPathLength, math.round(length), Keys.UnitM);
         }

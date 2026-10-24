@@ -19,14 +19,14 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Leisure;
-using Placemaker.Core.Layers.Park;
-using Placemaker.Core.Layers.Types.Farmstead;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Leisure;
+using Citymaker.Core.Layers.Park;
+using Citymaker.Core.Layers.Types.Farmstead;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.OrchardPark
+namespace Citymaker.Core.Layers.Types.OrchardPark
 {
     [AreaGenerator(132, Group = "parks")]
     public sealed class OrchardParkLayer : LeisureLayer
@@ -183,7 +183,7 @@ namespace Placemaker.Core.Layers.Types.OrchardPark
                     glade = placed.Ring; gladeC = placed.Center; gladeR = placed.Size * 0.5f;
                     if (!ctx.B("lawn")) Lawn.Cover(ctx, glade, AssetMix.One("", ParkArt.Grass));
                 }
-                else ctx.Issue(IssueSeverity.Info, "Placemaker.OrchardPark.Issue.NoGlade");
+                else ctx.Issue(IssueSeverity.Info, "Citymaker.OrchardPark.Issue.NoGlade");
             }
             ctx.Check();
 
@@ -321,7 +321,7 @@ namespace Placemaker.Core.Layers.Types.OrchardPark
                     if ((rb & 7) == 0) ctx.Check();
                 }
             }
-            if (trees == 0) ctx.Issue(IssueSeverity.Warning, "Placemaker.OrchardPark.Issue.NoTrees");
+            if (trees == 0) ctx.Issue(IssueSeverity.Warning, "Citymaker.OrchardPark.Issue.NoTrees");
 
             // 6. Glade: veteran mother tree in the middle, benches round the edge facing in.
             int gladeBenches = 0;
@@ -456,7 +456,7 @@ namespace Placemaker.Core.Layers.Types.OrchardPark
             if (glade != null) ctx.AddRegion(glade, "glade", RegionTags.Green, RegionTags.Core);
 
             CommonStats(ctx);
-            ctx.Stat("Placemaker.Stat.FruitTrees", trees, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.FruitTrees", trees, Keys.UnitCount);
             ctx.Stat(Keys.StatPicnicTables, tables, Keys.UnitCount);
             ctx.Stat(Keys.StatLamps, lamps, Keys.UnitCount);
             ctx.Stat(Keys.StatFlowerbeds, flowers, Keys.UnitCount);

@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "amphitheatre",
-  "nameKey": "Placemaker.Recipe.Amphitheatre",
-  "descriptionKey": "Placemaker.Recipe.Amphitheatre.Description",
+  "nameKey": "Citymaker.Recipe.Amphitheatre",
+  "descriptionKey": "Citymaker.Recipe.Amphitheatre.Description",
   "icon": "Media/Game/Icons/TouristAttractions.svg",
   "root": {
     "layer": "amphitheatre",

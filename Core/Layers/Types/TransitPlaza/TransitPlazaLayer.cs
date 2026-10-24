@@ -10,13 +10,13 @@
 // Subtypes are presets: park & ride, bus interchange, bike hub, taxi rank, station forecourt.
 
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Leisure;
-using Placemaker.Core.Layers.Plaza;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Leisure;
+using Citymaker.Core.Layers.Plaza;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Transport
+namespace Citymaker.Core.Layers.Types.Transport
 {
     [AreaGenerator(91, Group = "transport")]
     public sealed class TransitPlazaLayer : LeisureLayer, ILinkedControls
@@ -36,17 +36,17 @@ namespace Placemaker.Core.Layers.Types.Transport
         protected override bool HostsStreetShops => false;
 
         public static readonly string[] Styles = { "parkRide", "busPlaza", "bikeHub", "taxiRank", "forecourt" };
-        public const string StatBusBays = "Placemaker.TransitPlaza.Stat.BusBays";
-        public const string StatTaxiSpaces = "Placemaker.TransitPlaza.Stat.TaxiSpaces";
-        public const string StatDropOff = "Placemaker.TransitPlaza.Stat.DropOff";
-        public const string StatBikeRacks = "Placemaker.TransitPlaza.Stat.BikeRacks";
+        public const string StatBusBays = "Citymaker.TransitPlaza.Stat.BusBays";
+        public const string StatTaxiSpaces = "Citymaker.TransitPlaza.Stat.TaxiSpaces";
+        public const string StatDropOff = "Citymaker.TransitPlaza.Stat.DropOff";
+        public const string StatBikeRacks = "Citymaker.TransitPlaza.Stat.BikeRacks";
 
         protected override List<FeatureInfo> BuildFeatures() => new List<FeatureInfo>
         {
-            new FeatureInfo { Layer = "plazatrees", Target = RegionTags.Paved, LabelKey = "Placemaker.Plaza.Feature.trees" },
-            new FeatureInfo { Layer = "kiosk", Target = RegionTags.Paved, LabelKey = "Placemaker.Plaza.Feature.kiosk" },
+            new FeatureInfo { Layer = "plazatrees", Target = RegionTags.Paved, LabelKey = "Citymaker.Plaza.Feature.trees" },
+            new FeatureInfo { Layer = "kiosk", Target = RegionTags.Paved, LabelKey = "Citymaker.Plaza.Feature.kiosk" },
             CoreFeature("fountain", ("size", "small")),
-            Feature("flowerbeds", ("density", 20.0), ("nearPaths", false)).Relabel("Placemaker.Plaza.Feature.flowerbeds"),
+            Feature("flowerbeds", ("density", 20.0), ("nearPaths", false)).Relabel("Citymaker.Plaza.Feature.flowerbeds"),
             Feature("shops", ("count", 2.0), ("where", "edges")),
             Feature("decals", ("theme", "cracks"), ("ground", "paved"), ("density", 0.6)),
             Feature("terrain", ("shape", "flatten")),

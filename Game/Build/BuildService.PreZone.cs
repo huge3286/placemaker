@@ -1,4 +1,4 @@
-// Placemaker — "Pre-zone all new roads" after a roads build (s34, GPL-3.0).
+// Citymaker — "Pre-zone all new roads" after a roads build (s34, GPL-3.0).
 //
 // Playtest (image 62): the Roads type's edge-zoning cutouts left a scattered pattern of zoned cells. The roads layer
 // now plans one Marquee quad per predicted zone block of every road it adds (Core RoadPreZone, fact "roads.preZone").
@@ -14,14 +14,14 @@ using Colossal.Mathematics;
 using Game.Common;
 using Game.Net;
 using Game.Tools;
-using Placemaker.Core;
-using Placemaker.Core.Build;
-using Placemaker.Core.Layers.Roads;
+using Citymaker.Core;
+using Citymaker.Core.Build;
+using Citymaker.Core.Layers.Roads;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Build
+namespace Citymaker.Game.Build
 {
     public sealed partial class BuildService
     {
@@ -76,13 +76,13 @@ namespace Placemaker.Game.Build
                 {
                     quads.AddRange(others);
                     _refreshedZoning = quads;
-                    Mod.Log.Info($"Placemaker roads pre-zoning: {blocks.Count} live zone block(s) around the build, {quads.Count - others.Count} of the new roads zoned whole ({zoneId}).");
+                    Mod.Log.Info($"Citymaker roads pre-zoning: {blocks.Count} live zone block(s) around the build, {quads.Count - others.Count} of the new roads zoned whole ({zoneId}).");
                 }
-                else Mod.Log.Info($"Placemaker roads pre-zoning: no live block of the new roads found among {blocks.Count}; zoning the planned blocks.");
+                else Mod.Log.Info($"Citymaker roads pre-zoning: no live block of the new roads found among {blocks.Count}; zoning the planned blocks.");
             }
             catch (Exception e)
             {
-                Mod.Log.Warn("Placemaker roads pre-zoning refresh failed (zoning the planned blocks): " + e.Message);
+                Mod.Log.Warn("Citymaker roads pre-zoning refresh failed (zoning the planned blocks): " + e.Message);
                 _refreshedZoning = null;
             }
             ContinueAfterApply();

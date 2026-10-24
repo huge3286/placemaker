@@ -56,7 +56,7 @@ test("a feature that cannot fit the area is listed greyed out with why; area mod
     await page.getByTestId("stagebar-area").click();
     await page.evaluate(() => {
         const b = (window as any).pm.backend;
-        b.areaModes = b.areaModes.map((m: any) => (m.mode === "blockPaint" ? { ...m, enabled: false, reason: { key: "Placemaker.Why.Test", args: [] } } : m));
+        b.areaModes = b.areaModes.map((m: any) => (m.mode === "blockPaint" ? { ...m, enabled: false, reason: { key: "Citymaker.Why.Test", args: [] } } : m));
         b.publishAll();
     });
     // Paint area opens as plain paint; its Smart edges switch is greyed with the reason

@@ -12,12 +12,12 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.AddOns;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.AddOns;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Commercial
+namespace Citymaker.Core.Layers.Commercial
 {
     public sealed partial class Mall
     {
@@ -559,7 +559,7 @@ namespace Placemaker.Core.Layers.Commercial
                     sub.Surfaces.RemoveAt(i);
                 }
             }
-            sub.Issues.RemoveAll(i => i.Severity == IssueSeverity.Error || i.Key == "Placemaker.Parking.Issue.NoEntrance");
+            sub.Issues.RemoveAll(i => i.Severity == IssueSeverity.Error || i.Key == "Citymaker.Parking.Issue.NoEntrance");
             Merge(sub);
             // (s25) The lot graded itself (level tiers on a slope): the rest of the mall plans on that ground.
             if (sub.HeightAfter != null) _lotGround.Add((lot, sub.HeightAfter));
@@ -888,8 +888,8 @@ namespace Placemaker.Core.Layers.Commercial
             plan.Facts["lots"] = Lots.Count;
             plan.Facts["capacity"] = Stalls;
             plan.Facts["evCapacity"] = EvStalls;
-            Ctx.Stat("Placemaker.Commercial.Stat.Plots", Shops.Count, Keys.UnitCount);
-            Ctx.Stat("Placemaker.Commercial.Stat.ZoneCells", cells, Keys.UnitCount);
+            Ctx.Stat("Citymaker.Commercial.Stat.Plots", Shops.Count, Keys.UnitCount);
+            Ctx.Stat("Citymaker.Commercial.Stat.ZoneCells", cells, Keys.UnitCount);
         }
 
         private void EmitLane(Lane lane)

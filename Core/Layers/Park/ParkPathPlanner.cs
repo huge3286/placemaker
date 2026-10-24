@@ -17,10 +17,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Park
+namespace Citymaker.Core.Layers.Park
 {
     public static class ParkPathPlanner
     {

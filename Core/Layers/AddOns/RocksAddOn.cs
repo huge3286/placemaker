@@ -6,11 +6,11 @@
 // Category rock (vanilla stones/boulders); the paint uses a map terrain layer (1–4, rock/gravel on most maps).
 
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns
+namespace Citymaker.Core.Layers.AddOns
 {
     [AreaGenerator(145)]
     public sealed class RocksAddOn : AddOnLayer
@@ -98,8 +98,8 @@ namespace Placemaker.Core.Layers.AddOns
                     }
                 clusters++;
             }
-            if (clusters == 0) NoSpace(ctx, "Placemaker.AddOn.Rocks.Name");
-            ctx.Stat("Placemaker.Stat.Rocks", rocks, Keys.UnitCount);
+            if (clusters == 0) NoSpace(ctx, "Citymaker.AddOn.Rocks.Name");
+            ctx.Stat("Citymaker.Stat.Rocks", rocks, Keys.UnitCount);
         }
 
         /// <summary>

@@ -5,7 +5,7 @@
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Parking
+namespace Citymaker.Core.Layers.Parking
 {
     internal enum BayKind { Perimeter = 0, Inner = 1, InnerPerimeter = 2 }
 

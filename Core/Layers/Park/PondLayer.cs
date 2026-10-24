@@ -5,10 +5,10 @@
 // with rowing boats and a lakeside promenade (AddOns/Water/LakeDressing.cs).
 
 using System;
-using Placemaker.Core.Layers.AddOns.Water;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.AddOns.Water;
+using Citymaker.Core.Layers.Common;
 
-namespace Placemaker.Core.Layers.Park
+namespace Citymaker.Core.Layers.Park
 {
     [AreaGenerator(45, Hidden = true)]
     public sealed class PondLayer : LayerBase

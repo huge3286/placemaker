@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "urbanFarm",
-  "nameKey": "Placemaker.Recipe.UrbanFarm",
-  "descriptionKey": "Placemaker.Recipe.UrbanFarm.Description",
+  "nameKey": "Citymaker.Recipe.UrbanFarm",
+  "descriptionKey": "Citymaker.Recipe.UrbanFarm.Description",
   "icon": "Media/Game/Resources/Vegetables.svg",
   "root": {
     "layer": "urbanFarm",

@@ -5,12 +5,12 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Park;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Park;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Beach
+namespace Citymaker.Core.Layers.Types.Beach
 {
     public sealed class CliffTopResult
     {

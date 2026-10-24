@@ -1,4 +1,4 @@
-// Placemaker — convex decomposition by extending reflex edges.
+// Citymaker — convex decomposition by extending reflex edges.
 //
 // Algorithm idea from ParkingLotTool (KruemelGames, GPL-3.0), Geometry/Zellen/Zerlegung.cs
 // (Konvexzerlegung): at a reflex corner the incoming edge is extended as a ray to the nearest
@@ -14,7 +14,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Geometry
+namespace Citymaker.Core.Geometry
 {
     public static class ConvexDecomposition
     {

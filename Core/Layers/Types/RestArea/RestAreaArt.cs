@@ -4,9 +4,9 @@
 // tower) at the scenic overlook. Each default is an explicit id with vanilla fallbacks; the
 // player's own pick in the asset controls always wins.
 
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 
-namespace Placemaker.Core.Layers.Types.Transport
+namespace Citymaker.Core.Layers.Types.Transport
 {
     internal static class RestAreaArt
     {

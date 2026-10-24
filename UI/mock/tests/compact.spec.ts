@@ -13,7 +13,7 @@ async function toDesign(page: Page, recipe: string) {
 
 async function expandAll(page: Page) {
     for (let i = 0; i < 20; i++) {
-        const closed = page.locator('[data-testid="placemaker-panel"] button[aria-expanded="false"]');
+        const closed = page.locator('[data-testid="citymaker-panel"] button[aria-expanded="false"]');
         if (!(await closed.count())) return;
         await closed.first().click();
     }
@@ -32,7 +32,7 @@ test("Make: one browser of single types (category ▸ type rows), no mixes", asy
     await page.getByTestId("make-group-parks").click();
     await expect(page.getByTestId("mixes")).toHaveCount(0);
     // hidden layers (split, pond) never get a row
-    await expect(page.getByTestId("placemaker-panel")).not.toContainText("Mixes");
+    await expect(page.getByTestId("citymaker-panel")).not.toContainText("Mixes");
     // compact chips: icon tile + name on one 24rem line
     expect((await page.getByTestId("recipe-park").boundingBox())!.height).toBeLessThanOrEqual(24);
     await expect(page.getByTestId("recipe-park").locator("img")).toHaveCount(1);
@@ -41,7 +41,7 @@ test("Make: one browser of single types (category ▸ type rows), no mixes", asy
 
 test("groups are foldable: all folded at first, summaries when folded, state remembered", async ({ page }) => {
     await open(page);
-    await page.evaluate(() => localStorage.removeItem("placemaker.sections.v1"));
+    await page.evaluate(() => localStorage.removeItem("citymaker.sections.v1"));
     await toDesign(page, "parking");
     const step = page.getByTestId("step-0");
     for (const g of ["basics", "layout", "zoning", "extras"]) await expect(step.getByTestId(`group-${g}`)).toHaveAttribute("data-open", "false");
@@ -62,16 +62,16 @@ test("groups are foldable: all folded at first, summaries when folded, state rem
     await expect(page.getByTestId("step-0").getByTestId("group-layout")).toHaveAttribute("data-open", "true");
     await expect(page.getByTestId("step-0").getByTestId("group-basics")).toHaveAttribute("data-open", "false");
     await page.reload();
-    await expect(page.getByTestId("placemaker-panel")).toBeVisible();
+    await expect(page.getByTestId("citymaker-panel")).toBeVisible();
     await toDesign(page, "parking");
     await expect(page.getByTestId("step-0").getByTestId("group-layout")).toHaveAttribute("data-open", "true");
     await expect(page.getByTestId("step-0").getByTestId("group-basics")).toHaveAttribute("data-open", "false");
-    await page.evaluate(() => localStorage.removeItem("placemaker.sections.v1"));
+    await page.evaluate(() => localStorage.removeItem("citymaker.sections.v1"));
 });
 
 test("features: switch adds the feature (row folded, one-line summary), its options fold out indented, switch off removes it from the plan", async ({ page }) => {
     const errors = await open(page);
-    await page.evaluate(() => localStorage.removeItem("placemaker.sections.v1"));
+    await page.evaluate(() => localStorage.removeItem("citymaker.sections.v1"));
     await toDesign(page, "park");
     const features = page.getByTestId("features");
     await expect(features).toBeVisible();
@@ -175,12 +175,12 @@ test("no text overflows or is cut anywhere in the panel (every stage, every type
     await page.getByTestId("primary").click();
     await waitPlanned(page);
     await noTextOverflow(page, "review");
-    await page.evaluate(() => localStorage.removeItem("placemaker.sections.v1"));
+    await page.evaluate(() => localStorage.removeItem("citymaker.sections.v1"));
 });
 
 test("compact: the whole park design fits without scrolling; full-HD screenshots per stage", async ({ page }) => {
     await open(page, { width: 1920, height: 1080 });
-    await page.evaluate(() => localStorage.removeItem("placemaker.sections.v1"));
+    await page.evaluate(() => localStorage.removeItem("citymaker.sections.v1"));
     await shot(page, "r3-1-area-empty");
     await panelShot(page, "r3-panel-1-area-empty");
     await drawPolygon(page, FIELD);
@@ -213,7 +213,7 @@ test("compact: the whole park design fits without scrolling; full-HD screenshots
     await waitPlanned(page);
     await shot(page, "r3-3-review");
     await panelShot(page, "r3-panel-3-review");
-    await page.evaluate(() => localStorage.removeItem("placemaker.sections.v1"));
+    await page.evaluate(() => localStorage.removeItem("citymaker.sections.v1"));
 });
 
 test("places-inside slot is reserved under the type browser (hidden until round 3)", async ({ page }) => {

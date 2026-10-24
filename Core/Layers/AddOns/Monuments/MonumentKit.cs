@@ -12,15 +12,15 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns.Monuments
+namespace Citymaker.Core.Layers.AddOns.Monuments
 {
     public abstract class MonumentAddOn : AmenityAddOn
     {
-        public const string K = "Placemaker.Monuments.";
+        public const string K = "Citymaker.Monuments.";
         public override string Icon => "Media/Game/Icons/Unique.svg";
 
         private static readonly float[] Shrink = { 1f, 0.82f, 0.68f, 0.55f };
@@ -351,7 +351,7 @@ namespace Placemaker.Core.Layers.AddOns.Monuments
     }
 }
 
-namespace Placemaker.Core.Layers.AddOns.Monuments
+namespace Citymaker.Core.Layers.AddOns.Monuments
 {
     /// <summary>The monuments as features of hosts without places (memorial park, formal garden): each finds its own spot.</summary>
     public static class MonumentFeatures
@@ -368,7 +368,7 @@ namespace Placemaker.Core.Layers.AddOns.Monuments
         public static System.Collections.Generic.IEnumerable<FeatureInfo> Own()
         {
             foreach (var id in All)
-                yield return new FeatureInfo { Layer = id, LabelKey = "Placemaker.Feature." + id, TooltipKey = "Placemaker.Feature." + id + ".Tooltip" };
+                yield return new FeatureInfo { Layer = id, LabelKey = "Citymaker.Feature." + id, TooltipKey = "Citymaker.Feature." + id + ".Tooltip" };
         }
     }
 }

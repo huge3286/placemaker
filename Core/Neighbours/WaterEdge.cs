@@ -1,4 +1,4 @@
-// Placemaker neighbourhood polish — the water's edge from the game's water samples (GPL-3.0).
+// Citymaker neighbourhood polish — the water's edge from the game's water samples (GPL-3.0).
 //
 // The game's water is sampled on a 4 m grid around a patch of town (wet: deeper than BlockObstacles.MaxWaterDepth). Merged
 // as it comes, its outline is a staircase of 4 m steps, and a garden cut back along it got a fence of Lego bricks along
@@ -6,10 +6,10 @@
 // is a smooth line however it runs; the planner then keeps every garden its look's water gap off it (YardStitch).
 
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Neighbours
+namespace Citymaker.Core.Neighbours
 {
     public static class WaterEdge
     {

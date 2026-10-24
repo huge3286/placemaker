@@ -1,12 +1,12 @@
 <#
 .SYNOPSIS
-  Uploads Placemaker to Paradox Mods with the game's own uploader (ModPublisher), from a clean release build.
+  Uploads Citymaker to Paradox Mods with the game's own uploader (ModPublisher), from a clean release build.
 
 .DESCRIPTION
   The project builds in standalone mode, so `dotnet publish` never reaches the toolchain's publish targets; this
   script does their job: a fresh release build (UI included) into bin\Publish\build, a content folder with only the
-  mod's files (bin\Publish\Placemaker: no .pdb, no logs), then ModPublisher with Properties\PublishConfiguration.xml.
-  It installs nothing into Mods\Placemaker.
+  mod's files (bin\Publish\Citymaker: no .pdb, no logs), then ModPublisher with Properties\PublishConfiguration.xml.
+  It installs nothing into Mods\Citymaker.
 
   The uploader logs in with the Paradox account last signed in in the game (it never takes a password here).
 
@@ -23,7 +23,7 @@ $ErrorActionPreference = 'Stop'
 $root = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 $config = Join-Path $root 'Properties\PublishConfiguration.xml'
 $buildDir = Join-Path $root 'bin\Publish\build'
-$content = Join-Path $root 'bin\Publish\Placemaker'
+$content = Join-Path $root 'bin\Publish\Citymaker'
 
 # --- the configuration: catch what the uploader would silently get wrong ---
 [xml]$x = Get-Content -Raw -Encoding utf8 -LiteralPath $config
@@ -48,19 +48,19 @@ if ($Command -ne 'Update') {
     foreach ($d in @($buildDir, $content)) { if (Test-Path -LiteralPath $d) { Remove-Item -LiteralPath $d -Recurse -Force } }
     $ui = Join-Path $root 'UI\build'
     if (Test-Path -LiteralPath $ui) { Remove-Item -LiteralPath $ui -Recurse -Force }
-    & dotnet build (Join-Path $root 'Placemaker.csproj') -c Release -p:Deploy=false "-p:OutDir=$buildDir\" -nologo -v:minimal
+    & dotnet build (Join-Path $root 'citymaker.csproj') -c Release -p:Deploy=false "-p:OutDir=$buildDir\" -nologo -v:minimal
     if ($LASTEXITCODE -ne 0) { Write-Host 'STOP: the build failed'; exit 1 }
     New-Item -ItemType Directory -Force -Path $content | Out-Null
     foreach ($s in @($buildDir, $ui)) { Get-ChildItem -LiteralPath $s -Force | ForEach-Object { Copy-Item -LiteralPath $_.FullName -Destination $content -Recurse -Force } }
     # (not -Include: with -LiteralPath, Windows PowerShell ignores it and matches every file)
     Get-ChildItem -LiteralPath $content -Recurse -File | Where-Object { $_.Name -match '\.(pdb|log)$|\.deps\.json$|\.runtimeconfig\.json$' } | Remove-Item -Force
-    if (-not (Test-Path -LiteralPath (Join-Path $content 'Placemaker.dll')) -or -not (Test-Path -LiteralPath (Join-Path $content 'Placemaker.mjs'))) {
-        Write-Host 'STOP: the content folder has no Placemaker.dll or Placemaker.mjs'; exit 1
+    if (-not (Test-Path -LiteralPath (Join-Path $content 'Citymaker.dll')) -or -not (Test-Path -LiteralPath (Join-Path $content 'Citymaker.mjs'))) {
+        Write-Host 'STOP: the content folder has no Citymaker.dll or Citymaker.mjs'; exit 1
     }
     $files = Get-ChildItem -LiteralPath $content -Recurse -File
     $mb = [math]::Round((($files | Measure-Object Length -Sum).Sum) / 1MB, 1)
-    $version = [Diagnostics.FileVersionInfo]::GetVersionInfo((Join-Path $content 'Placemaker.dll')).ProductVersion
-    Write-Host "content: $($files.Count) files, $mb MB, Placemaker $version"
+    $version = [Diagnostics.FileVersionInfo]::GetVersionInfo((Join-Path $content 'Citymaker.dll')).ProductVersion
+    Write-Host "content: $($files.Count) files, $mb MB, Citymaker $version"
     Get-ChildItem -LiteralPath $content -Force | ForEach-Object { Write-Host "  $($_.Name)" }
 }
 Write-Host "page: $($p.DisplayName.Value) $($p.ModVersion.Value), $access, $($pictures.Count) pictures, command $Command"

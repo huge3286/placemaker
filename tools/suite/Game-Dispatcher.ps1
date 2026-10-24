@@ -4,7 +4,7 @@
   gone again when the line has been empty for a while. Nobody runs it by hand.
 
 .DESCRIPTION
-  Works the line in %USERPROFILE%\.placemaker\game-queue (see GameQueue.ps1):
+  Works the line in %USERPROFILE%\.citymaker\game-queue (see GameQueue.ps1):
   * Single instance: dispatcher.lock, held open for its whole life (PID, start time and protocol version inside; a lock
     nobody holds is stale and taken over). A client with a newer protocol asks it to hand over when the game is free.
   * Batching: while a game is open with build K it runs the oldest request with build K next (fed into the open game's
@@ -12,7 +12,7 @@
     waits for the current request, then the game quits cleanly and is relaunched with it. Land made to order is laid out
     in the open game when its request arrives (SuiteRunner.Land.cs). A request that does not fit the open game's test
     grid, or got 'no-block' there, gets a fresh launch.
-  * Mods\Placemaker (ModsInstall.ps1): the game host installs a request's frozen build after it holds the suite lock and
+  * Mods\Citymaker (ModsInstall.ps1): the game host installs a request's frozen build after it holds the suite lock and
     has checked that no other game runs, and puts the user's build back the moment its game has exited. Between queue
     games the user's build is installed. Nothing is written while any Cities2.exe runs: a restore that finds a game open
     is finished here as soon as no game runs, and the dispatcher does not exit before.
@@ -42,8 +42,8 @@ param(
 $ErrorActionPreference = 'Stop'
 if ($Detach) {
     $pass = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', "`"$PSCommandPath`"", '-IdleMinutes', $IdleMinutes, '-StarveMinutes', $StarveMinutes, '-ExitGraceSec', $ExitGraceSec, '-UserGraceSec', $UserGraceSec)
-    if ($env:PLACEMAKER_GAME_QUEUE -and $env:PLACEMAKER_GAME_QUEUE_IDLE) { $pass[6] = $env:PLACEMAKER_GAME_QUEUE_IDLE }   # tests
-    if ($env:PLACEMAKER_GAME_QUEUE -and $env:PLACEMAKER_GAME_QUEUE_GRACE) { $pass[12] = $env:PLACEMAKER_GAME_QUEUE_GRACE }   # tests
+    if ($env:CITYMAKER_GAME_QUEUE -and $env:CITYMAKER_GAME_QUEUE_IDLE) { $pass[6] = $env:CITYMAKER_GAME_QUEUE_IDLE }   # tests
+    if ($env:CITYMAKER_GAME_QUEUE -and $env:CITYMAKER_GAME_QUEUE_GRACE) { $pass[12] = $env:CITYMAKER_GAME_QUEUE_GRACE }   # tests
     Start-Process -FilePath 'powershell.exe' -ArgumentList ($pass -join ' ') -WindowStyle Hidden -WorkingDirectory $env:USERPROFILE | Out-Null
     exit 0
 }
@@ -52,7 +52,7 @@ Q-Init
 $script:forensics = Split-Path $script:QMainRuns
 $script:suiteLock = Join-Path $script:forensics 'lock'
 $script:settingsPending = Join-Path $script:forensics 'user-settings\pending.txt'
-if ($env:PLACEMAKER_GAME_QUEUE -and $env:PLACEMAKER_GAME_QUEUE_USERDATA) { $script:QUserData = $env:PLACEMAKER_GAME_QUEUE_USERDATA }   # tests
+if ($env:CITYMAKER_GAME_QUEUE -and $env:CITYMAKER_GAME_QUEUE_USERDATA) { $script:QUserData = $env:CITYMAKER_GAME_QUEUE_USERDATA }   # tests
 
 function D-Log([string]$m) {
     $line = '{0:yyyy-MM-dd HH:mm:ss} [{1}] {2}' -f (Get-Date), $PID, $m
@@ -78,8 +78,8 @@ $lockBytes = [Text.Encoding]::UTF8.GetBytes((([ordered]@{ pid = $PID; start = (Q
 $script:lockStream.SetLength(0); $script:lockStream.Write($lockBytes, 0, $lockBytes.Length); $script:lockStream.Flush()
 D-Log "dispatcher up (PID $PID, v$($script:QVersion), $PSCommandPath)$(if ($script:QFake) { ", FAKE host $script:QFake" })"
 # a stand-in queue folder (tests) never runs real game hosts, and never with a second install state over the real Mods
-if ($env:PLACEMAKER_GAME_QUEUE -and -not ($script:QFake -and $env:PLACEMAKER_GAME_QUEUE_MODS)) {
-    D-Log "PLACEMAKER_GAME_QUEUE is set without both PLACEMAKER_GAME_QUEUE_FAKE and PLACEMAKER_GAME_QUEUE_MODS: a stand-in queue never runs the real game or touches the real Mods\Placemaker; not starting"
+if ($env:CITYMAKER_GAME_QUEUE -and -not ($script:QFake -and $env:CITYMAKER_GAME_QUEUE_MODS)) {
+    D-Log "CITYMAKER_GAME_QUEUE is set without both CITYMAKER_GAME_QUEUE_FAKE and CITYMAKER_GAME_QUEUE_MODS: a stand-in queue never runs the real game or touches the real Mods\Citymaker; not starting"
     try { $script:lockStream.Dispose() } catch { }
     exit 1
 }
@@ -165,7 +165,7 @@ function D-Foreign {
     $r = @()
     foreach ($p in @(Get-Process -Name 'Cities2' -ErrorAction SilentlyContinue)) {
         $cmd = D-CmdLine $p
-        $tok = if ($cmd -match '-placemakerSuite=(\S+)') { $Matches[1].Trim('"') } else { '' }
+        $tok = if ($cmd -match '-citymakerSuite=(\S+)') { $Matches[1].Trim('"') } else { '' }
         if ($script:sess -and $tok -eq $script:sess.id) { continue }
         # a command line that cannot be read (a process exiting): our own game when it is the PID in our heartbeat
         if (-not $cmd -and $script:sess) { $b = D-Beat; if ($b -and [int]$b.pid -eq $p.Id) { continue } }
@@ -234,7 +234,7 @@ function D-HandleOrphans($foreign) {
 
 # ───────────── the user's build and settings, when nobody uses the game ─────────────
 
-# Mods\Placemaker back to the user's build when a queue build was left there (a restore that found a game open, a host
+# Mods\Citymaker back to the user's build when a queue build was left there (a restore that found a game open, a host
 # that was killed). Only when no game runs and no game host (ours or another) holds the suite lock.
 function D-RestoreUserBuild([string]$why, [switch]$Now) {
     if (-not (MI-Pending)) { return $true }
@@ -243,7 +243,7 @@ function D-RestoreUserBuild([string]$why, [switch]$Now) {
     $script:lastReconcile = Get-Date
     $g = @(MI-Games)
     if ($g.Count -gt 0) {
-        $m = "Mods\Placemaker still has the queue's build $((MI-State).label): the user's goes back once Cities2.exe (PID $($g -join ', ')) has closed (nothing is written while a game runs)"
+        $m = "Mods\Citymaker still has the queue's build $((MI-State).label): the user's goes back once Cities2.exe (PID $($g -join ', ')) has closed (nothing is written while a game runs)"
         if ($m -ne $script:lastReconcileMsg) { D-Log $m; $script:lastReconcileMsg = $m }
         return $false
     }
@@ -281,7 +281,7 @@ function D-Quote([string]$a) {
 }
 
 # The game host is this dispatcher's own checked copy of Run-Suite.ps1 (and the ModsInstall.ps1 next to it): the code
-# that saves, switches and restores the user's settings, installs into Mods\Placemaker and checks for the user's game is
+# that saves, switches and restores the user's settings, installs into Mods\Citymaker and checks for the user's game is
 # never a requester's (an agent's edited or stale copy). The request's frozen build gives only the mod (-DeployFrom) and
 # the game's inputs (-HostData: suite\schema.json and suite\scenarios\).
 function D-StartHost($req, [string]$runId, [string[]]$extra) {
@@ -387,7 +387,7 @@ function D-QuitSession([string]$why) {
 }
 
 # The queue game's Cities2.exe PID (from its heartbeat), only when that process really is our game: Cities2.exe with this
-# session's -placemakerSuite token (a PID Windows has reused is never killed). -Loose (when the command line cannot be
+# session's -citymakerSuite token (a PID Windows has reused is never killed). -Loose (when the command line cannot be
 # read): Cities2.exe started after this session's host started it.
 function D-GamePid([switch]$Loose) {
     $b = D-Beat
@@ -397,7 +397,7 @@ function D-GamePid([switch]$Loose) {
     $p = Get-Process -Id $gp -ErrorAction SilentlyContinue
     if (-not $p -or $p.ProcessName -ne 'Cities2') { return 0 }
     $cmd = D-CmdLine $p
-    if ($cmd -match ('-placemakerSuite="?' + [regex]::Escape($script:sess.id) + '("|\s|$)')) { return $gp }
+    if ($cmd -match ('-citymakerSuite="?' + [regex]::Escape($script:sess.id) + '("|\s|$)')) { return $gp }
     if ($Loose -and -not $cmd) { try { if ($p.StartTime -ge (Q-Date $script:sess.startedAt).AddSeconds(-5)) { return $gp } } catch { } }
     return 0
 }
@@ -472,7 +472,7 @@ function D-Feed {
     $rowsBefore = @(D-SummaryRows $script:sess.dir).Count
     $now = Get-Date
     # where this request's part of the game's logs starts
-    $logPm = Q-FileLength (Join-Path $script:QUserData 'Logs\Placemaker.log')
+    $logPm = Q-FileLength (Join-Path $script:QUserData 'Logs\Citymaker.log')
     $logPlayer = Q-FileLength (Join-Path $script:QUserData 'Player.log')
     $a.feed = [ordered]@{ inbox = $name; session = $script:sess.id; sessionDir = $script:sess.dir; fedAt = $now.ToString('o'); rowsBefore = $rowsBefore; timeoutSec = (D-TimeoutSec $req); launched = ($script:sess.served -eq 0); killed = ''; logPm = $logPm; logPlayer = $logPlayer }
     Q-WriteJson (Join-Path $a.dir 'feed.json') $a.feed
@@ -549,7 +549,7 @@ function D-Publish($a, $result, [string]$status, [string]$message) {
     # logs: this request's part only (from where the game's logs stood when it was fed); the session's copies once the
     # game is gone, else the live files
     $hostGone = -not (Q-Alive $script:sess.hostPid $script:sess.hostStart)
-    foreach ($n in 'Placemaker.log', 'Player.log') {
+    foreach ($n in 'Citymaker.log', 'Player.log') {
         $sessCopy = Join-Path $sd "logs\$n"
         $live = if ($n -eq 'Player.log') { Join-Path $script:QUserData 'Player.log' } else { Join-Path $script:QUserData "Logs\$n" }
         $from = if ($n -eq 'Player.log') { [int64]$feed.logPlayer } else { [int64]$feed.logPm }
@@ -568,7 +568,7 @@ function D-Publish($a, $result, [string]$status, [string]$message) {
         }
     }
     $fedAt = (Q-Date $feed.fedAt)
-    foreach ($ad in (Join-Path $script:QUserData 'ModsData\Placemaker\audit'), (Join-Path $sd 'audit')) {
+    foreach ($ad in (Join-Path $script:QUserData 'ModsData\Citymaker\audit'), (Join-Path $sd 'audit')) {
         if (-not (Test-Path -LiteralPath $ad)) { continue }
         foreach ($f in Get-ChildItem -LiteralPath $ad -File | Where-Object { $_.LastWriteTime -ge $fedAt.AddSeconds(-2) }) {
             New-Item -ItemType Directory -Force -Path (Join-Path $dir 'audit') | Out-Null
@@ -598,13 +598,13 @@ function D-Publish($a, $result, [string]$status, [string]$message) {
     $headline = "$(if ($status -eq 'served') { 'finished' } else { "$($status.ToUpperInvariant()): $message" }). $($rows.Count) scenarios ($byStatus). Shots: $shotCount. Run in the queue's game $($feed.session)."
     $queueInfo = [ordered]@{ request = $req.id; who = $req.who; status = $status; message = $message; session = $feed.session; sessionDir = $sd; launched = [bool]$feed.launched; enqueued = (Q-Date $req.created).ToString('o'); fedAt = $feed.fedAt; finishedAt = $now.ToString('o'); waitedSec = [math]::Round($waited); ranSec = [math]::Round($ran); build = $req.build }
     $out = [ordered]@{ runId = $req.runId; set = $req.set; git = $req.build.label; queue = $queueInfo; headline = $headline; phase = $(if ($status -eq 'served') { 'done' } else { 'aborted' }) }
-    if ($sum) { foreach ($k in 'grid', 'capacity', 'plots', 'landLaidOutLater', 'look', 'placemakerSettings', 'profile', 'fidelity', 'map', 'codeMods', 'dllHash', 'assembly', 'wrongBuild', 'gitMismatch') { if ($sum.$k) { $out[$k] = $sum.$k } } }
+    if ($sum) { foreach ($k in 'grid', 'capacity', 'plots', 'landLaidOutLater', 'look', 'citymakerSettings', 'profile', 'fidelity', 'map', 'codeMods', 'dllHash', 'assembly', 'wrongBuild', 'gitMismatch') { if ($sum.$k) { $out[$k] = $sum.$k } } }
     $out['scenarios'] = $rows
     $out['scenarioCount'] = $rows.Count
     Q-WriteJson (Join-Path $dir 'summary.json') $out
     # summary.md and contact.html
     $md = @("> **Host: $status** (label $($req.build.label), queue game $($feed.session)$(if ($feed.launched) { ', launched for this request' } else { ', already open' }); waited $(Q-Duration $waited), ran $(Q-Duration $ran))$(if ($message) { " - $message" })", '', "# Game run $($req.runId) ($($req.set))", '', "**$headline**", '',
-        'Read the logs: `logs/Placemaker.log` and `logs/Player.log` (this request''s part of the queue game''s logs), `suite.log` (the whole game''s runner steps). Pictures in order: `contact.html`. Each scenario''s steps: `scenarios/NN-<id>.json`.', '',
+        'Read the logs: `logs/Citymaker.log` and `logs/Player.log` (this request''s part of the queue game''s logs), `suite.log` (the whole game''s runner steps). Pictures in order: `contact.html`. Each scenario''s steps: `scenarios/NN-<id>.json`.', '',
         '| # | scenario | block | status | s | shots |', '|---|---|---|---|---|---|')
     $html = New-Object Text.StringBuilder
     [void]$html.Append('<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Run ' + (D-H $req.runId) + '</title><style>:root{--bg:#f6f6f4;--fg:#1d1d1b;--dim:#6b6b66;--card:#fff;--line:#dcdcd6;--fail:#b3261e}@media (prefers-color-scheme:dark){:root{--bg:#161615;--fg:#ececea;--dim:#a3a39d;--card:#21211f;--line:#3a3a37;--fail:#ff8a80}}body{background:var(--bg);color:var(--fg);font:14px/1.4 system-ui,sans-serif;margin:0 16px 40px}h1{font-size:20px}h2{font-size:16px;margin:28px 0 6px}.row{display:flex;flex-wrap:wrap;gap:10px}.shot{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:6px;width:min(400px,100%);box-sizing:border-box}.shot img{width:100%;height:auto;display:block}.cap{font-size:12px;color:var(--dim);margin-top:4px}.bad{color:var(--fail);font-weight:600}</style></head><body>')
@@ -648,7 +648,7 @@ function D-Publish($a, $result, [string]$status, [string]$message) {
 
 function D-InstalledLine {
     $ub = MI-ReadJson (Join-Path $script:MI.User 'manifest.json')
-    return "your build is not left installed: Mods\Placemaker gets the user's build ($(if ($ub) { MI-Describe $ub } else { 'as before' })) back the moment the queue's game exits"
+    return "your build is not left installed: Mods\Citymaker gets the user's build ($(if ($ub) { MI-Describe $ub } else { 'as before' })) back the moment the queue's game exits"
 }
 
 # Finishes the active request: its result for the client, its folder in done\.
@@ -1264,7 +1264,7 @@ try {
                 $state = 'idle'
                 if ($wait) { $script:note = $wait }
                 if (MI-Pending) {
-                    $script:note = "waiting to put the user's build back into Mods\Placemaker: " + $(if ($wait) { $wait } else { 'a game host is still finishing' })
+                    $script:note = "waiting to put the user's build back into Mods\Citymaker: " + $(if ($wait) { $wait } else { 'a game host is still finishing' })
                 } elseif (($now - $script:idleSince).TotalSeconds -ge $ExitGraceSec -and @(Get-ChildItem -LiteralPath $script:Q.Active -Directory -ErrorAction SilentlyContinue).Count -eq 0) {
                     D-Log "the line is empty, no game is open and the user's build is installed ($(MI-StatusLine)): shutting down"
                     break

@@ -1,4 +1,4 @@
-// Placemaker — last line of defence for existing buildings (s15).
+// Citymaker — last line of defence for existing buildings (s15).
 //
 // The plan already keeps off building lots (Core/Build/SiteSafety, from SiteCapture's obstacles). But the
 // capture is a snapshot: a building may have grown since, or sit outside the captured margin. The game
@@ -13,15 +13,15 @@
 using System.Collections.Generic;
 using Game.Common;
 using Game.Tools;
-using Placemaker.Core;
-using Placemaker.Core.Build;
-using Placemaker.Core.Geometry;
-using Placemaker.Game.Selection;
+using Citymaker.Core;
+using Citymaker.Core.Build;
+using Citymaker.Core.Geometry;
+using Citymaker.Game.Selection;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Build
+namespace Citymaker.Game.Build
 {
     public sealed partial class BuildService
     {
@@ -68,7 +68,7 @@ namespace Placemaker.Game.Build
             var hits = SiteSafety.ItemsTouching(_request.Plan, _work, ObstacleCut.Grow(polys, 1f), assets, 1f);
             if (hits.Count == 0)
             {
-                Mod.Log.Info($"Placemaker: {warned.Length} existing building(s) were marked for removal; none of our pieces touches them — they are kept standing.");
+                Mod.Log.Info($"Citymaker: {warned.Length} existing building(s) were marked for removal; none of our pieces touches them — they are kept standing.");
                 return 0;
             }
             var hitKeys = new HashSet<long>();
@@ -82,8 +82,8 @@ namespace Placemaker.Game.Build
             if (net.HasValue && !IgnoreOwnCollisions)
             {
                 var n = net.Value;
-                Mod.Log.Warn($"Placemaker: net '{n.Asset.Id}' at ({n.Anchor.x:F0}, {n.Anchor.y:F0}) would remove {warned.Length} existing building(s); the build stops (vanilla rules).");
-                NoteSkip("Placemaker.Build.WouldDemolish", new float3(n.Anchor.x, Height(n.Anchor), n.Anchor.y), IssueSeverity.Error, warned.Length);
+                Mod.Log.Warn($"Citymaker: net '{n.Asset.Id}' at ({n.Anchor.x:F0}, {n.Anchor.y:F0}) would remove {warned.Length} existing building(s); the build stops (vanilla rules).");
+                NoteSkip("Citymaker.Build.WouldDemolish", new float3(n.Anchor.x, Height(n.Anchor), n.Anchor.y), IssueSeverity.Error, warned.Length);
                 _status.ErrorPositions = new List<float3> { new float3(n.Anchor.x, Height(n.Anchor), n.Anchor.y) };
                 return -1;
             }
@@ -99,7 +99,7 @@ namespace Placemaker.Game.Build
                     if (audited.Add(key)) AuditItem(w, AuditReason.SiteSafety);
                 }
             _buildingsProtected += warned.Length;
-            Mod.Log.Info($"Placemaker: {warned.Length} existing building(s) would have been removed by this build; they are kept, {cancelled} of our piece(s) touching them left out"
+            Mod.Log.Info($"Citymaker: {warned.Length} existing building(s) would have been removed by this build; they are kept, {cancelled} of our piece(s) touching them left out"
                 + (net.HasValue ? $"; net '{net.Value.Asset.Id}' at ({net.Value.Anchor.x:F0}, {net.Value.Anchor.y:F0}) is built anyway (anarchy)." : "."));
             return 0;
         }

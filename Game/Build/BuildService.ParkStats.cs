@@ -1,4 +1,4 @@
-// Placemaker — park stats of a build: computed with the Core estimator, stored in the receipt, and the part
+// Citymaker — park stats of a build: computed with the Core estimator, stored in the receipt, and the part
 // the game can use without a park building applied to the owner lot (GPL-3.0). docs/PARK-STATS.md.
 //
 // What reaches the game (decompiled CS2 1.6.2f1):
@@ -21,15 +21,15 @@ using Game.Common;
 using Game.Prefabs;
 using Game.Simulation;
 using Game.Tools;
-using Placemaker.Core;
-using Placemaker.Core.Build;
-using Placemaker.Core.Geometry;
-using Placemaker.Game.Groups;
+using Citymaker.Core;
+using Citymaker.Core.Build;
+using Citymaker.Core.Geometry;
+using Citymaker.Game.Groups;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Build
+namespace Citymaker.Game.Build
 {
     public sealed partial class BuildService
     {
@@ -48,7 +48,7 @@ namespace Placemaker.Game.Build
             }
             catch (Exception e)
             {
-                Mod.Log.Warn("Placemaker: park stats could not be computed (build kept): " + e.Message);
+                Mod.Log.Warn("Citymaker: park stats could not be computed (build kept): " + e.Message);
                 return null;
             }
         }
@@ -61,20 +61,20 @@ namespace Placemaker.Game.Build
             if (stats == null) return;
             rec.ParkStats = ParkStatsRecord.Of(stats, _request.Recipe?.ParkStats);
             double attr = stats.ValueOf(ParkStatIds.Attractiveness);
-            rec.Stats.Add(new PlanStat("Placemaker.Stat.Attractiveness", attr, "count"));
+            rec.Stats.Add(new PlanStat("Citymaker.Stat.Attractiveness", attr, "count"));
             if (!ApplyParkStats) return;
             try
             {
                 var owner = Entity.Null;
-                if (_record != Entity.Null && EntityManager.Exists(_record)) owner = EntityManager.GetComponentData<PlacemakerGroup>(_record).Owner;
+                if (_record != Entity.Null && EntityManager.Exists(_record)) owner = EntityManager.GetComponentData<CitymakerGroup>(_record).Owner;
                 int applied = ApplyAttractiveness(EntityManager, owner, attr, TerrainBonus(owner));
                 if (applied > 0) rec.ParkStats.Applied[ParkStatIds.InGameAttractiveness] = applied;
-                if (applied >= 0) Mod.Log.Info($"Placemaker: group {_groupId} attractiveness {applied} (suggested {stats.Get(ParkStatIds.Attractiveness).Suggested}).");
-                else Mod.Log.Info($"Placemaker: group {_groupId} has no owner lot; its park attractiveness ({attr}) is stored but not applied.");
+                if (applied >= 0) Mod.Log.Info($"Citymaker: group {_groupId} attractiveness {applied} (suggested {stats.Get(ParkStatIds.Attractiveness).Suggested}).");
+                else Mod.Log.Info($"Citymaker: group {_groupId} has no owner lot; its park attractiveness ({attr}) is stored but not applied.");
             }
             catch (Exception e)
             {
-                Mod.Log.Warn("Placemaker: applying park attractiveness failed (build kept): " + e.Message);
+                Mod.Log.Warn("Citymaker: applying park attractiveness failed (build kept): " + e.Message);
             }
             RequestParkCompanion(rec, stats);
         }
@@ -101,18 +101,18 @@ namespace Placemaker.Game.Build
                 ParkStatsEstimator.WithCompanion(stats, true, site);
                 if (!site.Found)
                 {
-                    NoteSkip("Placemaker.Build.NoRoadEdge", null, IssueSeverity.Info, 0);
-                    Mod.Log.Info($"Placemaker: group {_groupId} has no road frontage for a park companion; only attractiveness applies.");
+                    NoteSkip("Citymaker.Build.NoRoadEdge", null, IssueSeverity.Info, 0);
+                    Mod.Log.Info($"Citymaker: group {_groupId} has no road frontage for a park companion; only attractiveness applies.");
                     return;
                 }
                 string name = ParkStatsEstimator.KeyOf(stats).Name;
                 companions.Request(_groupId, name, site.Position, site.Yaw);
                 rec.ParkStats.Applied[ParkStatIds.Companion] = 0;   // requested; 1 once it exists
-                Mod.Log.Info($"Placemaker: group {_groupId} park companion '{name}' requested at {site.Position}.");
+                Mod.Log.Info($"Citymaker: group {_groupId} park companion '{name}' requested at {site.Position}.");
             }
             catch (Exception e)
             {
-                Mod.Log.Warn("Placemaker: park companion not requested (build kept, attractiveness stays on the lot): " + e.Message);
+                Mod.Log.Warn("Citymaker: park companion not requested (build kept, attractiveness stays on the lot): " + e.Message);
             }
         }
 
@@ -157,7 +157,7 @@ namespace Placemaker.Game.Build
             }
             catch (Exception e)
             {
-                Mod.Log.Warn("Placemaker: terrain attractiveness bonus unavailable: " + e.Message);
+                Mod.Log.Warn("Citymaker: terrain attractiveness bonus unavailable: " + e.Message);
                 return 0;
             }
         }

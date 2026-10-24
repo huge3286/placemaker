@@ -1,4 +1,4 @@
-// Placemaker — flattening a ComposedPlan into build work (GPL-3.0).
+// Citymaker — flattening a ComposedPlan into build work (GPL-3.0).
 // Pure: decides categories, ordering and batching so the ECS emitter only has to translate
 // each item into one definition.
 
@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     /// <summary>Categories the catalog uses for roles that have no shared AssetCategories constant.</summary>
     public static class BuildCategories
@@ -324,7 +324,7 @@ namespace Placemaker.Core.Build
     /// <summary>Maps game error type names to localisation keys (Lang/en-US.build.json).</summary>
     public static class BuildErrorKeys
     {
-        public const string Prefix = "Placemaker.Build.Error.";
+        public const string Prefix = "Citymaker.Build.Error.";
         public const string Other = Prefix + "Other";
 
         private static readonly HashSet<string> Known = new HashSet<string>(StringComparer.Ordinal)

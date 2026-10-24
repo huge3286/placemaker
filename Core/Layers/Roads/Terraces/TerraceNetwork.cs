@@ -1,4 +1,4 @@
-// Placemaker roads layer (s52) — "Hillside terraces": the layout as planned road pieces. Streets are split where links
+// Citymaker roads layer (s52) — "Hillside terraces": the layout as planned road pieces. Streets are split where links
 // join and every ≤ 60 m; links and walks at every profile kink (landing ends, turn ends) so each piece's height is a
 // straight ramp. Curves are fitted through the polylines with the game's own fitting (RoadCurve.Fit) and split again
 // where they would leave the polyline by more than 0.8 m. Pure.
@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads.Terraces
+namespace Citymaker.Core.Layers.Roads.Terraces
 {
     internal static class TerraceNetwork
     {

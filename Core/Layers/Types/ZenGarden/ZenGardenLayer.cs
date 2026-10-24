@@ -17,14 +17,14 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Build;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Leisure;
-using Placemaker.Core.Layers.Types.Wetland;
+using Citymaker.Core.Build;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Leisure;
+using Citymaker.Core.Layers.Types.Wetland;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.ZenGarden
+namespace Citymaker.Core.Layers.Types.ZenGarden
 {
     [AreaGenerator(621, Group = "gardens")]
     public sealed class ZenGardenLayer : LeisureLayer
@@ -32,7 +32,7 @@ namespace Placemaker.Core.Layers.Types.ZenGarden
         public const string LayerId = "zenGarden";
         public const string GravelPlace = "place:gravel";
         public const string WaterPlace = "place:water";
-        public const string PondPermanentKey = "Placemaker.Zen.Issue.PondPermanent";
+        public const string PondPermanentKey = "Citymaker.Zen.Issue.PondPermanent";
         public static readonly string[] Styles = { "karesansui", "stroll", "tea", "moss", "bamboo" };
         /// <summary>Most bamboo clumps in a grove (the floor is a surface; clumps are massing accents).</summary>
         public const int MaxGroveClumps = 2500;
@@ -181,7 +181,7 @@ namespace Placemaker.Core.Layers.Types.ZenGarden
                 if (cat != null)
                     tea = ZenKit.TeaHouse(ctx, g.Occ, LeisureKit.Points(g.Gates), AssetMix.One(ctx.S("teaHouseAsset")), cat, true, ctx.B("basin"), true,
                         ctx.B("steppingStones"), g.Blocked, out _);
-                if (!tea) ctx.Issue(IssueSeverity.Info, "Placemaker.Zen.Issue.NoTeaHouse");
+                if (!tea) ctx.Issue(IssueSeverity.Info, "Citymaker.Zen.Issue.NoTeaHouse");
             }
             if (ctx.B("basin") && !tea) Basin(ctx, g);
             int lanterns = Lanterns(ctx, g, ctx.I("lanterns"));
@@ -207,12 +207,12 @@ namespace Placemaker.Core.Layers.Types.ZenGarden
                 else ctx.AddRegion(pieces[i], "green:" + i, RegionTags.Green);
 
             CommonStats(ctx);
-            ctx.Stat("Placemaker.Stat.Gravel", Math.Round(gravelM2), Keys.UnitM2);
-            ctx.Stat("Placemaker.Stat.RockGroups", g.Groups.Count, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Rocks", stones, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Lanterns", lanterns, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Bridges", bridges, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.SteppingStones", stepping, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Gravel", Math.Round(gravelM2), Keys.UnitM2);
+            ctx.Stat("Citymaker.Stat.RockGroups", g.Groups.Count, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Rocks", stones, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Lanterns", lanterns, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Bridges", bridges, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.SteppingStones", stepping, Keys.UnitCount);
             if (g.Water.Ponds.Count > 0) ctx.Stat(Keys.StatLakeArea, Math.Round(g.Water.TotalArea), Keys.UnitM2);
             ctx.Plan.Facts["gravelArea"] = gravelM2;
             ctx.Plan.Facts["rockGroups"] = g.Groups.Count;
@@ -332,7 +332,7 @@ namespace Placemaker.Core.Layers.Types.ZenGarden
                 }
                 if (field != null) break;
             }
-            if (field == null || Poly.Area(field) < 40f) { ctx.Issue(IssueSeverity.Info, "Placemaker.Zen.Issue.NoField"); return 0f; }
+            if (field == null || Poly.Area(field) < 40f) { ctx.Issue(IssueSeverity.Info, "Citymaker.Zen.Issue.NoField"); return 0f; }
             g.Field = Poly.EnsureCcw(field);
             g.FieldRegion = LayerRegion.From(g.Field);
             g.FieldAxis = axis;
@@ -391,7 +391,7 @@ namespace Placemaker.Core.Layers.Types.ZenGarden
                 Wander = 0.5f, Jitter = 0.18f,
             };
             g.Water.Grow(ctx, g.Occ, spec, Hashing.Mix(ctx.Seed, 0x90D0u), p => g.GravelDistance(p, blob * 2f + 6f) < blob * 1.3f + 4f);
-            if (g.Water.Ponds.Count == 0) { ctx.Issue(IssueSeverity.Info, "Placemaker.Zen.Issue.NoPond"); return 0; }
+            if (g.Water.Ponds.Count == 0) { ctx.Issue(IssueSeverity.Info, "Citymaker.Zen.Issue.NoPond"); return 0; }
             g.Water.Freeze(g.Region);
             var pond = g.Water.Ponds[0];
             var crossings = new SegmentIndex(10f);
@@ -489,7 +489,7 @@ namespace Placemaker.Core.Layers.Types.ZenGarden
                 stones += placed; index++;
             }
             ctx.Plan.Facts["evenGroups"] = even;
-            if (g.Groups.Count < wanted) ctx.Issue(IssueSeverity.Info, "Placemaker.Zen.Issue.FewerGroups", g.Groups.Count, wanted);
+            if (g.Groups.Count < wanted) ctx.Issue(IssueSeverity.Info, "Citymaker.Zen.Issue.FewerGroups", g.Groups.Count, wanted);
             return stones;
         }
 

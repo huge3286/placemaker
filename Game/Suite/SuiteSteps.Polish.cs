@@ -21,15 +21,15 @@ using Game.Common;
 using Game.SceneFlow;
 using Game.Tools;
 using Newtonsoft.Json.Linq;
-using Placemaker.Core.Tool;
-using Placemaker.Game.Neighbours;
-using Placemaker.Game.Tool;
+using Citymaker.Core.Tool;
+using Citymaker.Game.Neighbours;
+using Citymaker.Game.Tool;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     public sealed partial class SuiteRunner
     {
@@ -56,23 +56,23 @@ namespace Placemaker.Game.Suite
             int stamps0 = NeighbourPolishSystem.TotalStampedYes + NeighbourPolishSystem.TotalStampedNo;
             // the selection stays after a stamp: the stamp is seen in the totals
             if (yes)
-                yield return UiAct(st, rec, "Polish", "primary", "primary", null, () => NeighbourPolishSystem.TotalStampedYes + NeighbourPolishSystem.TotalStampedNo > stamps0 || _tool.LastStamp.Lots > 0 && _tool.FlashText?.Key == "Placemaker.Painter.Polished", () => _tool.Primary());
+                yield return UiAct(st, rec, "Polish", "primary", "primary", null, () => NeighbourPolishSystem.TotalStampedYes + NeighbourPolishSystem.TotalStampedNo > stamps0 || _tool.LastStamp.Lots > 0 && _tool.FlashText?.Key == "Citymaker.Painter.Polished", () => _tool.Primary());
             else
-                yield return UiAct(st, rec, "Unpolish", "polish-no", "polishStamp", new object[] { false }, () => NeighbourPolishSystem.TotalStampedYes + NeighbourPolishSystem.TotalStampedNo > stamps0 || _tool.FlashText?.Key == "Placemaker.Painter.Unpolished", () => _tool.PolishStamp(false));
+                yield return UiAct(st, rec, "Unpolish", "polish-no", "polishStamp", new object[] { false }, () => NeighbourPolishSystem.TotalStampedYes + NeighbourPolishSystem.TotalStampedNo > stamps0 || _tool.FlashText?.Key == "Citymaker.Painter.Unpolished", () => _tool.PolishStamp(false));
             yield return Until(() => NeighbourPolishSystem.TotalStampedYes + NeighbourPolishSystem.TotalStampedNo > stamps0, 5f, "stamp applied");
             rec["stamped"] = _tool.LastStamp.Lots;
             rec["yes"] = yes;
             yield return PolishIdle(rec, (float?)step["wait"] ?? 120f);
             rec["lots"] = PolishLots(st);
             rec["lotsLine"] = _lastLotsLine;
-            Mod.Log.Info($"Placemaker suite: {(yes ? "polish" : "unpolish")} stamped on {_tool.LastStamp.Lots} lots; {_lastLotsLine}");
+            Mod.Log.Info($"Citymaker suite: {(yes ? "polish" : "unpolish")} stamped on {_tool.LastStamp.Lots} lots; {_lastLotsLine}");
             Event("build");
         }
 
         /// <summary>The painter card and its Style row, as a person uses them (each control clicked; its trigger if it is not on screen).</summary>
         private IEnumerator PolishCard(ScenarioState st, JObject step, JObject rec)
         {
-            // a Zoning type picked in Placemaker: its own panel (the City window, its groups) is clicked as it is
+            // a Zoning type picked in Citymaker: its own panel (the City window, its groups) is clicked as it is
             bool zoningType = _tool.PolishType && _tool.IsActive;
             if (!zoningType && (!_tool.Painter || !_tool.IsActive)) yield return OpenPolishTool(st, rec);
             if (!zoningType && !_tool.Painter) { rec["error"] = "polish: the polish tool did not open"; yield break; }
@@ -183,7 +183,7 @@ namespace Placemaker.Game.Suite
             if (panel != null) rec["panel"] = panel;
         }
 
-        /// <summary>The polish tool's own button (next to Placemaker's): its trigger, as the button fires it.</summary>
+        /// <summary>The polish tool's own button (next to Citymaker's): its trigger, as the button fires it.</summary>
         private IEnumerator OpenPolishTool(ScenarioState st, JObject rec)
         {
             yield return UiAct(st, rec, "Neighbourhood polish button", null, "togglePolish", null, () => _tool.Painter && _tool.IsActive, () => _tool.TogglePolishTool());
@@ -248,7 +248,7 @@ namespace Placemaker.Game.Suite
             yield return Frames(10);
             rec["lots"] = PolishLots(st);
             rec["lotsLine"] = _lastLotsLine;
-            rec["tinted"] = global::Placemaker.Game.Overlay.PlacemakerOverlaySystem.PolishedShown;
+            rec["tinted"] = global::Citymaker.Game.Overlay.CitymakerOverlaySystem.PolishedShown;
             rec["stampedYes"] = NeighbourPolishSystem.TotalStampedYes;
             rec["stampedNo"] = NeighbourPolishSystem.TotalStampedNo;
             rec["restored"] = NeighbourPolishSystem.TotalRestored;
@@ -256,7 +256,7 @@ namespace Placemaker.Game.Suite
             rec["flaggedNew"] = NeighbourPolishSystem.TotalFlaggedNew;
             rec["tagged"] = NeighbourPolishSystem.TotalTagged;
             rec["edgePairs"] = NeighbourPolishSystem.TotalEdgePairs;
-            Mod.Log.Info("Placemaker lab: polish flags " + _lastLotsLine + $"; tint shows {rec["tinted"]} lots; {rec["edgePairs"]} pairs against an unpolished lot so far");
+            Mod.Log.Info("Citymaker lab: polish flags " + _lastLotsLine + $"; tint shows {rec["tinted"]} lots; {rec["edgePairs"]} pairs against an unpolished lot so far");
         }
 
         private IEnumerator LabRemoveAllPolish(ScenarioState st, JObject rec)
@@ -267,13 +267,13 @@ namespace Placemaker.Game.Suite
             rec["restored"] = NeighbourPolishSystem.TotalRestored - restored0;
             rec["lots"] = PolishLots(st);
             rec["lotsLine"] = _lastLotsLine;
-            Mod.Log.Info($"Placemaker lab: remove all polish: {rec["restored"]} lots put back; {_lastLotsLine}");
+            Mod.Log.Info($"Citymaker lab: remove all polish: {rec["restored"]} lots put back; {_lastLotsLine}");
         }
 
         /// <summary>The city saved to a scratch save in the player's saves and loaded back (the save is deleted after).</summary>
         private IEnumerator LabSaveLoad(ScenarioState st, JObject rec)
         {
-            const string name = "PlacemakerSuitePolish";
+            const string name = "CitymakerSuitePolish";
             var before = PolishLots(st);
             rec["beforeLine"] = _lastLotsLine;
             var menu = _world.GetExistingSystemManaged<global::Game.UI.Menu.MenuUISystem>();
@@ -300,7 +300,7 @@ namespace Placemaker.Game.Suite
             yield return Frames(30);
             rec["lots"] = PolishLots(st);
             rec["afterLine"] = _lastLotsLine;
-            Mod.Log.Info($"Placemaker lab: save and load: before {rec["beforeLine"]}; after {_lastLotsLine}");
+            Mod.Log.Info($"Citymaker lab: save and load: before {rec["beforeLine"]}; after {_lastLotsLine}");
             try
             {
                 var again = ScratchSave(name);

@@ -15,13 +15,13 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.AddOns;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Common.Shore;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.AddOns;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common.Shore;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Park
+namespace Citymaker.Core.Layers.Park
 {
     [AreaGenerator(30, Group = "parks")]
     public sealed class ParkLayer : LayerBase, IHasFeatures
@@ -54,31 +54,31 @@ namespace Placemaker.Core.Layers.Park
         {
             new FeatureInfo
             {
-                Layer = "plaza", Target = PlazaPlace, LabelKey = "Placemaker.Park.Feature.plaza",
-                TooltipKey = "Placemaker.Park.Feature.plaza.Tooltip",
+                Layer = "plaza", Target = PlazaPlace, LabelKey = "Citymaker.Park.Feature.plaza",
+                TooltipKey = "Citymaker.Park.Feature.plaza.Tooltip",
                 Options = new[] { "plazaShape", "plazaAt", "plazaSize" },
                 // A park's plaza is a small, dressed square: patterned border, planters, trees round the edge.
                 Preset = Bag(("centerMode", "single"), ("arrangementMode", "center"), ("furniture", 6.0), ("fence", false),
                     ("pattern", "border"), ("planters", 6.0), ("treeLayout", "edge"), ("beds", 2.0), ("centerKind", "fountain")),
             },
-            new FeatureInfo { Layer = "playground", Target = RegionTags.Core, LabelKey = "Placemaker.Park.Feature.playground", Options = new[] { "playgroundPath" }, DefaultOn = true },
+            new FeatureInfo { Layer = "playground", Target = RegionTags.Core, LabelKey = "Citymaker.Park.Feature.playground", Options = new[] { "playgroundPath" }, DefaultOn = true },
             new FeatureInfo
             {
-                Layer = "pond", Target = PondPlace, LabelKey = "Placemaker.Park.Feature.pond",
-                TooltipKey = "Placemaker.Park.Feature.pond.Tooltip", Options = new[] { "lakeSize" },
+                Layer = "pond", Target = PondPlace, LabelKey = "Citymaker.Park.Feature.pond",
+                TooltipKey = "Citymaker.Park.Feature.pond.Tooltip", Options = new[] { "lakeSize" },
             },
-            new FeatureInfo { Layer = "picnic", LabelKey = "Placemaker.Park.Feature.picnic", Preset = Bag(("groups", 2.0)), Options = new[] { "picnicPath" }, DefaultOn = true },
-            new FeatureInfo { Layer = "restrooms", LabelKey = "Placemaker.Park.Feature.restrooms", Options = new[] { "restroomsPath" }, DefaultOn = true },
-            new FeatureInfo { Layer = "fountain", LabelKey = "Placemaker.Park.Feature.fountain", Preset = Bag(("size", "medium")), Options = new[] { "fountainPath" } },
-            new FeatureInfo { Layer = "bigtrees", LabelKey = "Placemaker.Park.Feature.bigtrees", DefaultOn = true },
+            new FeatureInfo { Layer = "picnic", LabelKey = "Citymaker.Park.Feature.picnic", Preset = Bag(("groups", 2.0)), Options = new[] { "picnicPath" }, DefaultOn = true },
+            new FeatureInfo { Layer = "restrooms", LabelKey = "Citymaker.Park.Feature.restrooms", Options = new[] { "restroomsPath" }, DefaultOn = true },
+            new FeatureInfo { Layer = "fountain", LabelKey = "Citymaker.Park.Feature.fountain", Preset = Bag(("size", "medium")), Options = new[] { "fountainPath" } },
+            new FeatureInfo { Layer = "bigtrees", LabelKey = "Citymaker.Park.Feature.bigtrees", DefaultOn = true },
             // Art pass (a1): real flowerbeds — on automatic the add-on's planter role resolved to planter boxes and pots.
-            new FeatureInfo { Layer = "flowerbeds", LabelKey = "Placemaker.Park.Feature.flowerbeds", DefaultOn = true, Preset = Bag(("assets", (string[])ParkArt.Flowerbeds.Clone())) },
-            new FeatureInfo { Layer = "shops", LabelKey = "Placemaker.Feature.shops", TooltipKey = "Placemaker.Feature.shops.Tooltip", Preset = Bag(("count", 2.0), ("where", "entrances")) },
+            new FeatureInfo { Layer = "flowerbeds", LabelKey = "Citymaker.Park.Feature.flowerbeds", DefaultOn = true, Preset = Bag(("assets", (string[])ParkArt.Flowerbeds.Clone())) },
+            new FeatureInfo { Layer = "shops", LabelKey = "Citymaker.Feature.shops", TooltipKey = "Citymaker.Feature.shops.Tooltip", Preset = Bag(("count", 2.0), ("where", "entrances")) },
             StreetShopsFeature("Park", "park"),
-            new FeatureInfo { Layer = "rocks", LabelKey = "Placemaker.Feature.rocks" },
-            new FeatureInfo { Layer = "ground", LabelKey = "Placemaker.Feature.ground", TooltipKey = "Placemaker.Feature.ground.Tooltip" },
-            new FeatureInfo { Layer = "decals", LabelKey = "Placemaker.Feature.decals", Preset = Bag(("theme", "leaves"), ("density", 0.4)), DefaultOn = true },
-            new FeatureInfo { Layer = "terrain", LabelKey = "Placemaker.Feature.terrain", TooltipKey = "Placemaker.Feature.terrain.Tooltip", Preset = Bag(("shape", "mounds"), ("height", 2.0)) },
+            new FeatureInfo { Layer = "rocks", LabelKey = "Citymaker.Feature.rocks" },
+            new FeatureInfo { Layer = "ground", LabelKey = "Citymaker.Feature.ground", TooltipKey = "Citymaker.Feature.ground.Tooltip" },
+            new FeatureInfo { Layer = "decals", LabelKey = "Citymaker.Feature.decals", Preset = Bag(("theme", "leaves"), ("density", 0.4)), DefaultOn = true },
+            new FeatureInfo { Layer = "terrain", LabelKey = "Citymaker.Feature.terrain", TooltipKey = "Citymaker.Feature.terrain.Tooltip", Preset = Bag(("shape", "mounds"), ("height", 2.0)) },
             // g2: on by default, idle unless the area is partly in (or along) water.
             ShoreKit.Feature(("style", "auto")),
         });
@@ -353,9 +353,9 @@ namespace Placemaker.Core.Layers.Park
                 if (placed.Ok)
                 {
                     plaza = placed.Ring;
-                    if (placed.Shrunk) ctx.Issue(IssueSeverity.Info, "Placemaker.Park.Issue.PlazaSmaller");
+                    if (placed.Shrunk) ctx.Issue(IssueSeverity.Info, "Citymaker.Park.Issue.PlazaSmaller");
                 }
-                else ctx.Issue(IssueSeverity.Warning, "Placemaker.Park.Issue.NoRoomForPlaza");
+                else ctx.Issue(IssueSeverity.Warning, "Citymaker.Park.Issue.NoRoomForPlaza");
             }
             var reserved = ctx.Input.Reserved?.Clone() ?? new ReservedSpace();
             if (plaza.Length >= 3) reserved.Polygons.Add(plaza);
@@ -423,7 +423,7 @@ namespace Placemaker.Core.Layers.Park
                     var options = new ParkPathPlanner.Options { Loops = LoopsFor(pathMode, region.Area), StretchLoop = pathMode == "network" || pathMode == "auto" && Layout.DesignArea(region.Area) > 12000f };
                     graph = ParkPathPlanner.PlanBest(region, gatePoints, options, pathSeed, ctx.Cancel);
                     if (pathStyle != "auto" && pathStyle != "garden" && pathStyle != "curvy" && pathStyle != "formal")
-                        ctx.Issue(IssueSeverity.Info, "Placemaker.Park.Issue.PathStyleFallback");
+                        ctx.Issue(IssueSeverity.Info, "Citymaker.Park.Issue.PathStyleFallback");
                     avenueA = avenueB = float2.zero;
                 }
                 if (style.Grid) curved = false;
@@ -451,7 +451,7 @@ namespace Placemaker.Core.Layers.Park
             if (pondFeature || ctx.B("lake"))
             {
                 if (!lakeFirst) s.Lake = PlanLake(ctx, s, plaza);
-                if (s.Lake.Length < 3) ctx.Issue(IssueSeverity.Info, "Placemaker.Park.Issue.NoRoomForLake");
+                if (s.Lake.Length < 3) ctx.Issue(IssueSeverity.Info, "Citymaker.Park.Issue.NoRoomForLake");
                 else if (pondFeature) ctx.Plan.Facts["pondArea"] = Poly.Area(s.Lake);
                 else EmitLake(ctx, s.Lake);
             }
@@ -689,10 +689,10 @@ namespace Placemaker.Core.Layers.Park
                 string at = ctx.S(Amenities.AtControl(spec.Layer));
                 if (!Amenities.TrySolve(s.LayerRegion, s.Occ, spec.Length, spec.Width, at, gatePoints, Hashing.Mix(ctx.Seed, Seeds.Hash(spec.Layer)), blocked, out var rect, out bool moved, 2.5f))   // room for its "path to it" beside thin paths
                 {
-                    ctx.Issue(IssueSeverity.Warning, "Placemaker.Park.Issue.NoRoomForAmenity", "Placemaker.Feature." + spec.Layer);
+                    ctx.Issue(IssueSeverity.Warning, "Citymaker.Park.Issue.NoRoomForAmenity", "Citymaker.Feature." + spec.Layer);
                     continue;
                 }
-                if (moved) ctx.Issue(IssueSeverity.Info, "Placemaker.Park.Issue.AmenityMoved", "Placemaker.Feature." + spec.Layer);
+                if (moved) ctx.Issue(IssueSeverity.Info, "Citymaker.Park.Issue.AmenityMoved", "Citymaker.Feature." + spec.Layer);
                 Amenities.Take(s.Occ, rect, 1f, 102);
                 result.Add((spec.Layer, rect));
             }
@@ -802,7 +802,7 @@ namespace Placemaker.Core.Layers.Park
         /// </summary>
         private static void PaintedTrails(LayerContext ctx, List<PathCurve> trails, List<Gate> gates)
         {
-            var kit = new Placemaker.Core.Paint.PaintKit(ctx.Plan.Paint, ctx.H, Hashing.Mix(ctx.Seed, 0x7A11u)) { Outline = ctx.LayerRegion.Ring };
+            var kit = new Citymaker.Core.Paint.PaintKit(ctx.Plan.Paint, ctx.H, Hashing.Mix(ctx.Seed, 0x7A11u)) { Outline = ctx.LayerRegion.Ring };
             string walk = TrailPaint.WalkableNet(ctx.Site);
             foreach (var c in trails)
             {
@@ -878,7 +878,7 @@ namespace Placemaker.Core.Layers.Park
                 Permanent = true, WaterLevel = level, WaterAnchor = new float3(anchor.x, level, anchor.y),
             });
             ctx.Surface(lake, SurfaceRole.Water, new AssetRef("", Array.Empty<string>()));
-            ctx.Issue(IssueSeverity.Warning, "Placemaker.Park.Issue.LakePermanent");
+            ctx.Issue(IssueSeverity.Warning, "Citymaker.Park.Issue.LakePermanent");
             ctx.Stat(Keys.StatLakeArea, Math.Round(Poly.Area(lake)), Keys.UnitM2);
         }
 

@@ -1,4 +1,4 @@
-// Placemaker — park stats: what a vanilla park of this size and content would have (GPL-3.0).
+// Citymaker — park stats: what a vanilla park of this size and content would have (GPL-3.0).
 //
 // The game gives parks their effects through components of the park BUILDING prefab (docs/PARK-STATS.md):
 //   Attraction.m_Attractiveness  → tourism (TourismSystem: city attractiveness from Σ a²/10000) and land value,
@@ -11,9 +11,9 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Tool;
+using Citymaker.Core.Tool;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     public static class ParkStatIds
     {
@@ -320,46 +320,46 @@ namespace Placemaker.Core.Build
             // Attractiveness drives the rest, like vanilla's tiers.
             double rawAttr = Math.Max(1, Math.Round(Math.Min(MaxSuggestedAttractiveness, sizeBase * r.Quality * kindMul)));
             var attr = Make(ParkStatIds.Attractiveness, rawAttr, input, settings, true);
-            attr.Formula.Add(new LocText("Placemaker.ParkStats.F.Size", Math.Round(area), R1(sizeBase)));
-            attr.Formula.Add(new LocText("Placemaker.ParkStats.F.Quality", R2(r.Quality), R2(tq), R2(wq), R2(lq), R2(aq), R2(pq), R2(sq)));
-            attr.Formula.Add(new LocText("Placemaker.ParkStats.F.Type", R2(kindMul), rawAttr));
-            attr.Formula.Add(new LocText("Placemaker.ParkStats.F.AttrGame"));
+            attr.Formula.Add(new LocText("Citymaker.ParkStats.F.Size", Math.Round(area), R1(sizeBase)));
+            attr.Formula.Add(new LocText("Citymaker.ParkStats.F.Quality", R2(r.Quality), R2(tq), R2(wq), R2(lq), R2(aq), R2(pq), R2(sq)));
+            attr.Formula.Add(new LocText("Citymaker.ParkStats.F.Type", R2(kindMul), rawAttr));
+            attr.Formula.Add(new LocText("Citymaker.ParkStats.F.AttrGame"));
             r.Stats.Add(attr);
             double a = attr.Suggested;
 
             double activity = r.ActivityScore;
             double rawLeisure = Math.Max(1, Math.Round(a * (0.33 + 0.67 * activity)));
             var leisure = Make(ParkStatIds.Leisure, rawLeisure, input, settings, false);
-            leisure.Formula.Add(new LocText("Placemaker.ParkStats.F.Leisure", a, R2(activity), rawLeisure));
-            leisure.Formula.Add(new LocText("Placemaker.ParkStats.F.LeisureGame"));
+            leisure.Formula.Add(new LocText("Citymaker.ParkStats.F.Leisure", a, R2(activity), rawLeisure));
+            leisure.Formula.Add(new LocText("Citymaker.ParkStats.F.LeisureGame"));
             r.Stats.Add(leisure);
 
             double rawRange = Round(Math.Min(6000, 2200 + 150 * a) * small, 50);
             var range = Make(ParkStatIds.Range, rawRange, input, settings, false);
-            range.Formula.Add(new LocText("Placemaker.ParkStats.F.Range", a, R2(small), rawRange));
-            range.Formula.Add(new LocText("Placemaker.ParkStats.F.CoverageGame"));
+            range.Formula.Add(new LocText("Citymaker.ParkStats.F.Range", a, R2(small), rawRange));
+            range.Formula.Add(new LocText("Citymaker.ParkStats.F.CoverageGame"));
             r.Stats.Add(range);
 
             double rawCapacity = Round((700 + 90 * a) * small, 50);
             var capacity = Make(ParkStatIds.Capacity, rawCapacity, input, settings, false);
-            capacity.Formula.Add(new LocText("Placemaker.ParkStats.F.Capacity", a, R2(small), rawCapacity));
-            capacity.Formula.Add(new LocText("Placemaker.ParkStats.F.CapacityGame"));
+            capacity.Formula.Add(new LocText("Citymaker.ParkStats.F.Capacity", a, R2(small), rawCapacity));
+            capacity.Formula.Add(new LocText("Citymaker.ParkStats.F.CapacityGame"));
             r.Stats.Add(capacity);
 
             double bonus = input.Kind == ParkStatsKind.Sports ? 2 : 0;
             double rawMag = area < 200 ? 8 : Math.Round(Clamp(9 + 0.28 * a + bonus, 8, 16) * 2) / 2;
             var mag = Make(ParkStatIds.Entertainment, rawMag, input, settings, false);
-            mag.Formula.Add(new LocText("Placemaker.ParkStats.F.Entertainment", a, bonus, rawMag));
-            mag.Formula.Add(new LocText("Placemaker.ParkStats.F.EntertainmentGame"));
+            mag.Formula.Add(new LocText("Citymaker.ParkStats.F.Entertainment", a, bonus, rawMag));
+            mag.Formula.Add(new LocText("Citymaker.ParkStats.F.EntertainmentGame"));
             r.Stats.Add(mag);
 
             double upkeepScale = area >= 1000 ? 1 : Math.Max(0.2, area / 1000.0);
             double rawUpkeep = Round((1500 + 650 * a) * upkeepScale, 50);
             var upkeep = Make(ParkStatIds.Upkeep, rawUpkeep, input, settings, false);
-            upkeep.Formula.Add(new LocText("Placemaker.ParkStats.F.Upkeep", a, R2(upkeepScale), rawUpkeep));
-            upkeep.Formula.Add(new LocText("Placemaker.ParkStats.F.UpkeepGame"));
+            upkeep.Formula.Add(new LocText("Citymaker.ParkStats.F.Upkeep", a, R2(upkeepScale), rawUpkeep));
+            upkeep.Formula.Add(new LocText("Citymaker.ParkStats.F.UpkeepGame"));
             r.Stats.Add(upkeep);
-            foreach (var st in r.Stats) st.Formula.Add(new LocText("Placemaker.ParkStats.F.Band", Fmt(st.BandMin), Fmt(st.BandMax)));
+            foreach (var st in r.Stats) st.Formula.Add(new LocText("Citymaker.ParkStats.F.Band", Fmt(st.BandMin), Fmt(st.BandMax)));
             return r;
         }
 

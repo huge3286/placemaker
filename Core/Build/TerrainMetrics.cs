@@ -1,4 +1,4 @@
-// Placemaker — glitch metrics for built ground (s30, GPL-3.0).
+// Citymaker — glitch metrics for built ground (s30, GPL-3.0).
 //
 // What the playtests (54–57) called glitches, as numbers:
 //  * curtain  — the largest height jump between two neighbouring heightmap texels that the build ADDED (the jump of the
@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     public static class TerrainMetrics
     {

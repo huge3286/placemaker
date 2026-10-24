@@ -2,7 +2,7 @@
 // stacks and bays can be laid out to the centimetre instead of scattered.
 //
 // Every item names a vanilla prefab (the clean game the runner uses has nothing else) and, where something better exists,
-// prefers it: Placemaker's own vehicle props (Game/Assets/VehiclePropSystem: the game's cars, vans, trucks, tractors and
+// prefers it: Citymaker's own vehicle props (Game/Assets/VehiclePropSystem: the game's cars, vans, trucks, tractors and
 // campers made into static props, VehicleProps below), then a vanilla stand-in. Never an add-on pack's asset (the user,
 // 2026-10-19: "we're not going to use any add-on packs"): the user's game builds what the clean game runner showed. The
 // build takes the first id that exists (AssetCatalogSystem.Resolve: id, fallbacks, category default).
@@ -12,7 +12,7 @@
 
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Yards
+namespace Citymaker.Core.Layers.Types.Yards
 {
     /// <summary>One prop kind: the asset (with fallbacks), its footprint and its category (the last-resort pool).</summary>
     public readonly struct YardItem
@@ -45,13 +45,13 @@ namespace Placemaker.Core.Layers.Types.Yards
     }
 
     /// <summary>
-    /// Placemaker's vehicle props (made by the game layer from the game's own vehicles, VehiclePropSystem). Core names the
+    /// Citymaker's vehicle props (made by the game layer from the game's own vehicles, VehiclePropSystem). Core names the
     /// slots; the game fills each slot with a vehicle of that kind found in the playset (sorted by name, so a slot keeps its
     /// vehicle from one load to the next). A slot the game could not fill simply falls back to the next id.
     /// </summary>
     public static class VehicleProps
     {
-        public const string Prefix = "Placemaker Vehicle ";
+        public const string Prefix = "Citymaker Vehicle ";
         public static string Car(int i) => Prefix + "Car " + i;
         public static string Van(int i) => Prefix + "Van " + i;
         public static string Truck(int i) => Prefix + "Truck " + i;
@@ -120,7 +120,7 @@ namespace Placemaker.Core.Layers.Types.Yards
 
         // ───────────── vehicles (wrecks, staff cars, machines) ─────────────
 
-        /// <summary>Cars (wrecks in the yard, staff cars at the office): Placemaker's car props, then pack props, then a trailer.</summary>
+        /// <summary>Cars (wrecks in the yard, staff cars at the office): Citymaker's car props, then pack props, then a trailer.</summary>
         // Footprint of the largest car the game has (Car10 2.2 × 5.2 m, VehiclePropSystem log): rows never let two touch.
         public static readonly YardItem Car = new YardItem(AssetCategories.ScrapWreck, 2.25f, 5.2f,
             VehicleProps.Car(1) + "|CarTrailer01_Props02",

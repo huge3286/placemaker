@@ -3,9 +3,9 @@
 // "TrailMarker", "InfoBoard", "ParkMapSign") and exclude road/traffic/advertising signs.
 
 using System.Collections.Generic;
-using Placemaker.Core.Build;
+using Citymaker.Core.Build;
 
-namespace Placemaker.Core
+namespace Citymaker.Core
 {
     public static partial class AssetCategories
     {
@@ -14,7 +14,7 @@ namespace Placemaker.Core
     }
 }
 
-namespace Placemaker.Core.Layers.Types.Hiking
+namespace Citymaker.Core.Layers.Types.Hiking
 {
     public sealed class TrailCategoryRules : ICategoryRules
     {

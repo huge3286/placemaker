@@ -2,12 +2,12 @@
 // dirt stains around them. Heaps prefer the outline (stuff gets dumped over the fence from the
 // street) or open ground. Offered by the decay types; usable by any recipe.
 
-using Placemaker.Core.Layers.Types.Scrapyard;
-using Placemaker.Core.Layers.AddOns;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Types.Scrapyard;
+using Citymaker.Core.Layers.AddOns;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Ruins
+namespace Citymaker.Core.Layers.Types.Ruins
 {
     [AreaGenerator(171)]
     public sealed class DebrisAddOn : AddOnLayer
@@ -69,8 +69,8 @@ namespace Placemaker.Core.Layers.Types.Ruins
                 items += n;
                 if (n > 0) heaps++;
             }
-            if (heaps == 0) NoSpace(ctx, "Placemaker.AddOn.Debris.Name");
-            ctx.Stat("Placemaker.Stat.JunkItems", items, Keys.UnitCount);
+            if (heaps == 0) NoSpace(ctx, "Citymaker.AddOn.Debris.Name");
+            ctx.Stat("Citymaker.Stat.JunkItems", items, Keys.UnitCount);
         }
     }
 }

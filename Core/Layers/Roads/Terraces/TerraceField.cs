@@ -1,4 +1,4 @@
-// Placemaker roads layer (s52) — "Hillside terraces": the ground. ONE continuous height field on a 2 m node grid
+// Citymaker roads layer (s52) — "Hillside terraces": the ground. ONE continuous height field on a 2 m node grid
 // (Common/Sculpt), emitted once as sloped quads (no flat cells, so no curtains — s20/s30), built from the FINAL road
 // network (after the connectivity pass, obstacles, city links):
 //
@@ -23,11 +23,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads.Terraces
+namespace Citymaker.Core.Layers.Roads.Terraces
 {
     internal sealed class TerraceGround
     {

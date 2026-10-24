@@ -15,10 +15,10 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Common
+namespace Citymaker.Core.Layers.Common
 {
     public enum TerrainMode { None = 0, Mounds = 1, Hills = 2, Terraces = 3, Sunken = 4, Raised = 5, Bowl = 6, Berms = 7, Flatten = 8 }
 
@@ -84,7 +84,7 @@ namespace Placemaker.Core.Layers.Common
     {
         public const float DefaultCell = 12f;
         public const int MaxCells = 1500;
-        public const string PermanentKey = "Placemaker.Terrain.Issue.Permanent";
+        public const string PermanentKey = "Citymaker.Terrain.Issue.Permanent";
         private const float MinChange = 0.2f;
 
         /// <summary>Mean ground height over the region (grid sample).</summary>

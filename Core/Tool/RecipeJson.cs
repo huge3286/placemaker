@@ -1,4 +1,4 @@
-// Placemaker — recipe files (shipped Recipes/*.json and player recipes in ModsData/Placemaker/Recipes).
+// Citymaker — recipe files (shipped Recipes/*.json and player recipes in ModsData/Citymaker/Recipes).
 //
 // Format: docs/proposals/recipe-json.md (park-plaza workstream) — recipe metadata plus a nested
 // "root" step:
@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Tool
+namespace Citymaker.Core.Tool
 {
     public sealed class RecipeFile
     {
@@ -182,7 +182,7 @@ namespace Placemaker.Core.Tool
             return new float3((float)j.Items[0].AsNumber(), (float)j.Items[1].AsNumber(), (float)j.Items[2].AsNumber());
         }
 
-        // ───────────── per-layer saved defaults (ModsData/Placemaker/defaults.json) ─────────────
+        // ───────────── per-layer saved defaults (ModsData/Citymaker/defaults.json) ─────────────
 
         public static Dictionary<string, SettingsBag> ReadDefaults(JsonValue doc)
         {

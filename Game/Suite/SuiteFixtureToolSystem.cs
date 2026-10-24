@@ -13,11 +13,11 @@ using Unity.Entities;
 using Unity.Jobs;
 using UnityEngine.Scripting;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     public sealed partial class SuiteFixtureToolSystem : ToolBaseSystem
     {
-        public const string Id = "Placemaker Suite Fixture";
+        public const string Id = "Citymaker Suite Fixture";
         public override string toolID => Id;
         public override PrefabBase GetPrefab() => null;
         public override bool TrySetPrefab(PrefabBase prefab) => false;
@@ -71,7 +71,7 @@ namespace Placemaker.Game.Suite
             {
                 var a = _work.Dequeue();
                 try { a(); }
-                catch (Exception e) { Mod.Log.Error(e, "Placemaker suite: fixture work failed"); }
+                catch (Exception e) { Mod.Log.Error(e, "Citymaker suite: fixture work failed"); }
             }
             applyMode = Requested;
             Requested = ApplyMode.None;

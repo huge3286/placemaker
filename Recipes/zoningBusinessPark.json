@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "zoningBusinessPark",
-  "nameKey": "Placemaker.Zoning.Type.businessPark",
-  "descriptionKey": "Placemaker.Zoning.Type.businessPark.Tooltip",
+  "nameKey": "Citymaker.Zoning.Type.businessPark",
+  "descriptionKey": "Citymaker.Zoning.Type.businessPark.Tooltip",
   "icon": "Media/Game/Icons/Zones.svg",
   "root": {
     "layer": "zoningBusinessPark",

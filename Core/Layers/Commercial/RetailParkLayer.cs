@@ -8,10 +8,10 @@
 // Presets: classic · megastore · outlet · trade.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Commercial
+namespace Citymaker.Core.Layers.Commercial
 {
     [AreaGenerator(22, Group = Group)]
     public sealed class RetailParkLayer : CommercialLayer

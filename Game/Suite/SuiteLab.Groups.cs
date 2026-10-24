@@ -12,11 +12,11 @@ using System.Collections.Generic;
 using Game.Common;
 using Game.Tools;
 using Newtonsoft.Json.Linq;
-using Placemaker.Game.Groups;
+using Citymaker.Game.Groups;
 using Unity.Collections;
 using Unity.Entities;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     public sealed partial class SuiteRunner
     {
@@ -25,17 +25,17 @@ namespace Placemaker.Game.Suite
             var em = _world.EntityManager;
             string label = (string)step["label"] ?? "";
             var byId = new SortedDictionary<int, List<Entity>>();
-            using (var q = em.CreateEntityQuery(ComponentType.ReadOnly<PlacemakerGroup>(), ComponentType.Exclude<Deleted>()))
+            using (var q = em.CreateEntityQuery(ComponentType.ReadOnly<CitymakerGroup>(), ComponentType.Exclude<Deleted>()))
             using (var records = q.ToEntityArray(Allocator.Temp))
                 foreach (var r in records)
                 {
-                    int id = em.GetComponentData<PlacemakerGroup>(r).GroupId;
+                    int id = em.GetComponentData<CitymakerGroup>(r).GroupId;
                     if (!byId.TryGetValue(id, out var list)) byId[id] = list = new List<Entity>();
                     list.Add(r);
                 }
             var members = new Dictionary<int, int>();
-            using (var q = em.CreateEntityQuery(ComponentType.ReadOnly<PlacemakerMember>(), ComponentType.Exclude<Deleted>(), ComponentType.Exclude<Temp>()))
-            using (var tags = q.ToComponentDataArray<PlacemakerMember>(Allocator.Temp))
+            using (var q = em.CreateEntityQuery(ComponentType.ReadOnly<CitymakerMember>(), ComponentType.Exclude<Deleted>(), ComponentType.Exclude<Temp>()))
+            using (var tags = q.ToComponentDataArray<CitymakerMember>(Allocator.Temp))
                 for (int i = 0; i < tags.Length; i++) members[tags[i].GroupId] = (members.TryGetValue(tags[i].GroupId, out var n) ? n : 0) + 1;
             bool Live(Entity e) => e != Entity.Null && em.Exists(e) && !em.HasComponent<Deleted>(e);
 
@@ -47,9 +47,9 @@ namespace Placemaker.Game.Suite
                 int live = 0, removing = 0;
                 foreach (var r in kv.Value)
                 {
-                    var g = em.GetComponentData<PlacemakerGroup>(r);
+                    var g = em.GetComponentData<CitymakerGroup>(r);
                     if (Live(g.Owner) || Live(g.Carrier) || Live(g.Companion)) live++;
-                    if (em.HasComponent<PlacemakerRemoval>(r)) removing++;
+                    if (em.HasComponent<CitymakerRemoval>(r)) removing++;
                 }
                 int m = members.TryGetValue(kv.Key, out var mm) ? mm : 0;
                 total += kv.Value.Count;
@@ -66,7 +66,7 @@ namespace Placemaker.Game.Suite
             rec["memberlessIds"] = memberless;
             rec["membersWithoutRecord"] = strays;
             rec["listed"] = Services.Groups?.AllGroups.Count ?? 0;
-            Mod.Log.Info($"Placemaker lab: group records ({label}): {total} record(s) for {byId.Count} id(s), {duplicated} id(s) with more than one record, "
+            Mod.Log.Info($"Citymaker lab: group records ({label}): {total} record(s) for {byId.Count} id(s), {duplicated} id(s) with more than one record, "
                 + $"{memberless} without members, {strays} member(s) of no record; the registry lists {rec["listed"]}. " + string.Join("; ", parts));
         }
 
@@ -75,12 +75,12 @@ namespace Placemaker.Game.Suite
             var em = _world.EntityManager;
             int copies = 0, maxId = 0;
             Entity first = Entity.Null;
-            using (var q = em.CreateEntityQuery(ComponentType.ReadOnly<PlacemakerGroup>(), ComponentType.Exclude<Deleted>()))
+            using (var q = em.CreateEntityQuery(ComponentType.ReadOnly<CitymakerGroup>(), ComponentType.Exclude<Deleted>()))
             using (var records = q.ToEntityArray(Allocator.Temp))
                 foreach (var r in records)
                 {
                     var copy = em.Instantiate(r);
-                    var g = em.GetComponentData<PlacemakerGroup>(copy);
+                    var g = em.GetComponentData<CitymakerGroup>(copy);
                     g.Owner = Entity.Null; g.Carrier = Entity.Null; g.Companion = Entity.Null;
                     em.SetComponentData(copy, g);
                     if (g.GroupId > maxId) maxId = g.GroupId;
@@ -91,7 +91,7 @@ namespace Placemaker.Game.Suite
             if (first != Entity.Null)
             {
                 var other = em.Instantiate(first);
-                var g = em.GetComponentData<PlacemakerGroup>(other);
+                var g = em.GetComponentData<CitymakerGroup>(other);
                 g.GroupId = foreign = maxId + 50;
                 g.Owner = Entity.Null; g.Carrier = Entity.Null; g.Companion = Entity.Null;
                 em.SetComponentData(other, g);
@@ -99,7 +99,7 @@ namespace Placemaker.Game.Suite
             GroupRegistrySystem.Instance?.MarkDirty();
             rec["copies"] = copies;
             rec["foreignId"] = foreign;
-            Mod.Log.Info($"Placemaker lab: old duplicates: {copies} record(s) copied without their owner lot, carrier and companion, and a record of group {foreign} that has no members");
+            Mod.Log.Info($"Citymaker lab: old duplicates: {copies} record(s) copied without their owner lot, carrier and companion, and a record of group {foreign} that has no members");
         }
     }
 }

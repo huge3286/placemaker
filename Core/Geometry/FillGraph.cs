@@ -1,4 +1,4 @@
-// Placemaker — the Paint bucket's planar graph of wall curves (s43).
+// Citymaker — the Paint bucket's planar graph of wall curves (s43).
 //
 // Inputs are the nets near the cursor already classified by the game layer (FillWall kind, centre polyline,
 // half-width) plus CS2's side connections: a pathway (or a road) may end ON another edge without splitting it
@@ -13,7 +13,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Geometry
+namespace Citymaker.Core.Geometry
 {
     /// <summary>One net edge as the bucket sees it: centre polyline A→B (endpoints = node positions).</summary>
     public struct FillCurve

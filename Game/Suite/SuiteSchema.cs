@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     internal sealed class SuiteSchema
     {

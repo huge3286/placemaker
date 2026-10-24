@@ -1,6 +1,6 @@
 // s14: zone types the player picks by name ("Low commercial") instead of a raw zone asset.
 //
-// Vanilla zone prefab names (catalog dump 1.6.2f1, ModsData/Placemaker/catalog-dump.json, "vanilla": true):
+// Vanilla zone prefab names (catalog dump 1.6.2f1, ModsData/Citymaker/catalog-dump.json, "vanilla": true):
 //   themed:   "EU|NA Commercial Low/High", "EU|NA Residential Low/Medium/Medium Row/High/Mixed"
 //   neutral:  "Residential LowRent", "Office Low", "Office High", "Industrial Manufacturing"
 // The unprefixed "Commercial Low" / "Residential Low"… prefabs have no localised name (legacy, likely no
@@ -10,7 +10,7 @@
 
 using System;
 
-namespace Placemaker.Core.Layers.Common
+namespace Citymaker.Core.Layers.Common
 {
     public static class ZoneKinds
     {

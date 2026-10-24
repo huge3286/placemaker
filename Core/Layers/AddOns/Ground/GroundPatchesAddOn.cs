@@ -17,11 +17,11 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns.Ground
+namespace Citymaker.Core.Layers.AddOns.Ground
 {
     [AreaGenerator(147)]
     public sealed class GroundPatchesAddOn : AddOnLayer
@@ -88,7 +88,7 @@ namespace Placemaker.Core.Layers.AddOns.Ground
         {
             var region = ctx.LayerRegion;
             var kinds = Sequence(ctx);
-            if (kinds.Count == 0) { ctx.Issue(IssueSeverity.Info, "Placemaker.AddOn.Ground.Issue.NothingChosen"); return; }
+            if (kinds.Count == 0) { ctx.Issue(IssueSeverity.Info, "Citymaker.AddOn.Ground.Issue.NothingChosen"); return; }
             // Placement ignores trees and bushes (ground is painted under them); everything else blocks.
             var groundReserved = ctx.Input.Reserved?.Clone() ?? new ReservedSpace();
             groundReserved.Discs.RemoveAll(d => d.Tag == nameof(ObjectRole.Tree) || d.Tag == nameof(ObjectRole.Bush));
@@ -111,11 +111,11 @@ namespace Placemaker.Core.Layers.AddOns.Ground
                 made++;
             }
             if (ctx.B("pathTo")) PathsTo(ctx, occ, patches);
-            if (made == 0) NoSpace(ctx, "Placemaker.AddOn.Ground.Name");
-            else if (made < kinds.Count) ctx.Issue(IssueSeverity.Info, "Placemaker.AddOn.Ground.Issue.Fewer", made, kinds.Count);
+            if (made == 0) NoSpace(ctx, "Citymaker.AddOn.Ground.Name");
+            else if (made < kinds.Count) ctx.Issue(IssueSeverity.Info, "Citymaker.AddOn.Ground.Issue.Fewer", made, kinds.Count);
             ctx.Plan.Facts["groundPatches"] = made;
-            ctx.Stat("Placemaker.Stat.GroundPatches", made, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.GroundArea", Math.Round(painted), Keys.UnitM2);
+            ctx.Stat("Citymaker.Stat.GroundPatches", made, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.GroundArea", Math.Round(painted), Keys.UnitM2);
         }
 
         /// <summary>Kinds to place, interleaved so neighbours differ (meadow, mown, rocky, dirt, gravel, sand, meadow…).</summary>

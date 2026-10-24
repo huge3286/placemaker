@@ -7,10 +7,10 @@
 //   breakers  a breakers' yard: a row of carports at the front where cars are taken apart, rows of drained wrecks behind,
 //             parts sorted into bays at the back.
 
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Yards
+namespace Citymaker.Core.Layers.Types.Yards
 {
     [AreaGenerator(65, Group = "industrial")]
     public sealed class CarYardLayer : IndustrialYardLayer

@@ -7,7 +7,7 @@
 //     the ground beside it — into the lot surface: the white cones (the lot's light paving drapes over them).
 //   * A zoned building levels its lot to the height of the road in front. On ground rising away from the lane the
 //     construction site digs a pit with retaining walls; the white fences are the construction-site fences. No
-//     Placemaker fence or terraform made them — the plots were simply not at the road's grade.
+//     Citymaker fence or terraform made them — the plots were simply not at the road's grade.
 // Grading here (one Sculpt over the site, after the sub-plans):
 //   * lanes: a smooth longitudinal profile (≤ 8 %), pinned to the street at attached ends and to the graded lot edge
 //     where they run along a lot; level across their width (+1.5 m shoulders);
@@ -19,11 +19,11 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Commercial
+namespace Citymaker.Core.Layers.Commercial
 {
     public static class MallGrading
     {

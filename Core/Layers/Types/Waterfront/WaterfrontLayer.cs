@@ -20,14 +20,14 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Leisure;
-using Placemaker.Core.Layers.Park;
-using Placemaker.Core.Layers.Types.Beach;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Leisure;
+using Citymaker.Core.Layers.Park;
+using Citymaker.Core.Layers.Types.Beach;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Waterfront
+namespace Citymaker.Core.Layers.Types.Waterfront
 {
     [AreaGenerator(72, Group = "water")]
     public sealed class WaterfrontLayer : LeisureLayer
@@ -58,7 +58,7 @@ namespace Placemaker.Core.Layers.Types.Waterfront
         {
             new FeatureInfo
             {
-                Layer = BeachBarAddOn.LayerId, LabelKey = "Placemaker.Feature.cafeTerrace",
+                Layer = BeachBarAddOn.LayerId, LabelKey = "Citymaker.Feature.cafeTerrace",
                 Preset = ParkLayer.Bag(("tables", 8.0), ("umbrellas", false)),
             },
             // Area-wide features run on the dry land only ("core"): on the whole outline they planted picnic
@@ -307,11 +307,11 @@ namespace Placemaker.Core.Layers.Types.Waterfront
             g.FinishField(0.25f);
             BeachLayer.EmitGreenRegions(ctx, w.Occ, g);
             CommonStats(ctx);
-            ctx.Stat("Placemaker.Stat.Shoreline", System.Math.Round(shore.Length), Keys.UnitM);
+            ctx.Stat("Citymaker.Stat.Shoreline", System.Math.Round(shore.Length), Keys.UnitM);
             ctx.Stat(Keys.StatLamps, w.Lamps, Keys.UnitCount);
-            if (w.Piers > 0) ctx.Stat("Placemaker.Stat.Piers", w.Piers, Keys.UnitCount);
-            if (w.Steps > 0) ctx.Stat("Placemaker.Stat.Steps", w.Steps, Keys.UnitCount);
-            if (w.Fishing > 0) ctx.Stat("Placemaker.Stat.FishingSpots", w.Fishing, Keys.UnitCount);
+            if (w.Piers > 0) ctx.Stat("Citymaker.Stat.Piers", w.Piers, Keys.UnitCount);
+            if (w.Steps > 0) ctx.Stat("Citymaker.Stat.Steps", w.Steps, Keys.UnitCount);
+            if (w.Fishing > 0) ctx.Stat("Citymaker.Stat.FishingSpots", w.Fishing, Keys.UnitCount);
             var f = ctx.Plan.Facts;
             f["piers"] = w.Piers;
             f["pierLength"] = w.PierLength;
@@ -450,7 +450,7 @@ namespace Placemaker.Core.Layers.Types.Waterfront
             }
             string hill = ctx.S("hillside");
             bool wall = hill == "wall" ? wallMax <= maxWall : hill == "auto" && wallMax >= 1.5f && wallMax <= maxWall;
-            if (hill == "wall" && wallMax > maxWall) ctx.Issue(IssueSeverity.Info, "Placemaker.Waterfront.Issue.WallTooHigh", (int)math.round(wallMax), (int)math.round(maxWall));
+            if (hill == "wall" && wallMax > maxWall) ctx.Issue(IssueSeverity.Info, "Citymaker.Waterfront.Issue.WallTooHigh", (int)math.round(wallMax), (int)math.round(maxWall));
             w.Wall = wall && w.Fronts.Count > 0;
             w.WallMax = w.Wall ? wallMax : 0f;
             w.WallLength = w.Wall ? wallLen : 0f;
@@ -922,7 +922,7 @@ namespace Placemaker.Core.Layers.Types.Waterfront
             bool beyond = shore.Mode == ShoreMode.Edge && w.Water;
             if (shore.Mode != ShoreMode.Inside && !beyond)
             {
-                ctx.Issue(IssueSeverity.Info, "Placemaker.Waterfront.Issue.PiersNeedWater");
+                ctx.Issue(IssueSeverity.Info, "Citymaker.Waterfront.Issue.PiersNeedWater");
                 return;
             }
             var pierAsset = new AssetRef("", WaterfrontArt.Or(ctx.S("boardwalkAsset"), WaterfrontArt.Pier));

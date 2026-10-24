@@ -8,7 +8,7 @@
 
 using System;
 
-namespace Placemaker.Core.Tool
+namespace Citymaker.Core.Tool
 {
     public static class PlanSchedule
     {

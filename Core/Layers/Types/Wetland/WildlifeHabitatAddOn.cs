@@ -4,11 +4,11 @@
 // habitat from the trail without trampling it.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.AddOns;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.AddOns;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Wetland
+namespace Citymaker.Core.Layers.Types.Wetland
 {
     [AreaGenerator(612)]
     public sealed class WildlifeHabitatAddOn : AddOnLayer
@@ -81,8 +81,8 @@ namespace Placemaker.Core.Layers.Types.Wetland
                     }
                 }
             }
-            if (corners.Count == 0) NoSpace(ctx, "Placemaker.AddOn.Wildlife.Name");
-            ctx.Stat("Placemaker.Stat.HabitatCorners", corners.Count, Keys.UnitCount);
+            if (corners.Count == 0) NoSpace(ctx, "Citymaker.AddOn.Wildlife.Name");
+            ctx.Stat("Citymaker.Stat.HabitatCorners", corners.Count, Keys.UnitCount);
             ctx.Plan.Facts["habitatItems"] = items;
         }
     }

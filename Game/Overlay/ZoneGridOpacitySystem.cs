@@ -1,4 +1,4 @@
-// Placemaker — the zone grid drawn faint (setting "Zone grid", Options → Placemaker). GPL-3.0.
+// Citymaker — the zone grid drawn faint (setting "Zone grid", Options → Citymaker). GPL-3.0.
 //
 // User (in game, zoning): "The grids are way too prominent. Can we make them nearly 100% transparent or a slider", then
 // "the transparency should work for filled grid as well. Not just empty grid." The game draws zone cells from two
@@ -22,7 +22,7 @@ using Unity.Entities;
 using UnityEngine;
 using UnityEngine.Scripting;
 
-namespace Placemaker.Game.Overlay
+namespace Citymaker.Game.Overlay
 {
     public sealed partial class ZoneGridOpacitySystem : GameSystemBase
     {
@@ -45,7 +45,7 @@ namespace Placemaker.Game.Overlay
             _zones = World.GetOrCreateSystemManaged<ZoneSystem>();
             _query = GetEntityQuery(ComponentType.ReadOnly<ZoneData>(), ComponentType.ReadOnly<PrefabData>(), ComponentType.Exclude<Deleted>());
             _updateColors = typeof(ZoneSystem).GetField("m_UpdateColors", BindingFlags.Instance | BindingFlags.NonPublic);
-            if (_updateColors == null) Mod.Log.Warn("Placemaker zone grid: ZoneSystem.m_UpdateColors not found; the grid opacity applies after the next load only.");
+            if (_updateColors == null) Mod.Log.Warn("Citymaker zone grid: ZoneSystem.m_UpdateColors not found; the grid opacity applies after the next load only.");
         }
 
         [Preserve]
@@ -64,7 +64,7 @@ namespace Placemaker.Game.Overlay
             catch (Exception e)
             {
                 _failed = true;
-                Mod.Log.Warn("Placemaker zone grid: opacity not applied: " + e.Message);
+                Mod.Log.Warn("Citymaker zone grid: opacity not applied: " + e.Message);
             }
         }
 
@@ -91,7 +91,7 @@ namespace Placemaker.Game.Overlay
             }
             if (faded == 0) return;   // zone prefabs not loaded yet (main menu): applied when they are
             _updateColors?.SetValue(_zones, true);
-            Mod.Log.Info($"Placemaker zone grid: {faded} zone type(s) at {pct}%; empty cells:{empty}");
+            Mod.Log.Info($"Citymaker zone grid: {faded} zone type(s) at {pct}%; empty cells:{empty}");
         }
     }
 }

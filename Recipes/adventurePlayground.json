@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "adventurePlayground",
-  "nameKey": "Placemaker.Recipe.AdventurePlayground",
-  "descriptionKey": "Placemaker.Recipe.AdventurePlayground.Description",
+  "nameKey": "Citymaker.Recipe.AdventurePlayground",
+  "descriptionKey": "Citymaker.Recipe.AdventurePlayground.Description",
   "icon": "Media/Game/Icons/Play.svg",
   "root": {
     "layer": "adventurePlayground",

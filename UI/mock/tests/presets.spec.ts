@@ -87,7 +87,7 @@ test("browser: search filters categories, types and presets; keyboard moves betw
     // Esc clears and closes the search (and does not close the tool)
     await search.press("Escape");
     await expect(search).toHaveCount(0);
-    await expect(page.getByTestId("placemaker-panel")).toBeVisible();
+    await expect(page.getByTestId("citymaker-panel")).toBeVisible();
     await expect(page.getByTestId("recipe-park")).toBeVisible();
     // Enter picks the first match
     await page.getByTestId("browser-search-toggle").click();
@@ -203,7 +203,7 @@ test("Save as → own preset (★, active) → save changes → rename → delet
     await page.getByTestId("preset-more").click();
     await page.getByTestId("preset-export").click();
     await expect(page.getByTestId("presets-file")).toContainText("Send this file to share your styles");
-    await expect(page.getByTestId("presets-file-path")).toContainText("ModsData\\Placemaker\\presets.json");
+    await expect(page.getByTestId("presets-file-path")).toContainText("ModsData\\Citymaker\\presets.json");
     await noTextOverflow(page, "export note");
     await panelShot(page, "p-export");
 
@@ -235,7 +235,7 @@ test("long own preset names and many types never overflow", async ({ page }) => 
         await page.getByTestId(`make-group-${g}`).click();
         await noTextOverflow(page, "long names " + g);
     }
-    const panel = (await page.getByTestId("placemaker-panel").boundingBox())!;
+    const panel = (await page.getByTestId("citymaker-panel").boundingBox())!;
     const bar = (await page.getByTestId("preset-bar").boundingBox())!;
     expect(bar.x + bar.width).toBeLessThanOrEqual(panel.x + panel.width + 1);
     await panelShot(page, "p-long-names");

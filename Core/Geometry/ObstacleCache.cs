@@ -1,4 +1,4 @@
-// Placemaker — s49: the raw obstacle set around a block, kept so that switching Smart edges / a brush rule only re-filters it.
+// Citymaker — s49: the raw obstacle set around a block, kept so that switching Smart edges / a brush rule only re-filters it.
 //
 // Reading the game's search trees (buildings, lots, zone cells, receipts) is the expensive part of a brush rule change;
 // the rules only decide which of the gathered polygons count. The cache holds every kind, whatever the rules say,
@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Text;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Geometry
+namespace Citymaker.Core.Geometry
 {
     public sealed class ObstacleCache
     {

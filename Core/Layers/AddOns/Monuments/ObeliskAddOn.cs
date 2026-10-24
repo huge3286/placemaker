@@ -3,10 +3,10 @@
 // optional low hedge ring with openings on the four axes and a flower ring round the base.
 // No obelisk installed → a monument, then a statue, on the same base.
 
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns.Monuments
+namespace Citymaker.Core.Layers.AddOns.Monuments
 {
     [AreaGenerator(172)]
     public sealed class ObeliskAddOn : MonumentAddOn
@@ -133,7 +133,7 @@ namespace Placemaker.Core.Layers.AddOns.Monuments
             }
             if (ctx.B("hedgeRing")) HedgeRing(ctx, occ, C, axis, court, half, courtHalf, dirs);
             ctx.Stat(Keys.StatBenches, placed, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Monuments", 1, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Monuments", 1, Keys.UnitCount);
         }
 
         /// <summary>Low hedge round the court just inside its edge, with an opening on each axis.</summary>

@@ -1,4 +1,4 @@
-// The Placemaker panel: docked on the RIGHT, tall (below the top bar → above the bottom toolbar),
+// The Citymaker panel: docked on the RIGHT, tall (below the top bar → above the bottom toolbar),
 // draggable by its header (position remembered; double-click the header to dock it again).
 //   header  — drag grip, name, undo/redo, collapse, close
 //   stages  — [1 Area] → [2 Design] → [3 Review] (click any reachable stage to go back)
@@ -32,16 +32,16 @@ import { ScrollArea } from "./ScrollArea";
 import s from "./panel.module.scss";
 
 const STAGES: { id: Stage; key: string; en: string }[] = [
-    { id: "area", key: "Placemaker.UI.Stage.Area", en: "Area" },
-    { id: "design", key: "Placemaker.UI.Stage.Design", en: "Design" },
-    { id: "review", key: "Placemaker.UI.Stage.Review", en: "Review" },
+    { id: "area", key: "Citymaker.UI.Stage.Area", en: "Area" },
+    { id: "design", key: "Citymaker.UI.Stage.Design", en: "Design" },
+    { id: "review", key: "Citymaker.UI.Stage.Review", en: "Review" },
 ];
 
 // ───────────── position (dock / drag) and width (resize) ─────────────
 
-const POS_KEY = "placemaker.panelPos.v2";
-const WIDTH_KEY = "placemaker.panelWidth.v2";   // v2: the narrower default (450) for everyone once
-const HEIGHT_KEY = "placemaker.panelHeight.v1";
+const POS_KEY = "citymaker.panelPos.v2";
+const WIDTH_KEY = "citymaker.panelWidth.v2";   // v2: the narrower default (450) for everyone once
+const HEIGHT_KEY = "citymaker.panelHeight.v1";
 /** Smallest panel height in rem (header + a few rows). */
 const MIN_HEIGHT_REM = 200;
 /** Docked insets in rem (keep in sync with .wrap): below the top bar, above the bottom toolbar. */
@@ -323,8 +323,8 @@ function usePanelPosition() {
 
 /** The polish tool's steps: pick buildings, then polish them (nothing is planned or reviewed). */
 const POLISH_STAGES: { id: Stage; key: string; en: string }[] = [
-    { id: "area", key: "Placemaker.UI.Stage.Area", en: "Area" },
-    { id: "design", key: "Placemaker.UI.Polish.StagePolish", en: "Outgrow" },
+    { id: "area", key: "Citymaker.UI.Stage.Area", en: "Area" },
+    { id: "design", key: "Citymaker.UI.Polish.StagePolish", en: "Outgrow" },
 ];
 
 const StageBar = ({ state }: { state: ToolState }) => {
@@ -378,16 +378,16 @@ const PreviewToggle = ({ state }: { state: ToolState }) => {
         {
             value: "sketch",
             icon: "sketch",
-            label: t("Placemaker.UI.Preview.Sketch", "Sketch"),
-            title: t("Placemaker.UI.Preview.SketchTitle", "Sketch preview"),
-            tip: t("Placemaker.UI.Preview.SketchTip", "Fast outlines and dots. Best while drawing and trying things."),
+            label: t("Citymaker.UI.Preview.Sketch", "Sketch"),
+            title: t("Citymaker.UI.Preview.SketchTitle", "Sketch preview"),
+            tip: t("Citymaker.UI.Preview.SketchTip", "Fast outlines and dots. Best while drawing and trying things."),
         },
         {
             value: "ghost",
             icon: "cube",
-            label: t("Placemaker.UI.Preview.Real", "Real"),
-            title: t("Placemaker.UI.Preview.RealTitle", "Real preview"),
-            tip: t("Placemaker.UI.Preview.RealTip", "See-through game models and textures, exactly what will be built."),
+            label: t("Citymaker.UI.Preview.Real", "Real"),
+            title: t("Citymaker.UI.Preview.RealTitle", "Real preview"),
+            tip: t("Citymaker.UI.Preview.RealTip", "See-through game models and textures, exactly what will be built."),
         },
     ];
     return (
@@ -474,9 +474,9 @@ const Footer = ({
             <div className={s.busyText}>
                 {pending
                     ? progress != null
-                        ? t("Placemaker.UI.PlanningPct", "Planning… {0}%", [Math.round(progress * 100)])
-                        : t("Placemaker.UI.Planning", "Planning…")
-                    : t("Placemaker.UI.PreviewUpdating", "Updating preview…")}
+                        ? t("Citymaker.UI.PlanningPct", "Planning… {0}%", [Math.round(progress * 100)])
+                        : t("Citymaker.UI.Planning", "Planning…")
+                    : t("Citymaker.UI.PreviewUpdating", "Updating preview…")}
             </div>
             {pending && progress != null ? (
                 <div className={s.busyTrack}>
@@ -485,7 +485,7 @@ const Footer = ({
             ) : null}
         </div>
     ) : null;
-    const label = tl(p.label, t("Placemaker.UI.Primary.Next", "Next"));
+    const label = tl(p.label, t("Citymaker.UI.Primary.Next", "Next"));
     const buildOptions = (p.action === "build" || p.action === "finishEdit") && !compact;
     // s42: a blocked button says what blocks it ("Add an entrance to build"), short enough for one line.
     const shownLabel = !enabled && reason && reason.length <= 34 ? reason : label;
@@ -505,7 +505,7 @@ const Footer = ({
             <div className={s.primaryLabel} data-testid={!enabled && reason ? "primary-reason" : undefined}>
                 {shownLabel}
             </div>
-            {enabled && p.action !== "cancelBuild" ? <div className={s.enterKey}>{t("Placemaker.UI.Key.Enter", "Enter")}</div> : null}
+            {enabled && p.action !== "cancelBuild" ? <div className={s.enterKey}>{t("Citymaker.UI.Key.Enter", "Enter")}</div> : null}
         </button>
     );
     let info: React.ReactNode = null;
@@ -532,7 +532,7 @@ const Footer = ({
                 </div>
                 <div className={s.quickItem}>
                     <Icon name="upkeep" size={12} tint="dim" />
-                    <div className={s.quickText}>{compactMoney(summary.upkeep) + t("Placemaker.UI.PerMonth", "/mo")}</div>
+                    <div className={s.quickText}>{compactMoney(summary.upkeep) + t("Citymaker.UI.PerMonth", "/mo")}</div>
                 </div>
             </div>
             </div>
@@ -549,26 +549,26 @@ const Footer = ({
                 <div className={s.footSwitches} data-testid="build-options">
                     {state.grouping ? (
                         <Tip
-                            title={t("Placemaker.UI.Build.Group", "Group as one asset")}
+                            title={t("Citymaker.UI.Build.Group", "Group as one asset")}
                             description={t(
-                                "Placemaker.UI.Build.GroupTip",
+                                "Citymaker.UI.Build.GroupTip",
                                 "On: it is built as one asset. Click it to select all of it; the bulldozer removes all of it. Off: built as separate pieces you click, change and bulldoze one at a time. Removing all of it then takes Remove in a piece's info panel. You can ungroup or group it again later from there."
                             )}
                         >
                             <div className={s.footOption} data-testid="build-group-wrap" data-on={state.grouping.separate ? "false" : "true"}>
                                 <Switch testId="build-group" on={!state.grouping.separate} onChange={(v) => act.setBuildUngrouped(!v)} />
-                                <div className={s.footOptionLabel}>{t("Placemaker.UI.Build.Group", "Group as one asset")}</div>
+                                <div className={s.footOptionLabel}>{t("Citymaker.UI.Build.Group", "Group as one asset")}</div>
                             </div>
                         </Tip>
                     ) : null}
                     {p.action === "build" ? (
                         <Tip
-                            title={t("Placemaker.UI.Build.KeepArea", "Keep this area selected")}
-                            description={t("Placemaker.UI.Build.KeepAreaTip", "On: after building, the area stays selected and Placemaker stays open, so you can build something else there. Off: Build closes Placemaker.")}
+                            title={t("Citymaker.UI.Build.KeepArea", "Keep this area selected")}
+                            description={t("Citymaker.UI.Build.KeepAreaTip", "On: after building, the area stays selected and Citymaker stays open, so you can build something else there. Off: Build closes Citymaker.")}
                         >
                             <div className={s.footOption} data-testid="build-keep-wrap" data-on={state.keepArea === false ? "false" : "true"}>
                                 <Switch testId="build-keep" on={state.keepArea !== false} onChange={(v) => act.setKeepArea(v)} />
-                                <div className={s.footOptionLabel}>{t("Placemaker.UI.Build.KeepArea", "Keep this area selected")}</div>
+                                <div className={s.footOptionLabel}>{t("Citymaker.UI.Build.KeepArea", "Keep this area selected")}</div>
                             </div>
                         </Tip>
                     ) : null}
@@ -576,21 +576,21 @@ const Footer = ({
             ) : null}
             <div className={s.primaryRow}>
                 {ack && buildOptions ? (
-                    <Tip title={t("Placemaker.UI.Review.AckShort", "OK, permanent")} description={t("Placemaker.UI.Review.AckTip", "Some changes stay after you remove the build (the amber tags). Click it to allow them.")}>
+                    <Tip title={t("Citymaker.UI.Review.AckShort", "OK, permanent")} description={t("Citymaker.UI.Review.AckTip", "Some changes stay after you remove the build (the amber tags). Click it to allow them.")}>
                         <div className={s.ackChip} data-testid="build-ack-wrap">
-                            <Check testId="ack-permanent" checked={ack.on} onChange={ack.set} label={t("Placemaker.UI.Review.AckLong", "OK, some changes are permanent")} />
+                            <Check testId="ack-permanent" checked={ack.on} onChange={ack.set} label={t("Citymaker.UI.Review.AckLong", "OK, some changes are permanent")} />
                         </div>
                     </Tip>
                 ) : null}
                 {p.action === "polish" && state.painter ? (
                     // Live polish: the selection polished again a moment after every change of the look or the selection
                     <Tip
-                        title={t("Placemaker.UI.Polish.Live", "Live")}
-                        description={t("Placemaker.UI.Polish.LiveTip", "On: the buildings in the selection are outgrown again a moment after every change you make, and the selection stays. Remove outgrow puts them back.")}
+                        title={t("Citymaker.UI.Polish.Live", "Live")}
+                        description={t("Citymaker.UI.Polish.LiveTip", "On: the buildings in the selection are outgrown again a moment after every change you make, and the selection stays. Remove outgrow puts them back.")}
                     >
                         <div className={s.liveChip} data-testid="polish-live-wrap" data-on={state.painter.live ? "true" : "false"}>
                             <Switch testId="polish-live" on={!!state.painter.live} onChange={(v) => act.polishLive(v)} />
-                            <div className={s.liveLabel}>{t("Placemaker.UI.Polish.Live", "Live")}</div>
+                            <div className={s.liveLabel}>{t("Citymaker.UI.Polish.Live", "Live")}</div>
                         </div>
                     </Tip>
                 ) : null}
@@ -606,7 +606,7 @@ const Footer = ({
                             if (enabled) act.polishStamp(false);
                         }}
                     >
-                        <div className={s.primaryLabel}>{t("Placemaker.UI.Painter.Unpolish", "Remove outgrow")}</div>
+                        <div className={s.primaryLabel}>{t("Citymaker.UI.Painter.Unpolish", "Remove outgrow")}</div>
                     </button>
                 ) : null}
                 {!enabled && reason ? (
@@ -651,7 +651,7 @@ const Hints = ({ state }: { state: ToolState }) => {
 };
 
 /**
- * (s15) The game reloads Placemaker.mjs from disk but loads the DLL only at start: after an update the panel can
+ * (s15) The game reloads Citymaker.mjs from disk but loads the DLL only at start: after an update the panel can
  * talk to an older (or newer) DLL until the game restarts. Then buttons for new things do nothing — say so.
  */
 const VersionNotice = ({ state }: { state: ToolState }) => {
@@ -660,14 +660,14 @@ const VersionNotice = ({ state }: { state: ToolState }) => {
     return (
         <div className={s.versionNotice} data-testid="version-notice" data-protocol={state.protocol ?? "none"}>
             <Icon name="info" size={12} tint="warn" />
-            <div className={s.versionText}>{t("Placemaker.UI.Version.Mismatch", "Restart the game: Placemaker's files were updated while it was running.")}</div>
+            <div className={s.versionText}>{t("Citymaker.UI.Version.Mismatch", "Restart the game: Citymaker's files were updated while it was running.")}</div>
         </div>
     );
 };
 
 // ───────────── panel ─────────────
 
-export const PlacemakerPanel = () => {
+export const CitymakerPanel = () => {
     const state = useToolState();
     const catalog = useCatalog();
     const design = useDesign();
@@ -740,17 +740,17 @@ export const PlacemakerPanel = () => {
         const need = missing.markersRequired ?? 1;
         blockedReason =
             need > 1
-                ? t("Placemaker.UI.Markers.NeedNBuild", "Add {0} entrances to build", [need])
-                : t("Placemaker.UI.Markers.NeedOneBuild", "Add an entrance to build");
+                ? t("Citymaker.UI.Markers.NeedNBuild", "Add {0} entrances to build", [need])
+                : t("Citymaker.UI.Markers.NeedOneBuild", "Add an entrance to build");
     } else if (needsAck) {
-        blockedReason = t("Placemaker.UI.Review.AckFirst", "Click OK to build");
+        blockedReason = t("Citymaker.UI.Review.AckFirst", "Click OK to build");
     }
 
-    // the neighbourhood-polish tool (its own button, state.painter): Placemaker's panel and steps, its own Design and Review
+    // the neighbourhood-polish tool (its own button, state.painter): Citymaker's panel and steps, its own Design and Review
     const polish = !!state.painter?.tool;
     // a Zoning type (or the old painter): the City window
     const cityAvailable = !!state.painter;
-    // the panel's two modes: Placemaker (its stages) or Outgrow (the whole city's), by the switcher under the header
+    // the panel's two modes: Citymaker (its stages) or Outgrow (the whole city's), by the switcher under the header
     const outgrow = cityAvailable && !!state.painter?.outgrowMode;
     let body: React.ReactNode = null;
     switch (state.stage) {
@@ -786,14 +786,14 @@ export const PlacemakerPanel = () => {
                 }}
             >
                 <Tip
-                    title={t("Placemaker.UI.Move", "Move the panel")}
-                    description={t("Placemaker.UI.MoveTip", "Drag to move. Double-click to dock.")}
+                    title={t("Citymaker.UI.Move", "Move the panel")}
+                    description={t("Citymaker.UI.MoveTip", "Drag to move. Double-click to dock.")}
                 >
                     <div className={s.grip} data-testid="panel-grip">
                         <Icon name="grip" size={12} tint="dim" />
                     </div>
                 </Tip>
-                <Tip title={polish || outgrow ? t("Placemaker.UI.Polish.Name", "Outgrow") : t("Placemaker.Name", "Placemaker")}>
+                <Tip title={polish || outgrow ? t("Citymaker.UI.Polish.Name", "Outgrow") : t("Citymaker.Name", "citymaker")}>
                     <div className={s.logo}>
                         <Icon name={polish || outgrow ? "shrub" : "logo"} size={16} tint="light" />
                     </div>
@@ -803,20 +803,20 @@ export const PlacemakerPanel = () => {
                     <div className={s.headMode}>
                         <Segmented
                             testId="panel-mode"
-                            value={outgrow ? "outgrow" : "placemaker"}
+                            value={outgrow ? "outgrow" : "citymaker"}
                             onChange={(v) => act.polishCity("mode", v)}
                             options={[
-                                { value: "placemaker", label: t("Placemaker.Name", "Placemaker"), description: t("Placemaker.UI.ModePlacemakerTip", "Make roads, parks, car parks, shops and zones in an area you pick.") },
-                                { value: "outgrow", label: t("Placemaker.UI.Polish.Name", "Outgrow"), description: t("Placemaker.UI.ModeOutgrowTip", "The whole city's outgrow: each zone type's default, the brush, the map lens, the outgrow types and their numbers.") },
+                                { value: "citymaker", label: t("Citymaker.Name", "citymaker"), description: t("Citymaker.UI.ModeCitymakerTip", "Make roads, parks, car parks, shops and zones in an area you pick.") },
+                                { value: "outgrow", label: t("Citymaker.UI.Polish.Name", "Outgrow"), description: t("Citymaker.UI.ModeOutgrowTip", "The whole city's outgrow: each zone type's default, the brush, the map lens, the outgrow types and their numbers.") },
                             ]}
                         />
                     </div>
                 ) : (
-                    <div className={s.title}>{t("Placemaker.Name", "Placemaker")}</div>
+                    <div className={s.title}>{t("Citymaker.Name", "citymaker")}</div>
                 )}
-                {state.editingGroup != null && !outgrow ? <div className={s.editingPill}>{t("Placemaker.UI.Editing", "Editing")}</div> : null}
+                {state.editingGroup != null && !outgrow ? <div className={s.editingPill}>{t("Citymaker.UI.Editing", "Editing")}</div> : null}
                 {state.planning && !polish && !outgrow ? (
-                    <Tip title={t("Placemaker.UI.Planning", "Planning…")}>
+                    <Tip title={t("Citymaker.UI.Planning", "Planning…")}>
                         <div className={classNames(s.spinner, s.headSpinner)} data-testid="planning" />
                     </Tip>
                 ) : null}
@@ -826,8 +826,8 @@ export const PlacemakerPanel = () => {
                         icon="anarchy"
                         iconSize={14}
                         selected={state.anarchy.enabled}
-                        title={t("Placemaker.UI.Anarchy", "Anarchy")}
-                        description={t("Placemaker.UI.AnarchyTip", "Ignore collisions (Anarchy mod).")}
+                        title={t("Citymaker.UI.Anarchy", "Anarchy")}
+                        description={t("Citymaker.UI.AnarchyTip", "Ignore collisions (Anarchy mod).")}
                         onClick={() => act.setAnarchy(!state.anarchy?.enabled)}
                         testId="anarchy"
                     />
@@ -836,7 +836,7 @@ export const PlacemakerPanel = () => {
                 <Btn
                     icon="close"
                     iconSize={14}
-                    title={t("Placemaker.UI.Close", "Close")}
+                    title={t("Citymaker.UI.Close", "Close")}
                     description={<Keys keys={["Esc"]} />}
                     onClick={act.close}
                     testId="close"
@@ -849,20 +849,20 @@ export const PlacemakerPanel = () => {
         <PickerContext.Provider value={pickerCtx}>
             <TipDirectionContext.Provider value={position.side}>
                 <PanelLayoutContext.Provider value={layout}>
-                <div className={classNames(s.dock, { [s.rtl]: rtl })} data-testid="placemaker-dock">
+                <div className={classNames(s.dock, { [s.rtl]: rtl })} data-testid="citymaker-dock">
                     {picker ? <div className={s.backdrop} data-testid="picker-backdrop" onMouseDown={closePicker} /> : null}
                     <div
                         ref={position.wrapRef}
                         className={s.wrap}
                         style={position.style}
-                        data-testid="placemaker-wrap"
+                        data-testid="citymaker-wrap"
                         data-docked={position.floating ? "false" : "true"}
                         data-width={position.width}
                         data-cols={layout.wide ? "2" : "1"}
                     >
                         <Tip
-                                title={t("Placemaker.UI.Resize", "Resize the panel")}
-                                description={t("Placemaker.UI.ResizeTip", "Drag to make it wider or narrower. Double-click for the default width.")}
+                                title={t("Citymaker.UI.Resize", "Resize the panel")}
+                                description={t("Citymaker.UI.ResizeTip", "Drag to make it wider or narrower. Double-click for the default width.")}
                             >
                                 <div
                                     className={classNames(s.resize, { [s.resizeActive]: position.resizing })}
@@ -875,8 +875,8 @@ export const PlacemakerPanel = () => {
                                 />
                             </Tip>
                         <Tip
-                                title={t("Placemaker.UI.ResizeHeight", "Resize the height")}
-                                description={t("Placemaker.UI.ResizeHeightTip", "Drag to make it taller or shorter. Double-click for full height.")}
+                                title={t("Citymaker.UI.ResizeHeight", "Resize the height")}
+                                description={t("Citymaker.UI.ResizeHeightTip", "Drag to make it taller or shorter. Double-click for full height.")}
                             >
                                 <div
                                     className={classNames(s.resizeBottom, { [s.resizeActive]: position.resizingHeight })}
@@ -888,7 +888,7 @@ export const PlacemakerPanel = () => {
                                     }}
                                 />
                             </Tip>
-                        <div className={s.panel} data-testid="placemaker-panel" data-stage={state.stage}>
+                        <div className={s.panel} data-testid="citymaker-panel" data-stage={state.stage}>
                             <div className={s.panelTint}>
                                 {header}
                                 {outgrow ? (
@@ -942,16 +942,16 @@ export const PlacemakerPanel = () => {
     );
 };
 
-export const PlacemakerRoot = () => (
+export const CitymakerRoot = () => (
     <ErrorBoundary name="panel" fallback={(e, reset) => <PanelCrash error={e} reset={reset} />}>
-        <PlacemakerPanel />
+        <CitymakerPanel />
     </ErrorBoundary>
 );
 
 const PanelCrash = ({ error, reset }: { error: unknown; reset: () => void }) => (
     <div className={s.dock}>
         <div className={s.crash} onClick={reset} data-pm-crash="true">
-            <strong>Placemaker</strong> — the panel hit an error and was stopped so the rest of the game UI keeps working. Click to try again.
+            <strong>Citymaker</strong> — the panel hit an error and was stopped so the rest of the game UI keeps working. Click to try again.
             <div className={s.crashDetail}>{error instanceof Error ? `${error.name}: ${error.message}` : String(error)}</div>
         </div>
     </div>

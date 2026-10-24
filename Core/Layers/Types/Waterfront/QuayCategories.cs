@@ -10,9 +10,9 @@
 // walks. Leisure piers (LeisurePier01Small01/Medium01/Large01, 3/7/9 m) are elevated wooden decks on pillars.
 
 using System.Collections.Generic;
-using Placemaker.Core.Build;
+using Citymaker.Core.Build;
 
-namespace Placemaker.Core
+namespace Citymaker.Core
 {
     public static partial class AssetCategories
     {
@@ -23,7 +23,7 @@ namespace Placemaker.Core
     }
 }
 
-namespace Placemaker.Core.Layers.Types.Waterfront
+namespace Citymaker.Core.Layers.Types.Waterfront
 {
     public sealed class QuayCategoryRules : ICategoryRules
     {

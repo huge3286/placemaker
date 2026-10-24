@@ -1,4 +1,4 @@
-// Placemaker — markers follow the outline (FEEDBACK-2 #2).
+// Citymaker — markers follow the outline (FEEDBACK-2 #2).
 //
 // When the outline changes (point/edge drag, insert/delete point, block or paint change, road
 // clipping) every marker is moved onto the new outline:
@@ -14,7 +14,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Tool
+namespace Citymaker.Core.Tool
 {
     public static class MarkerFollow
     {

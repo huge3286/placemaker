@@ -9,12 +9,12 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Leisure;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Leisure;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.LookoutHill
+namespace Citymaker.Core.Layers.Types.LookoutHill
 {
     [AreaGenerator(208, Group = "nature")]
     public sealed class LookoutHillLayer : LeisureLayer
@@ -31,7 +31,7 @@ namespace Placemaker.Core.Layers.Types.LookoutHill
 
         protected override int WantedEntrances(LayerRegion region) => math.min(2, Entrances.WantedByArea(region.Area));
 
-        /// <summary>A feature labelled with its layer name (no Placemaker.Feature.* key of its own).</summary>
+        /// <summary>A feature labelled with its layer name (no Citymaker.Feature.* key of its own).</summary>
         private static FeatureInfo Plain(string layer, params (string key, object value)[] preset)
         {
             var f = Feature(layer, preset);
@@ -43,8 +43,8 @@ namespace Placemaker.Core.Layers.Types.LookoutHill
         {
             var view = Feature(ViewpointAddOn.LayerId);
             view.Target = SummitTag;
-            view.LabelKey = "Placemaker.LookoutHill.Feature.viewpoint";
-            view.TooltipKey = "Placemaker.LookoutHill.Feature.viewpoint.Tooltip";
+            view.LabelKey = "Citymaker.LookoutHill.Feature.viewpoint";
+            view.TooltipKey = "Citymaker.LookoutHill.Feature.viewpoint.Tooltip";
             return new List<FeatureInfo>
             {
                 view, Feature("picnic", ("groups", 2.0)), Feature("restrooms"), Feature("shops", ("count", 1.0), ("where", "entrances")),
@@ -138,7 +138,7 @@ namespace Placemaker.Core.Layers.Types.LookoutHill
             if (anyReserved) skip = p => region.BoundaryDistance(p, 8f) >= 6f && occ.Clearance(p, 8f) < 6f ? 0f : float.MaxValue;
             var field = HillField.Build(ctx, region, spec, skip);
             field.Emit(ctx, region);
-            if (field.Peak < spec.Height * 0.8f) ctx.Issue(IssueSeverity.Info, "Placemaker.LookoutHill.Issue.Lower", Math.Round(field.Peak, 1), Math.Round(spec.Height));
+            if (field.Peak < spec.Height * 0.8f) ctx.Issue(IssueSeverity.Info, "Citymaker.LookoutHill.Issue.Lower", Math.Round(field.Peak, 1), Math.Round(spec.Height));
             ctx.Check();
 
             float summitR = math.max(4f, plateau * 0.85f);
@@ -191,7 +191,7 @@ namespace Placemaker.Core.Layers.Types.LookoutHill
             EmitGreenRegions(ctx, occ);
             Drape(ctx.Plan, field);
             CommonStats(ctx);
-            ctx.Stat("Placemaker.Stat.HillHeight", Math.Round(field.Peak, 1), Keys.UnitM);
+            ctx.Stat("Citymaker.Stat.HillHeight", Math.Round(field.Peak, 1), Keys.UnitM);
             ctx.Plan.Facts["peak"] = field.Peak;
             ctx.Plan.Facts["hillCells"] = field.Cells;
             ctx.Plan.Facts["summitX"] = summit.x;
@@ -264,7 +264,7 @@ namespace Placemaker.Core.Layers.Types.LookoutHill
                 };
                 var pts = HillPaths.Climb(field, region, occ, g.Position, g.Position + inward * (hw + 2.5f), spec);
                 if (pts.Count < 3) continue;
-                if (!HillPaths.Reached(pts, spec)) ctx.Issue(IssueSeverity.Info, "Placemaker.LookoutHill.Issue.PathShort");
+                if (!HillPaths.Reached(pts, spec)) ctx.Issue(IssueSeverity.Info, "Citymaker.LookoutHill.Issue.PathShort");
                 Relax(pts, region, hw);
                 var simple = Poly.SimplifyPolyline(pts, 0.6f);
                 int n = simple.Length;
@@ -470,7 +470,7 @@ namespace Placemaker.Core.Layers.Types.LookoutHill
                 float score = len * (math.dot(d, toGate) > 0.6f ? 0.3f : 1f);
                 if (score > best) { best = score; bestDir = d; }
             }
-            if (best < summitR + 25f) { ctx.Issue(IssueSeverity.Info, "Placemaker.LookoutHill.Issue.NoRun"); return false; }
+            if (best < summitR + 25f) { ctx.Issue(IssueSeverity.Info, "Citymaker.LookoutHill.Issue.NoRun"); return false; }
             a = summit + bestDir * (summitR + 1.5f);
             float runLen = 0f;
             for (float s = summitR + 2f; s < 2000f; s += 3f) { if (!region.ContainsDisc(summit + bestDir * s, hw * 0.6f + 6f)) break; runLen = s; }

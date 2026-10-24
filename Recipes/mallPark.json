@@ -2,8 +2,8 @@
   "formatVersion": 1,
   "id": "mallPark",
   "order": 2,
-  "nameKey": "Placemaker.Recipe.MallPark",
-  "descriptionKey": "Placemaker.Recipe.MallPark.Description",
+  "nameKey": "Citymaker.Recipe.MallPark",
+  "descriptionKey": "Citymaker.Recipe.MallPark.Description",
   "icon": "Media/Game/Icons/ParksAndRecreation.svg",
   "root": {
     "layer": "mallPark",

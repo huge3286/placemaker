@@ -7,10 +7,10 @@
 // Presets: market · farmers · cafe · boulevard · shared.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Commercial
+namespace Citymaker.Core.Layers.Commercial
 {
     [AreaGenerator(21, Group = Group)]
     public sealed class HighStreetLayer : CommercialLayer

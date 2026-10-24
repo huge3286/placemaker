@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     public sealed class SuiteRunConfig
     {
@@ -17,7 +17,7 @@ namespace Placemaker.Game.Suite
         /// <summary>Absolute path of suite/schema.json (step and scenario keys); empty = no schema check in game.</summary>
         public string schemaFile = "";
         public string git = "";
-        /// <summary>First 8 hex digits of the SHA-256 of the Placemaker.dll the host deployed (the runner compares its own).</summary>
+        /// <summary>First 8 hex digits of the SHA-256 of the Citymaker.dll the host deployed (the runner compares its own).</summary>
         public string dllHash = "";
         public string expiresUtc = "";
         /// <summary>Simulation speed while growing (4 reaches the 8 steps/frame cap; 8 is no faster).</summary>
@@ -53,7 +53,7 @@ namespace Placemaker.Game.Suite
         public int nx, nz;
         /// <summary>Block spacing: "checker" (scenarios on every other block, so neighbours do not hide or shade a target) or "dense".</summary>
         public string spacing = "checker";
-        /// <summary>Keep the user's Placemaker settings (false = Placemaker's defaults are pinned for the run).</summary>
+        /// <summary>Keep the user's Citymaker settings (false = Citymaker's defaults are pinned for the run).</summary>
         public bool userModSettings;
         /// <summary>Readability look: "suite" (noon, fixed exposure, no weather or wind, no icons) or "game" (as the map has it).</summary>
         public string look = "suite";
@@ -67,7 +67,7 @@ namespace Placemaker.Game.Suite
         public string pace = "human";
         /// <summary>Shot settle gate timeout (s); a shot that does not settle by then is taken anyway and marked.</summary>
         public float settleTimeout = 10f;
-        /// <summary>Profile the game runs with: "clean" (only Placemaker) or "full" (the user's playset).</summary>
+        /// <summary>Profile the game runs with: "clean" (only Citymaker) or "full" (the user's playset).</summary>
         public string profile = "clean";
     }
 
@@ -125,7 +125,7 @@ namespace Placemaker.Game.Suite
         public string set = "";
         public string description = "";
         public List<ScenarioSpec> scenarios = new List<ScenarioSpec>();
-        /// <summary>Pin Placemaker options for the run (property name = value), applied through the settings object.</summary>
+        /// <summary>Pin Citymaker options for the run (property name = value), applied through the settings object.</summary>
         public Dictionary<string, object> settings;
     }
 
@@ -149,9 +149,9 @@ namespace Placemaker.Game.Suite
         public string Pace;
         public string BuildWhen;
         public string PreviewMode;
-        public Placemaker.Core.Suite.SuiteBlock Block;
+        public Citymaker.Core.Suite.SuiteBlock Block;
         /// <summary>Its own test land (from "land"), laid out at launch; null = a grid block.</summary>
-        public Placemaker.Core.Suite.SuitePlot Plot;
+        public Citymaker.Core.Suite.SuitePlot Plot;
         public string LandError;
         /// <summary>What the block assignment did: requested kind, the kind it got, and why.</summary>
         public string SiteNote;

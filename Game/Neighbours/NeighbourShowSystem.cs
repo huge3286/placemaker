@@ -1,4 +1,4 @@
-// Placemaker neighbourhood polish — the fence and hedge pieces the game hides, shown again before they are ever drawn
+// Citymaker neighbourhood polish — the fence and hedge pieces the game hides, shown again before they are ever drawn
 // hidden (GPL-3.0).
 //
 // Game.Objects.OverrideSystem (Modification5) hides any overridable object touching another one or a neighbour's lot, and
@@ -11,7 +11,7 @@ using Game;
 using Unity.Entities;
 using UnityEngine.Scripting;
 
-namespace Placemaker.Game.Neighbours
+namespace Citymaker.Game.Neighbours
 {
     public sealed partial class NeighbourShowSystem : GameSystemBase
     {
@@ -29,7 +29,7 @@ namespace Placemaker.Game.Neighbours
         protected override void OnUpdate()
         {
             try { _polish.ShowHiddenPieces(); }
-            catch (Exception e) { if (_errors++ < 5) Mod.Log.Error(e, "Placemaker neighbourhood polish (hidden pieces) failed"); }
+            catch (Exception e) { if (_errors++ < 5) Mod.Log.Error(e, "Citymaker neighbourhood polish (hidden pieces) failed"); }
         }
     }
 }

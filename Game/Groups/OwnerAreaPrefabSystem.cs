@@ -1,6 +1,6 @@
-// Placemaker — the runtime lot prefabs of a build (GPL-3.0):
-//  * "Placemaker Area": the ONE selectable thing of a build (owner lot).
-//  * "Placemaker Zone Block" (s19): invisible PHYSICAL lots over the build outside its zoning cutouts, so the
+// Citymaker — the runtime lot prefabs of a build (GPL-3.0):
+//  * "Citymaker Area": the ONE selectable thing of a build (owner lot).
+//  * "Citymaker Zone Block" (s19): invisible PHYSICAL lots over the build outside its zoning cutouts, so the
 //    roads' zone cells under a park/plaza are blocked and zoned buildings cannot grow there.
 //
 // Owner lot model and settings ported from ParkingLotTool's ParkingLotLotArea (KruemelGames, GPL-3.0),
@@ -39,12 +39,12 @@ using Unity.Entities;
 using UnityEngine;
 using UnityEngine.Scripting;
 
-namespace Placemaker.Game.Groups
+namespace Citymaker.Game.Groups
 {
     public sealed partial class OwnerAreaPrefabSystem : GameSystemBase
     {
-        public const string PrefabName = "Placemaker Area";
-        public const string BlockerPrefabName = "Placemaker Zone Block";
+        public const string PrefabName = "Citymaker Area";
+        public const string BlockerPrefabName = "Citymaker Zone Block";
         private const int ReadyDelayFrames = 3;
 
         /// <summary>Setting: build an owner lot so the result is one selectable/bulldozable thing.</summary>
@@ -75,7 +75,7 @@ namespace Placemaker.Game.Groups
                 try { _prefab = Register(PrefabName, true, new Color(1f, 1f, 1f, 0.12f), new Color(1f, 1f, 1f, 0.6f), out _registeredFrame); }
                 catch (Exception e)
                 {
-                    Mod.Log.Error(e, "Placemaker could not register the owner lot prefab; builds stay selectable per part");
+                    Mod.Log.Error(e, "Citymaker could not register the owner lot prefab; builds stay selectable per part");
                 }
                 if (_prefab == Entity.Null) _failed = true;
             }
@@ -84,7 +84,7 @@ namespace Placemaker.Game.Groups
                 try { _blocker = Register(BlockerPrefabName, false, new Color(0f, 0f, 0f, 0f), new Color(0f, 0f, 0f, 0f), out _blockerFrame); }
                 catch (Exception e)
                 {
-                    Mod.Log.Error(e, "Placemaker could not register the zone block prefab; builds will not block zone cells");
+                    Mod.Log.Error(e, "Citymaker could not register the zone block prefab; builds will not block zone cells");
                 }
                 if (_blocker == Entity.Null) _blockerFailed = true;
             }
@@ -117,7 +117,7 @@ namespace Placemaker.Game.Groups
                     geometry.m_Flags &= ~global::Game.Areas.GeometryFlags.CanOverrideObjects;
                     EntityManager.SetComponentData(prefab, geometry);
                 }
-                Mod.Log.Info($"Placemaker lot '{name}' is ready (flags {geometry.m_Flags}).");
+                Mod.Log.Info($"Citymaker lot '{name}' is ready (flags {geometry.m_Flags}).");
             }
             return prefab;
         }
@@ -140,14 +140,14 @@ namespace Placemaker.Game.Groups
             lot.m_SelectionColor = selection;
             lot.m_SelectionEdgeColor = selectionEdge;
             lot.m_RangeColor = new Color(0f, 0f, 0f, 0f);
-            if (!Placemaker.Game.Assets.AssetCatalogSystem.AddOwnPrefab(_prefabs, lot))
+            if (!Citymaker.Game.Assets.AssetCatalogSystem.AddOwnPrefab(_prefabs, lot))
             {
                 UnityEngine.Object.Destroy(lot);
-                Mod.Log.Warn($"Placemaker could not add the lot prefab '{name}'.");
+                Mod.Log.Warn($"Citymaker could not add the lot prefab '{name}'.");
                 return Entity.Null;
             }
             var e = _prefabs.GetEntity(lot);
-            Mod.Log.Info($"Placemaker registered the lot prefab '{name}' (usable from the next frames).");
+            Mod.Log.Info($"Citymaker registered the lot prefab '{name}' (usable from the next frames).");
             return e;
         }
     }

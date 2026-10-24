@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "landfill",
-  "nameKey": "Placemaker.Recipe.Landfill",
-  "descriptionKey": "Placemaker.Recipe.Landfill.Description",
+  "nameKey": "Citymaker.Recipe.Landfill",
+  "descriptionKey": "Citymaker.Recipe.Landfill.Description",
   "icon": "Media/Game/Icons/Garbage.svg",
   "root": {
     "layer": "landfill",

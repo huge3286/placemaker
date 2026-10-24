@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Runs the Placemaker game runner: one game launch, a new game on Plains reshaped into a test grid, the steps of every
+  Runs the Citymaker game runner: one game launch, a new game on Plains reshaped into a test grid, the steps of every
   scenario done like a person, settled pictures in order, the game's logs collected. It judges nothing: read the logs.
 
 .DESCRIPTION
@@ -11,17 +11,17 @@
   powershell -File tools/suite/Run-Suite.ps1 -RestoreOnly              # put the user's settings back after a cut-off run
 
   1. Takes the suite lock (.forensics/suite/lock); refuses while another Run-Suite holds it. If a Cities2.exe is running:
-     when it is a suite game this host left behind (its command line has -placemakerSuite), asks it to quit through its
+     when it is a suite game this host left behind (its command line has -citymakerSuite), asks it to quit through its
      inbox and waits; any other game is the user's and the run stops (exit 2) — it is never touched.
-  2. Builds and deploys this worktree's mod (Mods/Placemaker; it stays installed) and labels the run with the git hash
+  2. Builds and deploys this worktree's mod (Mods/Citymaker; it stays installed) and labels the run with the git hash
      and the SHA-256 of the deployed DLL (the game checks it loaded that DLL). A dirty tree's diff is saved in the run.
   3. Saves the user's settings (root *.coc, launcher-settings.json, continue_game.json, ModsSettings/, the top-level
-     files of ModsData/Placemaker), switches to the suite profile (window at the shot size, no vsync, muted, full detail
+     files of ModsData/Citymaker), switches to the suite profile (window at the shot size, no vsync, muted, full detail
      without LOD cross-fade, no clouds or cloud shadows), arms the run and starts Cities2.exe with only local mods.
   4. Watches the heartbeat; the mod quits through the game's own quit. Only the PID this script started is killed, and
      only when the clean quit did not happen in time or the heartbeat stopped.
   5. Collects the logs, classifies how the game ended (quit / closed-externally / crashed / killed), puts the user's
-     settings back, writes the status at the top of summary.md, and prints which Placemaker.dll stays installed.
+     settings back, writes the status at the top of summary.md, and prints which Citymaker.dll stays installed.
   Results: .forensics/suite/runs/<runId>/ (logs/, suite.log, summary.md, contact.html, shots/*.png, scenarios/*.json).
 #>
 param(
@@ -31,7 +31,7 @@ param(
     [switch]$NoBuild,
     [int]$TimeoutMin = 0,
     [int]$MaxScenarios = 0,
-    # Only Placemaker loads (-disableModding -disableCodeModding-). -AllMods loads the user's whole playset (slow boot).
+    # Only Citymaker loads (-disableModding -disableCodeModding-). -AllMods loads the user's whole playset (slow boot).
     [switch]$AllMods,
     [switch]$KeepGraphics,
     [switch]$NoTerrain,
@@ -41,7 +41,7 @@ param(
     [switch]$Queue,
     # Grid size in blocks, e.g. '14x9' (default: sized for the set).
     [string]$Grid = '',
-    # Keep the user's Placemaker options (default: Placemaker's defaults are pinned for the run, and recorded).
+    # Keep the user's Citymaker options (default: Citymaker's defaults are pinned for the run, and recorded).
     [switch]$UserModSettings,
     # suite = readable deterministic look (noon, fixed exposure, no weather/wind/icons); game = the map's own.
     [ValidateSet('suite', 'game')][string]$Look = 'suite',
@@ -62,7 +62,7 @@ param(
     [string]$DeployFrom = '',
     # The queue's game host runs from the dispatcher's own checked copy of this script (and of ModsInstall.ps1): only the
     # game's inputs come from the request's frozen build (a bundle's host\: suite\schema.json, suite\scenarios\). The code
-    # that saves, switches and restores the user's settings and Mods\Placemaker is never a requester's copy.
+    # that saves, switches and restores the user's settings and Mods\Citymaker is never a requester's copy.
     [string]$HostData = ''
 )
 
@@ -79,14 +79,14 @@ if (-not $Direct -and -not $RestoreOnly) {
             Playground = $Playground; ResultsRoot = $ResultsRoot; Who = $Who })
 }
 if ($HostData) { $repo = (Resolve-Path -LiteralPath $HostData).Path }   # the game's inputs from the frozen build
-# Mods\Placemaker's install state machine and the Paradox launcher check: this script's own copy (the dispatcher's, for
+# Mods\Citymaker's install state machine and the Paradox launcher check: this script's own copy (the dispatcher's, for
 # the queue's game host)
 . (Join-Path $PSScriptRoot 'ModsInstall.ps1')
 $gameDir ='C:\Program Files (x86)\Steam\steamapps\common\Cities Skylines II'
 $exe = Join-Path $gameDir 'Cities2.exe'
 $ud = Join-Path $env:USERPROFILE 'AppData\LocalLow\Colossal Order\Cities Skylines II'
-$suiteData = Join-Path $ud 'ModsData\Placemaker\suite'
-$modsData = Join-Path $ud 'ModsData\Placemaker'
+$suiteData = Join-Path $ud 'ModsData\Citymaker\suite'
+$modsData = Join-Path $ud 'ModsData\Citymaker'
 $forensics = Split-Path $ResultsRoot
 $saved = Join-Path $forensics 'user-settings'
 $lockFile = Join-Path $forensics 'lock'
@@ -113,7 +113,7 @@ function Get-OtherGames {
     return $r
 }
 
-# The user's settings and Placemaker data: saved before the run, put back after it (or at the start of the next run).
+# The user's settings and Citymaker data: saved before the run, put back after it (or at the start of the next run).
 function Get-SettingsFiles {
     $r = @(Get-ChildItem -Path $ud -File | Where-Object { $_.Extension -eq '.coc' -or $_.Name -in @('launcher-settings.json', 'continue_game.json') })
     $ms = Join-Path $ud 'ModsSettings'
@@ -131,11 +131,11 @@ function Disarm {
     $ro = Join-Path $ud 'runOnce.txt'; if (Test-Path -LiteralPath $ro) { Remove-Item -LiteralPath $ro -Force -ErrorAction SilentlyContinue }
     foreach ($f in @('run.json', 'run.active.json')) { $p = Join-Path $suiteData $f; if (Test-Path -LiteralPath $p) { Remove-Item -LiteralPath $p -Force -ErrorAction SilentlyContinue } }
 }
-# Files the suite run itself changes (the suite profile, Placemaker's pinned options and data): the saved copy always
+# Files the suite run itself changes (the suite profile, Citymaker's pinned options and data): the saved copy always
 # comes back, even when a game the user started later saved them again (that game ran on the suite profile).
 function Test-SuiteWritten([string]$rel) {
     $r = $rel.ToLowerInvariant()
-    return ($r -in @('settings.coc', 'launcher-settings.json', 'continue_game.json')) -or $r.StartsWith('modssettings\placemaker') -or $r.StartsWith('modsdata\placemaker\')
+    return ($r -in @('settings.coc', 'launcher-settings.json', 'continue_game.json')) -or $r.StartsWith('modssettings\citymaker') -or $r.StartsWith('modsdata\citymaker\')
 }
 # When the run's game was last there: ended.txt (written by the host the moment its game is gone), else the run's last
 # heartbeat (a host that was cut off) plus a margin for the game's own exit; $null when not known.
@@ -191,7 +191,7 @@ function Restore-Settings([string]$why, [switch]$RunEnded) {
     Remove-Item -LiteralPath $pending -Force
     Remove-Item -LiteralPath $endFile -Force -ErrorAction SilentlyContinue
     if ($keepNew) { Remove-Item -LiteralPath $foreignMark -Force -ErrorAction SilentlyContinue }
-    Say "user settings and Placemaker data put back ($n files, $why)"
+    Say "user settings and Citymaker data put back ($n files, $why)"
 }
 
 $script:lockStream = $null
@@ -206,18 +206,18 @@ function Test-LockHolder($l) {
     if ($l.procStart) { return [math]::Abs($st.ToUniversalTime().Ticks - [int64]$l.procStart) -lt 20000000 }
     try { return $st -le ([datetime]$l.start).AddSeconds(5) } catch { return $true }
 }
-# The queue's host: the user's build back in Mods\Placemaker once our game is gone (ModsInstall.ps1). A playground's
+# The queue's host: the user's build back in Mods\Citymaker once our game is gone (ModsInstall.ps1). A playground's
 # build stays once the playground has opened (MI-AdoptInstalled then: the user played it); one that never opened goes.
 $script:queueInstall = $false
 $script:playAdopted = $false
 function Restore-UserBuild([string]$why) {
     if (-not $script:queueInstall -or $script:playAdopted) { return }
     $r = MI-Reconcile $why
-    if ($r.ok) { $script:queueInstall = $false; Say "the user's build is back in Mods\Placemaker$(if ($r.message) { ": $($r.message)" })" }
+    if ($r.ok) { $script:queueInstall = $false; Say "the user's build is back in Mods\Citymaker$(if ($r.message) { ": $($r.message)" })" }
     else { Say "the user's build is not back yet: $($r.message) (the game queue's dispatcher puts it back once no game runs)" }
 }
 
-if ($Playground) { $UserModSettings = $true }   # the user plays with their own Placemaker options
+if ($Playground) { $UserModSettings = $true }   # the user plays with their own Citymaker options
 
 # ───────────── 1. lock and preflight ─────────────
 # The suite lock is held open for the whole run: nobody else can open it for writing while this process lives, and the
@@ -255,7 +255,7 @@ $running = @(Get-Process -Name 'Cities2' -ErrorAction SilentlyContinue)
 foreach ($p in $running) {
     $cmd = ''
     try { $cmd = (Get-CimInstance Win32_Process -Filter "ProcessId=$($p.Id)").CommandLine } catch { }
-    if ($cmd -match '-placemakerSuite=(\S+)') {
+    if ($cmd -match '-citymakerSuite=(\S+)') {
         $orphanRun = $Matches[1]
         Say "a suite game this host left behind is running (PID $($p.Id), run $orphanRun): asking it to quit through its inbox"
         $inbox = Join-Path (Join-Path $ResultsRoot $orphanRun) 'inbox'
@@ -283,8 +283,8 @@ try {
     }
     if (-not $NoBuild) {
         Say "building and deploying $git ..."
-        $env:PLACEMAKER_SUITE_LOCK_PID = "$PID"   # Deploy-Mod.ps1: this run holds the suite lock itself
-        $out = & dotnet build Placemaker.csproj -c Release 2>&1
+        $env:CITYMAKER_SUITE_LOCK_PID = "$PID"   # Deploy-Mod.ps1: this run holds the suite lock itself
+        $out = & dotnet build citymaker.csproj -c Release 2>&1
         if ($LASTEXITCODE -ne 0) { $out | Select-Object -Last 30 | ForEach-Object { Say $_ }; Say 'STOP: build failed'; exit 3 }
         Say 'build + deploy ok'
     }
@@ -295,13 +295,13 @@ if ($DeployFrom) {
     $ir = MI-Install $DeployFrom $Label "run $RunId"
     if (-not $ir.ok) { Say "STOP: could not install the build: $($ir.message)"; exit 5 }
     $script:queueInstall = $true
-    Say "installed the queue's build $Label into Mods\Placemaker$(if (-not $Playground) { ' (the user''s build goes back when the game has exited)' } else { ' (it stays installed once the playground is open: the user plays it)' })"
+    Say "installed the queue's build $Label into Mods\Citymaker$(if (-not $Playground) { ' (the user''s build goes back when the game has exited)' } else { ' (it stays installed once the playground is open: the user plays it)' })"
 }
-$dll = Join-Path $ud 'Mods\Placemaker\Placemaker.dll'
+$dll = Join-Path $ud 'Mods\Citymaker\Citymaker.dll'
 $dllInfo = Get-Item $dll
 $dllHash = (Get-FileHash $dll -Algorithm SHA256).Hash.Substring(0, 8).ToLowerInvariant()
 $label = "$git+$dllHash"
-Say ("installed Placemaker.dll {0} bytes, {1:yyyy-MM-dd HH:mm:ss}, sha256 {2}" -f $dllInfo.Length, $dllInfo.LastWriteTime, $dllHash)
+Say ("installed Citymaker.dll {0} bytes, {1:yyyy-MM-dd HH:mm:ss}, sha256 {2}" -f $dllInfo.Length, $dllInfo.LastWriteTime, $dllHash)
 
 # ───────────── 3. save the user's settings, suite profile ─────────────
 # again now (the build install took a moment): the user may have started their game meanwhile
@@ -387,9 +387,9 @@ Write-NoBom (Join-Path $suiteData 'run.json') ($cfg | ConvertTo-Json -Depth 3)
 Say ("run.json: " + (($cfg.GetEnumerator() | Where-Object { $_.Key -notin @('outDir', 'scenarioFile', 'schemaFile', 'expiresUtc') } | ForEach-Object { "$($_.Key)=$($_.Value)" }) -join ' '))
 $modFlags = if ($AllMods) { '' } else { '-disableModding -disableCodeModding- ' }
 $windowFlags = "-screen-fullscreen 0 -screen-width $w -screen-height $h"
-$gameArgs = "$modFlags-noSplash $windowFlags -placemakerSuite=$RunId"
+$gameArgs = "$modFlags-noSplash $windowFlags -citymakerSuite=$RunId"
 if ($DevMode) { $gameArgs += ' -developerMode' }
-Set-Content -Path (Join-Path $ud 'runOnce.txt') -Value "-placemakerSuite=$RunId" -Encoding ASCII -NoNewline
+Set-Content -Path (Join-Path $ud 'runOnce.txt') -Value "-citymakerSuite=$RunId" -Encoding ASCII -NoNewline
 
 # ───────────── launch ─────────────
 $launchedAt = Get-Date
@@ -514,7 +514,7 @@ $body = if (Test-Path -LiteralPath $md) { Get-Content -LiteralPath $md -Raw -Enc
 Write-NoBom $md (($top -join "`r`n") + "`r`n" + $body)
 Say "done: $status in $([math]::Round($total)) s -> $runDir"
 if ($DeployFrom) { Say "installed now: $(MI-StatusLine)" }
-else { Say "installed now: Mods/Placemaker/Placemaker.dll $label ($([math]::Round($dllInfo.Length / 1KB)) KB) - the user's normal game loads this build" }
+else { Say "installed now: Mods/Citymaker/Citymaker.dll $label ($([math]::Round($dllInfo.Length / 1KB)) KB) - the user's normal game loads this build" }
 # a queue session's pictures are published per request (each has its own contact sheet): no session-wide image
 if (-not $Queue) { try { & (Join-Path $PSScriptRoot 'Contact-Suite.ps1') -RunId $RunId -ResultsRoot $ResultsRoot } catch { Say "contact sheet image failed: $($_.Exception.Message)" } }
 if ($status -ne 'quit') { exit 1 }

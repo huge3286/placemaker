@@ -13,7 +13,7 @@ import { Btn, Icon } from "./common";
 import { useAssetName } from "./picker";
 import s from "./legend.module.scss";
 
-const OPEN_KEY = "placemaker.legendOpen.v1";
+const OPEN_KEY = "citymaker.legendOpen.v1";
 
 function loadOpen(): boolean {
     try {
@@ -74,7 +74,7 @@ const Row = ({ e, state, t, hover, setHover, side }: { e: LegendEntry; state: To
     return (
         <Tip
             title={name + (road ? " · " + road : "")}
-            description={visible ? t("Placemaker.UI.Legend.RowTip", "Hover: show only this on the map. Click: hide it.") : t("Placemaker.UI.Legend.RowTipHidden", "Hidden on the map. Click to show it.")}
+            description={visible ? t("Citymaker.UI.Legend.RowTip", "Hover: show only this on the map. Click: hide it.") : t("Citymaker.UI.Legend.RowTipHidden", "Hidden on the map. Click to show it.")}
             direction={side}
         >
             <div
@@ -155,14 +155,14 @@ export const Legend = ({ state, summary, side }: { state: ToolState; summary: Su
                 }}
             >
                 <Icon name="layers" size={13} />
-                <div className={s.title}>{t("Placemaker.UI.Legend.Window", "On the map")}</div>
+                <div className={s.title}>{t("Citymaker.UI.Legend.Window", "On the map")}</div>
                 <div className={s.flex} />
                 {open && changed ? (
                     <Btn
                         icon="reset"
                         iconSize={12}
-                        label={t("Placemaker.UI.Legend.All", "All")}
-                        title={t("Placemaker.UI.Legend.AllTip", "Show every layer as it was")}
+                        label={t("Citymaker.UI.Legend.All", "All")}
+                        title={t("Citymaker.UI.Legend.AllTip", "Show every layer as it was")}
                         onClick={() => act.resetLegend()}
                         className={s.reset}
                         testId="legend-reset"
@@ -174,7 +174,7 @@ export const Legend = ({ state, summary, side }: { state: ToolState; summary: Su
                 <div className={s.rows} data-testid="legend-rows">
                     {entries.map((e) => (
                         <React.Fragment key={e.id}>
-                            {e.id === firstRoad ? <div className={s.group}>{t("Placemaker.UI.Legend.Roads", "Roads")}</div> : null}
+                            {e.id === firstRoad ? <div className={s.group}>{t("Citymaker.UI.Legend.Roads", "Roads")}</div> : null}
                             <Row e={e} state={state} t={t} hover={hover} setHover={setHover} side={side} />
                         </React.Fragment>
                     ))}

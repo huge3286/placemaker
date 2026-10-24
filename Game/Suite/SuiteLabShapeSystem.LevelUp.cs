@@ -9,7 +9,7 @@ using Game.Prefabs;
 using Game.Simulation;
 using Unity.Entities;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     public sealed partial class SuiteLabShapeSystem
     {

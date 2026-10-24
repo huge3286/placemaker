@@ -13,10 +13,10 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Common
+namespace Citymaker.Core.Layers.Common
 {
     public enum PlaceShape { Circle = 0, Square = 1, Rectangle = 2 }
     public enum PlaceAnchor { Centre = 0, Corner = 1, Edge = 2, Entrance = 3 }
@@ -66,8 +66,8 @@ namespace Placemaker.Core.Layers.Common
 
     public static class PlaceSolver
     {
-        public const string ReasonInvalid = "Placemaker.Place.Issue.InvalidParent";
-        public const string ReasonNoRoom = "Placemaker.Place.Issue.NoRoom";
+        public const string ReasonInvalid = "Citymaker.Place.Issue.InvalidParent";
+        public const string ReasonNoRoom = "Citymaker.Place.Issue.NoRoom";
         private const int MaxCandidates = 6000;
         private const int CircleSides = 32;
 

@@ -1,4 +1,4 @@
-// Placemaker neighbourhood polish — look areas (GPL-3.0).
+// Citymaker neighbourhood polish — look areas (GPL-3.0).
 //
 // A Zoning type built with "Zone this area" zones the empty cells and leaves a look area behind (saved with the city: a
 // headless entity with PolishLookArea, its outline and its changes). A building that grows inside one later is polished
@@ -8,13 +8,13 @@
 using System.Collections.Generic;
 using Game.Common;
 using Game.Prefabs;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Neighbours;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Neighbours;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Neighbours
+namespace Citymaker.Game.Neighbours
 {
     public sealed partial class NeighbourPolishSystem
     {
@@ -101,7 +101,7 @@ namespace Placemaker.Game.Neighbours
                 foreach (var p in ring) buf.Add(new PolishLookAreaPoint { Position = p });
                 var ch = EntityManager.AddBuffer<PolishLookOverride>(area);
                 if (changes != null) foreach (var kv in changes) ch.Add(new PolishLookOverride { Knob = PolishLooks.Hash(kv.Key), Value = kv.Value });
-                Mod.Log.Info($"Placemaker neighbourhood polish: look area {order} ({look}, {(string.IsNullOrEmpty(zone) ? "any zone" : zone)}, {changes?.Count ?? 0} changes, {Poly.Area(ring):F0} m²): buildings that grow in it get its look{(gone > 0 ? $"; {gone} older areas inside it gone" : "")}");
+                Mod.Log.Info($"Citymaker neighbourhood polish: look area {order} ({look}, {(string.IsNullOrEmpty(zone) ? "any zone" : zone)}, {changes?.Count ?? 0} changes, {Poly.Area(ring):F0} m²): buildings that grow in it get its look{(gone > 0 ? $"; {gone} older areas inside it gone" : "")}");
             }
             s_newAreas.Clear();
             _areaCache = null;

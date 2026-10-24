@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "polishNatural",
-  "nameKey": "Placemaker.UI.Painter.Theme.natural",
-  "descriptionKey": "Placemaker.UI.Painter.ThemeTip.natural",
+  "nameKey": "Citymaker.UI.Painter.Theme.natural",
+  "descriptionKey": "Citymaker.UI.Painter.ThemeTip.natural",
   "icon": "Media/Game/Icons/Zones.svg",
   "root": {
     "layer": "polishNatural",

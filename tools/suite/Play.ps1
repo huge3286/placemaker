@@ -1,6 +1,6 @@
-# Playground for the user: launches CS2 with only Placemaker, in a window, builds the flat test grid,
+# Playground for the user: launches CS2 with only Citymaker, in a window, builds the flat test grid,
 # points the camera at it at 45 degrees and hands over the controls. Nothing runs, nothing quits.
-# The user's own Placemaker options are kept; their game settings are put back when they close the game.
+# The user's own Citymaker options are kept; their game settings are put back when they close the game.
 # Through the game queue it goes next after the request in the game now; the queue then waits until the game is closed.
 #   powershell -File tools/suite/Play.ps1                 # default grid
 #   powershell -File tools/suite/Play.ps1 -Grid 12x8      # a bigger grid
@@ -25,7 +25,7 @@ $ud = Join-Path $env:USERPROFILE 'AppData\LocalLow\Colossal Order\Cities Skyline
 $added = @()
 $Mods = @($Mods | ForEach-Object { $_ -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ })
 if ($Mods.Count) {
-    if (-not $Direct) { Write-Host 'STOP: -Mods needs -Direct (the queue launches only Placemaker)'; exit 2 }
+    if (-not $Direct) { Write-Host 'STOP: -Mods needs -Direct (the queue launches only Citymaker)'; exit 2 }
     $cache = Join-Path $ud '.cache\Mods\pdx_mods'
     foreach ($m in $Mods) {
         $src = Get-ChildItem -LiteralPath $cache -Directory -ErrorAction SilentlyContinue |

@@ -5,10 +5,10 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns
+namespace Citymaker.Core.Layers.AddOns
 {
     [AreaGenerator(161)]
     public sealed class VolleyballAddOn : AmenityAddOn
@@ -40,7 +40,7 @@ namespace Placemaker.Core.Layers.AddOns
             // Court 16 × 8 m when it fits (it does in the park's place), else the largest that does.
             float cl = math.min(16f, site.HalfLength * 2f - 4f), cw = math.min(8f, site.HalfWidth * 2f - 4f);
             if (cl < 8f || cw < 4f) { NoSpace(ctx, NameKey); return; }
-            if (cl < 16f) ctx.Issue(IssueSeverity.Info, "Placemaker.AddOn.Volleyball.Issue.Smaller");
+            if (cl < 16f) ctx.Issue(IssueSeverity.Info, "Citymaker.AddOn.Volleyball.Issue.Smaller");
             var court = new OrientedRect { Center = site.Center, Axis = site.Axis, HalfLength = cl * 0.5f, HalfWidth = cw * 0.5f };
             if (ctx.B("sand"))
                 Pad(ctx, LayerRegion.Rect(site.Center, site.Axis, math.min(site.HalfLength - 1f, court.HalfLength + 3f), math.min(site.HalfWidth - 1f, court.HalfWidth + 3f)),
@@ -63,7 +63,7 @@ namespace Placemaker.Core.Layers.AddOns
                         Put(ctx, occ, p, LeisureKit.Yaw(p, site.Center), ObjectRole.Lamp, AssetMix.One(ctx.S("lightAsset")), lightCat, 0.5f, Hashing.Mix(ctx.Seed, 0x1170u + (uint)(k + 1)));
                     }
             }
-            ctx.Stat("Placemaker.Stat.Courts", 1, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Courts", 1, Keys.UnitCount);
             ctx.Stat(Keys.StatBenches, benches, Keys.UnitCount);
             ctx.Plan.Facts["nets"] = nets;
         }
@@ -106,7 +106,7 @@ namespace Placemaker.Core.Layers.AddOns
         protected override void Build(LayerContext ctx, Occupancy occ, OrientedRect site, float2 toward)
         {
             bool full = ctx.S("court") == "full";
-            if (full && site.HalfLength * 2f < 30f) { full = false; ctx.Issue(IssueSeverity.Info, "Placemaker.AddOn.Basketball.Issue.Half"); }
+            if (full && site.HalfLength * 2f < 30f) { full = false; ctx.Issue(IssueSeverity.Info, "Citymaker.AddOn.Basketball.Issue.Half"); }
             float cl = math.min(full ? 28f : 15f, site.HalfLength * 2f - 2.5f), cw = math.min(full ? 15f : 14f, site.HalfWidth * 2f - 2.5f);
             if (cl < 9f || cw < 8f) { NoSpace(ctx, NameKey); return; }
             var court = new OrientedRect { Center = site.Center, Axis = site.Axis, HalfLength = cl * 0.5f, HalfWidth = cw * 0.5f };
@@ -144,7 +144,7 @@ namespace Placemaker.Core.Layers.AddOns
             int benches = 0;
             if (ctx.B("benches") && site.HalfWidth - court.HalfWidth > 1.6f)
                 benches = BenchRow(ctx, occ, site, SideSign(site, toward), court.HalfWidth + 1.2f, court.HalfLength, 2, ctx.Seed);
-            ctx.Stat("Placemaker.Stat.Courts", 1, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Courts", 1, Keys.UnitCount);
             ctx.Stat(Keys.StatBenches, benches, Keys.UnitCount);
             ctx.Plan.Facts["hoops"] = hoops;
         }
@@ -184,7 +184,7 @@ namespace Placemaker.Core.Layers.AddOns
             float usable = site.HalfLength * 2f - (benches ? 3f : 1f);
             int n = math.min(ctx.I("tables"), math.max(0, (int)math.floor(usable / pitch)));
             if (n == 0 || site.HalfWidth * 2f < 7.5f) { NoSpace(ctx, NameKey); return; }
-            if (n < ctx.I("tables")) ctx.Issue(IssueSeverity.Info, "Placemaker.AddOn.TableTennis.Issue.Fewer", n, ctx.I("tables"));
+            if (n < ctx.I("tables")) ctx.Issue(IssueSeverity.Info, "Citymaker.AddOn.TableTennis.Issue.Fewer", n, ctx.I("tables"));
             if (ctx.B("paving"))
                 Pad(ctx, LayerRegion.Rect(site.Center, site.Axis, math.min(site.HalfLength - 0.5f, n * pitch * 0.5f + 0.8f), site.HalfWidth - 0.5f),
                     SurfaceRole.Paving, ctx.S("pavingAsset"), AssetCategories.SurfacePaving);
@@ -212,7 +212,7 @@ namespace Placemaker.Core.Layers.AddOns
                 var p = site.Local(EndSign(site, toward) * (site.HalfLength - 2.6f), side * (site.HalfWidth - 2.6f));
                 Put(ctx, occ, p, Hashing.Unit(ctx.Seed) * 6.283f, ObjectRole.Tree, new AssetRef(""), null, 2.4f, Hashing.Mix(ctx.Seed, 0x7EEu));
             }
-            ctx.Stat("Placemaker.Stat.GameTables", placed, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.GameTables", placed, Keys.UnitCount);
             ctx.Stat(Keys.StatBenches, seats, Keys.UnitCount);
         }
     }
@@ -317,8 +317,8 @@ namespace Placemaker.Core.Layers.AddOns
                 if (layout == "row") p = site.Local(0f, -SideSign(site, toward) * (site.HalfWidth - 1.3f));
                 if (Put(ctx, occ, p, LeisureKit.Yaw(p, site.Center), ObjectRole.Bench, AssetMix.One(ctx.S("benchAsset")), null, 1.2f, Hashing.Mix(ctx.Seed, 0xBE5u))) benches++;
             }
-            if (placed < wanted) ctx.Issue(IssueSeverity.Info, "Placemaker.AddOn.Fitness.Issue.Fewer", placed, wanted);
-            ctx.Stat("Placemaker.Stat.FitnessStations", placed, Keys.UnitCount);
+            if (placed < wanted) ctx.Issue(IssueSeverity.Info, "Citymaker.AddOn.Fitness.Issue.Fewer", placed, wanted);
+            ctx.Stat("Citymaker.Stat.FitnessStations", placed, Keys.UnitCount);
             ctx.Stat(Keys.StatBenches, benches, Keys.UnitCount);
         }
     }

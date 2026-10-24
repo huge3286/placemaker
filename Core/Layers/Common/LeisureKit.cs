@@ -6,10 +6,10 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Common
+namespace Citymaker.Core.Layers.Common
 {
     /// <summary>An oriented rectangle: centre, unit long axis, half extents.</summary>
     public struct OrientedRect

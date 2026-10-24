@@ -9,7 +9,7 @@ const UI = path.join(__dirname, "..", "..");
 
 async function noHorizontalOverflow(page: Page) {
     const res = await page.evaluate(() => {
-        const panel = document.querySelector('[data-testid="placemaker-panel"]') as HTMLElement;
+        const panel = document.querySelector('[data-testid="citymaker-panel"]') as HTMLElement;
         const r = panel.getBoundingClientRect();
         const bad: string[] = [];
         panel.querySelectorAll("*").forEach((el) => {
@@ -107,10 +107,10 @@ test("launcher toggles the tool; info-panel section: no Edit (it left an edit op
     await open(page);
     await expect(page.getByTestId("launcher")).toHaveAttribute("data-open", "true");
     await page.getByTestId("launcher").locator("button").click();
-    await expect(page.getByTestId("placemaker-panel")).toHaveCount(0);
+    await expect(page.getByTestId("citymaker-panel")).toHaveCount(0);
     await expect(page.getByTestId("launcher")).toHaveAttribute("data-open", "false");
     await page.getByTestId("launcher").locator("button").click();
-    await expect(page.getByTestId("placemaker-panel")).toBeVisible();
+    await expect(page.getByTestId("citymaker-panel")).toBeVisible();
 
     await drawPolygon(page, FIELD);
     await page.getByTestId("primary").click();
@@ -122,8 +122,8 @@ test("launcher toggles the tool; info-panel section: no Edit (it left an edit op
     await clickWorld(page, 650, 380);
     await expect(page.getByTestId("info-section")).toBeVisible();
     await shot(page, "13-info-section");
-    // Edit lives in Placemaker's own Manage stage only: from the game's info panel it loaded the build without opening
-    // Placemaker, and the next build replaced it (the user, 22 Oct)
+    // Edit lives in Citymaker's own Manage stage only: from the game's info panel it loaded the build without opening
+    // Citymaker, and the next build replaced it (the user, 22 Oct)
     await expect(page.getByTestId("info-edit")).toHaveCount(0);
     // Ungroup asks in the section itself, no dialog
     await page.getByTestId("info-ungroup").click();
@@ -137,13 +137,13 @@ test("launcher toggles the tool; info-panel section: no Edit (it left an edit op
 test("robustness: malformed or partial C# payloads never crash the panel", async ({ page }) => {
     const errors = await open(page);
     // publish garbage directly into the bindings, as a buggy or older C# side might
-    await page.evaluate(() => (window as any).pmPublish("Placemaker", "catalog", "{not json"));
-    await page.evaluate(() => (window as any).pmPublish("Placemaker", "design", JSON.stringify({ root: { layer: "nope", children: "x" } })));
-    await page.evaluate(() => (window as any).pmPublish("Placemaker", "summary", JSON.stringify({ ready: true, stats: null, issues: [{ severity: "error" }] })));
-    await page.evaluate(() => (window as any).pmPublish("Placemaker", "state", JSON.stringify({ open: true, stage: "review", primary: null })));
-    await expect(page.getByTestId("placemaker-panel")).toBeVisible();
+    await page.evaluate(() => (window as any).pmPublish("citymaker", "catalog", "{not json"));
+    await page.evaluate(() => (window as any).pmPublish("citymaker", "design", JSON.stringify({ root: { layer: "nope", children: "x" } })));
+    await page.evaluate(() => (window as any).pmPublish("citymaker", "summary", JSON.stringify({ ready: true, stats: null, issues: [{ severity: "error" }] })));
+    await page.evaluate(() => (window as any).pmPublish("citymaker", "state", JSON.stringify({ open: true, stage: "review", primary: null })));
+    await expect(page.getByTestId("citymaker-panel")).toBeVisible();
     await expect(page.locator("[data-pm-crash]")).toHaveCount(0);
-    await page.evaluate(() => (window as any).pmPublish("Placemaker", "state", JSON.stringify({ open: true, stage: "design" })));
-    await expect(page.getByTestId("placemaker-panel")).toBeVisible();
+    await page.evaluate(() => (window as any).pmPublish("citymaker", "state", JSON.stringify({ open: true, stage: "design" })));
+    await expect(page.getByTestId("citymaker-panel")).toBeVisible();
     expect(errors.filter((e) => !e.includes("bad JSON"))).toEqual([]);
 });

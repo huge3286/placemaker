@@ -1,14 +1,14 @@
-// Placemaker — marker kinds as the panel and the overlay see them: label/tooltip keys, icon and
+// Citymaker — marker kinds as the panel and the overlay see them: label/tooltip keys, icon and
 // overlay colour per kind, the kinds a step accepts and how many markers it needs before Build.
 //
 // Label keys: the generator's own option label when its Markers control lists options for the
-// kind (parking: "Placemaker.Parking.Marker.Entrance"), otherwise "Placemaker.<Layer>.Marker.<Kind>"
-// (layer and kind in PascalCase, e.g. "Placemaker.Plaza.Marker.Access").
+// kind (parking: "Citymaker.Parking.Marker.Entrance"), otherwise "Citymaker.<Layer>.Marker.<Kind>"
+// (layer and kind in PascalCase, e.g. "Citymaker.Plaza.Marker.Access").
 
 using System;
 using System.Collections.Generic;
 
-namespace Placemaker.Core.Tool
+namespace Citymaker.Core.Tool
 {
     public sealed class MarkerKindInfo
     {
@@ -94,7 +94,7 @@ namespace Placemaker.Core.Tool
                     var info = new MarkerKindInfo
                     {
                         Kind = kind,
-                        LabelKey = "Placemaker." + Pascal(gen.Id) + ".Marker." + Pascal(kind),
+                        LabelKey = "Citymaker." + Pascal(gen.Id) + ".Marker." + Pascal(kind),
                         Icon = IconFor(kind),
                         Crosswalk = MarkerVariants.Walks(kind, all),
                     };

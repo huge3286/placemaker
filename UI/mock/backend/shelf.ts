@@ -33,7 +33,7 @@ function find(typeId: string, group?: string): ShelfFile | undefined {
 
 export const SHELF_CATEGORIES: CategoryInfo[] = FILES.map((c) => ({
     id: c.id,
-    name: c.key || "Placemaker.UI.MakeGroup." + c.id.charAt(0).toUpperCase() + c.id.slice(1),
+    name: c.key || "Citymaker.UI.MakeGroup." + c.id.charAt(0).toUpperCase() + c.id.slice(1),
     en: c.name,
     order: c.order,
     hidden: c.hidden || undefined,

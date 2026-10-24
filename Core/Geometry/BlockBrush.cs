@@ -1,4 +1,4 @@
-// Placemaker — "Block paint": a brush fenced to one city block (fill-aware brush).
+// Citymaker — "Block paint": a brush fenced to one city block (fill-aware brush).
 //
 // The player asked for a paint bucket's boundary with a brush's freedom: paint only inside the block
 // under the cursor, never across a road, and keep clear of what is already there (zoned cells,
@@ -19,7 +19,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Geometry
+namespace Citymaker.Core.Geometry
 {
     public sealed class BlockBrushOutline
     {

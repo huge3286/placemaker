@@ -9,10 +9,10 @@
 // legs, so the path cannot cross itself.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.LookoutHill
+namespace Citymaker.Core.Layers.Types.LookoutHill
 {
     public struct ClimbSpec
     {

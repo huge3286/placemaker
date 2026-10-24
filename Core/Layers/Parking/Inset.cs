@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Parking
+namespace Citymaker.Core.Layers.Parking
 {
     /// <summary>
     /// Inward offset of a CCW ring that keeps edge i of the result parallel to edge i of the input

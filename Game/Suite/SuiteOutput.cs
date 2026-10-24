@@ -8,10 +8,10 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Placemaker.Core.Tool;
+using Citymaker.Core.Tool;
 using UnityEngine;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     public sealed partial class SuiteRunner
     {
@@ -303,16 +303,16 @@ namespace Placemaker.Game.Suite
             sb.AppendLine();
             sb.AppendLine("**" + Headline() + "**");
             sb.AppendLine();
-            sb.AppendLine("Read the logs: `logs/Placemaker.log` (what Placemaker did: plans, the build audit, left-out pieces, errors), `logs/Player.log` (the game's own errors), `suite.log` (what the runner did, step by step, with timings).");
+            sb.AppendLine("Read the logs: `logs/Citymaker.log` (what Citymaker did: plans, the build audit, left-out pieces, errors), `logs/Player.log` (the game's own errors), `suite.log` (what the runner did, step by step, with timings).");
             sb.AppendLine("Pictures in order: `contact.html`. Each scenario's steps: `scenarios/NN-<id>.json`.");
             sb.AppendLine();
             sb.AppendLine($"Build: git `{_cfg.git}`, assembly `{AssemblyVersion()}`, dll `{OwnDllHash()}`" + (_summary["wrongBuild"] != null ? $" — **WRONG BUILD: {_summary["wrongBuild"]}**" : "") + (_summary["gitMismatch"] != null ? $" — {_summary["gitMismatch"]}" : ""));
             var fid = _summary["fidelity"] as JObject ?? Fidelity();
             sb.AppendLine($"Profile **{fid["profile"]}**, {fid["codeMods"]} code mods, catalog {fid["catalogItems"]} items. {fid["caveat"]}");
             if (_summary["look"] is JObject look) sb.AppendLine("Look (readability mode, not the user's look): " + LookLine(look));
-            if (_summary["placemakerSettings"] is JObject ps) sb.AppendLine($"Placemaker settings: {ps["source"]}; differs from the user's: {(ps["differsFromUser"] as JObject)?.Count ?? 0} ({Trunc(ps["differsFromUser"]?.ToString(Formatting.None), 300)})");
+            if (_summary["citymakerSettings"] is JObject ps) sb.AppendLine($"Citymaker settings: {ps["source"]}; differs from the user's: {(ps["differsFromUser"] as JObject)?.Count ?? 0} ({Trunc(ps["differsFromUser"]?.ToString(Formatting.None), 300)})");
             sb.AppendLine($"Grid: {_summary["grid"]}");
-            lock (_errLock) sb.AppendLine($"Errors in the game log during the run: {_errors} Placemaker errors, {_exceptions} exceptions, {_otherErrors} others.");
+            lock (_errLock) sb.AppendLine($"Errors in the game log during the run: {_errors} Citymaker errors, {_exceptions} exceptions, {_otherErrors} others.");
             sb.AppendLine($"Timeline (s since process start): {_timeline.ToString(Formatting.None)}");
             if (_summary["fatal"] != null) sb.AppendLine($"\n**FATAL:** {_summary["fatal"]}");
             if (_summary["batchStopped"] != null) sb.AppendLine($"\n**BATCH STOPPED:** {_summary["batchStopped"]}");

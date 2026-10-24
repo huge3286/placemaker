@@ -1,4 +1,4 @@
-// Placemaker — turning automatic asset refs (empty Id) into concrete prefab names (GPL-3.0).
+// Citymaker — turning automatic asset refs (empty Id) into concrete prefab names (GPL-3.0).
 // US5 "honest price": preview, Pricing.Of and the build must use the SAME prefabs, so the choice is
 // made once, deterministically, before any of them run. Pure; the game catalog supplies the pools.
 //
@@ -10,7 +10,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     /// <summary>What the catalog offers the resolver. Every list is already filtered to automatic-eligible items.</summary>
     public sealed class AutoAssetSource

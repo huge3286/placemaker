@@ -1,4 +1,4 @@
-// Placemaker — the tool's workflow as a pure decision table.
+// Citymaker — the tool's workflow as a pure decision table.
 //
 // The game system feeds facts in, the machine answers "which stages may the player jump to",
 // "what does the main button (or Enter) do now and why is it disabled", and "what does Esc
@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 
-namespace Placemaker.Core.Tool
+namespace Citymaker.Core.Tool
 {
     public enum ToolStage { Area = 0, Design = 1, Review = 2, Building = 3, Manage = 4 }
 
@@ -138,24 +138,24 @@ namespace Placemaker.Core.Tool
         public static PrimaryAction Primary(ToolStage stage, StageFacts f)
         {
             if (f.BuildRunning || stage == ToolStage.Building)
-                return Make(PrimaryKind.CancelBuild, "Placemaker.Primary.CancelBuild", f.BuildRunning, f.BuildRunning ? null : "Placemaker.Reason.NothingToCancel");
+                return Make(PrimaryKind.CancelBuild, "Citymaker.Primary.CancelBuild", f.BuildRunning, f.BuildRunning ? null : "Citymaker.Reason.NothingToCancel");
 
             if (f.MarkerModeActive)
-                return Make(PrimaryKind.PlaceMarkers, "Placemaker.Primary.DoneMarkers", true, null);
+                return Make(PrimaryKind.PlaceMarkers, "Citymaker.Primary.DoneMarkers", true, null);
 
             // the polish tool: Area (Next) → Polish, its look and Polish (Unpolish is its second button). The lots in the area
             // are stamped, nothing is planned or built.
             if (f.Painter && stage != ToolStage.Manage)
             {
                 if (stage == ToolStage.Area || !f.AreaValid) return AreaPrimary(f);
-                if (f.AreaProblem == null) return Make(PrimaryKind.Polish, "Placemaker.Primary.Polish", true, null);
-                return new PrimaryAction { Kind = PrimaryKind.Polish, Label = new LocText("Placemaker.Primary.Polish"), Enabled = false, Reason = f.AreaProblem };
+                if (f.AreaProblem == null) return Make(PrimaryKind.Polish, "Citymaker.Primary.Polish", true, null);
+                return new PrimaryAction { Kind = PrimaryKind.Polish, Label = new LocText("Citymaker.Primary.Polish"), Enabled = false, Reason = f.AreaProblem };
             }
 
             switch (stage)
             {
                 case ToolStage.Manage:
-                    return Make(PrimaryKind.None, "Placemaker.Primary.PickBuilt", false, "Placemaker.Reason.PickBuilt");
+                    return Make(PrimaryKind.None, "Citymaker.Primary.PickBuilt", false, "Citymaker.Reason.PickBuilt");
 
                 case ToolStage.Area:
                     return AreaPrimary(f);
@@ -163,33 +163,33 @@ namespace Placemaker.Core.Tool
                 case ToolStage.Design:
                 {
                     if (!f.AreaValid) return AreaPrimary(f);
-                    if (!f.HasRecipe) return Make(PrimaryKind.None, "Placemaker.Primary.ChooseType", false, "Placemaker.Reason.NoRecipe");
-                    var markers = MarkerStep(f, "Placemaker.Primary.Review");
+                    if (!f.HasRecipe) return Make(PrimaryKind.None, "Citymaker.Primary.ChooseType", false, "Citymaker.Reason.NoRecipe");
+                    var markers = MarkerStep(f, "Citymaker.Primary.Review");
                     if (markers != null) return markers;
                     if (f.UnreadyStepPath != null)
                     {
-                        var p = Make(PrimaryKind.ToReview, "Placemaker.Primary.Review", false, null);
-                        p.Reason = f.UnreadyReason ?? new LocText("Placemaker.Reason.StepNotReady");
+                        var p = Make(PrimaryKind.ToReview, "Citymaker.Primary.Review", false, null);
+                        p.Reason = f.UnreadyReason ?? new LocText("Citymaker.Reason.StepNotReady");
                         p.StepPath = f.UnreadyStepPath;
                         return p;
                     }
-                    return Make(PrimaryKind.ToReview, "Placemaker.Primary.Review", true, null);
+                    return Make(PrimaryKind.ToReview, "Citymaker.Primary.Review", true, null);
                 }
 
                 case ToolStage.Review:
                 default:
                 {
                     if (!f.AreaValid) return AreaPrimary(f);
-                    if (!f.HasRecipe) return Make(PrimaryKind.None, "Placemaker.Primary.ChooseType", false, "Placemaker.Reason.NoRecipe");
+                    if (!f.HasRecipe) return Make(PrimaryKind.None, "Citymaker.Primary.ChooseType", false, "Citymaker.Reason.NoRecipe");
                     var kind = f.Editing ? PrimaryKind.FinishEdit : PrimaryKind.Build;
-                    string label = f.Editing ? "Placemaker.Primary.ApplyEdit" : "Placemaker.Primary.Build";
+                    string label = f.Editing ? "Citymaker.Primary.ApplyEdit" : "Citymaker.Primary.Build";
                     var markers = MarkerStep(f, label);
                     if (markers != null) return markers;
 
                     if (f.UnreadyStepPath != null)
                     {
                         var p = Make(kind, label, false, null);
-                        p.Reason = f.UnreadyReason ?? new LocText("Placemaker.Reason.StepNotReady");
+                        p.Reason = f.UnreadyReason ?? new LocText("Citymaker.Reason.StepNotReady");
                         p.StepPath = f.UnreadyStepPath;
                         return p;
                     }
@@ -199,11 +199,11 @@ namespace Placemaker.Core.Tool
                         bad.Reason = f.AreaProblem;
                         return bad;
                     }
-                    if (!f.BuildServiceAvailable) return Make(kind, label, false, "Placemaker.Reason.BuildUnavailable");
-                    if (f.Planning || !f.PlanReady) return Make(kind, label, false, "Placemaker.Reason.Planning");
-                    if (f.PlanHasErrors) return Make(kind, label, false, "Placemaker.Reason.PlanErrors");
-                    if (f.PermanentPending) return Make(kind, label, false, "Placemaker.Reason.AcknowledgePermanent");
-                    if (!f.CanAfford) return Make(kind, label, false, "Placemaker.Reason.NoMoney");
+                    if (!f.BuildServiceAvailable) return Make(kind, label, false, "Citymaker.Reason.BuildUnavailable");
+                    if (f.Planning || !f.PlanReady) return Make(kind, label, false, "Citymaker.Reason.Planning");
+                    if (f.PlanHasErrors) return Make(kind, label, false, "Citymaker.Reason.PlanErrors");
+                    if (f.PermanentPending) return Make(kind, label, false, "Citymaker.Reason.AcknowledgePermanent");
+                    if (!f.CanAfford) return Make(kind, label, false, "Citymaker.Reason.NoMoney");
                     return Make(kind, label, true, null);
                 }
             }
@@ -215,20 +215,20 @@ namespace Placemaker.Core.Tool
             {
                 if (f.AreaProblem != null)
                 {
-                    var bad = Make(PrimaryKind.ToDesign, "Placemaker.Primary.Next", false, null);
+                    var bad = Make(PrimaryKind.ToDesign, "Citymaker.Primary.Next", false, null);
                     bad.Reason = f.AreaProblem;
                     return bad;
                 }
-                return Make(PrimaryKind.ToDesign, "Placemaker.Primary.Next", true, null);
+                return Make(PrimaryKind.ToDesign, "Citymaker.Primary.Next", true, null);
             }
             if (f.AreaProblem != null)
             {
-                var p = Make(PrimaryKind.None, "Placemaker.Primary.SelectArea", false, null);
+                var p = Make(PrimaryKind.None, "Citymaker.Primary.SelectArea", false, null);
                 p.Reason = f.AreaProblem;
                 return p;
             }
-            if (f.AreaInProgress) return Make(PrimaryKind.None, "Placemaker.Primary.SelectArea", false, "Placemaker.Reason.CloseArea");
-            return Make(PrimaryKind.None, "Placemaker.Primary.SelectArea", false, "Placemaker.Reason.NoArea");
+            if (f.AreaInProgress) return Make(PrimaryKind.None, "Citymaker.Primary.SelectArea", false, "Citymaker.Reason.CloseArea");
+            return Make(PrimaryKind.None, "Citymaker.Primary.SelectArea", false, "Citymaker.Reason.NoArea");
         }
 
         /// <summary>
@@ -251,7 +251,7 @@ namespace Placemaker.Core.Tool
             };
         }
 
-        public const string AddEntranceKey = "Placemaker.Reason.AddEntrance";
+        public const string AddEntranceKey = "Citymaker.Reason.AddEntrance";
 
         private static PrimaryAction Make(PrimaryKind kind, string label, bool enabled, string reasonKey) => new PrimaryAction
         {

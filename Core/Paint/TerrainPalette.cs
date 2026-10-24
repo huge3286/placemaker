@@ -1,4 +1,4 @@
-// Placemaker — the map's terrain paint materials as a palette (s33, docs/TERRAIN-PAINT.md). GPL-3.0.
+// Citymaker — the map's terrain paint materials as a palette (s33, docs/TERRAIN-PAINT.md). GPL-3.0.
 //
 // CS2 1.6.2f1 has exactly four paintable terrain materials ("Terrain Material Extra 1..4", TerrainMaterialType
 // Extra1..Extra4) plus the Clear tool. Their textures come from the map's TerrainRenderSettingsPrefab
@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Text;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Paint
+namespace Citymaker.Core.Paint
 {
     /// <summary>What a paint should look like (the planner's intent). Values = the vanilla slot (TerrainMaterials).</summary>
     public enum GroundTone { Dry = 1, Lush = 2, Dirt = 3, Sand = 4 }
@@ -26,7 +26,7 @@ namespace Placemaker.Core.Paint
     /// <summary>One paintable material slot of the current map.</summary>
     public sealed class TerrainSlot
     {
-        /// <summary>1..4 = Extra1..Extra4 (the Placemaker paint layer).</summary>
+        /// <summary>1..4 = Extra1..Extra4 (the Citymaker paint layer).</summary>
         public int Index;
         /// <summary>Diffuse texture asset name ("Grass_Dry_Temperate_01_Basecolor"), "" when unknown.</summary>
         public string Texture = "";

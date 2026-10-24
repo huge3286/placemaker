@@ -22,14 +22,14 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.AddOns;
-using Placemaker.Core.Layers.AddOns.Fields;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Types.Transport;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.AddOns;
+using Citymaker.Core.Layers.AddOns.Fields;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Types.Transport;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Leisure
+namespace Citymaker.Core.Layers.Leisure
 {
     internal sealed class SportsParkComposer
     {
@@ -143,7 +143,7 @@ namespace Placemaker.Core.Layers.Leisure
 
             int places = 0;
             foreach (var it in _items) if (it.Place) places++;
-            ctx.Stat("Placemaker.Stat.Facilities", places, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Facilities", places, Keys.UnitCount);
             ctx.Plan.Facts["facilities"] = places;
             ctx.Plan.Facts["hero"] = _hero != null ? 1 : 0;
             ctx.Plan.Facts["terrace"] = _terrace != null ? 1 : 0;
@@ -286,7 +286,7 @@ namespace Placemaker.Core.Layers.Leisure
             // A main entrance the lot swallowed moves to the lot's walk-in point.
             if (_hasMain && ctx.LayerRegion.BoundaryDistance(_main.Position, 3f) > 2f || _hasMain && Poly.Contains(cut, _main.Position)) _main = lotGate;
             ctx.Plan.Facts["lotStalls"] = _lotStalls;
-            ctx.Stat("Placemaker.Stat.Parking", _lotStalls, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Parking", _lotStalls, Keys.UnitCount);
         }
 
         // ───────────────────────── fitting ─────────────────────────
@@ -492,7 +492,7 @@ namespace Placemaker.Core.Layers.Leisure
                 if (auto && k < ladder.Length - 1 && f.Length * f.Width > shareCap * _play.Area) continue;
                 if (Search(f.Length, f.Width, anchor, extra, turn, layer, kind, out var r))
                 {
-                    if (k > first && !auto) _ctx.Issue(IssueSeverity.Info, FieldAddOn.SmallerKey, "Placemaker.Feature." + layer);
+                    if (k > first && !auto) _ctx.Issue(IssueSeverity.Info, FieldAddOn.SmallerKey, "Citymaker.Feature." + layer);
                     return Add(layer, layer, kind, r, true);
                 }
             }
@@ -511,7 +511,7 @@ namespace Placemaker.Core.Layers.Leisure
                     // Elsewhere, near the cluster.
                     if (!Search(first.Rect.HalfLength * 2f, first.Rect.HalfWidth * 2f, first.Rect.Center, null, true, first.Group, kind, out r))
                     {
-                        _ctx.Issue(IssueSeverity.Info, "Placemaker.Sports.Issue.Fewer", members.Count, count);
+                        _ctx.Issue(IssueSeverity.Info, "Citymaker.Sports.Issue.Fewer", members.Count, count);
                         return;
                     }
                 }
@@ -520,7 +520,7 @@ namespace Placemaker.Core.Layers.Leisure
         }
 
         private void NoRoom(string layer) =>
-            _ctx.Issue(IssueSeverity.Warning, "Placemaker.Park.Issue.NoRoomForAmenity", "Placemaker.Feature." + layer);
+            _ctx.Issue(IssueSeverity.Warning, "Citymaker.Park.Issue.NoRoomForAmenity", "Citymaker.Feature." + layer);
 
         // ───────────────────────── entrance plaza ─────────────────────────
 

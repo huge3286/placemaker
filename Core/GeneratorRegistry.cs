@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Placemaker.Core
+namespace Citymaker.Core
 {
     /// <summary>Marks an IAreaGenerator for discovery. Order = position in the "Make" row.</summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
@@ -81,7 +81,7 @@ namespace Placemaker.Core
     }
 }
 
-namespace Placemaker.Core
+namespace Citymaker.Core
 {
     public static class GeneratorGroups
     {

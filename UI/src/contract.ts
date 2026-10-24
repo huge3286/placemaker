@@ -1,11 +1,11 @@
-// UI ↔ C# binding contract. Authoritative: C# (Game/UI/PlacemakerUISystem.cs + UiModels.cs)
-// mirrors these shapes exactly. Group: "Placemaker". All JSON values are sent via
+// UI ↔ C# binding contract. Authoritative: C# (Game/UI/CitymakerUISystem.cs + UiModels.cs)
+// mirrors these shapes exactly. Group: "citymaker". All JSON values are sent via
 // RawValueBinding / ValueBinding<string> (never string[] — that broke mod load in PLT).
 //
 // Few, structured bindings instead of hundreds: the UI is schema-driven, so a new layer type
 // needs zero UI code.
 
-export const GROUP = "Placemaker";
+export const GROUP = "citymaker";
 
 /**
  * (s15) UI ↔ DLL contract version; C# sends it as state.protocol (Core/Tool/UiModels.Protocol). Bump both
@@ -28,14 +28,14 @@ export type BrushShape = "round" | "square";
 export interface BrushRules {
   roads: boolean;        // stop at the curb, keep the stroke's side of a road
   buildings: boolean;
-  lots: boolean;         // parks, other Placemaker areas, other lots
+  lots: boolean;         // parks, other Citymaker areas, other lots
   zoned: boolean;        // zoned cells with a building on them (s49); vacant zoned land is paintable
   /** (s49) also keep off zoned cells nobody built on yet (default off) */
   allZoned?: boolean;
   emptyZones: boolean;   // the empty zone grid along roads
   water: boolean;
   stayInBlock: boolean;  // lock a stroke to the closed block it starts in
-  /** (s27) other Placemaker builds (owner lot + zone blocks), never the group being edited */
+  /** (s27) other Citymaker builds (owner lot + zone blocks), never the group being edited */
   builds?: boolean;
   /** (s27) "Paint over anything": every stop and the block lock off */
   anything?: boolean;
@@ -65,7 +65,7 @@ export interface BucketWalls {
   bikes: boolean;   // bicycle-only paths (default on)
   tracks: boolean;  // train / tram tracks at ground level (default on)
   water: boolean;   // water edge (default on)
-  lots: boolean;    // buildings, other lots, other Placemaker builds (default off)
+  lots: boolean;    // buildings, other lots, other Citymaker builds (default off)
   zoned: boolean;   // zoned cells (default off)
 }
 
@@ -126,7 +126,7 @@ export interface ToolState {
   grouping?: { separate: boolean };
   /** The entrances placed next come with a crosswalk across the street (walking entrance kinds only). */
   entranceCrosswalk?: boolean;
-  /** Review's "Keep area" switch: Build keeps the area and the panel (true, default) or closes Placemaker. */
+  /** Review's "Keep area" switch: Build keeps the area and the panel (true, default) or closes Citymaker. */
   keepArea?: boolean;
   panelCollapsed: boolean;
   /** "sketch" = fast overlay lines/dots; "ghost" = real translucent game models + surfaces (Review uses ghost by default). */
@@ -168,7 +168,7 @@ export interface PainterState {
   lookSavedTheme: string;
   /** The rows changed the look (not saved). */
   modified: boolean;
-  /** The old polish painter tool; false: anything else in Placemaker's panel (the Global outgrow window is always there). */
+  /** The old polish painter tool; false: anything else in Citymaker's panel (the Global outgrow window is always there). */
   tool?: boolean;
   /** Live polish: the selection polished again a moment after every change (the switch beside Polish). */
   live?: boolean;
@@ -195,7 +195,7 @@ export interface PainterState {
   brushLook?: string;
   /** The brush's diameter in metres. */
   brushSize?: number;
-  /** The panel shows Outgrow (its switcher; the toolbar's Outgrow button) instead of Placemaker's stages. */
+  /** The panel shows Outgrow (its switcher; the toolbar's Outgrow button) instead of Citymaker's stages. */
   outgrowMode?: boolean;
   /** A Zoning type picked: the look its zones take unless one picks its own. */
   typeLook?: string;
@@ -328,7 +328,7 @@ export interface ResolvedAsset {
 /** Additive (s16): the roads a step's plan places, by role — the map legend (same colours as the preview). */
 export interface NetLegendEntry {
   role: string;             // "street" | "avenue" | "local" | "roundabout" | "perimeter" | "carFree"
-  label: string;            // localisation key ("Placemaker.Roads.Role.street")
+  label: string;            // localisation key ("Citymaker.Roads.Role.street")
   color: string;            // "#rrggbb", identical to the in-game preview line colour
   count: number;            // segments
   lengthM: number;          // total length, metres
@@ -344,7 +344,7 @@ export interface NetLegendEntry {
  */
 export interface LegendEntry {
   id: string;
-  label: string;            // localisation key ("Placemaker.Legend.trees", roads "Placemaker.Roads.Role.street")
+  label: string;            // localisation key ("Citymaker.Legend.trees", roads "Citymaker.Roads.Role.street")
   color: string;            // "#rrggbb", the overlay colour of the layer
   /** Second colour (terrain: cut; color = fill). */
   color2?: string;
@@ -398,7 +398,7 @@ export interface RecipeInfo {
 /** (core) A Make-row category of the central shelf, in Make-row order. */
 export interface CategoryInfo {
   id: string;
-  /** Localisation key ("Placemaker.UI.MakeGroup.Parks"). */
+  /** Localisation key ("Citymaker.UI.MakeGroup.Parks"). */
   name: string;
   /** English label (used when the key has no translation). */
   en: string;
@@ -444,7 +444,7 @@ export interface FeatureView {
 export interface FeatureFit {
   /** ok = placed as asked; reduced = placed smaller / fewer / only in some places; failed = nothing placed (no room). */
   kind: "ok" | "reduced" | "failed";
-  /** Why: the feature layer's own issue, or Placemaker.UI.Feature.NoRoom / .SomeMissing. Absent for ok. */
+  /** Why: the feature layer's own issue, or Citymaker.UI.Feature.NoRoom / .SomeMissing. Absent for ok. */
   text?: LocText;
   /** Judged from the previous plan while a new one is pending. */
   stale?: boolean;
@@ -512,7 +512,7 @@ export interface ActivePreset {
 export interface DesignState {
   /** Active preset of the root fill step (drives Save / Save as / Reset in the browser). */
   activePreset?: ActivePreset;
-  /** Absolute path of ModsData/Placemaker/presets.json (shown after export). */
+  /** Absolute path of ModsData/Citymaker/presets.json (shown after export). */
   presetsFile?: string;
   recipeId: string;         // which Make entry is selected
   modified: boolean;        // differs from the recipe's shipped/saved version
@@ -578,7 +578,7 @@ export interface ParkStatView {
   id: ParkStatId;
   /** What the build gets (override or suggested; clamped to [bandMin, bandMax] while keepVanilla). */
   value: number;
-  /** Placemaker's estimate, already inside the vanilla range. */
+  /** Citymaker's estimate, already inside the vanilla range. */
   suggested: number;
   /** Range vanilla parks of a comparable size use, scaled to this size. */
   bandMin: number;
@@ -656,7 +656,7 @@ export const Triggers = {
 
   goToStage: "goToStage",                   // (stage: Stage) — only if in state.reachable
   primary: "primary",                       // () — same as Enter (Review: Build & keep area)
-  buildAndClose: "buildAndClose",           // () — Review's second button: build, then close Placemaker
+  buildAndClose: "buildAndClose",           // () — Review's second button: build, then close Citymaker
   polishTheme: "polishTheme",               // (theme: string) — the theme the painter's Polish gives
   polishOption: "polishOption",             // (id: string, value: number) — the painter card's look rows (toggles 1/0, painted 0–100)
   polishCity: "polishCity",                 // (what: string, value: string) — on / newHouses / homes|shops|offices|industry / polishAll / unpolishAll
@@ -711,7 +711,7 @@ export const Triggers = {
   setMarkerCrosswalk: "setMarkerCrosswalk", // (path: string, index: number, on: boolean) — index -1: the entrances placed next
   ungroupGroup: "ungroupGroup",             // (groupId: number, ungroup: boolean) — false: group again
   setBuildUngrouped: "setBuildUngrouped",   // (on: boolean) — the next build is born ungrouped (separate pieces)
-  setKeepArea: "setKeepArea",               // (on: boolean) — Build keeps the area (true) or closes Placemaker (false)
+  setKeepArea: "setKeepArea",               // (on: boolean) — Build keeps the area (true) or closes Citymaker (false)
   setFeature: "setFeature",                 // (path: string, featureLayerId: string, enabled: boolean)
   setPreviewMode: "setPreviewMode",         // (mode: "sketch" | "ghost")
   selectPreset: "selectPreset",             // (layerId: string, presetId: string) — select type (single-layer recipe) + apply preset; undoable
@@ -734,4 +734,4 @@ export const Triggers = {
 
 // ─────────────────────────── Localisation ───────────────────────────
 // All keys are registered with the game's LocalizationManager by C# (Lang/<locale>.json,
-// late community locales supported). UI uses translate(key, fallback). Key prefix: "Placemaker.".
+// late community locales supported). UI uses translate(key, fallback). Key prefix: "Citymaker.".

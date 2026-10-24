@@ -1,6 +1,6 @@
 // Manage — a built place under the cursor/selected: what it is, what it costs to run, and
 // Edit / Rename / Remove (with confirmation). The same actions appear in the vanilla selected-info
-// panel via PlacemakerInfoSection.
+// panel via CitymakerInfoSection.
 import React, { useState } from "react";
 import { ManagedGroup } from "../contract";
 import { act } from "../lib/bindings";
@@ -17,12 +17,12 @@ export function useGroupActions(id: number, displayName: string) {
     const [ungrouping, setUngrouping] = useState(false);
     const ungroupDialog = ungrouping ? (
         <Confirm
-            title={t("Placemaker.UI.Manage.UngroupTitle", "Ungroup {0}?", [displayName])}
+            title={t("Citymaker.UI.Manage.UngroupTitle", "Ungroup {0}?", [displayName])}
             message={t(
-                "Placemaker.UI.Manage.UngroupText",
+                "Citymaker.UI.Manage.UngroupText",
                 "Its pieces become separate: click any tree, bench, path or surface to change it or bulldoze it on its own. The bulldozer then removes one piece at a time, so removing all of it gets hard: use Remove in a piece's info panel for that. You can group it again there."
             )}
-            confirm={t("Placemaker.UI.Manage.UngroupConfirm", "Ungroup")}
+            confirm={t("Citymaker.UI.Manage.UngroupConfirm", "Ungroup")}
             onConfirm={() => {
                 setUngrouping(false);
                 act.ungroupGroup(id, true);
@@ -32,9 +32,9 @@ export function useGroupActions(id: number, displayName: string) {
     ) : null;
     const dialog = ungroupDialog ?? (confirming ? (
         <Confirm
-            title={t("Placemaker.UI.Manage.RemoveTitle", "Remove {0}?", [displayName])}
-            message={t("Placemaker.UI.Manage.RemoveText", "Everything Placemaker built here (paths, surfaces, objects, roads it added) is bulldozed. Buildings that grew next to it stay.")}
-            confirm={t("Placemaker.UI.Manage.RemoveConfirm", "Remove")}
+            title={t("Citymaker.UI.Manage.RemoveTitle", "Remove {0}?", [displayName])}
+            message={t("Citymaker.UI.Manage.RemoveText", "Everything Citymaker built here (paths, surfaces, objects, roads it added) is bulldozed. Buildings that grew next to it stay.")}
+            confirm={t("Citymaker.UI.Manage.RemoveConfirm", "Remove")}
             danger
             onConfirm={() => {
                 setConfirming(false);
@@ -54,8 +54,8 @@ export const UngroupButton = ({ id, ungrouped, askUngroup, testId }: { id: numbe
             variant="solid"
             icon="layers"
             iconSize={12}
-            label={t("Placemaker.UI.Manage.Regroup", "Group again")}
-            description={t("Placemaker.UI.Manage.RegroupTip", "One thing again: a click selects all of it and the bulldozer removes all of it.")}
+            label={t("Citymaker.UI.Manage.Regroup", "Group again")}
+            description={t("Citymaker.UI.Manage.RegroupTip", "One thing again: a click selects all of it and the bulldozer removes all of it.")}
             disabled={id < 0}
             onClick={() => act.ungroupGroup(id, false)}
             testId={testId}
@@ -65,8 +65,8 @@ export const UngroupButton = ({ id, ungrouped, askUngroup, testId }: { id: numbe
             variant="solid"
             icon="ungroup"
             iconSize={12}
-            label={t("Placemaker.UI.Manage.Ungroup", "Ungroup")}
-            description={t("Placemaker.UI.Manage.UngroupTip", "Make its pieces separate, so you can click, change and bulldoze each one yourself.")}
+            label={t("Citymaker.UI.Manage.Ungroup", "Ungroup")}
+            description={t("Citymaker.UI.Manage.UngroupTip", "Make its pieces separate, so you can click, change and bulldoze each one yourself.")}
             disabled={id < 0}
             onClick={askUngroup}
             testId={testId}
@@ -95,8 +95,8 @@ export const RenameField = ({ id, name, onDone }: { id: number; name: string; on
                     if (e.key === "Escape") onDone();
                 }}
             />
-            <Btn variant="accent" label={t("Placemaker.UI.Save", "Save")} onClick={save} testId="rename-save" />
-            <Btn icon="close" title={t("Placemaker.UI.Cancel", "Cancel")} onClick={onDone} />
+            <Btn variant="accent" label={t("Citymaker.UI.Save", "Save")} onClick={save} testId="rename-save" />
+            <Btn icon="close" title={t("Citymaker.UI.Cancel", "Cancel")} onClick={onDone} />
         </div>
     );
 };
@@ -104,12 +104,12 @@ export const RenameField = ({ id, name, onDone }: { id: number; name: string; on
 export const ManageStage = ({ group }: { group: ManagedGroup | null }) => {
     const { t, tl } = useT();
     const [renaming, setRenaming] = useState(false);
-    const name = group ? group.customName || tl(group.recipeName, t("Placemaker.Name", "Placemaker")) : "";
+    const name = group ? group.customName || tl(group.recipeName, t("Citymaker.Name", "citymaker")) : "";
     const { askRemove, askUngroup, dialog } = useGroupActions(group?.id ?? -1, name);
     if (!group) {
         return (
             <div className={s.stage} data-testid="stage-manage">
-                <div className={s.emptyNote}>{t("Placemaker.UI.Manage.Hover", "Click something you built to edit it")}</div>
+                <div className={s.emptyNote}>{t("Citymaker.UI.Manage.Hover", "Click something you built to edit it")}</div>
             </div>
         );
     }
@@ -136,7 +136,7 @@ export const ManageStage = ({ group }: { group: ManagedGroup | null }) => {
                 </div>
             ) : null}
             <div className={s.manageUpkeep}>
-                <div className={s.bigLabel}>{t("Placemaker.UI.Review.Upkeep", "Upkeep")}</div>
+                <div className={s.bigLabel}>{t("Citymaker.UI.Review.Upkeep", "Upkeep")}</div>
                 <div className={s.manageUpkeepValue}>
                     <Money value={group.upkeep} perMonth />
                 </div>
@@ -146,16 +146,16 @@ export const ManageStage = ({ group }: { group: ManagedGroup | null }) => {
                     variant="accent"
                     icon="edit"
                     iconSize={12}
-                    label={t("Placemaker.UI.Manage.Edit", "Edit")}
+                    label={t("Citymaker.UI.Manage.Edit", "Edit")}
                     disabled={!group.canEdit}
-                    description={!group.canEdit ? t("Placemaker.UI.Manage.CantEdit", "This was built by an older version and can only be removed.") : undefined}
+                    description={!group.canEdit ? t("Citymaker.UI.Manage.CantEdit", "This was built by an older version and can only be removed.") : undefined}
                     onClick={() => act.editGroup(group.id)}
                     testId="manage-edit"
                 />
-                <Btn variant="solid" icon="edit" iconSize={12} label={t("Placemaker.UI.Manage.Rename", "Rename")} onClick={() => setRenaming(true)} testId="manage-rename" />
+                <Btn variant="solid" icon="edit" iconSize={12} label={t("Citymaker.UI.Manage.Rename", "Rename")} onClick={() => setRenaming(true)} testId="manage-rename" />
                 <UngroupButton id={group.id} ungrouped={!!group.ungrouped} askUngroup={askUngroup} testId="manage-ungroup" />
                 <div className={s.flex} />
-                <Btn variant="danger" icon="trash" iconSize={12} label={t("Placemaker.UI.Manage.Remove", "Remove")} onClick={askRemove} testId="manage-remove" />
+                <Btn variant="danger" icon="trash" iconSize={12} label={t("Citymaker.UI.Manage.Remove", "Remove")} onClick={askRemove} testId="manage-remove" />
             </div>
             {dialog}
         </div>

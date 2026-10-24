@@ -3,9 +3,9 @@
 // so a zone asking for swings still builds with whatever play equipment is installed.
 
 using System.Collections.Generic;
-using Placemaker.Core.Build;
+using Citymaker.Core.Build;
 
-namespace Placemaker.Core
+namespace Citymaker.Core
 {
     public static partial class AssetCategories
     {
@@ -17,7 +17,7 @@ namespace Placemaker.Core
     }
 }
 
-namespace Placemaker.Core.Layers.Types.AdventurePlayground
+namespace Citymaker.Core.Layers.Types.AdventurePlayground
 {
     /// <summary>Name rules for play equipment kinds (vanilla CamelCase names, lower-cased).</summary>
     public sealed class PlayCategoryRules : ICategoryRules

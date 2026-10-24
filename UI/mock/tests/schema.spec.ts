@@ -94,7 +94,7 @@ test("asset picker: search, thumbnails, automatic; closes with X, Esc and a clic
     await expect(page.getByTestId("asset-automatic")).toBeVisible();
     await expect(page.getByTestId("asset-concrete")).toBeVisible();
     // beside the panel, not over it
-    const pb = (await page.getByTestId("placemaker-panel").boundingBox())!;
+    const pb = (await page.getByTestId("citymaker-panel").boundingBox())!;
     const fb = (await picker.boundingBox())!;
     expect(fb.x + fb.width).toBeLessThanOrEqual(pb.x + 1);
     await page.getByTestId("asset-search").fill("conc");

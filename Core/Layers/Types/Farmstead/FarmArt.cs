@@ -3,9 +3,9 @@
 // corner pieces as "crops", a 16 m irrigation rig parked in the yard as "machinery", gazebos as field shelters and
 // no silo at all. Each default is an explicit vanilla id; installed farm assets (or the player's pick) still win.
 
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 
-namespace Placemaker.Core.Layers.Types.Farmstead
+namespace Citymaker.Core.Layers.Types.Farmstead
 {
     internal static class FarmArt
     {

@@ -42,7 +42,7 @@ test("full flow: draw → design → review → build, then manage the result", 
     await panelShot(page, "panel-review");
 
     await expect(primary).toContainText("Build");
-    // Keep area off: Build builds, then Placemaker closes (Keep area on, the default, has its own test)
+    // Keep area off: Build builds, then Citymaker closes (Keep area on, the default, has its own test)
     await page.getByTestId("build-keep").click();
     await expect(page.getByTestId("build-keep")).toHaveAttribute("aria-checked", "false");
     await primary.click();

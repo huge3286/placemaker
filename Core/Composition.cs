@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Unity.Mathematics;
 
-namespace Placemaker.Core
+namespace Citymaker.Core
 {
     public sealed class RecipeStep
     {
@@ -229,14 +229,14 @@ namespace Placemaker.Core
             if (!step.Enabled) return;
             if (depth > MaxDepth || --budget < 0)
             {
-                result.Issues.Add(new PlanIssue { Severity = IssueSeverity.Error, Key = "Placemaker.Issue.RecipeTooDeep" });
+                result.Issues.Add(new PlanIssue { Severity = IssueSeverity.Error, Key = "Citymaker.Issue.RecipeTooDeep" });
                 return;
             }
 
             var gen = GeneratorRegistry.Get(step.Layer);
             if (gen == null)
             {
-                result.Issues.Add(new PlanIssue { Severity = IssueSeverity.Error, Key = "Placemaker.Issue.UnknownLayer", Args = new object[] { step.Layer } });
+                result.Issues.Add(new PlanIssue { Severity = IssueSeverity.Error, Key = "Citymaker.Issue.UnknownLayer", Args = new object[] { step.Layer } });
                 return;
             }
 
@@ -268,7 +268,7 @@ namespace Placemaker.Core
             {
                 result.Issues.Add(new PlanIssue
                 {
-                    Severity = IssueSeverity.Error, Key = "Placemaker.Issue.LayerFailed",
+                    Severity = IssueSeverity.Error, Key = "Citymaker.Issue.LayerFailed",
                     Args = new object[] { gen.Id, e.GetType().Name + ": " + e.Message },
                 });
                 return;

@@ -10,11 +10,11 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Roads;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Roads;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Common
+namespace Citymaker.Core.Layers.Common
 {
     public static class StreetFrontage
     {

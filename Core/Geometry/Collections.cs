@@ -1,4 +1,4 @@
-// Placemaker — tiny stack/queue on List<T>.
+// Citymaker — tiny stack/queue on List<T>.
 //
 // Why: the game's Managed folder ships both mscorlib and System with Stack<T>/Queue<T>, so the
 // net48 mod build reports CS0433 (type exists in both). These replacements avoid the ambiguity
@@ -6,7 +6,7 @@
 
 using System.Collections.Generic;
 
-namespace Placemaker.Core.Geometry
+namespace Citymaker.Core.Geometry
 {
     internal sealed class ListStack<T>
     {

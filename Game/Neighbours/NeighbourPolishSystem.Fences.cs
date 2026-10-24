@@ -1,4 +1,4 @@
-// Placemaker neighbourhood polish — gardens remembered with their houses, fences as they stand, and fences kept visible
+// Citymaker neighbourhood polish — gardens remembered with their houses, fences as they stand, and fences kept visible
 // (GPL-3.0).
 //
 //   * Each polished house keeps its garden's outline (PolishGarden, saved): the plans of its neighbours made later keep off
@@ -11,7 +11,7 @@
 //     overridable object that touches another one or a building's lot volume. A closing piece on a garden's edge touches
 //     the bushes, trees and lots beside it, so whole stretches of fence stood there unseen ("invisible until I hover over
 //     the asset": hovering draws a copy of the house with its pieces, which the game does not hide). Our own pieces are
-//     shown again in the frame the game hid them (NeighbourShowSystem), as Placemaker's builds do it (BuildService.Audit),
+//     shown again in the frame the game hid them (NeighbourShowSystem), as Citymaker's builds do it (BuildService.Audit),
 //     unless the game is right to hide them: a fence or hedge piece lying along another fence or hedge (a doubled border:
 //     one is enough), or a piece standing on a road or inside another building's lot.
 
@@ -22,14 +22,14 @@ using Game.Common;
 using Game.Net;
 using Game.Prefabs;
 using Game.Tools;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Neighbours;
-using Placemaker.Game.Selection;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Neighbours;
+using Citymaker.Game.Selection;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Neighbours
+namespace Citymaker.Game.Neighbours
 {
     public sealed partial class NeighbourPolishSystem
     {
@@ -82,7 +82,7 @@ namespace Placemaker.Game.Neighbours
                 if (kv.Value == null || kv.Value.Length < 3) continue;
                 if (!_gardenBox.TryGetValue(kv.Key, out var box) || !ReferenceEquals(box.Ring, kv.Value))
                 {
-                    Placemaker.Core.Geometry.Poly.Bounds(kv.Value, out var lo, out var hi);
+                    Citymaker.Core.Geometry.Poly.Bounds(kv.Value, out var lo, out var hi);
                     _gardenBox[kv.Key] = box = (kv.Value, lo, hi);
                 }
                 yield return (kv.Key, box.Lo, box.Hi);
@@ -249,7 +249,7 @@ namespace Placemaker.Game.Neighbours
             _shownSinceLog += show.Count;
             if (_shownSinceLog >= 500 || (LotFrame & 4095) == 0)
             {
-                Mod.Log.Info($"Placemaker neighbourhood polish: {_shownSinceLog} of its own pieces the game hid shown again in the same frame ({_againSinceLog} of them hidden before), {_keptSinceLog} left hidden (along another fence, on a road or in another building's lot)");
+                Mod.Log.Info($"Citymaker neighbourhood polish: {_shownSinceLog} of its own pieces the game hid shown again in the same frame ({_againSinceLog} of them hidden before), {_keptSinceLog} left hidden (along another fence, on a road or in another building's lot)");
                 _shownSinceLog = _keptSinceLog = _againSinceLog = 0;
             }
         }

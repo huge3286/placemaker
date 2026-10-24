@@ -1,11 +1,11 @@
-// Placemaker neighbourhood polish — the data YardStitch plans with (kept apart from the algorithm so the game runner can
+// Citymaker neighbourhood polish — the data YardStitch plans with (kept apart from the algorithm so the game runner can
 // load a newer YardStitch into a running game: tools/hot, lab op "hotload").
 
 using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Neighbours
+namespace Citymaker.Core.Neighbours
 {
     public sealed class StitchLine
     {
@@ -195,7 +195,7 @@ namespace Placemaker.Core.Neighbours
         /// <summary>Why pairs formed or not, and what was undone (the game runner logs them).</summary>
         public readonly List<string> Notes = new List<string>();
         /// <summary>Ground paint that blends the stitched yards into the land around them (terrain materials, permanent).</summary>
-        public readonly List<Placemaker.Core.PlannedPaint> Paints = new List<Placemaker.Core.PlannedPaint>();
+        public readonly List<Citymaker.Core.PlannedPaint> Paints = new List<Citymaker.Core.PlannedPaint>();
         /// <summary>Shared land no house takes (the middle inside a ring of slices): ground detail goes here.</summary>
         public readonly List<float2[]> Commons = new List<float2[]>();
         /// <summary>Each stitched house's plot (its share of the land; fences and lawn follow its edges), by house id.</summary>

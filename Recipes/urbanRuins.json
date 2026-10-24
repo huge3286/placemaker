@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "urbanRuins",
-  "nameKey": "Placemaker.Recipe.UrbanRuins",
-  "descriptionKey": "Placemaker.Recipe.UrbanRuins.Description",
+  "nameKey": "Citymaker.Recipe.UrbanRuins",
+  "descriptionKey": "Citymaker.Recipe.UrbanRuins.Description",
   "icon": "Media/Game/Icons/ExtradosedBridge01.svg",
   "root": {
     "layer": "urbanRuins",

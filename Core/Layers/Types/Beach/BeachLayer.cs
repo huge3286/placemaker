@@ -16,13 +16,13 @@
 // Everything stands on the final ground (Resnap after emission); furniture never on slopes steeper than 12 %.
 
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Leisure;
-using Placemaker.Core.Layers.Park;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Leisure;
+using Citymaker.Core.Layers.Park;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Beach
+namespace Citymaker.Core.Layers.Types.Beach
 {
     [AreaGenerator(70, Group = "water")]
     public sealed class BeachLayer : LeisureLayer
@@ -248,14 +248,14 @@ namespace Placemaker.Core.Layers.Types.Beach
             g.Finish(5f, 1.5f, 0.33f);
             EmitGreenRegions(ctx, b.Occ, g);
             CommonStats(ctx);
-            ctx.Stat("Placemaker.Stat.Shoreline", System.Math.Round(shore.Length), Keys.UnitM);
-            ctx.Stat("Placemaker.Stat.Umbrellas", b.Umbrellas, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Loungers", b.Loungers, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Showers", b.Showers, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Huts", b.Huts, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Lifeguards", b.Guards, Keys.UnitCount);
-            if (b.Courts > 0) ctx.Stat("Placemaker.Stat.Courts", b.Courts, Keys.UnitCount);
-            if (b.Rocks > 0) ctx.Stat("Placemaker.Stat.Rocks", b.Rocks, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Shoreline", System.Math.Round(shore.Length), Keys.UnitM);
+            ctx.Stat("Citymaker.Stat.Umbrellas", b.Umbrellas, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Loungers", b.Loungers, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Showers", b.Showers, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Huts", b.Huts, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Lifeguards", b.Guards, Keys.UnitCount);
+            if (b.Courts > 0) ctx.Stat("Citymaker.Stat.Courts", b.Courts, Keys.UnitCount);
+            if (b.Rocks > 0) ctx.Stat("Citymaker.Stat.Rocks", b.Rocks, Keys.UnitCount);
             ctx.Plan.Facts["tidePools"] = b.Pools;
             ctx.Plan.Facts["boats"] = b.Boats;
             ctx.Plan.Facts["firePits"] = b.Fires;
@@ -265,7 +265,7 @@ namespace Placemaker.Core.Layers.Types.Beach
             ctx.Plan.Facts["lifeguards"] = b.Guards;
             ctx.Plan.Facts["lookouts"] = b.Lookouts;
             ctx.Plan.Facts["jetties"] = b.Jetties;
-            if (b.Jetties > 0) ctx.Stat("Placemaker.Stat.Piers", b.Jetties, Keys.UnitCount);
+            if (b.Jetties > 0) ctx.Stat("Citymaker.Stat.Piers", b.Jetties, Keys.UnitCount);
             // s30: how smooth the promenade came out (tests, gallery, debug dump).
             float radius = 9999f, grade = 0f, wlen = 0f; int wig = 0;
             for (int li = 0; li < b.Lines.Count; li++)
@@ -621,7 +621,7 @@ namespace Placemaker.Core.Layers.Types.Beach
             string cat = LeisureKit.Category(ctx, "", AssetCategories.BeachVolleyball, AssetCategories.Sports);
             if (cat == null) return;
             float dc = math.clamp((b.Wet + b.D) * 0.5f, b.Wet + 6f, b.D - 6f);
-            if (dc < b.Wet + 5f) { ctx.Issue(IssueSeverity.Info, "Placemaker.Beach.Issue.NoCourtSpace"); return; }
+            if (dc < b.Wet + 5f) { ctx.Issue(IssueSeverity.Info, "Citymaker.Beach.Issue.NoCourtSpace"); return; }
             // Grouped from one end of the beach (a volleyball area), not sprinkled along it.
             int tries = wanted * 8;
             var stations = shore.Stations(tries, 12f);
@@ -641,7 +641,7 @@ namespace Placemaker.Core.Layers.Types.Beach
                 net.Scale = 0.7f;
                 b.Courts++;
             }
-            if (b.Courts < wanted) ctx.Issue(IssueSeverity.Info, "Placemaker.Beach.Issue.FewerCourts", b.Courts, wanted);
+            if (b.Courts < wanted) ctx.Issue(IssueSeverity.Info, "Citymaker.Beach.Issue.FewerCourts", b.Courts, wanted);
         }
 
         private static void Rocks(Work b)

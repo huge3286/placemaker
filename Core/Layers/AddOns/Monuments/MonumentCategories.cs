@@ -6,9 +6,9 @@
 // so the memorial / leisure classifiers still tag the same assets with their own categories.
 
 using System.Collections.Generic;
-using Placemaker.Core.Build;
+using Citymaker.Core.Build;
 
-namespace Placemaker.Core
+namespace Citymaker.Core
 {
     public static partial class AssetCategories
     {
@@ -19,7 +19,7 @@ namespace Placemaker.Core
     }
 }
 
-namespace Placemaker.Core.Layers.AddOns.Monuments
+namespace Citymaker.Core.Layers.AddOns.Monuments
 {
     public sealed class MonumentCategoryRules : ICategoryRules, IVarietyCategories
     {

@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Placemaker.Core;
-using Placemaker.Core.Tool;
+using Citymaker.Core;
+using Citymaker.Core.Tool;
 
-namespace Placemaker.Game.Settings
+namespace Citymaker.Game.Settings
 {
     /// <summary>
     /// Per-layer values the player saved as defaults ("Save as default" in the panel), stored in
-    /// ModsData/Placemaker/defaults.json. Unknown/stale control ids are dropped when applied
+    /// ModsData/Citymaker/defaults.json. Unknown/stale control ids are dropped when applied
     /// (DesignEditor.DefaultsFor), so old files never break new versions.
     /// </summary>
     public sealed class LayerDefaultsStore
@@ -50,7 +50,7 @@ namespace Placemaker.Game.Settings
             }
             catch (Exception e)
             {
-                Mod.Log.Warn("Placemaker: ignoring unreadable defaults.json (" + e.Message + ")");
+                Mod.Log.Warn("Citymaker: ignoring unreadable defaults.json (" + e.Message + ")");
                 _defaults = new Dictionary<string, SettingsBag>(StringComparer.Ordinal);
             }
         }
@@ -58,7 +58,7 @@ namespace Placemaker.Game.Settings
         private void Save()
         {
             try { ModPaths.WriteAllTextAtomic(FilePath, RecipeJson.WriteDefaults(_defaults).Write(true)); }
-            catch (Exception e) { Mod.Log.Warn("Placemaker: could not save defaults.json: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker: could not save defaults.json: " + e.Message); }
         }
     }
 }

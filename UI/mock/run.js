@@ -9,7 +9,7 @@ const path = require("path");
 
 const UI = path.join(__dirname, "..");
 const HOST = path.join(__dirname, "host");
-const DLL = path.join(HOST, "bin", "Debug", "net9.0", "Placemaker.MockHost.dll");
+const DLL = path.join(HOST, "bin", "Debug", "net9.0", "Citymaker.MockHost.dll");
 const args = process.argv.slice(2);
 const testMode = args.includes("--test");
 const npx = process.platform === "win32" ? "npx.cmd" : "npx";
@@ -91,7 +91,7 @@ function staticServer(port) {
     }
     const url = `http://127.0.0.1:${port}/`;
     await waitFor(url, 30000);
-    console.log(`\n  Placemaker UI mock:  ${url}\n`);
+    console.log(`\n  Citymaker UI mock:  ${url}\n`);
 
     if (!testMode) {
         const stop = () => {

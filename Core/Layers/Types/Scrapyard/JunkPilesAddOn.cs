@@ -4,11 +4,11 @@
 // the player who wants a neglected corner.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.AddOns;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.AddOns;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Scrapyard
+namespace Citymaker.Core.Layers.Types.Scrapyard
 {
     [AreaGenerator(1310, Hidden = true)]
     public sealed class JunkPilesAddOn : AddOnLayer
@@ -90,9 +90,9 @@ namespace Placemaker.Core.Layers.Types.Scrapyard
                         if (sc != null && LeisureKit.Put(ctx, occ, p, a, ObjectRole.Furniture, AssetMix.One(""), sc, 0.7f, v, 0.4f, 0.2f)) items++;
                     }
             }
-            if (piles == 0) NoSpace(ctx, "Placemaker.AddOn.JunkPiles.Name");
-            ctx.Stat("Placemaker.Stat.Heaps", piles, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.JunkItems", items, Keys.UnitCount);
+            if (piles == 0) NoSpace(ctx, "Citymaker.AddOn.JunkPiles.Name");
+            ctx.Stat("Citymaker.Stat.Heaps", piles, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.JunkItems", items, Keys.UnitCount);
         }
     }
 }

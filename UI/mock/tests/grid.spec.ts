@@ -11,7 +11,7 @@ async function toDesign(page: Page, recipe = "park") {
     await waitPlanned(page);
 }
 
-const width = async (page: Page) => Number(await page.getByTestId("placemaker-wrap").getAttribute("data-width"));
+const width = async (page: Page) => Number(await page.getByTestId("citymaker-wrap").getAttribute("data-width"));
 const box = async (page: Page, id: string) => (await page.getByTestId(id).first().boundingBox())!;
 
 /** Drags the panel's left edge by dx pixels (negative = wider). */
@@ -28,8 +28,8 @@ async function dragEdge(page: Page, dx: number) {
 test("picker: 1 Category · 2 Type · 3 Style rows of chips, compact", async ({ page }) => {
     const errors = await open(page);
     await page.evaluate(() => {
-        localStorage.removeItem("placemaker.browserCategory.v2");
-        localStorage.removeItem("placemaker.categoryUse.v1");
+        localStorage.removeItem("citymaker.browserCategory.v2");
+        localStorage.removeItem("citymaker.categoryUse.v1");
     });
     await toDesign(page, "park");
     expect(await width(page)).toBe(560); // 1920 px wide screen → the wide default
@@ -83,7 +83,7 @@ test("narrow screen: 400rem default, chips wrap, section heads still in two colu
     const errors = await open(page, { width: 1440, height: 900 });
     await toDesign(page, "park");
     expect(await width(page)).toBe(400);
-    await expect(page.getByTestId("placemaker-wrap")).toHaveAttribute("data-cols", "1");
+    await expect(page.getByTestId("citymaker-wrap")).toHaveAttribute("data-cols", "1");
     await expect(page.getByTestId("step-0").getByTestId("control-list").first()).toHaveAttribute("data-cols", "2");
     await expect(page.getByTestId("feature-grid")).toHaveAttribute("data-cols", "2");
     await expect(page.getByTestId("control-grid")).toHaveCount(0);
@@ -95,13 +95,13 @@ test("narrow screen: 400rem default, chips wrap, section heads still in two colu
 test("resize by the left edge: wider / narrower, clamped, remembered; double-click resets", async ({ page }) => {
     await open(page);
     await toDesign(page, "parking");
-    const panel0 = await box(page, "placemaker-panel");
+    const panel0 = await box(page, "citymaker-panel");
     // narrower
     await dragEdge(page, 180);
     expect(await width(page)).toBeLessThan(400);
-    const panel1 = await box(page, "placemaker-panel");
+    const panel1 = await box(page, "citymaker-panel");
     expect(Math.abs(panel1.x + panel1.width - (panel0.x + panel0.width))).toBeLessThan(2); // right edge stays docked
-    await expect(page.getByTestId("placemaker-wrap")).toHaveAttribute("data-cols", "1");
+    await expect(page.getByTestId("citymaker-wrap")).toHaveAttribute("data-cols", "1");
     // never below the minimum
     await dragEdge(page, 400);
     expect(await width(page)).toBe(360);
@@ -109,11 +109,11 @@ test("resize by the left edge: wider / narrower, clamped, remembered; double-cli
     // never above 45 % of the screen
     await dragEdge(page, -800);
     expect(await width(page)).toBe(Math.floor(1920 * 0.45));
-    await expect(page.getByTestId("placemaker-wrap")).toHaveAttribute("data-cols", "2");
+    await expect(page.getByTestId("citymaker-wrap")).toHaveAttribute("data-cols", "2");
     await noTextOverflow(page, "max width");
     // remembered
     await page.reload();
-    await expect(page.getByTestId("placemaker-panel")).toBeVisible();
+    await expect(page.getByTestId("citymaker-panel")).toBeVisible();
     expect(await width(page)).toBe(Math.floor(1920 * 0.45));
     // double-click: back to the default for this screen
     await page.getByTestId("panel-resize").dblclick();
@@ -127,17 +127,17 @@ test("resize a floating panel: its right edge stays where it is", async ({ page 
     await page.mouse.down();
     await page.mouse.move(h.x - 300, h.y + 100, { steps: 6 });
     await page.mouse.up();
-    await expect(page.getByTestId("placemaker-wrap")).toHaveAttribute("data-docked", "false");
-    const before = await box(page, "placemaker-panel");
+    await expect(page.getByTestId("citymaker-wrap")).toHaveAttribute("data-docked", "false");
+    const before = await box(page, "citymaker-panel");
     await dragEdge(page, -120);
-    const after = await box(page, "placemaker-panel");
+    const after = await box(page, "citymaker-panel");
     expect(after.width).toBeGreaterThan(before.width + 100);
     expect(Math.abs(after.x + after.width - (before.x + before.width))).toBeLessThan(3);
 });
 
 test("two columns: section heads and extras side by side, an open one unfolds under its pair", async ({ page }) => {
     const errors = await open(page);
-    await page.evaluate(() => localStorage.removeItem("placemaker.sections.v1"));
+    await page.evaluate(() => localStorage.removeItem("citymaker.sections.v1"));
     await toDesign(page, "park");
     const step = page.getByTestId("step-0");
     // every section starts folded, heads two per line

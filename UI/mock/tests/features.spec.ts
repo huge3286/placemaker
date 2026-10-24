@@ -24,7 +24,7 @@ async function forceFit(page: Page, layer: string, fit: unknown) {
 
 test("feature rows fold: collapsed after enabling, summary when folded, open state remembered per type + feature", async ({ page }) => {
     const errors = await open(page);
-    await page.evaluate(() => localStorage.removeItem("placemaker.sections.v1"));
+    await page.evaluate(() => localStorage.removeItem("citymaker.sections.v1"));
     await toDesign(page, "park");
 
     // off: no chevron, nothing to fold
@@ -54,20 +54,20 @@ test("feature rows fold: collapsed after enabling, summary when folded, open sta
     await expect(page.getByTestId("feature-plaza")).toHaveAttribute("data-open", "true");
     await page.getByTestId("feature-fold-plaza").click();
     await expect(page.getByTestId("feature-plaza")).toHaveAttribute("data-open", "false");
-    expect(await page.evaluate(() => JSON.parse(localStorage.getItem("placemaker.sections.v1") || "{}")["feature:park>plaza"])).toBe(false);
+    expect(await page.evaluate(() => JSON.parse(localStorage.getItem("citymaker.sections.v1") || "{}")["feature:park>plaza"])).toBe(false);
     await page.getByTestId("feature-fold-plaza").click();
     await page.reload();
-    await expect(page.getByTestId("placemaker-panel")).toBeVisible();
+    await expect(page.getByTestId("citymaker-panel")).toBeVisible();
     await toDesign(page, "park");
     await page.getByTestId("feature-toggle-plaza").click();
     await expect(page.getByTestId("feature-plaza")).toHaveAttribute("data-open", "true");
-    await page.evaluate(() => localStorage.removeItem("placemaker.sections.v1"));
+    await page.evaluate(() => localStorage.removeItem("citymaker.sections.v1"));
     expect(errors).toEqual([]);
 });
 
 test("fit status: check when placed, amber reduced / red no room from the plan, count on the type header", async ({ page }) => {
     const errors = await open(page);
-    await page.evaluate(() => localStorage.removeItem("placemaker.sections.v1"));
+    await page.evaluate(() => localStorage.removeItem("citymaker.sections.v1"));
     await toDesign(page, "park");
     await expect(page.getByTestId("misfits-0")).toHaveCount(0);
 
@@ -82,8 +82,8 @@ test("fit status: check when placed, amber reduced / red no room from the plan, 
     // the plan says: smaller playground, no room for the fountain
     await page.getByTestId("feature-toggle-fountain").click();
     await waitPlanned(page);
-    await forceFit(page, "playground", { kind: "reduced", text: { key: "Placemaker.Issue.NoRoom", args: ["Playground"] } });
-    await forceFit(page, "fountain", { kind: "failed", text: { key: "Placemaker.UI.Feature.NoRoom" } });
+    await forceFit(page, "playground", { kind: "reduced", text: { key: "Citymaker.Issue.NoRoom", args: ["Playground"] } });
+    await forceFit(page, "fountain", { kind: "failed", text: { key: "Citymaker.UI.Feature.NoRoom" } });
     await expect(page.getByTestId("feature-fit-playground")).toHaveAttribute("data-kind", "reduced");
     await expect(page.getByTestId("feature-fit-line-playground")).toContainText("Reduced");
     await expect(page.getByTestId("feature-fit-line-fountain")).toContainText("No room");
@@ -98,7 +98,7 @@ test("fit status: check when placed, amber reduced / red no room from the plan, 
     await panelShot(page, "fit-status-design");
 
     // stale (re-planning) statuses are dimmed, not hidden
-    await forceFit(page, "fountain", { kind: "failed", text: { key: "Placemaker.UI.Feature.NoRoom" }, stale: true });
+    await forceFit(page, "fountain", { kind: "failed", text: { key: "Citymaker.UI.Feature.NoRoom" }, stale: true });
     await expect(page.getByTestId("feature-fit-fountain")).toHaveAttribute("data-stale", "true");
 
     // back to computed: both fit again → no count
@@ -108,6 +108,6 @@ test("fit status: check when placed, amber reduced / red no room from the plan, 
     // turning a feature off clears its status
     await page.getByTestId("feature-toggle-fountain").click();
     await expect(page.getByTestId("feature-fit-fountain")).toHaveCount(0);
-    await page.evaluate(() => localStorage.removeItem("placemaker.sections.v1"));
+    await page.evaluate(() => localStorage.removeItem("citymaker.sections.v1"));
     expect(errors).toEqual([]);
 });

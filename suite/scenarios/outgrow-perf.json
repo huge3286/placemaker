@@ -80,7 +80,7 @@
         },
         {
           "do": "polish",
-          "click": "panel-mode-placemaker"
+          "click": "panel-mode-citymaker"
         },
         {
           "do": "wait",

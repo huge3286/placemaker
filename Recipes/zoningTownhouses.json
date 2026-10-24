@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "zoningTownhouses",
-  "nameKey": "Placemaker.Zoning.Type.townhouses",
-  "descriptionKey": "Placemaker.Zoning.Type.townhouses.Tooltip",
+  "nameKey": "Citymaker.Zoning.Type.townhouses",
+  "descriptionKey": "Citymaker.Zoning.Type.townhouses.Tooltip",
   "icon": "Media/Game/Icons/Zones.svg",
   "root": {
     "layer": "zoningTownhouses",

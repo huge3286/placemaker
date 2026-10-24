@@ -1,4 +1,4 @@
-// Placemaker — what blocks live zone cells at the cutouts, BEFORE the refresh re-snaps (s60, GPL-3.0).
+// Citymaker — what blocks live zone cells at the cutouts, BEFORE the refresh re-snaps (s60, GPL-3.0).
 //
 // Playtest s60: a cutout plot had 6 open and 7 blocked live cells nearby and zoned nothing; the final check only classifies
 // cells after the zoning. This runs right after the main Apply with the planned cells and reports the source of every
@@ -8,12 +8,12 @@ using System;
 using System.Collections.Generic;
 using Game.Common;
 using Game.Tools;
-using Placemaker.Core.Build;
+using Citymaker.Core.Build;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Build
+namespace Citymaker.Game.Build
 {
     public sealed partial class BuildService
     {
@@ -65,12 +65,12 @@ namespace Placemaker.Game.Build
                     }
                 }
                 finally { results.Dispose(); }
-                if (blocked == 0) { Mod.Log.Info("Placemaker zoning (before refresh): no live cell near a planned cutout cell is blocked."); return; }
+                if (blocked == 0) { Mod.Log.Info("Citymaker zoning (before refresh): no live cell near a planned cutout cell is blocked."); return; }
                 var sb = new System.Text.StringBuilder();
                 foreach (var kv in causes) sb.Append(sb.Length > 0 ? ", " : "").Append(kv.Key).Append(" x").Append(kv.Value);
-                Mod.Log.Warn($"Placemaker zoning (before refresh): {blocked} live cell(s) within 6 m of a planned cutout cell are blocked by: {sb}. e.g. {string.Join("; ", examples)}.");
+                Mod.Log.Warn($"Citymaker zoning (before refresh): {blocked} live cell(s) within 6 m of a planned cutout cell are blocked by: {sb}. e.g. {string.Join("; ", examples)}.");
             }
-            catch (Exception ex) { Mod.Log.Warn("Placemaker zoning: blocked-cell classification failed: " + ex.Message); }
+            catch (Exception ex) { Mod.Log.Warn("Citymaker zoning: blocked-cell classification failed: " + ex.Message); }
         }
     }
 }

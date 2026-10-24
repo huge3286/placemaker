@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "junkYard",
-  "nameKey": "Placemaker.Recipe.JunkYard",
-  "descriptionKey": "Placemaker.Recipe.JunkYard.Description",
+  "nameKey": "Citymaker.Recipe.JunkYard",
+  "descriptionKey": "Citymaker.Recipe.JunkYard.Description",
   "icon": "Media/Game/Icons/Garbage.svg",
   "root": {
     "layer": "junkYard",

@@ -17,13 +17,13 @@
 // ground at the outline.
 
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Leisure;
-using Placemaker.Core.Layers.Types.Scrapyard;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Leisure;
+using Citymaker.Core.Layers.Types.Scrapyard;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Landfill
+namespace Citymaker.Core.Layers.Types.Landfill
 {
     [AreaGenerator(311, Group = "industrial")]
     public sealed class LandfillLayer : LeisureLayer
@@ -33,7 +33,7 @@ namespace Placemaker.Core.Layers.Types.Landfill
 
         public const string LayerId = "landfill";
         public static readonly string[] Styles = { "active", "capped", "compost", "recycling", "flytip" };
-        public const string MoundTooSmallKey = "Placemaker.Landfill.Issue.MoundTooSmall";
+        public const string MoundTooSmallKey = "Citymaker.Landfill.Issue.MoundTooSmall";
 
         protected override string Area => "Landfill";
         public override string Id => LayerId;
@@ -45,7 +45,7 @@ namespace Placemaker.Core.Layers.Types.Landfill
         {
             Feature(SkipRowAddOn.LayerId), Feature(JunkPilesAddOn.LayerId, ("mix", "garbage")),
             Feature("decals", ("theme", "dirt"), ("density", 1.0), ("clustering", 70.0)),
-            Feature("picnic", ("groups", 2.0)), YardKit.Labelled(Feature("bigtrees", ("density", 1.0)), "Placemaker.Landfill.Feature.bigtrees"), Feature("restrooms", ("count", 1.0), ("byArea", false)),
+            Feature("picnic", ("groups", 2.0)), YardKit.Labelled(Feature("bigtrees", ("density", 1.0)), "Citymaker.Landfill.Feature.bigtrees"), Feature("restrooms", ("count", 1.0), ("byArea", false)),
             StreetShopsFeature(Area),
         };
 
@@ -142,7 +142,7 @@ namespace Placemaker.Core.Layers.Types.Landfill
         /// <summary>Haul roads: compacted grey gravel (vanilla ore ground as the fallback), not mud.</summary>
         private static AssetRef HaulGround => new AssetRef("Terrain Surfaces Pack Rock gaga TTP - Smaller Pebbles grey M Surface", "Ore Surface 01");
         /// <summary>Tipped waste: the game's own landfill ground.</summary>
-        private static AssetRef WasteGround => new AssetRef("Landfill Surface 01", "Placemaker Overlay (Landfill Surface 01)", "Oil Surface 01");
+        private static AssetRef WasteGround => new AssetRef("Landfill Surface 01", "Citymaker Overlay (Landfill Surface 01)", "Oil Surface 01");
         /// <summary>Daily cover on the tip: brown soil.</summary>
         private static AssetRef CoverGround => new AssetRef("Terrain Surfaces Pack Ground gaga TTP - Soil M Surface", "EAI - Surface Pack Ground Mud Surface", "Oil Surface 01");
         /// <summary>Compost windrows: dark ploughed soil.</summary>
@@ -202,13 +202,13 @@ namespace Placemaker.Core.Layers.Types.Landfill
             YardKit.Settle(ctx, terrain);
 
             CommonStats(ctx);
-            ctx.Stat("Placemaker.Stat.GarbageItems", s.Garbage, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Vents", s.Vents, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Machines", s.Machines, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Skips", s.Skips, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Windrows", s.Windrows, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Bales", s.Bales, Keys.UnitCount);
-            if (terrain.Cells > 0) ctx.Stat("Placemaker.Stat.TerrainChange", System.Math.Round(math.max(terrain.MaxOffset, -terrain.MinOffset), 1), Keys.UnitM);
+            ctx.Stat("Citymaker.Stat.GarbageItems", s.Garbage, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Vents", s.Vents, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Machines", s.Machines, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Skips", s.Skips, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Windrows", s.Windrows, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Bales", s.Bales, Keys.UnitCount);
+            if (terrain.Cells > 0) ctx.Stat("Citymaker.Stat.TerrainChange", System.Math.Round(math.max(terrain.MaxOffset, -terrain.MinOffset), 1), Keys.UnitM);
         }
 
         // ───────────── the mound ─────────────

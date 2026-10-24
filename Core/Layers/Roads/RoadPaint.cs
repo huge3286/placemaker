@@ -1,4 +1,4 @@
-// Placemaker roads layer (smarter roads) — the ground the new streets wear in: painted into the terrain texture, so a new
+// Citymaker roads layer (smarter roads) — the ground the new streets wear in: painted into the terrain texture, so a new
 // district looks lived in instead of stamped on.
 //
 //   desire paths  worn dirt lines where people would walk a shortcut the streets do not give them: the straight way
@@ -12,12 +12,12 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Paint;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Paint;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads
+namespace Citymaker.Core.Layers.Roads
 {
     internal static class RoadPaint
     {

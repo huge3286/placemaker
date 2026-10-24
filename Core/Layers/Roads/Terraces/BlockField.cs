@@ -1,4 +1,4 @@
-// Placemaker roads layer — "Terraced blocks": the ground for every road pattern (grid, organic, superblocks, loops…), so
+// Citymaker roads layer — "Terraced blocks": the ground for every road pattern (grid, organic, superblocks, loops…), so
 // a road network laid over a hill never leaves its zoning on a slope. The same engine as the hillside terraces
 // (TerraceField: one continuous height field on a 2 m node grid, emitted once as sloped quads, the same bank limits,
 // clash resolution, earthwork cap and dressing), but its sources are every zoning street of the final network:
@@ -27,12 +27,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Placemaker.Core.Build;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Build;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads.Terraces
+namespace Citymaker.Core.Layers.Roads.Terraces
 {
     /// <summary>A retaining wall: a wide quay's centre line along the top of a cut, its deck heights and uphill directions.</summary>
     internal sealed class TerraceWall

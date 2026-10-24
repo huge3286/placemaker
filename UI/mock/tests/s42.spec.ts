@@ -8,9 +8,9 @@ async function realDesign(page: Page) {
     await page.waitForFunction(() => (window as any).pm.backend.hostUp !== undefined);
     await page.waitForTimeout(300);
     await page.evaluate(() => {
-        localStorage.removeItem("placemaker.sections.v1");
-        localStorage.removeItem("placemaker.browserCategory.v2");
-        localStorage.removeItem("placemaker.categoryUse.v1");
+        localStorage.removeItem("citymaker.sections.v1");
+        localStorage.removeItem("citymaker.browserCategory.v2");
+        localStorage.removeItem("citymaker.categoryUse.v1");
     });
     await drawPolygon(page, FIELD);
     await page.getByTestId("primary").click();

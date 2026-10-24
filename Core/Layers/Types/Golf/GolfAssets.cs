@@ -8,9 +8,9 @@
 //    flat training cones for tee markers and the dog-park pole (0.9 m) for a disc golf basket.
 // Every id is a default only: a player's own pick in the asset controls always wins.
 
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 
-namespace Placemaker.Core.Layers.Types.Golf
+namespace Citymaker.Core.Layers.Types.Golf
 {
     internal static class GolfAssets
     {

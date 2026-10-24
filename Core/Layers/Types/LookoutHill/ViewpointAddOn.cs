@@ -3,11 +3,11 @@
 // in any park it lines the edge facing the view out of the park.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.AddOns;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.AddOns;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.LookoutHill
+namespace Citymaker.Core.Layers.Types.LookoutHill
 {
     [AreaGenerator(248)]
     public sealed class ViewpointAddOn : AddOnLayer
@@ -75,7 +75,7 @@ namespace Placemaker.Core.Layers.Types.LookoutHill
                 if (board != null && LeisureKit.Put(ctx, occ, p - outward * 1.8f - side * 0.8f, Facing(p, p + outward), ObjectRole.Furniture, boardAsset, board, 0.5f,
                     Hashing.Mix(v, 2u), 0.3f, 0.2f)) extras++;
             }
-            if (chosen.Count == 0) NoSpace(ctx, "Placemaker.AddOn.Viewpoint.Name");
+            if (chosen.Count == 0) NoSpace(ctx, "Citymaker.AddOn.Viewpoint.Name");
             ctx.Stat(Keys.StatBenches, chosen.Count, Keys.UnitCount);
             ctx.Plan.Facts["viewpoints"] = chosen.Count;
             ctx.Plan.Facts["viewpointExtras"] = extras;

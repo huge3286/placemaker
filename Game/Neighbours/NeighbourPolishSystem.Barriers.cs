@@ -1,12 +1,12 @@
-// Placemaker neighbourhood polish — what gardens never cross and like to meet (GPL-3.0).
+// Citymaker neighbourhood polish — what gardens never cross and like to meet (GPL-3.0).
 //
 // For each pass the planner gets the barriers around its patch of town (StitchSettings.Barriers): the ground surfaces of
 // roads, paths and tracks (each edge's surface as the game draws it, sidewalks, junction corners, turning circles and
 // roundabouts included (Selection/RoadSurfaces); tunnelled pieces left out: the ground above a tunnel is open), the decks of
 // elevated ones as seen from above (an overpass, a bridge: the ground under it is no garden's; YardStitch.DeckKind), the lots
-// of buildings that are not houses (service buildings, Placemaker builds' buildings, houses still
+// of buildings that are not houses (service buildings, Citymaker builds' buildings, houses still
 // being built: a building site is no house to plan yet), lot
-// areas and every Placemaker build's outline (as the area brush's "Lots" and "My builds": a park in the middle of a block
+// areas and every Citymaker build's outline (as the area brush's "Lots" and "My builds": a park in the middle of a block
 // stays the park's), and water (sampled every 4 m, merged). Two houses never join across one, no garden reaches onto one,
 // and a garden side nobody else has reaches out to one near it (YardStitch.Hug). Read from the game's own search trees, so
 // a patch costs the same in a city of any size.
@@ -18,13 +18,13 @@ using Game.Common;
 using Game.Net;
 using Game.Prefabs;
 using Game.Tools;
-using Placemaker.Core.Neighbours;
-using Placemaker.Game.Selection;
+using Citymaker.Core.Neighbours;
+using Citymaker.Game.Selection;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Neighbours
+namespace Citymaker.Game.Neighbours
 {
     public sealed partial class NeighbourPolishSystem
     {
@@ -138,7 +138,7 @@ namespace Placemaker.Game.Neighbours
         private static bool Exact(EdgeNodeGeometry x, EdgeNodeGeometry y) => Exact(x.m_Left, y.m_Left) && Exact(x.m_Right, y.m_Right) && Exact(x.m_Middle, y.m_Middle) && x.m_MiddleRadius == y.m_MiddleRadius;
 
         /// <summary>The barriers in a box, what each is (0 a road, path or track, 1 a building's lot, a lot area or a
-        /// Placemaker build, 2 water, 3 the deck of an elevated road, path or track, or a pillar under one), which belong
+        /// Citymaker build, 2 water, 3 the deck of an elevated road, path or track, or a pillar under one), which belong
         /// together (a road piece's surfaces: the edge's entity) and how high each stands above the ground (a deck's slices:
         /// the planner grows under the ones high enough).</summary>
         private List<float2[]> BarriersIn(float2 min, float2 max, List<int> kinds, List<long> groups, HashSet<Entity> planned = null, List<float> heights = null)
@@ -234,7 +234,7 @@ namespace Placemaker.Game.Neighbours
             }
             finally { results.Dispose(); }
             BarrierPartMs[1] += partClock.Elapsed.TotalMilliseconds; partClock.Restart();
-            // lot areas and Placemaker builds (their saved outlines)
+            // lot areas and Citymaker builds (their saved outlines)
             try
             {
                 _obstacles ??= new BlockObstacles(EntityManager, World);
@@ -247,7 +247,7 @@ namespace Placemaker.Game.Neighbours
                 BarrierPartMs[2] += partClock.Elapsed.TotalMilliseconds; partClock.Restart();
                 // water: sampled by a job (Sampling) and added on the plan's worker
             }
-            catch (System.Exception e) { if (_errors++ < 5) Mod.Log.Warn("Placemaker neighbourhood polish: could not read lots, builds or water: " + e.Message); }
+            catch (System.Exception e) { if (_errors++ < 5) Mod.Log.Warn("Citymaker neighbourhood polish: could not read lots, builds or water: " + e.Message); }
             BarrierPartMs[3] += partClock.Elapsed.TotalMilliseconds;
             return list;
         }
@@ -281,7 +281,7 @@ namespace Placemaker.Game.Neighbours
         }
 
         /// <summary>
-        /// Something built near polished gardens (a road, a path, a Placemaker build, a park, a service building): the gardens
+        /// Something built near polished gardens (a road, a path, a Citymaker build, a park, a service building): the gardens
         /// within reach of it are planned again, so they give that land back (they never grow into a build). Something
         /// bulldozed there likewise: they may take the land it leaves. Both are the player's own work: planned first.
         /// </summary>
@@ -352,7 +352,7 @@ namespace Placemaker.Game.Neighbours
                     using (var all = query.ToEntityArray(Allocator.Temp))
                         for (int k = 0; k < all.Length && what.Count < 4; k++)
                             if (EntityManager.HasComponent<PrefabRef>(all[k])) what.Add(verb + " " + NameOf(EntityManager.GetComponentData<PrefabRef>(all[k]).m_Prefab));
-                Mod.Log.Info($"Placemaker neighbourhood polish: something built or bulldozed nearby ({string.Join(", ", what)}): {marked} gardens planned again first");
+                Mod.Log.Info($"Citymaker neighbourhood polish: something built or bulldozed nearby ({string.Join(", ", what)}): {marked} gardens planned again first");
                 s_logPasses = 4;
             }
         }

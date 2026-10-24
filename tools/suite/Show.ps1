@@ -39,11 +39,11 @@
   Views: 45 (default; 45 degrees from the south), top (straight down), low (20 degrees), close (a close look at the
   middle). Every view but close is framed on the build.
   Modes: clean (default; no overlays), zoning (the game's zone grid: zoned cells in their zone colour), overlay
-  (Placemaker's and the game's overlays), ui (the real screen, with the game's bars), terrain (a map of the ground's
+  (Citymaker's and the game's overlays), ui (the real screen, with the game's bars), terrain (a map of the ground's
   height from above, once per build whatever the views: blue below the outline's typical ground, red above, contour
   lines every 0.5 m, the outline in white; no buildings, trees or roads).
 
-  Logs: Placemaker.log and the lines of each build; Player.log for the game's own errors; suite.log for the runner's
+  Logs: Citymaker.log and the lines of each build; Player.log for the game's own errors; suite.log for the runner's
   steps with timings. Everything is in the run folder it prints; contact.html shows every picture in order.
 #>
 param(
@@ -296,7 +296,7 @@ if (-not (Test-Path -LiteralPath $summaryFile)) {
     exit 1
 }
 $rows = @((Get-Content -LiteralPath $summaryFile -Raw -Encoding UTF8 | ConvertFrom-Json).scenarios)
-$log = Join-Path $runDir 'logs\Placemaker.log'
+$log = Join-Path $runDir 'logs\Citymaker.log'
 $lines = if (Test-Path -LiteralPath $log) { @(Get-Content -LiteralPath $log -Encoding UTF8) } else { @() }
 $pictures = 0
 Write-Host ''
@@ -306,8 +306,8 @@ foreach ($sc in $rows) {
     $from = $null; $to = $null
     $logId = if ($sc.sessionId) { $sc.sessionId } else { $sc.id }   # the queue's game names a repeated id 'id+' in its log
     for ($i = 0; $i -lt $lines.Count; $i++) {
-        if (-not $from -and $lines[$i] -like "*Placemaker suite: scenario $logId on *") { $from = $i + 1 }
-        if ($lines[$i] -like "*Placemaker suite: scenario ${logId}: *") { $to = $i + 1 }
+        if (-not $from -and $lines[$i] -like "*Citymaker suite: scenario $logId on *") { $from = $i + 1 }
+        if ($lines[$i] -like "*Citymaker suite: scenario ${logId}: *") { $to = $i + 1 }
     }
     $why = if ($sc.status -eq 'built') { '' } elseif ($sc.failure) { ": $($sc.failure)" } elseif ($sc.unready) { ": $($sc.unready)" } elseif ($sc.refused) { ": $($sc.refused)" } else { '' }
     Write-Host ("{0}: {1}{2} ({3})" -f $sc.id, $sc.status, $why, $sc.block)

@@ -1,8 +1,8 @@
-// Placemaker — the game's own vehicles as static props (Industrial category, 2026-10-19) (GPL-3.0).
+// Citymaker — the game's own vehicles as static props (Industrial category, 2026-10-19) (GPL-3.0).
 //
 // The base game has no car-shaped prop at all: a car yard, a breakers' yard or a staff car park could only be built from
 // stand-ins. Every vehicle prefab carries its meshes, so a static object prefab that shows the same meshes is a parked
-// (or wrecked) vehicle: "Placemaker Vehicle Car 1".."Car 10", "Van 1".., "Truck", "Garbage", "Tractor", "Camper",
+// (or wrecked) vehicle: "Citymaker Vehicle Car 1".."Car 10", "Van 1".., "Truck", "Garbage", "Tractor", "Camper",
 // "Loader" (Core/Layers/Types/Industrial/IndustrialAssets.cs, VehicleProps). Each slot takes a vehicle of its kind from
 // the playset, sorted by name, so a slot keeps its vehicle from one load to the next (saves reference the slot by name).
 // A kind with fewer vehicles than slots repeats them; a kind the playset lacks makes no slot and the plan's fallback id
@@ -20,14 +20,14 @@ using System.Collections.Generic;
 using Game;
 using Game.Objects;
 using Game.Prefabs;
-using Placemaker.Core.Layers.Types.Yards;
+using Citymaker.Core.Layers.Types.Yards;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Scripting;
 
-namespace Placemaker.Game.Assets
+namespace Citymaker.Game.Assets
 {
     public sealed partial class VehiclePropSystem : GameSystemBase
     {
@@ -60,7 +60,7 @@ namespace Placemaker.Game.Assets
             if (++_quietFrames < 30) return;
             _done = true;
             try { MakeAll(); }
-            catch (Exception e) { Mod.Log.Warn("Placemaker vehicle props unavailable: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker vehicle props unavailable: " + e.Message); }
         }
 
         private void MakeAll()
@@ -100,7 +100,7 @@ namespace Placemaker.Game.Assets
                 }
                 summary.Add($"{kind}: {string.Join(", ", names)}");
             }
-            Mod.Log.Info($"Placemaker made {made} vehicle props from the playset's vehicles ({string.Join("; ", summary)}).");
+            Mod.Log.Info($"Citymaker made {made} vehicle props from the playset's vehicles ({string.Join("; ", summary)}).");
             if (made > 0) World.GetExistingSystemManaged<AssetCatalogSystem>()?.RequestRescan();
         }
 

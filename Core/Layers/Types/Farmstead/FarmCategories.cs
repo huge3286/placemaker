@@ -4,7 +4,7 @@
 // exist are classified by name below (FarmCategoryRules). Every layer asks through a fallback
 // chain ("a silo, else a garden shed") and degrades to an Info issue when nothing is installed.
 
-namespace Placemaker.Core
+namespace Citymaker.Core
 {
     public static partial class AssetCategories
     {

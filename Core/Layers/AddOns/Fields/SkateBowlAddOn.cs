@@ -6,11 +6,11 @@
 // obstacles in two staggered rows round a central funbox.
 
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns.Fields
+namespace Citymaker.Core.Layers.AddOns.Fields
 {
     [AreaGenerator(186)]
     public sealed class SkateBowlAddOn : FieldAddOn
@@ -135,7 +135,7 @@ namespace Placemaker.Core.Layers.AddOns.Fields
             if (ctx.B("fence"))
                 RectFence(ctx, new OrientedRect { Center = place.Center, Axis = place.Axis, HalfLength = place.HalfLength - 0.4f, HalfWidth = place.HalfWidth - 0.4f },
                     j.Toward, 2.5f, AssetMix.One(ctx.S("fenceAsset")));
-            ctx.Stat("Placemaker.Stat.SkateFeatures", placed + (rim != null ? 1 : 0), Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.SkateFeatures", placed + (rim != null ? 1 : 0), Keys.UnitCount);
         }
 
         private static readonly string[] MixedSet = { "SkateParkRamp01", "SkateParkBox01", "SkateParkRail01", "SkateParkRamp02", "SkateParkBox02", "SkateParkRail02", "SkateParkRamp03" };

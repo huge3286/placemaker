@@ -4,11 +4,11 @@
 // original ground at their rim (the outer ring changes the ground by only a fraction of the height).
 
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.AdventurePlayground
+namespace Citymaker.Core.Layers.Types.AdventurePlayground
 {
     /// <summary>Resolves category chains once per plan; null = nothing installed (Info issue added once).</summary>
     public sealed class CategoryChains

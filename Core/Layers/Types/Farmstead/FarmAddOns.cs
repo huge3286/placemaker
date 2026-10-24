@@ -7,11 +7,11 @@
 // The urban farm's "honeyHives" and "farmStall" were merged into these two (g5); the old ids are aliases.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.AddOns;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.AddOns;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Farmstead
+namespace Citymaker.Core.Layers.Types.Farmstead
 {
     [AreaGenerator(171)]
     public sealed class ApiaryAddOn : AddOnLayer
@@ -59,7 +59,7 @@ namespace Placemaker.Core.Layers.Types.Farmstead
             var pref = ctx.S("where") == "open" ? Spots.Preference.Open : ctx.S("where") == "centre" ? Spots.Preference.Centre : Spots.Preference.NearBoundary;
             if (!Spots.Find(occ, radius + 1f, pref, Hashing.Mix(ctx.Seed, 0xA9u), out var c, null, 0f, 1f, 1500))
             {
-                NoSpace(ctx, "Placemaker.AddOn.Apiary.Name");
+                NoSpace(ctx, "Citymaker.AddOn.Apiary.Name");
                 return;
             }
             // Hive entrances face the sunny side (south, -Z) and away from the nearest path.
@@ -98,7 +98,7 @@ namespace Placemaker.Core.Layers.Types.Farmstead
                 float y = layout == "ring" ? Facing(c, p) : yaw + (Hashing.Unit(v) - 0.5f) * 0.25f;
                 if (LeisureKit.Put(ctx, occ, p, y, ObjectRole.Furniture, hiveAsset, cat, 0.55f, v, 0.5f, 0.2f)) placed++;
             }
-            if (placed == 0) { NoSpace(ctx, "Placemaker.AddOn.Apiary.Name"); return; }
+            if (placed == 0) { NoSpace(ctx, "Citymaker.AddOn.Apiary.Name"); return; }
             occ.Take(c, radius - 1f, 0);
 
             if (ctx.B("fence"))
@@ -122,8 +122,8 @@ namespace Placemaker.Core.Layers.Types.Farmstead
                         if (LeisureKit.Put(ctx, occ, p, a, role, AssetMix.One(""), fcat, 1f, Hashing.Mix(ctx.Seed, 0xF1u + (uint)i), 0.5f, 0.2f)) flowers++;
                     }
             }
-            if (placed < wanted) ctx.Issue(IssueSeverity.Info, "Placemaker.AddOn.Apiary.Issue.Fewer", placed, wanted);
-            ctx.Stat("Placemaker.Stat.Beehives", placed, Keys.UnitCount);
+            if (placed < wanted) ctx.Issue(IssueSeverity.Info, "Citymaker.AddOn.Apiary.Issue.Fewer", placed, wanted);
+            ctx.Stat("Citymaker.Stat.Beehives", placed, Keys.UnitCount);
             ctx.Stat(Keys.StatFlowerbeds, flowers, Keys.UnitCount);
         }
     }
@@ -210,10 +210,10 @@ namespace Placemaker.Core.Layers.Types.Farmstead
                         if (LeisureKit.Put(ctx, occ, p, LeisureKit.Yaw(p, a.Position), role, AssetMix.One(""), seatCat, 1.4f, Hashing.Mix(v, (uint)(k + 9)))) seats++;
                     }
             }
-            if (placed == 0) NoSpace(ctx, "Placemaker.AddOn.FarmStand.Name");
-            else if (placed < wanted) ctx.Issue(IssueSeverity.Info, "Placemaker.AddOn.FarmStand.Issue.Fewer", placed, wanted);
-            ctx.Stat("Placemaker.Stat.Kiosks", placed, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Seats", seats, Keys.UnitCount);
+            if (placed == 0) NoSpace(ctx, "Citymaker.AddOn.FarmStand.Name");
+            else if (placed < wanted) ctx.Issue(IssueSeverity.Info, "Citymaker.AddOn.FarmStand.Issue.Fewer", placed, wanted);
+            ctx.Stat("Citymaker.Stat.Kiosks", placed, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Seats", seats, Keys.UnitCount);
             ctx.Plan.Facts["farmStandCrates"] = crates;
         }
     }

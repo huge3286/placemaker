@@ -10,15 +10,15 @@
 //   earthworks  cut & fill: a gentle excavation on one side, spoil mounds on the other, a haul loop
 // Terrain changes are always blended back to the original ground at the outline (SiteKit.Sculpt).
 
-using Placemaker.Core.Layers.Types.Scrapyard;
+using Citymaker.Core.Layers.Types.Scrapyard;
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Leisure;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Leisure;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.ConstructionSite
+namespace Citymaker.Core.Layers.Types.ConstructionSite
 {
     [AreaGenerator(72, Group = "industrial")]
     public sealed class ConstructionSiteLayer : LeisureLayer
@@ -42,7 +42,7 @@ namespace Placemaker.Core.Layers.Types.ConstructionSite
         protected override List<FeatureInfo> BuildFeatures() => new List<FeatureInfo>
         {
             Feature(SpoilHeapsAddOn.LayerId), Feature(WorkLightsAddOn.LayerId), Feature("decals", ("theme", "dirt"), ("density", 3.0)),
-            Named(Feature("kiosk"), "Placemaker.AddOn.Kiosk.Name"), Feature("restrooms"),
+            Named(Feature("kiosk"), "Citymaker.AddOn.Kiosk.Name"), Feature("restrooms"),
         };
 
         /// <summary>A feature labelled with another key (e.g. the add-on's own name).</summary>
@@ -254,10 +254,10 @@ namespace Placemaker.Core.Layers.Types.ConstructionSite
             EmitYard(ctx, s.Occ, w.Inside);
 
             ctx.Stat(Keys.StatArea, Math.Round(region.Area), Keys.UnitM2);
-            ctx.Stat("Placemaker.Stat.Machines", s.MachinesPlaced, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Heaps", s.PilesPlaced, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Cabins", s.CabinsPlaced, Keys.UnitCount);
-            if (ctx.Plan.Facts.TryGetValue("terrainMaxLower", out var cut) && cut > 0.2) ctx.Stat("Placemaker.Stat.PitDepth", Math.Round(cut, 1), Keys.UnitM);
+            ctx.Stat("Citymaker.Stat.Machines", s.MachinesPlaced, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Heaps", s.PilesPlaced, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Cabins", s.CabinsPlaced, Keys.UnitCount);
+            if (ctx.Plan.Facts.TryGetValue("terrainMaxLower", out var cut) && cut > 0.2) ctx.Stat("Citymaker.Stat.PitDepth", Math.Round(cut, 1), Keys.UnitM);
             ctx.Plan.Facts["subtype"] = Array.IndexOf(Subtypes, s.Subtype);
         }
 
@@ -294,7 +294,7 @@ namespace Placemaker.Core.Layers.Types.ConstructionSite
             var c = WorkCentre(s);
             if (!FitRect(s, c, s.Axis, s.Major * 0.5f * size, s.Minor * 0.5f * size, margin, out var pit))
             {
-                ctx.Issue(IssueSeverity.Info, "Placemaker.ConstructionSite.Issue.NoRoomForWorks");
+                ctx.Issue(IssueSeverity.Info, "Citymaker.ConstructionSite.Issue.NoRoomForWorks");
                 return w;
             }
             w.Ring = pit.Ring;
@@ -375,7 +375,7 @@ namespace Placemaker.Core.Layers.Types.ConstructionSite
             float width = 8f + 8f * ctx.F("workSize") / 100f;
             if (!LeisureKit.Chord(s.Region, c, s.Axis, 6f + width * 0.5f, out var a, out var b) || math.distance(a, b) < 24f)
             {
-                ctx.Issue(IssueSeverity.Info, "Placemaker.ConstructionSite.Issue.NoRoomForWorks");
+                ctx.Issue(IssueSeverity.Info, "Citymaker.ConstructionSite.Issue.NoRoomForWorks");
                 return w;
             }
             var strips = new List<(float2 a, float2 b, float hw)> { (a, b, width * 0.5f) };
@@ -482,7 +482,7 @@ namespace Placemaker.Core.Layers.Types.ConstructionSite
             float size = math.sqrt(ctx.F("workSize") / 100f);
             if (!FitRect(s, c, s.Axis, s.Major * 0.5f * size, s.Minor * 0.5f * size, 6f, out var yard))
             {
-                ctx.Issue(IssueSeverity.Info, "Placemaker.ConstructionSite.Issue.NoRoomForWorks");
+                ctx.Issue(IssueSeverity.Info, "Citymaker.ConstructionSite.Issue.NoRoomForWorks");
                 return w;
             }
             var yardRegion = LayerRegion.From(yard.Ring);
@@ -533,7 +533,7 @@ namespace Placemaker.Core.Layers.Types.ConstructionSite
             var w = new Works();
             var c = s.Region.DeepestPoint(out float ins, (q, cap) => s.Occ.Clearance(q, cap), 16);
             float r = math.min(math.sqrt(s.Region.Area * ctx.F("workSize") / 100f / math.PI), ins * 0.92f);
-            if (r < 10f) { ctx.Issue(IssueSeverity.Info, "Placemaker.ConstructionSite.Issue.NoRoomForWorks"); return w; }
+            if (r < 10f) { ctx.Issue(IssueSeverity.Info, "Citymaker.ConstructionSite.Issue.NoRoomForWorks"); return w; }
             var field = LeisureKit.Blob(c, r, Hashing.Mix(ctx.Seed, 0xDE30u), 18, 0.18f);
             var fieldRegion = LeisureKit.Intersect(s.Region, field);
             if (fieldRegion == null) return w;
@@ -618,7 +618,7 @@ namespace Placemaker.Core.Layers.Types.ConstructionSite
             float cutR = math.min(math.sqrt(s.Region.Area * size * 0.5f / math.PI), s.Region.BoundaryDistance(cutC) - s.Depth / (MaxSlopePct / 100f) - 4f);
             cutR = math.min(cutR, s.Occ.Clearance(cutC, 200f) - 2f);
             cutR = math.min(cutR, math.max(s.Major * 0.24f, s.Minor * 0.3f));
-            if (cutR < 10f) { ctx.Issue(IssueSeverity.Info, "Placemaker.ConstructionSite.Issue.NoRoomForWorks"); return w; }
+            if (cutR < 10f) { ctx.Issue(IssueSeverity.Info, "Citymaker.ConstructionSite.Issue.NoRoomForWorks"); return w; }
             var cut = LeisureKit.Intersect(s.Region, LeisureKit.Blob(cutC, cutR, Hashing.Mix(ctx.Seed, 0xC07u), 16, 0.15f));
             if (cut == null) return w;
             w.Ring = cut.Ring;

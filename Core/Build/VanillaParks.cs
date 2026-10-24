@@ -1,4 +1,4 @@
-// Placemaker — stats of vanilla parks, plazas, playgrounds and sports fields (GPL-3.0).
+// Citymaker — stats of vanilla parks, plazas, playgrounds and sports fields (GPL-3.0).
 //
 // Read from the CS2 1.6.2f1 prefabs (base game resources.assets, Prefabs_FreeUpdate02.cok, Modern
 // Architecture Prefabs.cok) on 2026-10-14 — see docs/PARK-STATS.md for the method and the formulas.
@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     public enum VanillaParkKind { Pocket = 0, Park = 1, Plaza = 2, Playground = 3, Sports = 4, Nature = 5, Unique = 6 }
 

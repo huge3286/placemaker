@@ -1,4 +1,4 @@
-// Placemaker add-on "edgeZoning": zoning along the road frontage of a region.
+// Citymaker add-on "edgeZoning": zoning along the road frontage of a region.
 // Idea adapted from Grid Road Generator (Ti4goc), Systems/GridRoadToolSystem.Zoning.cs: quads of
 // 24 m along each road, painted with the game's zoning tool mechanics (Marquee, never Overwrite —
 // cells that are already zoned keep their zone; the game layer applies that flag). Unlike GRG,
@@ -7,11 +7,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Roads;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Roads;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns
+namespace Citymaker.Core.Layers.AddOns
 {
     [AreaGenerator(900, Loose = true)]
     public sealed class EdgeZoningAddOn : IAreaGenerator
@@ -27,7 +27,7 @@ namespace Placemaker.Core.Layers.AddOns
         /// <summary>CS2 zone cells are 8 m; blocks reach 6 cells deep.</summary>
         public const float CellSize = 8f;
         public const float PieceLength = 24f;
-        public const string NoFrontageKey = "Placemaker.EdgeZoning.Issue.NoFrontage";
+        public const string NoFrontageKey = "Citymaker.EdgeZoning.Issue.NoFrontage";
         /// <summary>Quads start this far on the road side of the frontage so the first cell row is caught.</summary>
         private const float RoadSideOverlap = 1f;
         /// <summary>Frontage = region edge within road half-width + this of a road centre line.</summary>
@@ -43,7 +43,7 @@ namespace Placemaker.Core.Layers.AddOns
                 new ControlSchema
                 {
                     Id = DepthControl, Kind = ControlKind.Slider, Tier = ControlTier.Essential, Group = "zoning",
-                    LabelKey = "Placemaker.EdgeZoning.Control.depth", TooltipKey = "Placemaker.EdgeZoning.Control.depth.Tooltip",
+                    LabelKey = "Citymaker.EdgeZoning.Control.depth", TooltipKey = "Citymaker.EdgeZoning.Control.depth.Tooltip",
                     Min = CellSize, Max = 6 * CellSize, Step = CellSize, Unit = "m", Default = 6.0 * CellSize, Cheap = true,
                     // s14: inside a zoning cutout the cutout itself is the depth (the host's "Depth"); the feature sets "cutout".
                     VisibleWhen = CutoutSetting + "=false",
@@ -51,32 +51,32 @@ namespace Placemaker.Core.Layers.AddOns
                 new ControlSchema
                 {
                     Id = ZoneControl, Kind = ControlKind.Asset, Tier = ControlTier.More, Group = "zoning",
-                    LabelKey = "Placemaker.EdgeZoning.Control.zone", TooltipKey = "Placemaker.EdgeZoning.Control.zone.Tooltip",
+                    LabelKey = "Citymaker.EdgeZoning.Control.zone", TooltipKey = "Citymaker.EdgeZoning.Control.zone.Tooltip",
                     AssetCategory = AssetCategories.Zone, Default = "", Cheap = true,
                 },
                 // s14: a settings flag, never shown (its VisibleWhen can never hold): the Zoning feature sets it on its child.
                 new ControlSchema
                 {
                     Id = CutoutSetting, Kind = ControlKind.Toggle, Tier = ControlTier.More, Group = "zoning", Default = false, Cheap = true,
-                    LabelKey = "Placemaker.EdgeZoning.Control.cutout", TooltipKey = "Placemaker.EdgeZoning.Control.cutout.Tooltip", VisibleWhen = CutoutSetting + "=hidden",
+                    LabelKey = "Citymaker.EdgeZoning.Control.cutout", TooltipKey = "Citymaker.EdgeZoning.Control.cutout.Tooltip", VisibleWhen = CutoutSetting + "=hidden",
                 },
             };
         }
 
-        /// <summary>Zone type choice (labels Placemaker.Zone.<kind>, shared with every type that zones).</summary>
+        /// <summary>Zone type choice (labels Citymaker.Zone.<kind>, shared with every type that zones).</summary>
         public static ControlSchema ZoneKindControl(string id = KindControl, string group = "zoning", string def = Common.ZoneKinds.Default)
         {
             var c = new ControlSchema
             {
                 Id = id, Kind = ControlKind.Choice, Tier = ControlTier.Essential, Group = group, Default = def, Cheap = true,
-                LabelKey = "Placemaker.Zone.Type", TooltipKey = "Placemaker.Zone.Type.Tooltip",
+                LabelKey = "Citymaker.Zone.Type", TooltipKey = "Citymaker.Zone.Type.Tooltip",
             };
-            foreach (var k in Common.ZoneKinds.All) c.Options.Add(new ControlOption { Value = k, LabelKey = "Placemaker.Zone." + k, TooltipKey = "Placemaker.Zone." + k + ".Tooltip" });
+            foreach (var k in Common.ZoneKinds.All) c.Options.Add(new ControlOption { Value = k, LabelKey = "Citymaker.Zone." + k, TooltipKey = "Citymaker.Zone." + k + ".Tooltip" });
             return c;
         }
 
         public string Id => LayerId;
-        public string NameKey => "Placemaker.EdgeZoning.Name";
+        public string NameKey => "Citymaker.EdgeZoning.Name";
         public string Icon => "Media/Game/Icons/Zones.svg";
         public LayerKind Kind => LayerKind.AddOn;
         public string[] Accepts => new[] { RegionTags.Edge, RegionTags.Block };
@@ -126,7 +126,7 @@ namespace Placemaker.Core.Layers.AddOns
                     A = new float3(q[0].x, h(q[0]), q[0].y), B = new float3(q[1].x, h(q[1]), q[1].y),
                     C = new float3(q[2].x, h(q[2]), q[2].y), D = new float3(q[3].x, h(q[3]), q[3].y), ZoneId = zone,
                 });
-                plan.Stats.Add(new PlanStat("Placemaker.EdgeZoning.Stat.Area", Math.Round(ZonedArea(plan)), "m2"));
+                plan.Stats.Add(new PlanStat("Citymaker.EdgeZoning.Stat.Area", Math.Round(ZonedArea(plan)), "m2"));
                 plan.Facts["edgeZoning.quads"] = 1;
                 return plan;
             }
@@ -170,7 +170,7 @@ namespace Placemaker.Core.Layers.AddOns
                     quads++;
                 }
             }
-            plan.Stats.Add(new PlanStat("Placemaker.EdgeZoning.Stat.Area", Math.Round(ZonedArea(plan)), "m2"));
+            plan.Stats.Add(new PlanStat("Citymaker.EdgeZoning.Stat.Area", Math.Round(ZonedArea(plan)), "m2"));
             plan.Facts["edgeZoning.quads"] = quads;
             if (quads == 0)
                 plan.Issues.Add(new PlanIssue { Severity = IssueSeverity.Info, Key = NoFrontageKey });

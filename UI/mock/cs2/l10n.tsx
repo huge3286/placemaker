@@ -16,7 +16,7 @@ const listeners = new Set<() => void>();
 export function addStrings(more: Record<string, string>) {
     dict = { ...more, ...dict, ...(uiStrings as Record<string, string>) };
     // Layer-owned files (from the host) win for their own keys.
-    for (const k of Object.keys(more)) if (!k.startsWith("Placemaker.UI.")) dict[k] = more[k];
+    for (const k of Object.keys(more)) if (!k.startsWith("Citymaker.UI.")) dict[k] = more[k];
     version++;
     listeners.forEach((l) => l());
 }

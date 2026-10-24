@@ -1,4 +1,4 @@
-// Placemaker — keeps the park stats of loaded builds in line with their receipts and the settings (GPL-3.0).
+// Citymaker — keeps the park stats of loaded builds in line with their receipts and the settings (GPL-3.0).
 // Attractiveness lives either on the owner lot (vanilla AttractivenessProvider, BuildService.ParkStats.cs) or,
 // with "Real park stats", on the companion park building (Economy/ParkCompanionSystem). After a load we repair:
 //  * companion setting off → companions are removed (PreTool) and the lot gets attractiveness back;
@@ -9,13 +9,13 @@ using System;
 using System.Collections.Generic;
 using Game.Buildings;
 using Game.Prefabs;
-using Placemaker.Core.Build;
-using Placemaker.Game.Build;
-using Placemaker.Game.Economy;
+using Citymaker.Core.Build;
+using Citymaker.Game.Build;
+using Citymaker.Game.Economy;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Groups
+namespace Citymaker.Game.Groups
 {
     public sealed partial class GroupRegistrySystem
     {
@@ -29,7 +29,7 @@ namespace Placemaker.Game.Groups
             {
                 try
                 {
-                    var g = EntityManager.GetComponentData<PlacemakerGroup>(kv.Value);
+                    var g = EntityManager.GetComponentData<CitymakerGroup>(kv.Value);
                     var rec = GetRecord(kv.Key);
                     if (rec?.ParkStats == null) continue;
 
@@ -37,7 +37,7 @@ namespace Placemaker.Game.Groups
                     members.Clear();
                     GetMembers(kv.Key, members);
                     foreach (var m in members)
-                        if (EntityManager.Exists(m) && EntityManager.GetComponentData<PlacemakerMember>(m).Role == MemberRole.ParkCompanion) { companion = m; break; }
+                        if (EntityManager.Exists(m) && EntityManager.GetComponentData<CitymakerMember>(m).Role == MemberRole.ParkCompanion) { companion = m; break; }
                     bool wanted = BuildService.ApplyParkStats && companions.Available && rec.ParkStats.Applied.ContainsKey(ParkStatIds.Companion);
                     if (companion != Entity.Null)
                     {
@@ -64,7 +64,7 @@ namespace Placemaker.Game.Groups
                         }
                     }
                     else if (wanted && rec.ParkStats.Applied.TryGetValue(ParkStatIds.Companion, out var state) && state == 1)
-                        Mod.Log.Warn($"Placemaker: the park companion of group {kv.Key} is gone (removed by another tool?); its lot carries attractiveness again.");
+                        Mod.Log.Warn($"Citymaker: the park companion of group {kv.Key} is gone (removed by another tool?); its lot carries attractiveness again.");
 
                     var owner = g.Owner;
                     if (owner == Entity.Null || !EntityManager.Exists(owner)) continue;
@@ -81,11 +81,11 @@ namespace Placemaker.Game.Groups
                 }
                 catch (Exception e)
                 {
-                    Mod.Log.Warn($"Placemaker: park stats of group {kv.Key} not synced: {e.Message}");
+                    Mod.Log.Warn($"Citymaker: park stats of group {kv.Key} not synced: {e.Message}");
                 }
             }
             if (lotAdded + lotRemoved + removed + requested > 0)
-                Mod.Log.Info($"Placemaker park stats after load: lot attractiveness {lotAdded} restored / {lotRemoved} removed, "
+                Mod.Log.Info($"Citymaker park stats after load: lot attractiveness {lotAdded} restored / {lotRemoved} removed, "
                     + $"{removed} companions removed, {requested} recreated.");
         }
     }

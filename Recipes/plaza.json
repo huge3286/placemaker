@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "plaza",
-  "nameKey": "Placemaker.Recipe.Plaza",
-  "descriptionKey": "Placemaker.Recipe.Plaza.Description",
+  "nameKey": "Citymaker.Recipe.Plaza",
+  "descriptionKey": "Citymaker.Recipe.Plaza.Description",
   "icon": "Media/Game/Icons/Pathways.svg",
   "root": {
     "layer": "plaza",

@@ -1,4 +1,4 @@
-// Placemaker roads layer (s52) — "Hillside terraces": what the banks look like and where the zones go.
+// Citymaker roads layer (s52) — "Hillside terraces": what the banks look like and where the zones go.
 //
 //   paint   the banks the build makes (changed ground steeper than ~12 %): dry grass in soft patches, worn dirt on the
 //           steepest faces (a "wall" style face is mostly dirt) — s33 toolkit fields (one baked bank mask × noise), so a
@@ -10,12 +10,12 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Paint;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Paint;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads.Terraces
+namespace Citymaker.Core.Layers.Roads.Terraces
 {
     internal static class TerraceDressing
     {

@@ -3,11 +3,11 @@
 // restrooms built in (one per 1.5 ha by default), trees in loose clumps that keep the middle open.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Park;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Park;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Leisure
+namespace Citymaker.Core.Layers.Leisure
 {
     [AreaGenerator(53, Group = "parks")]
     public sealed class PicnicGroundsLayer : LeisureLayer

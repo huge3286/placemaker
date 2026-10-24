@@ -2,9 +2,9 @@
 // garden crops vary per plot or row (layers pass one Variation per plot), never per plant.
 
 using System.Collections.Generic;
-using Placemaker.Core.Build;
+using Citymaker.Core.Build;
 
-namespace Placemaker.Core.Layers.Common
+namespace Citymaker.Core.Layers.Common
 {
     public sealed class SharedVariety : IVarietyCategories
     {

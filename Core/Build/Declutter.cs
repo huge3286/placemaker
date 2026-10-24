@@ -1,4 +1,4 @@
-// Placemaker — declutter: make planned objects fit with their REAL footprints (GPL-3.0).
+// Citymaker — declutter: make planned objects fit with their REAL footprints (GPL-3.0).
 //
 // FEEDBACK-4: a memorial park ghost logged "553 parts, 480 optional objects dropped (collisions)".
 // Generators space objects with guessed radii; the game tests the prefab's collision box
@@ -27,7 +27,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     public static class Declutter
     {
@@ -83,8 +83,8 @@ namespace Placemaker.Core.Build
             }
         }
 
-        /// <summary>Issue key per role: "Placemaker.Issue.Declutter.Bush" etc. (arg 0 = count).</summary>
-        public static string IssueKey(ObjectRole role) => "Placemaker.Issue.Declutter." + role;
+        /// <summary>Issue key per role: "Citymaker.Issue.Declutter.Bush" etc. (arg 0 = count).</summary>
+        public static string IssueKey(ObjectRole role) => "Citymaker.Issue.Declutter." + role;
 
         /// <summary>Roles that take part (everything else — markers, caps, spawners — never collides or is net-owned).</summary>
         public static bool Participates(ObjectRole r) => Tier(r) >= 0;

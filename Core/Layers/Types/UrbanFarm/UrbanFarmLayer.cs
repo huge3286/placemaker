@@ -11,12 +11,12 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Leisure;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Leisure;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.UrbanFarm
+namespace Citymaker.Core.Layers.Types.UrbanFarm
 {
     [AreaGenerator(70, Group = "farms")]
     public sealed class UrbanFarmLayer : LeisureLayer
@@ -236,7 +236,7 @@ namespace Placemaker.Core.Layers.Types.UrbanFarm
                 if (crop == "market" && ctx.B("polytunnels") && i % 3 == 1 && Poly.Area(clean) > 500f) kind = "glass";
                 fields.Add(new FieldPlan { Ring = clean, Kind = kind });
             }
-            if (fields.Count == 0) ctx.Issue(IssueSeverity.Warning, "Placemaker.UrbanFarm.Issue.NoFields");
+            if (fields.Count == 0) ctx.Issue(IssueSeverity.Warning, "Citymaker.UrbanFarm.Issue.NoFields");
             var fieldSet = new FarmKit.RingSet();
             for (int i = 0; i < fields.Count; i++)
             {
@@ -336,8 +336,8 @@ namespace Placemaker.Core.Layers.Types.UrbanFarm
             // 8. Regions for the features: the visitor corner is the core; the rest of the grass is green.
             EmitGreen(ctx, occ, fieldSet, cornerRing);
             CommonStats(ctx);
-            ctx.Stat("Placemaker.Stat.Fields", fields.Count, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Glasshouses", glasshouses, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Fields", fields.Count, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Glasshouses", glasshouses, Keys.UnitCount);
             ctx.Plan.Facts["cropItems"] = startBudget - budget;
             ctx.Plan.Facts["raisedBeds"] = beds;
         }

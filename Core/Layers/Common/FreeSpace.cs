@@ -12,10 +12,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Common
+namespace Citymaker.Core.Layers.Common
 {
     public static class FreeSpace
     {

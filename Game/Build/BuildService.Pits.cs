@@ -1,4 +1,4 @@
-// Placemaker — the live pit check after every build (core, GPL-3.0).
+// Citymaker — the live pit check after every build (core, GPL-3.0).
 //
 // The user: "one of the major bugs ... a certain dip" (docs/refactor/GRADES.md). The game runner's terrain map showed bowls 4-9 m
 // deep next to lanes and in lots (strip mall, mall district) right after builds whose own check said "no bowl": that check only
@@ -12,15 +12,15 @@ using Game.Common;
 using Game.Net;
 using Game.Prefabs;
 using Game.Tools;
-using Placemaker.Core;
-using Placemaker.Core.Build;
-using Placemaker.Core.Geometry;
-using Placemaker.Game.Groups;
+using Citymaker.Core;
+using Citymaker.Core.Build;
+using Citymaker.Core.Geometry;
+using Citymaker.Game.Groups;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Build
+namespace Citymaker.Game.Build
 {
     public sealed partial class BuildService
     {
@@ -54,14 +54,14 @@ namespace Placemaker.Game.Build
                 bool intentional = TerraformPits.Intentional(_request.Plan);
                 if (pits.Count == 0)
                 {
-                    Mod.Log.Info($"Placemaker pit check ({when}): no bowl deeper than {LivePitDepth:F1} m in the live ground of the build and {LivePitRim:F0} m around it.");
+                    Mod.Log.Info($"Citymaker pit check ({when}): no bowl deeper than {LivePitDepth:F1} m in the live ground of the build and {LivePitRim:F0} m around it.");
                     return _livePits;
                 }
                 foreach (var p in pits)
-                    Mod.Log.Warn($"Placemaker pit check ({when}): bowl {p.Depth:F2} m deep at ({p.At.x:F0}, {p.At.y:F0}), live ground {p.Height:F2} m"
+                    Mod.Log.Warn($"Citymaker pit check ({when}): bowl {p.Depth:F2} m deep at ({p.At.x:F0}, {p.At.y:F0}), live ground {p.Height:F2} m"
                         + (intentional ? " (this type digs on purpose)" : "") + ". Terraform there: " + TerraformAt(p.At) + ". Nearby: " + NetsNear(p.At, 18f) + ".");
             }
-            catch (Exception e) { Mod.Log.Warn("Placemaker pit check failed: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker pit check failed: " + e.Message); }
             return _livePits;
         }
 
@@ -87,15 +87,15 @@ namespace Placemaker.Game.Build
                 using var q = EntityManager.CreateEntityQuery(new EntityQueryDesc
                 {
                     All = temporaries
-                        ? new[] { ComponentType.ReadOnly<Edge>(), ComponentType.ReadOnly<PlacemakerMember>(), ComponentType.ReadOnly<PrefabRef>(), ComponentType.ReadOnly<Temp>() }
-                        : new[] { ComponentType.ReadOnly<Edge>(), ComponentType.ReadOnly<PlacemakerMember>(), ComponentType.ReadOnly<PrefabRef>() },
+                        ? new[] { ComponentType.ReadOnly<Edge>(), ComponentType.ReadOnly<CitymakerMember>(), ComponentType.ReadOnly<PrefabRef>(), ComponentType.ReadOnly<Temp>() }
+                        : new[] { ComponentType.ReadOnly<Edge>(), ComponentType.ReadOnly<CitymakerMember>(), ComponentType.ReadOnly<PrefabRef>() },
                     None = temporaries ? new[] { ComponentType.ReadOnly<Deleted>() } : new[] { ComponentType.ReadOnly<Deleted>(), ComponentType.ReadOnly<Temp>() },
                 });
                 using var list = q.ToEntityArray(Allocator.Temp);
                 for (int i = 0; i < list.Length; i++)
                 {
                     var e = list[i];
-                    if (EntityManager.GetComponentData<PlacemakerMember>(e).GroupId != _groupId) continue;
+                    if (EntityManager.GetComponentData<CitymakerMember>(e).GroupId != _groupId) continue;
                     var prefab = EntityManager.GetComponentData<PrefabRef>(e).m_Prefab;
                     if (!EntityManager.HasComponent<NetGeometryData>(prefab)) continue;
                     if ((EntityManager.GetComponentData<NetGeometryData>(prefab).m_Flags & global::Game.Net.GeometryFlags.FlattenTerrain) != 0) continue;
@@ -108,9 +108,9 @@ namespace Placemaker.Game.Build
                             nodes++;
                         }
                 }
-                if (edges + nodes > 0) Mod.Log.Info($"Placemaker: pinned {edges} marker edge(s) and {nodes} node(s) of group {_groupId}{(temporaries ? " (temporaries, Apply frame)" : "")} to their built heights (no terrain sag at lot entrances).");
+                if (edges + nodes > 0) Mod.Log.Info($"Citymaker: pinned {edges} marker edge(s) and {nodes} node(s) of group {_groupId}{(temporaries ? " (temporaries, Apply frame)" : "")} to their built heights (no terrain sag at lot entrances).");
             }
-            catch (Exception ex) { Mod.Log.Warn("Placemaker: pinning marker nets failed: " + ex.Message); }
+            catch (Exception ex) { Mod.Log.Warn("Citymaker: pinning marker nets failed: " + ex.Message); }
             return edges;
         }
 
@@ -149,15 +149,15 @@ namespace Placemaker.Game.Build
                     }
                     if (math.abs(dev) <= 1f) continue;
                     n++;
-                    bool temp = EntityManager.HasComponent<Temp>(e), ours = EntityManager.HasComponent<PlacemakerMember>(e);
+                    bool temp = EntityManager.HasComponent<Temp>(e), ours = EntityManager.HasComponent<CitymakerMember>(e);
                     var p = Colossal.Mathematics.MathUtils.Position(b, at);
-                    Mod.Log.Warn($"Placemaker net sag ({when}): {(temp ? "temporary" : ours ? "our" : "city")} {_prefabs.GetPrefabName(EntityManager.GetComponentData<PrefabRef>(e).m_Prefab)} "
+                    Mod.Log.Warn($"Citymaker net sag ({when}): {(temp ? "temporary" : ours ? "our" : "city")} {_prefabs.GetPrefabName(EntityManager.GetComponentData<PrefabRef>(e).m_Prefab)} "
                         + $"{(dev < 0 ? "sags" : "humps")} {math.abs(dev):F1} m at ({p.x:F0}, {p.z:F0}): a {b.a.y:F1} b {b.b.y:F1} c {b.c.y:F1} d {b.d.y:F1}, "
                         + $"from ({b.a.x:F0}, {b.a.z:F0}) to ({b.d.x:F0}, {b.d.z:F0}), length {Colossal.Mathematics.MathUtils.Length(b):F1} m, ground there {Height(p.xz):F1}.");
                 }
-                if (n == 0) Mod.Log.Info($"Placemaker net sag ({when}): none of {scanned} edge(s) in the build's box leaves its end-to-end line by more than 1 m.");
+                if (n == 0) Mod.Log.Info($"Citymaker net sag ({when}): none of {scanned} edge(s) in the build's box leaves its end-to-end line by more than 1 m.");
             }
-            catch (Exception e) { Mod.Log.Warn("Placemaker net sag check failed: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker net sag check failed: " + e.Message); }
         }
 
         /// <summary>The planned terraform items covering a point (layer, kind, target, sloped/apron) and the raster's target and weight there.</summary>
@@ -233,7 +233,7 @@ namespace Placemaker.Game.Build
                     }
                     if (best > radius) continue;
                     var name = _prefabs.GetPrefabName(EntityManager.GetComponentData<PrefabRef>(e).m_Prefab);
-                    bool ours = EntityManager.HasComponent<PlacemakerMember>(e);
+                    bool ours = EntityManager.HasComponent<CitymakerMember>(e);
                     var near = Colossal.Mathematics.MathUtils.Position(b, tBest);
                     string elev = "";
                     var edge = EntityManager.GetComponentData<Edge>(e);

@@ -4,7 +4,7 @@
 //       connection: the path's dead-end node in the road edge's ConnectedNode buffer, no node on the road), split into the
 //       road at a node (and whether that node draws a crosswalk across the road), or a dead end the game did not join.
 //   {"do":"lab","op":"pickPart","label":"..."}
-//       with Placemaker closed (the game's own default tool), clicks one of the build's trees or props like a person and
+//       with Citymaker closed (the game's own default tool), clicks one of the build's trees or props like a person and
 //       reads what the info panel selected: the part itself, the build's owner lot (the whole build), or something else.
 
 using System;
@@ -16,12 +16,12 @@ using Game.Net;
 using Game.Prefabs;
 using Game.Tools;
 using Newtonsoft.Json.Linq;
-using Placemaker.Game.Groups;
+using Citymaker.Game.Groups;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     public sealed partial class SuiteRunner
     {
@@ -111,7 +111,7 @@ namespace Placemaker.Game.Suite
             rec["split"] = split;
             rec["crosswalks"] = crossings;
             rec["free"] = free;
-            Mod.Log.Info($"Placemaker lab: street joins ({label}): {kerb} footpath end(s) joined at the kerb by the game, {split} split into a road ({crossings} with a crosswalk), "
+            Mod.Log.Info($"Citymaker lab: street joins ({label}): {kerb} footpath end(s) joined at the kerb by the game, {split} split into a road ({crossings} with a crosswalk), "
                 + $"{free} dead end(s) by a street not joined. " + string.Join("; ", ends.Select(x => $"{x["how"]} at ({x["at"][0]}, {x["at"][1]}) {x["fromRoadEdge"]} m off the road edge{((bool)x["crosswalk"] ? ", crosswalk" : "")}")));
         }
 
@@ -125,9 +125,9 @@ namespace Placemaker.Game.Suite
             Entity part = members.Where(m => em.Exists(m) && em.HasComponent<global::Game.Objects.Tree>(m) && em.HasComponent<Owner>(m)).FirstOrDefault();
             if (part == Entity.Null) part = members.Where(m => em.Exists(m) && em.HasComponent<global::Game.Objects.Static>(m) && em.HasComponent<global::Game.Objects.Transform>(m)).FirstOrDefault();
             if (part == Entity.Null) { rec["error"] = "the build has no tree or prop"; yield break; }
-            Entity lot = members.FirstOrDefault(m => em.Exists(m) && em.HasComponent<PlacemakerMember>(m) && em.GetComponentData<PlacemakerMember>(m).Role == MemberRole.OwnerArea);
+            Entity lot = members.FirstOrDefault(m => em.Exists(m) && em.HasComponent<CitymakerMember>(m) && em.GetComponentData<CitymakerMember>(m).Role == MemberRole.OwnerArea);
             rec["part"] = _lookup.KindOf(part) + " " + _lookup.PrefabName(part);
-            // Placemaker closed: the game's default tool sets the raycast (its type mask: static objects, areas, nets…).
+            // Citymaker closed: the game's default tool sets the raycast (its type mask: static objects, areas, nets…).
             yield return CloseTool();
             yield return Frames(10);
             var trs = _world.GetExistingSystemManaged<ToolRaycastSystem>();
@@ -142,12 +142,12 @@ namespace Placemaker.Game.Suite
                 if (!hit || r.m_Owner == Entity.Null) return "nothing";
                 if (r.m_Owner == part) return "the part";
                 if (r.m_Owner == lot) return "the whole build (its owner lot)";
-                if (em.HasComponent<PlacemakerMember>(r.m_Owner) && em.GetComponentData<PlacemakerMember>(r.m_Owner).Role == MemberRole.Carrier) return "the carrier (every prop of the build)";
+                if (em.HasComponent<CitymakerMember>(r.m_Owner) && em.GetComponentData<CitymakerMember>(r.m_Owner).Role == MemberRole.Carrier) return "the carrier (every prop of the build)";
                 return _lookup.KindOf(r.m_Owner) + " " + _lookup.PrefabName(r.m_Owner);
             }
             bool h1 = true;
             var r1 = new RaycastResult { m_Owner = top, m_Hit = { m_HitEntity = part, m_Position = em.GetComponentData<global::Game.Objects.Transform>(part).m_Position } };
-            Placemaker.Game.Groups.Patches.RaycastLiftPatch.Apply(trs, ref h1, ref r1);
+            Citymaker.Game.Groups.Patches.RaycastLiftPatch.Apply(trs, ref h1, ref r1);
             rec["clickPart"] = What(h1, r1);
             // what the bulldozer then deletes: it sends a static object with an owner on to that owner (BulldozeToolSystem, MainElements)
             var dozed = h1 ? r1.m_Owner : Entity.Null;
@@ -159,12 +159,12 @@ namespace Placemaker.Game.Suite
             {
                 bool h2 = true;
                 var r2 = new RaycastResult { m_Owner = lot, m_Hit = { m_HitEntity = lot } };
-                Placemaker.Game.Groups.Patches.RaycastLiftPatch.Apply(trs, ref h2, ref r2);
+                Citymaker.Game.Groups.Patches.RaycastLiftPatch.Apply(trs, ref h2, ref r2);
                 ground = What(h2, r2);
             }
             rec["clickGround"] = ground;
             rec["ungrouped"] = Services.Groups?.IsUngrouped(st.Group) ?? false;
-            Mod.Log.Info($"Placemaker lab: pick a part ({label}): group {st.Group} (ungrouped: {rec["ungrouped"]}), the game's {rec["tool"]} (mask {rec["mask"]}): "
+            Mod.Log.Info($"Citymaker lab: pick a part ({label}): group {st.Group} (ungrouped: {rec["ungrouped"]}), the game's {rec["tool"]} (mask {rec["mask"]}): "
                 + $"a click on {rec["part"]} (the game hands over {rec["gameHands"]}) picks {rec["clickPart"]}, the bulldozer there takes {rec["bulldozerTakes"]}; a click on the ground between its parts picks {ground}.");
 
             if ((bool?)step["bulldoze"] ?? false)
@@ -189,7 +189,7 @@ namespace Placemaker.Game.Suite
                 bool groupLeft = Services.Groups?.Get(st.Group) != null;
                 int after = Services.Groups is GroupRegistrySystem reg2 && groupLeft ? reg2.CountMembers(st.Group, false) : 0;
                 rec["bulldozed"] = new JObject { ["partGone"] = gone, ["buildStays"] = groupLeft, ["membersBefore"] = before, ["membersAfter"] = after };
-                Mod.Log.Info($"Placemaker lab: bulldoze the picked part ({label}): the part {(gone ? "is gone" : "is still there")}, the build {(groupLeft ? "stays" : "is gone")}, members {before} -> {after}.");
+                Mod.Log.Info($"Citymaker lab: bulldoze the picked part ({label}): the part {(gone ? "is gone" : "is still there")}, the build {(groupLeft ? "stays" : "is gone")}, members {before} -> {after}.");
                 yield return Frames(5);
             }
             yield return OpenTool();
@@ -204,7 +204,7 @@ namespace Placemaker.Game.Suite
             yield return CloseTool();
             var em = _world.EntityManager;
             var members = _lookup.MemberSet(g);
-            Entity owner = members.FirstOrDefault(m => em.Exists(m) && em.HasComponent<PlacemakerMember>(m) && em.GetComponentData<PlacemakerMember>(m).Role == MemberRole.OwnerArea);
+            Entity owner = members.FirstOrDefault(m => em.Exists(m) && em.HasComponent<CitymakerMember>(m) && em.GetComponentData<CitymakerMember>(m).Role == MemberRole.OwnerArea);
             if (owner == Entity.Null) owner = members.FirstOrDefault(m => em.Exists(m) && !em.HasComponent<Deleted>(m));
             var sel = _world.GetExistingSystemManaged<global::Game.UI.InGame.SelectedInfoUISystem>();
             try { sel?.SetSelection(owner); } catch (Exception e) { rec["selectError"] = e.Message; }

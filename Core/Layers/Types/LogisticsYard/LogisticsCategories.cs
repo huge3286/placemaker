@@ -8,9 +8,9 @@
 // at the Building trait first).
 
 using System.Collections.Generic;
-using Placemaker.Core.Build;
+using Citymaker.Core.Build;
 
-namespace Placemaker.Core
+namespace Citymaker.Core
 {
     public static partial class AssetCategories
     {
@@ -29,7 +29,7 @@ namespace Placemaker.Core
     }
 }
 
-namespace Placemaker.Core.Layers.Types.Logistics
+namespace Citymaker.Core.Layers.Types.Logistics
 {
     /// <summary>Name rules for the logistics categories. Adds categories and lets the general rules continue.</summary>
     public sealed class LogisticsCategoryRules : ICategoryRules

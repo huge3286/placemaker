@@ -2,7 +2,7 @@
 // outline are drawn, and a press starts a stroke (s15, lead report: "after painting and switching to Design the
 // big brush circle keeps following the mouse"). Pure, unit-tested.
 
-namespace Placemaker.Core.Tool
+namespace Citymaker.Core.Tool
 {
     public static class BrushCursor
     {

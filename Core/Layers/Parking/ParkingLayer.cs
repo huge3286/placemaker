@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Parking
+namespace Citymaker.Core.Layers.Parking
 {
     [AreaGenerator(10, Group = "parking")]
     public sealed class ParkingLayer : IAreaGenerator, IHasFeatures
@@ -21,15 +21,15 @@ namespace Placemaker.Core.Layers.Parking
         /// </summary>
         private static readonly FeatureInfo[] FeatureList =
         {
-            new FeatureInfo { Layer = "shops", LabelKey = "Placemaker.Feature.shops", TooltipKey = "Placemaker.Feature.shops.Tooltip",
+            new FeatureInfo { Layer = "shops", LabelKey = "Citymaker.Feature.shops", TooltipKey = "Citymaker.Feature.shops.Tooltip",
                 Preset = Park.ParkLayer.Bag(("count", 2.0), ("where", "edges"), ("seating", false)) },
-            new FeatureInfo { Layer = "decals", LabelKey = "Placemaker.Feature.decals", Preset = Park.ParkLayer.Bag(("theme", "cracks"), ("ground", "paved"), ("density", 0.6)) },
-            new FeatureInfo { Layer = "terrain", LabelKey = "Placemaker.Feature.flatten", TooltipKey = "Placemaker.Feature.terrain.Tooltip", Preset = Park.ParkLayer.Bag(("shape", "flatten")) },
+            new FeatureInfo { Layer = "decals", LabelKey = "Citymaker.Feature.decals", Preset = Park.ParkLayer.Bag(("theme", "cracks"), ("ground", "paved"), ("density", 0.6)) },
+            new FeatureInfo { Layer = "terrain", LabelKey = "Citymaker.Feature.flatten", TooltipKey = "Citymaker.Feature.terrain.Tooltip", Preset = Park.ParkLayer.Bag(("shape", "flatten")) },
         };
 
         public IReadOnlyList<FeatureInfo> Features => FeatureList;
         public const string LayerId = "parking";
-        private const string K = "Placemaker.Parking.";
+        private const string K = "Citymaker.Parking.";
 
         public string Id => LayerId;
         public string NameKey => K + "Name";
@@ -86,10 +86,10 @@ namespace Placemaker.Core.Layers.Parking
         {
             switch (kind)
             {
-                case ParkingIds.KindAlleyIn: case ParkingIds.KindAlleyOut: return Placemaker.Core.Tool.MarkerKinds.IconFor(ParkingIds.KindAlley);
+                case ParkingIds.KindAlleyIn: case ParkingIds.KindAlleyOut: return Citymaker.Core.Tool.MarkerKinds.IconFor(ParkingIds.KindAlley);
                 case ParkingIds.KindBusStop: return "people";
                 case ParkingIds.KindZoningPatch: return "zone";
-                default: return Placemaker.Core.Tool.MarkerKinds.IconFor(kind);
+                default: return Citymaker.Core.Tool.MarkerKinds.IconFor(kind);
             }
         }
 
@@ -105,7 +105,7 @@ namespace Placemaker.Core.Layers.Parking
             ent.Icon = "entrance";
             ent.MarkerKinds = (string[])ParkingIds.MarkerKinds.Clone();
             foreach (var k in ParkingIds.MarkerKinds)
-                ent.Options.Add(new ControlOption { Value = k, LabelKey = K + "Marker." + Placemaker.Core.Tool.MarkerKinds.Pascal(k), TooltipKey = K + "Marker." + Placemaker.Core.Tool.MarkerKinds.Pascal(k) + ".Tip", Icon = MarkerIcon(k) });
+                ent.Options.Add(new ControlOption { Value = k, LabelKey = K + "Marker." + Citymaker.Core.Tool.MarkerKinds.Pascal(k), TooltipKey = K + "Marker." + Citymaker.Core.Tool.MarkerKinds.Pascal(k) + ".Tip", Icon = MarkerIcon(k) });
             l.Add(ent);
 
             // ── Layout ──

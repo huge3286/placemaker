@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <!--
-    Placemaker UI mock host: runs the REAL engine-free Core (recipes, composer, every registered
+    Citymaker UI mock host: runs the REAL engine-free Core (recipes, composer, every registered
     layer) on modern .NET and serves the browser harness in ../ (UI/mock). Lives under UI/ so the
     main mod csproj (which excludes UI\**) never compiles it.
       dotnet run - -port 5123 -root <UI/mock>
@@ -10,10 +10,10 @@
     <LangVersion>latest</LangVersion>
     <Nullable>disable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
-    <AssemblyName>Placemaker.MockHost</AssemblyName>
+    <AssemblyName>Citymaker.MockHost</AssemblyName>
     <!-- net9.0 as specified, but run on whatever newer runtime is installed (e.g. only .NET 10). -->
     <RollForward>Major</RollForward>
-    <RootNamespace>Placemaker.MockHost</RootNamespace>
+    <RootNamespace>Citymaker.MockHost</RootNamespace>
     <NoWarn>$(NoWarn);CS1591;CS0649</NoWarn>
     <ManagedPath Condition="'$(ManagedPath)' == ''">C:\Program Files (x86)\Steam\steamapps\common\Cities Skylines II\Cities2_Data\Managed</ManagedPath>
     <!-- The repo-wide .gitignore ignores bin/ and obj/ already. -->

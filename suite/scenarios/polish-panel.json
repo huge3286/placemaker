@@ -1,5 +1,5 @@
 {
-  "_about": "The neighbourhood-polish tool (its own button next to Placemaker's, its own small window), as a player uses it, on a town of about 290 buildings: the window pictured (empty, with an area, Look open, Whole city open), an area polished Natural, then Polish the whole city and Unpolish the whole city through the window and its confirm dialog. polishIdle logs the frames during each city-wide job (median, 95%, worst, over 33/50/100 ms). Send with tools/hot/Send-Hot.ps1 -Build -File suite/scenarios/polish-panel.json.",
+  "_about": "The neighbourhood-polish tool (its own button next to Citymaker's, its own small window), as a player uses it, on a town of about 290 buildings: the window pictured (empty, with an area, Look open, Whole city open), an area polished Natural, then Polish the whole city and Unpolish the whole city through the window and its confirm dialog. polishIdle logs the frames during each city-wide job (median, 95%, worst, over 33/50/100 ms). Send with tools/hot/Send-Hot.ps1 -Build -File suite/scenarios/polish-panel.json.",
   "scenarios": [
     {
       "id": "polish-panel",

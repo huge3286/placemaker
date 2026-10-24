@@ -1,12 +1,12 @@
-// Placemaker — ordering of automatic pools (GPL-3.0). Pure, shared by the game catalog
+// Citymaker — ordering of automatic pools (GPL-3.0). Pure, shared by the game catalog
 // (Game/Assets/AssetCatalogSystem.BuildAutomatic) and the curation test that replays a real
-// catalog-dump.json (Tests/Placemaker.Tests/AssetCurationTests.cs), so docs/ASSET-CURATION.md shows
+// catalog-dump.json (Tests/Citymaker.Tests/AssetCurationTests.cs), so docs/ASSET-CURATION.md shows
 // exactly what the game picks.
 
 using System;
 using System.Collections.Generic;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     public readonly struct PoolCandidate
     {

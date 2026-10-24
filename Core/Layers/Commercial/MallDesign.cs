@@ -11,19 +11,19 @@
 //     frontage, crosswalks where a walk joins a lane at a node), bike racks and food trucks at the plazas;
 //   • GROUND: terrain paint — dirt on every plot that has not grown yet (a building site), desire paths where people
 //     would cut a corner, mulch under the groves, lush ground in the rain gardens.
-// Every piece is an option (panel group "Extras", shared keys Placemaker.Commercial.<id>); a type without these controls
+// Every piece is an option (panel group "Extras", shared keys Citymaker.Commercial.<id>); a type without these controls
 // keeps its old behaviour (Extras all off: Buffer instead of Landscape).
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Park;
-using Placemaker.Core.Layers.Plaza;
-using Placemaker.Core.Paint;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Park;
+using Citymaker.Core.Layers.Plaza;
+using Citymaker.Core.Paint;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Commercial
+namespace Citymaker.Core.Layers.Commercial
 {
     public sealed partial class Mall
     {

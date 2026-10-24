@@ -1,8 +1,8 @@
 // In-game test suite: the panel, driven the way a person drives it. A small UI system (registered only when the suite
 // gate opened) runs JavaScript in the game's UI view: it reads and clicks the panel's real elements (data-testid) and
-// fires the panel's own triggers (engine.trigger('Placemaker.<name>', ...)), so the TriggerBinding path, its argument
+// fires the panel's own triggers (engine.trigger('Citymaker.<name>', ...)), so the TriggerBinding path, its argument
 // conversions and the React panel's own gates run, in the UI update like a click. Results come back through one
-// trigger of its own (PlacemakerSuite.report). It also reads the JSON the panel is bound to (state, design, summary,
+// trigger of its own (CitymakerSuite.report). It also reads the JSON the panel is bound to (state, design, summary,
 // catalog) — what the panel shows.
 
 using System;
@@ -13,11 +13,11 @@ using Game.UI;
 using Newtonsoft.Json.Linq;
 using UnityEngine.Scripting;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     public sealed partial class SuiteUiSystem : UISystemBase
     {
-        public const string Group = "PlacemakerSuite";
+        public const string Group = "CitymakerSuite";
         public static SuiteUiSystem Instance { get; private set; }
 
         private int _nextId;
@@ -41,7 +41,7 @@ namespace Placemaker.Game.Suite
                 int id = (int?)o["id"] ?? -1;
                 lock (_replies) _replies[id] = o;
             }
-            catch (Exception e) { Mod.Log.Warn("Placemaker suite: ui report unreadable: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker suite: ui report unreadable: " + e.Message); }
         }
 
         private static cohtml.Net.View View => GameManager.instance?.userInterface?.view?.View;
@@ -58,7 +58,7 @@ namespace Placemaker.Game.Suite
                 + "engine.trigger('" + Group + ".report',JSON.stringify({id:__id,ok:true,value:(__v===undefined?null:__v)}));}"
                 + "catch(e){engine.trigger('" + Group + ".report',JSON.stringify({id:__id,ok:false,error:String(e)}));}})();";
             try { v.ExecuteScript(js); }
-            catch (Exception e) { Mod.Log.Warn("Placemaker suite: ExecuteScript failed: " + e.Message); return -1; }
+            catch (Exception e) { Mod.Log.Warn("Citymaker suite: ExecuteScript failed: " + e.Message); return -1; }
             return id;
         }
 
@@ -75,10 +75,10 @@ namespace Placemaker.Game.Suite
         /// <summary>A JS string literal.</summary>
         public static string Q(string s) => Newtonsoft.Json.JsonConvert.ToString(s ?? "");
 
-        /// <summary>engine.trigger('Placemaker.name', args...) — the call a panel button makes.</summary>
+        /// <summary>engine.trigger('Citymaker.name', args...) — the call a panel button makes.</summary>
         public static string TriggerJs(string name, params object[] args)
         {
-            var sb = new System.Text.StringBuilder("engine.trigger(" + Q("Placemaker." + name));
+            var sb = new System.Text.StringBuilder("engine.trigger(" + Q("Citymaker." + name));
             foreach (var a in args)
             {
                 sb.Append(',');
@@ -145,7 +145,7 @@ namespace Placemaker.Game.Suite
         // ───────────── what the panel is bound to ─────────────
 
         private static System.Reflection.FieldInfo FieldOf(string name) =>
-            typeof(global::Placemaker.Game.UI.PlacemakerUISystem).GetField(name, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            typeof(global::Citymaker.Game.UI.CitymakerUISystem).GetField(name, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
 
         /// <summary>The JSON of one of the panel's bindings ("state", "design", "summary", "catalog", "managed"); null when unavailable or unparsable.</summary>
         public JToken Bound(string binding, out string error)
@@ -153,8 +153,8 @@ namespace Placemaker.Game.Suite
             error = null;
             try
             {
-                var ui = World.GetExistingSystemManaged<global::Placemaker.Game.UI.PlacemakerUISystem>();
-                if (ui == null) { error = "PlacemakerUISystem missing"; return null; }
+                var ui = World.GetExistingSystemManaged<global::Citymaker.Game.UI.CitymakerUISystem>();
+                if (ui == null) { error = "CitymakerUISystem missing"; return null; }
                 var f = FieldOf("_" + binding);
                 if (f == null) { error = "no binding field _" + binding; return null; }
                 var vb = f.GetValue(ui) as ValueBinding<string>;

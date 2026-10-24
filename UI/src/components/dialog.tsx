@@ -26,7 +26,7 @@ export const OwnDialog = ({ title, message, confirm, danger, onConfirm, onCancel
                 <div className={s.title}>{title}</div>
                 <div className={s.message}>{message}</div>
                 <div className={s.buttons}>
-                    <Btn variant="solid" label={t("Placemaker.UI.Cancel", "Cancel")} onClick={onCancel} testId="confirm-cancel" />
+                    <Btn variant="solid" label={t("Citymaker.UI.Cancel", "Cancel")} onClick={onCancel} testId="confirm-cancel" />
                     <div className={s.spacer} />
                     <Btn variant={danger ? "danger" : "accent"} label={confirm} onClick={onConfirm} testId="confirm-ok" />
                 </div>

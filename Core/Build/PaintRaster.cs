@@ -1,4 +1,4 @@
-// Placemaker — terrain texture paint as strength fields and brush stamps (GPL-3.0).
+// Citymaker — terrain texture paint as strength fields and brush stamps (GPL-3.0).
 //
 // CS2's material brush (TerrainMaterialSystem.ApplyBrush) blits a brush TEXTURE into the user splatmap. The
 // PaintSplatmap kernel (s33: DXBC disassembled, docs/TERRAIN-PAINT.md) keeps ONE 4-BIT WEIGHT PER MATERIAL per texel
@@ -21,10 +21,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     /// <summary>One brush application: a square N×N strength mask (row 0 = min z) covering [Min, Min + Size].</summary>
     public sealed class PaintStamp

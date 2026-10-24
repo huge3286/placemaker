@@ -16,14 +16,14 @@ using Game.Prefabs;
 using Game.Tools;
 using Game.Zones;
 using Newtonsoft.Json.Linq;
-using Placemaker.Core.Geometry;
-using Placemaker.Game.Neighbours;
-using Placemaker.Game.Selection;
+using Citymaker.Core.Geometry;
+using Citymaker.Game.Neighbours;
+using Citymaker.Game.Selection;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     public sealed partial class SuiteRunner
     {
@@ -56,7 +56,7 @@ namespace Placemaker.Game.Suite
             yield return Frames(40);
             rec["zonedCells"] = _fixture.CountZonedCells() - before;
             Event("build");
-            Mod.Log.Info($"Placemaker lab: zoned {zoneName} over ({lo.x:F0},{lo.y:F0})-({hi.x:F0},{hi.y:F0}): {rec["zonedCells"]} cells more");
+            Mod.Log.Info($"Citymaker lab: zoned {zoneName} over ({lo.x:F0},{lo.y:F0})-({hi.x:F0},{hi.y:F0}): {rec["zonedCells"]} cells more");
         }
 
         private IEnumerator LabZoneCells(ScenarioState st, JObject step, JObject rec)
@@ -158,7 +158,7 @@ namespace Placemaker.Game.Suite
             rec["growablesStanding"] = growables;
             rec["occupiers"] = JObject.FromObject(occupiers);
             rec["blockers"] = JObject.FromObject(blockers);
-            Mod.Log.Info($"Placemaker lab: zone cells ({(string)step["label"] ?? "cells"}) over ({lo.x:F0},{lo.y:F0})-({hi.x:F0},{hi.y:F0}): {zoned} zoned, {free} free, {byBuilding} under buildings, {occupiedOther} occupied by something else "
+            Mod.Log.Info($"Citymaker lab: zone cells ({(string)step["label"] ?? "cells"}) over ({lo.x:F0},{lo.y:F0})-({hi.x:F0},{hi.y:F0}): {zoned} zoned, {free} free, {byBuilding} under buildings, {occupiedOther} occupied by something else "
                 + $"({string.Join(", ", occupiers.Select(kv => kv.Value + " " + kv.Key))}), {blocked} blocked ({string.Join(", ", blockers.Select(kv => kv.Value + " " + kv.Key))}); {inGarden} inside Outgrow gardens ({inGardenFree} of them free); {growables} growables standing there");
         }
 

@@ -1,4 +1,4 @@
-// Placemaker — companion park building: the build's park stats made real (s17, docs/PARK-STATS.md §5) (GPL-3.0).
+// Citymaker — companion park building: the build's park stats made real (s17, docs/PARK-STATS.md §5) (GPL-3.0).
 //
 // Leisure, park coverage (→ wellbeing), land value from attractiveness, tourist trips and upkeep only work on a
 // park BUILDING with a road connection, and AttractionSystem / ServiceCoverageSystem / ParkAISystem read the
@@ -7,7 +7,7 @@
 //
 // Engine rules (RESEARCH-NOTES 1–3, 14, 16; ParkingCompanionSystem notes):
 //  * Clones are registered in PrefabUpdate BEFORE PrefabInitializeSystem and used ≥ 3 frames later. Saves reference
-//    them by name: every name ever used is kept in ModsData/Placemaker/park-companions.txt and registered at startup,
+//    them by name: every name ever used is kept in ModsData/Citymaker/park-companions.txt and registered at startup,
 //    so a save with companions resolves its prefabs. A name missing from the list (file deleted) is repaired on load:
 //    the companion is removed and created again from the receipt.
 //  * Never mesh-less: the clone keeps the Tiny Park meshes; the entity carries `Hidden` (not rendered, simulation
@@ -26,16 +26,16 @@ using Game.Common;
 using Game.Objects;
 using Game.Prefabs;
 using Game.Simulation;
-using Placemaker.Core.Build;
-using Placemaker.Game.Build;
-using Placemaker.Game.Groups;
-using Placemaker.Game.Settings;
+using Citymaker.Core.Build;
+using Citymaker.Game.Build;
+using Citymaker.Game.Groups;
+using Citymaker.Game.Settings;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine.Scripting;
 
-namespace Placemaker.Game.Economy
+namespace Citymaker.Game.Economy
 {
     /// <summary>Registers companion park prefabs. Phase: PrefabUpdate, before PrefabInitializeSystem.</summary>
     public sealed partial class ParkCompanionPrefabSystem : GameSystemBase
@@ -104,7 +104,7 @@ namespace Placemaker.Game.Economy
             catch (Exception e)
             {
                 _failed = true;
-                Mod.Log.Error(e, "Placemaker park companion prefabs unavailable; builds keep attractiveness on their lot");
+                Mod.Log.Error(e, "Citymaker park companion prefabs unavailable; builds keep attractiveness on their lot");
             }
         }
 
@@ -132,9 +132,9 @@ namespace Placemaker.Game.Economy
                     if (!ParkPrefabKey.TryParse(name, out _) || !_listed.Add(name)) continue;
                     Want(name);
                 }
-                Mod.Log.Info($"Placemaker: {_listed.Count} park companion prefabs to register from {ListFile}.");
+                Mod.Log.Info($"Citymaker: {_listed.Count} park companion prefabs to register from {ListFile}.");
             }
-            catch (Exception e) { Mod.Log.Warn("Placemaker: reading " + ListFile + " failed: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker: reading " + ListFile + " failed: " + e.Message); }
         }
 
         private void Remember(string name)
@@ -146,7 +146,7 @@ namespace Placemaker.Game.Economy
                 names.Sort(StringComparer.Ordinal);
                 ModPaths.WriteAllTextAtomic(ListPath, string.Join("\n", names) + "\n");
             }
-            catch (Exception e) { Mod.Log.Warn("Placemaker: writing " + ListFile + " failed: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker: writing " + ListFile + " failed: " + e.Message); }
         }
 
         private void Register(string name)
@@ -182,7 +182,7 @@ namespace Placemaker.Game.Economy
             park.m_AllowHomeless = false;
             if (park.m_MaintenancePool <= 0) park.m_MaintenancePool = 250;
             var placeable = p.AddOrGetComponent<PlaceableObject>();
-            placeable.m_ConstructionCost = 0;   // Placemaker charges the build itself
+            placeable.m_ConstructionCost = 0;   // Citymaker charges the build itself
             placeable.m_XPReward = 0;
             var terraform = p.AddOrGetComponent<BuildingTerraformOverride>();
             terraform.m_DontRaise = true;
@@ -197,15 +197,15 @@ namespace Placemaker.Game.Economy
             p.Remove<EffectSource>();
             p.Remove<ObsoleteIdentifiers>();
             p.Remove<DefaultPolicies>();
-            if (!Placemaker.Game.Assets.AssetCatalogSystem.AddOwnPrefab(_prefabs, p))
+            if (!Citymaker.Game.Assets.AssetCatalogSystem.AddOwnPrefab(_prefabs, p))
             {
                 UnityEngine.Object.Destroy(p);
-                Mod.Log.Warn($"Placemaker could not add the park companion prefab '{name}'.");
+                Mod.Log.Warn($"Citymaker could not add the park companion prefab '{name}'.");
                 return;
             }
             _registered[name] = (_prefabs.GetEntity(p), UnityEngine.Time.frameCount);
             Remember(name);
-            Mod.Log.Info($"Placemaker registered park companion prefab '{name}' (from {_source.name}).");
+            Mod.Log.Info($"Citymaker registered park companion prefab '{name}' (from {_source.name}).");
         }
     }
 
@@ -261,7 +261,7 @@ namespace Placemaker.Game.Economy
                     if (UnityEngine.Time.frameCount - p.Since > GiveUpFrames)
                     {
                         _pending.RemoveAt(0);
-                        Mod.Log.Warn($"Placemaker: park companion prefab '{p.Name}' never became ready; group {p.GroupId} keeps attractiveness on its lot.");
+                        Mod.Log.Warn($"Citymaker: park companion prefab '{p.Name}' never became ready; group {p.GroupId} keeps attractiveness on its lot.");
                     }
                     return;
                 }
@@ -271,7 +271,7 @@ namespace Placemaker.Game.Economy
             }
             catch (Exception e)
             {
-                Mod.Log.Error(e, "Placemaker park companion failed; companions disabled for this session (builds keep attractiveness on their lot)");
+                Mod.Log.Error(e, "Citymaker park companion failed; companions disabled for this session (builds keep attractiveness on their lot)");
                 _failed = true;
                 _pending.Clear();
             }
@@ -297,7 +297,7 @@ namespace Placemaker.Game.Economy
 
         private void Create(Pending p, Entity prefab)
         {
-            if (!_registry.TryGetRecordEntity(p.GroupId, out var record) || EntityManager.HasComponent<PlacemakerRemoval>(record)) return;
+            if (!_registry.TryGetRecordEntity(p.GroupId, out var record) || EntityManager.HasComponent<CitymakerRemoval>(record)) return;
             if (FindCompanion(p.GroupId) != Entity.Null) return;
             var heights = _terrain.GetHeightData(true);
             var position = new float3(p.Position.x, 0f, p.Position.y);
@@ -312,9 +312,9 @@ namespace Placemaker.Game.Economy
                 EntityManager.SetComponentData(e, new PseudoRandomSeed((ushort)math.clamp(e.Index, 1, ushort.MaxValue)));
             if (EntityManager.HasComponent<UpdateFrame>(e))
                 EntityManager.SetSharedComponent(e, new UpdateFrame((uint)e.Index & 0xFu));
-            EntityManager.AddComponentData(e, new PlacemakerMember { GroupId = p.GroupId, Kind = MemberKind.Auxiliary, Role = MemberRole.ParkCompanion });
+            EntityManager.AddComponentData(e, new CitymakerMember { GroupId = p.GroupId, Kind = MemberKind.Auxiliary, Role = MemberRole.ParkCompanion });
             // The building now carries attractiveness (vanilla AttractionSystem, with maintenance and terrain): drop the lot's.
-            var g = EntityManager.GetComponentData<PlacemakerGroup>(record);
+            var g = EntityManager.GetComponentData<CitymakerGroup>(record);
             if (g.Owner != Entity.Null) BuildService.ApplyAttractiveness(EntityManager, g.Owner, 0, 0);
             var rec = _registry.GetRecord(p.GroupId);
             if (rec?.ParkStats != null)
@@ -323,7 +323,7 @@ namespace Placemaker.Game.Economy
                 _registry.WriteRecord(record, rec);
             }
             _registry.MarkDirty();
-            Mod.Log.Info($"Placemaker created the park companion of group {p.GroupId} ('{p.Name}').");
+            Mod.Log.Info($"Citymaker created the park companion of group {p.GroupId} ('{p.Name}').");
         }
 
         /// <summary>Live park companion of a group, or Entity.Null.</summary>
@@ -333,7 +333,7 @@ namespace Placemaker.Game.Economy
             _registry.GetMembers(groupId, list);
             foreach (var m in list)
                 if (EntityManager.Exists(m) && !EntityManager.HasComponent<Deleted>(m)
-                    && EntityManager.GetComponentData<PlacemakerMember>(m).Role == MemberRole.ParkCompanion) return m;
+                    && EntityManager.GetComponentData<CitymakerMember>(m).Role == MemberRole.ParkCompanion) return m;
             return Entity.Null;
         }
     }
@@ -366,12 +366,12 @@ namespace Placemaker.Game.Economy
                     EntityManager.AddComponent<Deleted>(e);
                     n++;
                 }
-                if (n > 0) Mod.Log.Info($"Placemaker removed {n} park companion buildings.");
+                if (n > 0) Mod.Log.Info($"Citymaker removed {n} park companion buildings.");
                 World.GetOrCreateSystemManaged<GroupRegistrySystem>().MarkDirty();
             }
             catch (Exception e)
             {
-                Mod.Log.Error(e, "Placemaker park companion cleanup failed");
+                Mod.Log.Error(e, "Citymaker park companion cleanup failed");
                 _queue.Clear();
             }
         }

@@ -1,4 +1,4 @@
-// Placemaker — existing buildings are never destroyed by a build (s15, playtest: "when it builds, it
+// Citymaker — existing buildings are never destroyed by a build (s15, playtest: "when it builds, it
 // destroys the buildings because it's putting stuff on them").
 //
 // Why buildings die (decompiled 1.6.2f1, docs/RESEARCH-NOTES-ADDENDUM "Existing buildings"):
@@ -24,15 +24,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     public static class SiteSafety
     {
-        public const string IssueKept = "Placemaker.Issue.BuildingsKept";
-        public const string IssueLeftOut = "Placemaker.Issue.BuildingsLeftOut";
+        public const string IssueKept = "Citymaker.Issue.BuildingsKept";
+        public const string IssueLeftOut = "Citymaker.Issue.BuildingsLeftOut";
         /// <summary>Clearance (m) kept between anything planned and a building lot.</summary>
         public const float Margin = 0.5f;
 
@@ -133,7 +133,7 @@ namespace Placemaker.Core.Build
             }
 
             // a Zoning look polishes the buildings in the area: them being there is the point, not news
-            bool looks = plan.Layers.Count > 0 && plan.Layers.All(l => l != null && GeneratorRegistry.Get(l.GeneratorId) is Placemaker.Core.Layers.Types.Zoning.PolishLookLayer);
+            bool looks = plan.Layers.Count > 0 && plan.Layers.All(l => l != null && GeneratorRegistry.Get(l.GeneratorId) is Citymaker.Core.Layers.Types.Zoning.PolishLookLayer);
             if (report.BuildingsInArea > 0 && !looks)
                 plan.Issues.Add(new PlanIssue
                 {

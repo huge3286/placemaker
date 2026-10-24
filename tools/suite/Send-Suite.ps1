@@ -145,7 +145,7 @@ foreach ($s in @($r.scenarios)) {
     Write-Host "  steps: $($s.resultFile)"
 }
 if ($r.grow) { Write-Host ("grow: " + ($r.grow | ConvertTo-Json -Compress)) }
-if ($queued) { Write-Host "logs: $(Join-Path $runDir 'logs\Placemaker.log') and $(Join-Path $runDir 'logs\Player.log') (your request's part of the queue game's logs), runner: $(Join-Path $runDir 'suite.log')" }
-else { Write-Host "logs (the game writes them as it goes): $(Join-Path $env:USERPROFILE 'AppData\LocalLow\Colossal Order\Cities Skylines II\Logs\Placemaker.log'), runner: $(Join-Path $runDir 'suite.log')" }
+if ($queued) { Write-Host "logs: $(Join-Path $runDir 'logs\Citymaker.log') and $(Join-Path $runDir 'logs\Player.log') (your request's part of the queue game's logs), runner: $(Join-Path $runDir 'suite.log')" }
+else { Write-Host "logs (the game writes them as it goes): $(Join-Path $env:USERPROFILE 'AppData\LocalLow\Colossal Order\Cities Skylines II\Logs\Citymaker.log'), runner: $(Join-Path $runDir 'suite.log')" }
 Write-Host "pictures in order: $(Join-Path $runDir 'contact.html')"
 exit $code

@@ -1,11 +1,11 @@
-// Placemaker roads layer — tree (cul-de-sac) pattern.
-// Adapted from Grid Road Generator (Ti4goc), Core/GridGenerator.Tree.cs; part of Placemaker (GPL-3.0).
-// Changes for Placemaker: no static caches or global lock (thread-safe, reentrant), cooperative
+// Citymaker roads layer — tree (cul-de-sac) pattern.
+// Adapted from Grid Road Generator (Ti4goc), Core/GridGenerator.Tree.cs; part of Citymaker (GPL-3.0).
+// Changes for Citymaker: no static caches or global lock (thread-safe, reentrant), cooperative
 // cancellation through GridParameters.Cancel, per-call diagnostics objects instead of statics.
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads.Generators
+namespace Citymaker.Core.Layers.Roads.Generators
 {
     /// <summary>
     /// Tree cul-de-sac pattern (grid family, LoopMode false): a collector (IsAvenue) along the

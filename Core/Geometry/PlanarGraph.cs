@@ -1,4 +1,4 @@
-// Placemaker — in-memory planar road graph with cursor-aware block picking.
+// Citymaker — in-memory planar road graph with cursor-aware block picking.
 //
 // Grid Road Generator picks a block by double-clicking a node and walking "right-hand" from it,
 // which cannot choose WHICH block at an X junction. Here the player hovers a point inside the block:
@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Geometry
+namespace Citymaker.Core.Geometry
 {
     public enum FacePickStatus
     {

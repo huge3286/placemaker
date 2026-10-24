@@ -12,14 +12,14 @@
 //     outline and the fallen deck.
 // Subtypes: DIY skate spot, Broken highway ruins, Graffiti park, Parkour yard, BMX dirt jumps.
 
-using Placemaker.Core.Layers.Types.Scrapyard;
+using Citymaker.Core.Layers.Types.Scrapyard;
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Leisure;
-using Placemaker.Core.Layers.Types.Ruins;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Leisure;
+using Citymaker.Core.Layers.Types.Ruins;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.UrbanRuins
+namespace Citymaker.Core.Layers.Types.UrbanRuins
 {
     [AreaGenerator(311, Group = "sports")]
     public sealed class UrbanRuinsLayer : LeisureLayer
@@ -40,7 +40,7 @@ namespace Placemaker.Core.Layers.Types.UrbanRuins
             Feature("restrooms"),
             Feature("shops", ("count", 1.0), ("where", "entrances")),
             Feature("decals", ("theme", "graffiti"), ("ground", "paved"), ("density", 1.0)),
-            DecayKit.Relabel(Feature("bigtrees", ("density", 1.0)), "Placemaker.Ruins.Feature.bigtrees"),
+            DecayKit.Relabel(Feature("bigtrees", ("density", 1.0)), "Citymaker.Ruins.Feature.bigtrees"),
             Feature("terrain", ("shape", "mounds"), ("height", 1.0)),
             StreetShopsFeature(Area),
         };
@@ -159,7 +159,7 @@ namespace Placemaker.Core.Layers.Types.UrbanRuins
                 if (!region.Contains(through)) through = centre;
                 if (LeisureKit.Chord(region, through, axis, 4f, out var d0, out var d1))
                     hasDeck = DecayKit.FitRect(region, occ, math.lerp(d0, d1, 0.5f), math.normalizesafe(d1 - d0), math.distance(d0, d1) * 0.5f, dw * 0.5f, 2f, out deck, 8f, 3f);
-                if (!hasDeck) ctx.Issue(IssueSeverity.Info, "Placemaker.Ruins.Issue.NoDeck");
+                if (!hasDeck) ctx.Issue(IssueSeverity.Info, "Citymaker.Ruins.Issue.NoDeck");
             }
             int rampSpan = -1, breakSpan = -1;
             if (hasDeck)
@@ -403,7 +403,7 @@ namespace Placemaker.Core.Layers.Types.UrbanRuins
                     float spacing = ctx.F("jumpSpacing");
                     int maxJumps = math.clamp((int)((major * 0.55f - 17f) / spacing), 2, 6);
                     jumps = DirtJumps.PlaceLines(ctx, region, occ, all, far, axis, ctx.I("jumpLines"), maxJumps, ctx.F("jumpHeight"), spacing, true, true, 3, Hashing.Mix(ctx.Seed, 0xB3Au));   // (rf-sports) 3 = dirt (1 was dry grass: the track was invisible)
-                    if (jumps == 0) ctx.Issue(IssueSeverity.Info, "Placemaker.Ruins.Issue.Fewer", 0, ctx.I("jumpLines"));
+                    if (jumps == 0) ctx.Issue(IssueSeverity.Info, "Citymaker.Ruins.Issue.Fewer", 0, ctx.I("jumpLines"));
                 }
                 else if (m == "blocks" && ctx.I("blocks") > 0)
                     blocks = ParkourField(ctx, region, occ, all, keep, guard, far, axis, ctx.I("blocks"), ctx.F("blockSpacing"), graffiti);
@@ -512,10 +512,10 @@ namespace Placemaker.Core.Layers.Types.UrbanRuins
 
             EmitGreenRegions(ctx, occ, 60f);
             CommonStats(ctx);
-            ctx.Stat("Placemaker.Stat.SkateFeatures", skate + ledges + blocks, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Pillars", pillars, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Jumps", jumps, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.RubblePiles", rubbleItems + fallenSlabs, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.SkateFeatures", skate + ledges + blocks, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Pillars", pillars, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Jumps", jumps, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.RubblePiles", rubbleItems + fallenSlabs, Keys.UnitCount);
             ctx.Plan.Facts["spans"] = spans.Count;
             ctx.Plan.Facts["collapsedSpans"] = spans.FindAll(s => s.Collapsed).Count;
             ctx.Plan.Facts["pads"] = pads.Count;
@@ -647,7 +647,7 @@ namespace Placemaker.Core.Layers.Types.UrbanRuins
                     }
                 return n;
             }
-            ctx.Issue(IssueSeverity.Info, "Placemaker.Ruins.Issue.Fewer", 0, blocks);
+            ctx.Issue(IssueSeverity.Info, "Citymaker.Ruins.Issue.Fewer", 0, blocks);
             return 0;
         }
 
@@ -685,7 +685,7 @@ namespace Placemaker.Core.Layers.Types.UrbanRuins
                 }
                 return n;
             }
-            ctx.Issue(IssueSeverity.Info, "Placemaker.Ruins.Issue.Fewer", 0, walls);
+            ctx.Issue(IssueSeverity.Info, "Citymaker.Ruins.Issue.Fewer", 0, walls);
             return 0;
         }
     }

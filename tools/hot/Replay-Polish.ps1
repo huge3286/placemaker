@@ -20,7 +20,7 @@ New-Item -ItemType Directory -Force $Out | Out-Null
 $env:PM_POLISH_REPLAY = $scen
 $env:PM_POLISH_OUT = $Out
 $env:PM_POLISH_KNOBS = $Knobs
-$result = & dotnet test (Join-Path $repo 'Tests\Placemaker.Tests') --filter "FullyQualifiedName~NeighbourReplay" 2>&1
+$result = & dotnet test (Join-Path $repo 'Tests\Citymaker.Tests') --filter "FullyQualifiedName~NeighbourReplay" 2>&1
 $summary = $result | Select-String 'Passed!|Failed!|error CS' | Select-Object -First 5
 $summary | ForEach-Object { Write-Host $_.Line }
 $edge = @("${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe", "$env:ProgramFiles\Microsoft\Edge\Application\msedge.exe") | Where-Object { Test-Path $_ } | Select-Object -First 1

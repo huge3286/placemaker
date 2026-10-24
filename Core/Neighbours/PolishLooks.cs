@@ -1,4 +1,4 @@
-// Placemaker neighbourhood polish — looks: named sets of every polish setting, like Placemaker's styles (GPL-3.0).
+// Citymaker neighbourhood polish — looks: named sets of every polish setting, like Citymaker's styles (GPL-3.0).
 //
 // A look is a base theme (garden, natural, tidy, yard: what kind of planting and features) and a value for every knob the
 // planner reads per house (what the land past the lot becomes, reach, joining, how far from water, lawns, paint, planting,
@@ -12,9 +12,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Placemaker.Core.Tool;
+using Citymaker.Core.Tool;
 
-namespace Placemaker.Core.Neighbours
+namespace Citymaker.Core.Neighbours
 {
     public sealed class PolishLook
     {
@@ -184,26 +184,26 @@ namespace Placemaker.Core.Neighbours
         /// for each zone type (ZoneLookIds: what a zone gets by default).</summary>
         public static readonly IReadOnlyList<PolishLook> BuiltIn = new[]
         {
-            new PolishLook { Id = "garden", Name = "Placemaker.UI.Painter.Theme.garden", Theme = "garden" },
-            new PolishLook { Id = "natural", Name = "Placemaker.UI.Painter.Theme.natural", Theme = "natural", Knobs = { ["featureChance"] = 75f, ["rockChance"] = 35f, ["bedChance"] = 0f } },
-            new PolishLook { Id = "tidy", Name = "Placemaker.UI.Painter.Theme.tidy", Theme = "tidy", Knobs = { ["bedChance"] = 90f, ["rockChance"] = 0f } },
-            new PolishLook { Id = "yard", Name = "Placemaker.UI.Painter.Theme.yard", Theme = "yard", Knobs = { ["bedChance"] = 0f, ["rockChance"] = 0f, ["gardenLayer"] = 3f, ["meadowLayer"] = 3f, ["blendLayer"] = 3f, ["patchChance"] = 60f } },
+            new PolishLook { Id = "garden", Name = "Citymaker.UI.Painter.Theme.garden", Theme = "garden" },
+            new PolishLook { Id = "natural", Name = "Citymaker.UI.Painter.Theme.natural", Theme = "natural", Knobs = { ["featureChance"] = 75f, ["rockChance"] = 35f, ["bedChance"] = 0f } },
+            new PolishLook { Id = "tidy", Name = "Citymaker.UI.Painter.Theme.tidy", Theme = "tidy", Knobs = { ["bedChance"] = 90f, ["rockChance"] = 0f } },
+            new PolishLook { Id = "yard", Name = "Citymaker.UI.Painter.Theme.yard", Theme = "yard", Knobs = { ["bedChance"] = 0f, ["rockChance"] = 0f, ["gardenLayer"] = 3f, ["meadowLayer"] = 3f, ["blendLayer"] = 3f, ["patchChance"] = 60f } },
             // more ready looks, each a different mix of ground
-            new PolishLook { Id = "meadow", Name = "Placemaker.UI.Painter.Theme.meadow", Theme = "natural", Knobs = { ["paintedGardens"] = 70f, ["gardenLayer"] = 1f, ["meadowLayer"] = 1f, ["blendLayer"] = 2f, ["blendFarLayer"] = 1f, ["featureChance"] = 75f, ["rockChance"] = 35f, ["bedChance"] = 0f, ["patchChance"] = 30f, ["patchLayer"] = 1f } },
-            new PolishLook { Id = "rustic", Name = "Placemaker.UI.Painter.Theme.rustic", Theme = "garden", Knobs = { ["paintedGardens"] = 50f, ["gardenLayer"] = 1f, ["meadowLayer"] = 1f, ["edgeLayer"] = 3f, ["edgeWidth"] = 3.5f, ["edgeStrength"] = 0.6f, ["patchChance"] = 70f, ["patchLayer"] = 3f, ["rockChance"] = 30f, ["roadLayer"] = 3f, ["roadWidth"] = 3f, ["roadStrength"] = 0.45f } },
-            new PolishLook { Id = "coastal", Name = "Placemaker.UI.Painter.Theme.coastal", Theme = "natural", Knobs = { ["paintedGardens"] = 60f, ["gardenLayer"] = 4f, ["meadowLayer"] = 1f, ["blendLayer"] = 4f, ["blendFarLayer"] = 1f, ["roadLayer"] = 4f, ["roadWidth"] = 5f, ["roadStrength"] = 0.6f, ["rockLayer"] = 4f, ["rockGround"] = 4f, ["patchLayer"] = 4f, ["patchChance"] = 40f, ["rockChance"] = 30f } },
-            new PolishLook { Id = "manicured", Name = "Placemaker.UI.Painter.Theme.manicured", Theme = "tidy", Knobs = { ["paintedGardens"] = 0f, ["lawnReach"] = 500f, ["blendLayer"] = 2f, ["blendFarLayer"] = 0f, ["edgeLayer"] = 0f, ["patchChance"] = 0f, ["rockChance"] = 0f, ["bedChance"] = 95f } },
+            new PolishLook { Id = "meadow", Name = "Citymaker.UI.Painter.Theme.meadow", Theme = "natural", Knobs = { ["paintedGardens"] = 70f, ["gardenLayer"] = 1f, ["meadowLayer"] = 1f, ["blendLayer"] = 2f, ["blendFarLayer"] = 1f, ["featureChance"] = 75f, ["rockChance"] = 35f, ["bedChance"] = 0f, ["patchChance"] = 30f, ["patchLayer"] = 1f } },
+            new PolishLook { Id = "rustic", Name = "Citymaker.UI.Painter.Theme.rustic", Theme = "garden", Knobs = { ["paintedGardens"] = 50f, ["gardenLayer"] = 1f, ["meadowLayer"] = 1f, ["edgeLayer"] = 3f, ["edgeWidth"] = 3.5f, ["edgeStrength"] = 0.6f, ["patchChance"] = 70f, ["patchLayer"] = 3f, ["rockChance"] = 30f, ["roadLayer"] = 3f, ["roadWidth"] = 3f, ["roadStrength"] = 0.45f } },
+            new PolishLook { Id = "coastal", Name = "Citymaker.UI.Painter.Theme.coastal", Theme = "natural", Knobs = { ["paintedGardens"] = 60f, ["gardenLayer"] = 4f, ["meadowLayer"] = 1f, ["blendLayer"] = 4f, ["blendFarLayer"] = 1f, ["roadLayer"] = 4f, ["roadWidth"] = 5f, ["roadStrength"] = 0.6f, ["rockLayer"] = 4f, ["rockGround"] = 4f, ["patchLayer"] = 4f, ["patchChance"] = 40f, ["rockChance"] = 30f } },
+            new PolishLook { Id = "manicured", Name = "Citymaker.UI.Painter.Theme.manicured", Theme = "tidy", Knobs = { ["paintedGardens"] = 0f, ["lawnReach"] = 500f, ["blendLayer"] = 2f, ["blendFarLayer"] = 0f, ["edgeLayer"] = 0f, ["patchChance"] = 0f, ["rockChance"] = 0f, ["bedChance"] = 95f } },
             // one per zone type: what its buildings get until the player picks another look for that zone
-            new PolishLook { Id = "houses", Name = "Placemaker.UI.Painter.Theme.houses", Theme = "garden", Knobs = { ["fill"] = FillGarden } },
-            new PolishLook { Id = "rows", Name = "Placemaker.UI.Painter.Theme.rows", Theme = "tidy", Knobs = { ["fill"] = FillGarden, ["bedChance"] = 90f, ["rockChance"] = 0f, ["sideReach"] = 30f, ["maxDeepen"] = 16f, ["hugReach"] = 16f, ["openReach"] = 0f } },
-            new PolishLook { Id = "apartments", Name = "Placemaker.UI.Painter.Theme.apartments", Theme = "tidy", Knobs = { ["fill"] = FillCarPark, ["parkStyle"] = ParkClean, ["paintedGardens"] = 0f, ["bedChance"] = 70f, ["rockChance"] = 0f, ["pathChance"] = 70f } },
-            new PolishLook { Id = "towers", Name = "Placemaker.UI.Painter.Theme.towers", Theme = "tidy", Knobs = { ["fill"] = FillCarPark, ["parkStyle"] = ParkClean, ["paintedGardens"] = 0f, ["bedChance"] = 95f, ["rockChance"] = 0f, ["pathChance"] = 80f, ["patchChance"] = 0f, ["edgeLayer"] = 0f, ["blendFarLayer"] = 0f } },
-            new PolishLook { Id = "mixed", Name = "Placemaker.UI.Painter.Theme.mixed", Theme = "tidy", Knobs = { ["fill"] = FillCarPark, ["parkStyle"] = ParkEveryday, ["paintedGardens"] = 0f, ["bedChance"] = 90f, ["rockChance"] = 0f, ["sideReach"] = 30f, ["openReach"] = 0f } },
-            new PolishLook { Id = "shops", Name = "Placemaker.UI.Painter.Theme.shops", Theme = "tidy", Knobs = { ["fill"] = FillCarPark, ["parkStyle"] = ParkEveryday, ["bedChance"] = 90f, ["rockChance"] = 0f } },
-            new PolishLook { Id = "bigShops", Name = "Placemaker.UI.Painter.Theme.bigShops", Theme = "tidy", Knobs = { ["fill"] = FillCarPark, ["parkStyle"] = ParkEveryday, ["bedChance"] = 95f, ["rockChance"] = 0f, ["patchChance"] = 0f } },
-            new PolishLook { Id = "offices", Name = "Placemaker.UI.Painter.Theme.offices", Theme = "tidy", Knobs = { ["fill"] = FillCarPark, ["parkStyle"] = ParkClean, ["bedChance"] = 95f, ["rockChance"] = 0f, ["patchChance"] = 0f, ["paintedGardens"] = 0f } },
-            new PolishLook { Id = "officeTowers", Name = "Placemaker.UI.Painter.Theme.officeTowers", Theme = "tidy", Knobs = { ["fill"] = FillCarPark, ["parkStyle"] = ParkClean, ["bedChance"] = 95f, ["rockChance"] = 0f, ["patchChance"] = 0f, ["paintedGardens"] = 0f } },
-            new PolishLook { Id = "industry", Name = "Placemaker.UI.Painter.Theme.industry", Theme = "yard", Knobs = { ["fill"] = FillCarPark, ["parkStyle"] = ParkIndustrial, ["bedChance"] = 0f, ["rockChance"] = 0f, ["gardenLayer"] = 3f, ["meadowLayer"] = 3f, ["blendLayer"] = 3f, ["patchChance"] = 60f } },
+            new PolishLook { Id = "houses", Name = "Citymaker.UI.Painter.Theme.houses", Theme = "garden", Knobs = { ["fill"] = FillGarden } },
+            new PolishLook { Id = "rows", Name = "Citymaker.UI.Painter.Theme.rows", Theme = "tidy", Knobs = { ["fill"] = FillGarden, ["bedChance"] = 90f, ["rockChance"] = 0f, ["sideReach"] = 30f, ["maxDeepen"] = 16f, ["hugReach"] = 16f, ["openReach"] = 0f } },
+            new PolishLook { Id = "apartments", Name = "Citymaker.UI.Painter.Theme.apartments", Theme = "tidy", Knobs = { ["fill"] = FillCarPark, ["parkStyle"] = ParkClean, ["paintedGardens"] = 0f, ["bedChance"] = 70f, ["rockChance"] = 0f, ["pathChance"] = 70f } },
+            new PolishLook { Id = "towers", Name = "Citymaker.UI.Painter.Theme.towers", Theme = "tidy", Knobs = { ["fill"] = FillCarPark, ["parkStyle"] = ParkClean, ["paintedGardens"] = 0f, ["bedChance"] = 95f, ["rockChance"] = 0f, ["pathChance"] = 80f, ["patchChance"] = 0f, ["edgeLayer"] = 0f, ["blendFarLayer"] = 0f } },
+            new PolishLook { Id = "mixed", Name = "Citymaker.UI.Painter.Theme.mixed", Theme = "tidy", Knobs = { ["fill"] = FillCarPark, ["parkStyle"] = ParkEveryday, ["paintedGardens"] = 0f, ["bedChance"] = 90f, ["rockChance"] = 0f, ["sideReach"] = 30f, ["openReach"] = 0f } },
+            new PolishLook { Id = "shops", Name = "Citymaker.UI.Painter.Theme.shops", Theme = "tidy", Knobs = { ["fill"] = FillCarPark, ["parkStyle"] = ParkEveryday, ["bedChance"] = 90f, ["rockChance"] = 0f } },
+            new PolishLook { Id = "bigShops", Name = "Citymaker.UI.Painter.Theme.bigShops", Theme = "tidy", Knobs = { ["fill"] = FillCarPark, ["parkStyle"] = ParkEveryday, ["bedChance"] = 95f, ["rockChance"] = 0f, ["patchChance"] = 0f } },
+            new PolishLook { Id = "offices", Name = "Citymaker.UI.Painter.Theme.offices", Theme = "tidy", Knobs = { ["fill"] = FillCarPark, ["parkStyle"] = ParkClean, ["bedChance"] = 95f, ["rockChance"] = 0f, ["patchChance"] = 0f, ["paintedGardens"] = 0f } },
+            new PolishLook { Id = "officeTowers", Name = "Citymaker.UI.Painter.Theme.officeTowers", Theme = "tidy", Knobs = { ["fill"] = FillCarPark, ["parkStyle"] = ParkClean, ["bedChance"] = 95f, ["rockChance"] = 0f, ["patchChance"] = 0f, ["paintedGardens"] = 0f } },
+            new PolishLook { Id = "industry", Name = "Citymaker.UI.Painter.Theme.industry", Theme = "yard", Knobs = { ["fill"] = FillCarPark, ["parkStyle"] = ParkIndustrial, ["bedChance"] = 0f, ["rockChance"] = 0f, ["gardenLayer"] = 3f, ["meadowLayer"] = 3f, ["blendLayer"] = 3f, ["patchChance"] = 60f } },
         };
 
         /// <summary>Each built-in look's colour (the zone ones: the dataviz palette's dark steps, in its validated order).</summary>

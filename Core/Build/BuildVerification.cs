@@ -1,4 +1,4 @@
-// Placemaker — post-build member verification (GPL-3.0).
+// Citymaker — post-build member verification (GPL-3.0).
 //
 // Playtest 4b: deleting a park left decals, bushes, benches and lamps behind — they had been built
 // but never tagged as group members, so removal could not see them. The build now tags every entity
@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     public struct MemberCounts
     {

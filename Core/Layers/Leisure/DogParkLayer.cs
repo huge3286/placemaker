@@ -4,11 +4,11 @@
 // hub by the entrance, dog bins and a drinking post, shade trees along the fence, worn ground.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Park;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Park;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Leisure
+namespace Citymaker.Core.Layers.Leisure
 {
     [AreaGenerator(52, Group = "parks")]
     public sealed class DogParkLayer : LeisureLayer
@@ -193,7 +193,7 @@ namespace Placemaker.Core.Layers.Leisure
             ctx.NavigationArea(region.Ring, AreaRole.PedestrianArea, new AssetRef("", "Pedestrian Area"));
             EmitGreenRegions(ctx, occ);
             CommonStats(ctx);
-            ctx.Stat("Placemaker.Stat.AgilityProps", props, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.AgilityProps", props, Keys.UnitCount);
         }
     }
 

@@ -32,10 +32,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     /// <summary>What the harmony pass did (facts are also written to the host plan as "harmony*").</summary>
     public sealed class HarmonyReport
@@ -112,7 +112,7 @@ namespace Placemaker.Core.Build
         /// <summary>Paths crossing a graded surface at least this big lie on its plane (plazas, play areas).</summary>
         public const float PinSurfaceArea = 300f;
 
-        public const string IssueSteepPath = "Placemaker.Harmony.Issue.SteepPath";
+        public const string IssueSteepPath = "Citymaker.Harmony.Issue.SteepPath";
 
         /// <summary>Test / gallery switch (thread-static so parallel renders do not share it).</summary>
         [ThreadStatic] private static bool _disabled;
@@ -216,7 +216,7 @@ namespace Placemaker.Core.Build
             catch (OperationCanceledException) { throw; }
             catch (Exception e)
             {
-                plan.Issues.Add(new PlanIssue { Severity = IssueSeverity.Info, Key = "Placemaker.Harmony.Issue.Failed", Args = new object[] { e.GetType().Name + ": " + e.Message } });
+                plan.Issues.Add(new PlanIssue { Severity = IssueSeverity.Info, Key = "Citymaker.Harmony.Issue.Failed", Args = new object[] { e.GetType().Name + ": " + e.Message } });
             }
             return report;
         }

@@ -20,11 +20,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Park
+namespace Citymaker.Core.Layers.Park
 {
     public sealed class PathHierarchyOptions
     {
@@ -66,7 +66,7 @@ namespace Placemaker.Core.Layers.Park
             if (o.Bike)
             {
                 var bike = BikeRoute(ctx, s, okPoint, reserved, o.BikeGap, Hashing.Mix(ctx.Seed, 0xB1CEu), out string problem);
-                if (bike.Count == 0) ctx.Issue(IssueSeverity.Info, problem ?? "Placemaker.Park.Issue.NoBikeRoute");
+                if (bike.Count == 0) ctx.Issue(IssueSeverity.Info, problem ?? "Citymaker.Park.Issue.NoBikeRoute");
                 else
                 {
                     var foot = s.Curves;
@@ -78,7 +78,7 @@ namespace Placemaker.Core.Layers.Park
                     ctx.Plan.Facts["bikeLength"] = len;
                     ctx.Plan.Facts["bikeCrossings"] = crossings;
                     if (crossings > 0) ctx.Plan.Facts["bikeMinCrossingAngle"] = minAngle;
-                    ctx.Stat("Placemaker.Stat.BikePath", Math.Round(len), Keys.UnitM);
+                    ctx.Stat("Citymaker.Stat.BikePath", Math.Round(len), Keys.UnitM);
                 }
             }
             ctx.Check();
@@ -86,14 +86,14 @@ namespace Placemaker.Core.Layers.Park
             {
                 int made = SmallPaths(s, okPoint, reserved, o.SmallPaths, Hashing.Mix(ctx.Seed, 0x5A11u), ctx.Cancel);
                 ctx.Plan.Facts["smallPaths"] = made;
-                if (made < o.SmallPaths) ctx.Issue(IssueSeverity.Info, "Placemaker.Park.Issue.FewerSmallPaths");
+                if (made < o.SmallPaths) ctx.Issue(IssueSeverity.Info, "Citymaker.Park.Issue.FewerSmallPaths");
             }
             ctx.Check();
             if (o.Trails > 0)
             {
                 int made = Trails(s, okPoint, reserved, o.Trails, Hashing.Mix(ctx.Seed, 0x7AA1u));
                 ctx.Plan.Facts["trails"] = made;
-                if (made == 0) ctx.Issue(IssueSeverity.Info, "Placemaker.Park.Issue.NoRoomForTrails");
+                if (made == 0) ctx.Issue(IssueSeverity.Info, "Citymaker.Park.Issue.NoRoomForTrails");
             }
         }
 
@@ -119,8 +119,8 @@ namespace Placemaker.Core.Layers.Park
             // frontage); it never invents entries of its own.
             var bikeGates = new List<int>();
             for (int i = 0; i < s.Gates.Count; i++) if (s.Gates[i].Kind == EntranceKinds.Bike) bikeGates.Add(i);
-            if (bikeGates.Count == 0) { problem = "Placemaker.Park.Issue.NoBikeEntrances"; return result; }
-            if (bikeGates.Count < 2) { problem = "Placemaker.Park.Issue.BikeNeedsTwoEntrances"; return result; }
+            if (bikeGates.Count == 0) { problem = "Citymaker.Park.Issue.NoBikeEntrances"; return result; }
+            if (bikeGates.Count < 2) { problem = "Citymaker.Park.Issue.BikeNeedsTwoEntrances"; return result; }
             // The two bike entrances farthest apart: a through-route, not a loop.
             int ga = -1, gb = -1; float far = 0f;
             foreach (int i in bikeGates)
@@ -130,7 +130,7 @@ namespace Placemaker.Core.Layers.Park
                     float d = math.distance(s.Gates[i].Position, s.Gates[j].Position);
                     if (d > far) { far = d; ga = i; gb = j; }
                 }
-            if (ga < 0 || far < 40f) { problem = "Placemaker.Park.Issue.BikeNeedsTwoEntrances"; return result; }
+            if (ga < 0 || far < 40f) { problem = "Citymaker.Park.Issue.BikeNeedsTwoEntrances"; return result; }
             var entryA = s.Gates[ga];
             var entryB = s.Gates[gb];
 
@@ -179,7 +179,7 @@ namespace Placemaker.Core.Layers.Park
             }
             int start = NearestValid(entryA.Position, valid, Cell, n, h * 4f);
             int goal = NearestValid(entryB.Position, valid, Cell, n, h * 4f);
-            if (start < 0 || goal < 0) { problem = "Placemaker.Park.Issue.NoBikeRoute"; return result; }
+            if (start < 0 || goal < 0) { problem = "Citymaker.Park.Issue.NoBikeRoute"; return result; }
             var startP = Cell(start); var goalP = Cell(goal);
 
             float StepCost(int from, int to, float2 dir, float len)
@@ -199,7 +199,7 @@ namespace Placemaker.Core.Layers.Park
             }
 
             var cells = AStar(nx, ny, valid, start, goal, h, StepCost, ctx.Cancel);
-            if (cells == null) { problem = "Placemaker.Park.Issue.NoBikeRoute"; return result; }
+            if (cells == null) { problem = "Citymaker.Park.Issue.NoBikeRoute"; return result; }
             var pts = new List<float2> { entryA.Position };
             foreach (var k in cells) pts.Add(Cell(k));
             pts.Add(entryB.Position);
@@ -857,7 +857,7 @@ namespace Placemaker.Core.Layers.Park
                     uint ws = Hashing.Mix(ctx.Seed, 0xDE51u + (uint)i);
 
                     // s33: one painted stroke (frayed, faded ends, knockout) instead of a feathered polygon.
-                    var kit = new Placemaker.Core.Paint.PaintKit(ctx.Plan.Paint, ctx.H, ws) { Outline = ctx.LayerRegion.Ring };
+                    var kit = new Citymaker.Core.Paint.PaintKit(ctx.Plan.Paint, ctx.H, ws) { Outline = ctx.LayerRegion.Ring };
                     TrailPaint.DesireLine(kit, a2, b2, 2f * hw + 0.6f, 0.72f, math.clamp(o.DesireLayer, 1, 4), ws);
                     TerrainPaint.Warn(ctx);
 
@@ -865,7 +865,7 @@ namespace Placemaker.Core.Layers.Park
                 }
             }
             ctx.Plan.Facts["desireLines"] = made.Count;
-            if (made.Count == 0) ctx.Issue(IssueSeverity.Info, "Placemaker.Park.Issue.NoDesireLines");
+            if (made.Count == 0) ctx.Issue(IssueSeverity.Info, "Citymaker.Park.Issue.NoDesireLines");
             return made.Count;
         }
 

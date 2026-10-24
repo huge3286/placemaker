@@ -6,10 +6,10 @@ const { CssLintPlugin } = require("./tools/css-lint");
 const TerserPlugin = require("terser-webpack-plugin");
 const gray = (text) => `\x1b[90m${text}\x1b[0m`;
 
-// Output: PLACEMAKER_UI_OUT (set by the csproj) > ./build. A bare `npm run build` never writes into the game; deploying goes through the csproj.
+// Output: CITYMAKER_UI_OUT (set by the csproj) > ./build. A bare `npm run build` never writes into the game; deploying goes through the csproj.
 const CSII_USERDATAPATH = process.env.CSII_USERDATAPATH;
 
-const OUTPUT_DIR = process.env.PLACEMAKER_UI_OUT || path.join(__dirname, "build");
+const OUTPUT_DIR = process.env.CITYMAKER_UI_OUT || path.join(__dirname, "build");
 
 const banner = `
  * Cities: Skylines II UI Module
@@ -72,7 +72,7 @@ module.exports = {
           },
         ],
       },
-      // Every bundled file is namespaced under images/placemaker/ with a content hash: coui://ui-mods/
+      // Every bundled file is namespaced under images/citymaker/ with a content hash: coui://ui-mods/
       // is shared by ALL mods, so a plain images/check.svg could be overwritten by another mod's file.
       {
         test: /\.svg$/i,
@@ -82,7 +82,7 @@ module.exports = {
         generator: {
           filename: (pathData) => {
             const m = /tint=(\w+)/.exec((pathData.module && pathData.module.resource) || "");
-            return `images/placemaker/[name]-${m ? m[1] : "light"}.[contenthash:6][ext]`;
+            return `images/citymaker/[name]-${m ? m[1] : "light"}.[contenthash:6][ext]`;
           },
         },
       },
@@ -91,7 +91,7 @@ module.exports = {
         resourceQuery: { not: [/tint=/] },
         type: "asset/resource",
         generator: {
-          filename: "images/placemaker/[name].[contenthash:6][ext]",
+          filename: "images/citymaker/[name].[contenthash:6][ext]",
         },
       },
     ],

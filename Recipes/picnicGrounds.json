@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "picnicGrounds",
-  "nameKey": "Placemaker.Recipe.PicnicGrounds",
-  "descriptionKey": "Placemaker.Recipe.PicnicGrounds.Description",
+  "nameKey": "Citymaker.Recipe.PicnicGrounds",
+  "descriptionKey": "Citymaker.Recipe.PicnicGrounds.Description",
   "icon": "Media/Game/Icons/CityPark.svg",
   "root": {
     "layer": "picnicGrounds",

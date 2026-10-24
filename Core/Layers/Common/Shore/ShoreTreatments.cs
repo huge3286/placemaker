@@ -19,12 +19,12 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Park;
-using Placemaker.Core.Layers.Types.Beach;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Park;
+using Citymaker.Core.Layers.Types.Beach;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Common.Shore
+namespace Citymaker.Core.Layers.Common.Shore
 {
     public sealed class ShoreWork
     {

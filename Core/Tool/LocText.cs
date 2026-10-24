@@ -1,6 +1,6 @@
 using System;
 
-namespace Placemaker.Core.Tool
+namespace Citymaker.Core.Tool
 {
     /// <summary>Localisation key + positional args, mirrors contract.ts <c>LocText</c>.</summary>
     public sealed class LocText : IEquatable<LocText>

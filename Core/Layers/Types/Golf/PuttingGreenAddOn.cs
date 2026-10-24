@@ -2,11 +2,11 @@
 // bunker on its side and a couple of benches facing it. The golf layer offers it on its "practice"
 // region next to the clubhouse; any park can use it too (it only needs open lawn).
 
-using Placemaker.Core.Layers.AddOns;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.AddOns;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Golf
+namespace Citymaker.Core.Layers.Types.Golf
 {
     [AreaGenerator(247)]
     public sealed class PuttingGreenAddOn : AddOnLayer
@@ -35,7 +35,7 @@ namespace Placemaker.Core.Layers.Types.Golf
             float r = want; float2 c = default; bool found = false;
             for (int i = 0; i < 4 && !found; i++, r *= 0.75f)
                 found = r >= 3f && Spots.Find(occ, r + (ctx.B("bunker") ? r * 0.5f + 1f : 1f), Spots.Preference.Centre, Hashing.Mix(ctx.Seed, (uint)i), out c);
-            if (!found) { NoSpace(ctx, "Placemaker.AddOn.PuttingGreen.Name"); return; }
+            if (!found) { NoSpace(ctx, "Citymaker.AddOn.PuttingGreen.Name"); return; }
             r /= 0.75f;
             if (r > want) r = want;
             uint v = Hashing.Mix(ctx.Seed, 0x9073u);
@@ -75,7 +75,7 @@ namespace Placemaker.Core.Layers.Types.Golf
                     var p = c + new float2(math.cos(a), math.sin(a)) * (r + 2.2f);
                     if (LeisureKit.Put(ctx, occ, p, Facing(p, c), ObjectRole.Bench, AssetMix.One(""), null, 1.3f, Hashing.Mix(v, 30u + (uint)i), 0.3f, 0.3f)) benches++;
                 }
-            ctx.Stat("Placemaker.Stat.Cups", cups, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Cups", cups, Keys.UnitCount);
             ctx.Stat(Keys.StatBenches, benches, Keys.UnitCount);
         }
     }

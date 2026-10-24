@@ -1,4 +1,4 @@
-// Placemaker — direct terraform/paint rasters (GPL-3.0).
+// Citymaker — direct terraform/paint rasters (GPL-3.0).
 //
 // Playtest 4b: emitting hundreds of vanilla level-brush definitions per frame crawled (2 FPS, purple
 // brush previews, "stuck at 18%"). The build now applies the terrain directly through
@@ -14,7 +14,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     public sealed class TerraformRaster
     {

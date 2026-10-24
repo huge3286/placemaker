@@ -1,4 +1,4 @@
-// Placemaker — the central shelf: which Make-row categories exist, in which order, which types and styles they show (GPL-3.0).
+// Citymaker — the central shelf: which Make-row categories exist, in which order, which types and styles they show (GPL-3.0).
 //
 // The user (2026-10-15): "fewer, better". Cutting a type or a style means HIDING it, never deleting code, and one place says
 // what is hidden so it can come back. The shelf is data: one file per category, Recipes/shelf/<category>.json, so the agents
@@ -6,7 +6,7 @@
 //
 //   {
 //     "id": "parks",                    the category id (the file name)
-//     "name": "Parks",                  its label (English; key Placemaker.UI.MakeGroup.<Id> unless "key" is given)
+//     "name": "Parks",                  its label (English; key Citymaker.UI.MakeGroup.<Id> unless "key" is given)
 //     "order": 3,                       position in the Make row
 //     "hidden": false,                  true = the whole category is hidden (industry, transport)
 //     "groups": ["parks", "gardens"],   the types' own groups ([AreaGenerator(Group = ...)]) shown here
@@ -22,7 +22,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Placemaker.Core.Tool
+namespace Citymaker.Core.Tool
 {
     public sealed class ShelfCategory
     {
@@ -114,7 +114,7 @@ namespace Placemaker.Core.Tool
             if (c.Id.Length == 0) throw new FormatException("no category id");
             c.Name = o["name"].AsString(c.Id);
             c.Key = o["key"].AsString("");
-            if (c.Key.Length == 0) c.Key = "Placemaker.UI.MakeGroup." + char.ToUpperInvariant(c.Id[0]) + c.Id.Substring(1);
+            if (c.Key.Length == 0) c.Key = "Citymaker.UI.MakeGroup." + char.ToUpperInvariant(c.Id[0]) + c.Id.Substring(1);
             c.Order = (int)o["order"].AsNumber(1000);
             c.Hidden = o["hidden"].AsBool(false);
             foreach (var g in o["groups"].Items) { var s = g.AsString("").Trim(); if (s.Length > 0 && !c.Groups.Contains(s)) c.Groups.Add(s); }

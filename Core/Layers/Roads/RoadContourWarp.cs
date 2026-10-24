@@ -1,4 +1,4 @@
-// Placemaker roads layer (s34) — "Follow contours" for the straight patterns (grid, superblocks).
+// Citymaker roads layer (s34) — "Follow contours" for the straight patterns (grid, superblocks).
 //
 // Playtest (image 62): the contour lines showed the generated network ignoring the hill. Turning the grid so its long
 // streets run along the dominant contour direction (AlignToTerrain) only helps on an even slope; on a hill or in a
@@ -10,10 +10,10 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads
+namespace Citymaker.Core.Layers.Roads
 {
     internal static class RoadContourWarp
     {

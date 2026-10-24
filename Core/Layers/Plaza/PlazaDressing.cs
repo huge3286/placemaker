@@ -17,15 +17,15 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Plaza
+namespace Citymaker.Core.Layers.Plaza
 {
     internal static class PlazaDressing
     {
-        private const string K = "Placemaker.Plaza.";
+        private const string K = "Citymaker.Plaza.";
 
         // ───────────── frame & palette ─────────────
 
@@ -325,7 +325,7 @@ namespace Placemaker.Core.Layers.Plaza
                     var p = focal + new float2(math.cos(a), math.sin(a)) * r;
                     LeisureKit.Put(ctx, occ, p, 0f, ObjectRole.Lamp, PlazaArt.Or(ctx, "lampAsset", PlazaArt.ParkLamp), null, 0.4f, Hashing.Mix(ctx.Seed, 0xA500u + (uint)row), 0.5f, 0.1f);
                 }
-            ctx.Stat("Placemaker.Stat.Seats", benches, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Seats", benches, Keys.UnitCount);
             if (!ctx.B("amphiRaise")) return;
             float reach = rMax + 2f;
             TerrainShaper.Shape(ctx, region, new TerrainSpec
@@ -851,7 +851,7 @@ namespace Placemaker.Core.Layers.Plaza
             if (placed > 0 && pave != null && palette != null)
                 pave.Add(new OrientedRect { Center = block.Center, Axis = block.Axis, HalfLength = block.HalfLength + 2f, HalfWidth = block.HalfWidth + 1f }.Ring, SurfaceRole.Plaza, palette.Accent, AssetCategories.SurfacePaving);
             if (placed == 0) { ctx.Issue(IssueSeverity.Info, K + "Issue.NoStalls"); return; }
-            ctx.Stat("Placemaker.Stat.Stalls", placed, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Stalls", placed, Keys.UnitCount);
         }
 
         /// <summary>

@@ -5,13 +5,13 @@
 // built when all four mirror images fit, so the symmetry never breaks on an irregular outline).
 
 using System.Collections.Generic;
-using Placemaker.Core.Build;
-using Placemaker.Core.Layers.AddOns.Monuments;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Park;
+using Citymaker.Core.Build;
+using Citymaker.Core.Layers.AddOns.Monuments;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Park;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Leisure
+namespace Citymaker.Core.Layers.Leisure
 {
     [AreaGenerator(55, Group = "gardens")]
     public sealed class FormalGardenLayer : LeisureLayer
@@ -166,7 +166,7 @@ namespace Placemaker.Core.Layers.Leisure
                         beds++;
                     }
                 }
-            if (beds == 0) ctx.Issue(IssueSeverity.Info, "Placemaker.Formal.Issue.NoParterres");
+            if (beds == 0) ctx.Issue(IssueSeverity.Info, "Citymaker.Formal.Issue.NoParterres");
 
             // Cross walks: from the main axis out between the parterre columns (T-junctions on the axis; the
             // composer splits the axis where they end on it, so CS2 joins them).
@@ -218,7 +218,7 @@ namespace Placemaker.Core.Layers.Leisure
             if (ctx.B("fence")) Fence(ctx, gates, AssetMix.One(ctx.S("fenceAsset")));
             EmitGreenRegions(ctx, occ, 100f);
             CommonStats(ctx);
-            ctx.Stat("Placemaker.Stat.Parterres", beds, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Parterres", beds, Keys.UnitCount);
         }
     }
 }

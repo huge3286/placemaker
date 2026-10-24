@@ -11,13 +11,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Placemaker.Core;
-using Placemaker.Core.Tool;
-using Placemaker.Game.Tool;
+using Citymaker.Core;
+using Citymaker.Core.Tool;
+using Citymaker.Game.Tool;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     public sealed partial class SuiteRunner
     {
@@ -50,7 +50,7 @@ namespace Placemaker.Game.Suite
             var log = rec["ui"] as JArray ?? (JArray)(rec["ui"] = new JArray());
             var entry = new JObject { ["action"] = label };
             log.Add(entry);
-            PlacemakerToolSystem.SuiteCursorAway();   // the mouse is on the panel
+            CitymakerToolSystem.SuiteCursorAway();   // the mouse is on the panel
             bool done = effect != null && effect();
             if (done && mustChange) { entry["path"] = "none (already so)"; yield break; }
             if (SuiteUiSystem.Available && _bridgeOk)
@@ -174,7 +174,7 @@ namespace Placemaker.Game.Suite
                 if (other != null) yield return UiAct(st, rec, "another type (fresh design)", null, "selectRecipe", new object[] { other.Recipe.Id }, () => RootLayer() != layer, () => _tool.SelectRecipe(other.Recipe.Id));
                 rec["fresh"] = true;
             }
-            PlacemakerToolSystem.SuiteResetSeed(st.S.Seed);
+            CitymakerToolSystem.SuiteResetSeed(st.S.Seed);
             if (_tool.RecipeId != recipeId || RootLayer() != layer)
                 yield return UiAct(st, rec, "type " + layer, "recipe-" + recipeId, "selectRecipe", new object[] { recipeId }, () => RootLayer() == layer, () => _tool.SelectRecipe(recipeId));
             if (RootLayer() != layer)
@@ -348,7 +348,7 @@ namespace Placemaker.Game.Suite
             if (_tool.Plan != null)
                 foreach (var l in _tool.Plan.Layers)
                     if (l.Facts != null && l.Facts.Count > 0)
-                        Mod.Log.Info($"Placemaker plan facts ({st.S.Id}): " + string.Join(" ", l.Facts.Select(kv => kv.Key + "=" + Math.Round(kv.Value, 1).ToString(System.Globalization.CultureInfo.InvariantCulture))));
+                        Mod.Log.Info($"Citymaker plan facts ({st.S.Id}): " + string.Join(" ", l.Facts.Select(kv => kv.Key + "=" + Math.Round(kv.Value, 1).ToString(System.Globalization.CultureInfo.InvariantCulture))));
             st.Result["planIssues"] = rec["issues"];
             st.Result["planCost"] = rec["planCost"];
             // what the panel shows: the bound state and summary parse, and the main button as the person sees it
@@ -441,9 +441,9 @@ namespace Placemaker.Game.Suite
             rec["separate"] = _tool.BuildUngrouped;
         }
 
-        /// <summary>A Placemaker option (the Options page), set through the settings object and read back.</summary>
+        /// <summary>A Citymaker option (the Options page), set through the settings object and read back.</summary>
         /// <summary>
-        /// The game's Options screen on Placemaker's page (what a person opens from the pause menu), scrolled so a label
+        /// The game's Options screen on Citymaker's page (what a person opens from the pause menu), scrolled so a label
         /// (scrollTo: its exact text, e.g. a group's name) sits near the top; close: back to the game. Shots with shotMode
         /// "ui" show it.
         /// </summary>
@@ -460,7 +460,7 @@ namespace Placemaker.Game.Suite
             var s = ToolRegistration.Settings;
             if (options == null || s == null) { rec["error"] = "options: no options screen"; yield break; }
             string err = null;
-            try { options.OpenPage(s.id, global::Placemaker.Game.Settings.PlacemakerSettings.SectionMain, false); }
+            try { options.OpenPage(s.id, global::Citymaker.Game.Settings.CitymakerSettings.SectionMain, false); }
             catch (Exception e) { err = e.Message; }
             if (err != null) { rec["error"] = "options: " + err; yield break; }
             yield return Seconds(1.5f);
@@ -482,7 +482,7 @@ namespace Placemaker.Game.Suite
                 if (reply == null || !((bool?)reply["value"]?["found"] ?? false)) rec["error"] = "options: no label '" + to + "' on the page";
                 yield return Seconds(0.6f);
             }
-            rec["polished"] = global::Placemaker.Game.Neighbours.NeighbourPolishSystem.StatusPolished + " of " + global::Placemaker.Game.Neighbours.NeighbourPolishSystem.StatusTotal;
+            rec["polished"] = global::Citymaker.Game.Neighbours.NeighbourPolishSystem.StatusPolished + " of " + global::Citymaker.Game.Neighbours.NeighbourPolishSystem.StatusTotal;
         }
 
         private IEnumerator StepSetting(ScenarioState st, JObject step, JObject rec)
@@ -492,8 +492,8 @@ namespace Placemaker.Game.Suite
             {
                 // Outgrow's switches are the city's own now (NeighbourPolishSystem.Switches), no longer settings
                 bool on = (bool?)step["value"] ?? true;
-                if (name == "PolishNewHouses") global::Placemaker.Game.Neighbours.NeighbourPolishSystem.SetNewBuildings(on);
-                else global::Placemaker.Game.Neighbours.NeighbourPolishSystem.SetRunning(on);
+                if (name == "PolishNewHouses") global::Citymaker.Game.Neighbours.NeighbourPolishSystem.SetNewBuildings(on);
+                else global::Citymaker.Game.Neighbours.NeighbourPolishSystem.SetRunning(on);
                 rec["effective"] = on;
                 rec["city"] = true;
                 yield return Frames(2);
@@ -505,7 +505,7 @@ namespace Placemaker.Game.Suite
             if (!prop.CanRead)
             {
                 // a button (write-only): pressed, as after its confirmation
-                try { prop.SetValue(s, true); rec["pressed"] = name; Mod.Log.Info("Placemaker suite: setting button " + name + " pressed"); }
+                try { prop.SetValue(s, true); rec["pressed"] = name; Mod.Log.Info("Citymaker suite: setting button " + name + " pressed"); }
                 catch (Exception e) { rec["error"] = $"setting {name}: {e.Message}"; }
                 yield return Frames(4);
                 yield break;

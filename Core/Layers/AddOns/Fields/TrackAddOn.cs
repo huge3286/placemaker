@@ -6,11 +6,11 @@
 // finish line. Stands along the home straight on the arrival side, floodlights round the oval.
 
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns.Fields
+namespace Citymaker.Core.Layers.AddOns.Fields
 {
     [AreaGenerator(182)]
     public sealed class TrackAddOn : FieldAddOn

@@ -1,11 +1,11 @@
-// Placemaker — persistent description of one built group (GPL-3.0).
+// Citymaker — persistent description of one built group (GPL-3.0).
 // Pure data: the game layer stores the encoded bytes on the group's record entity, so the
 // whole receipt (recipe + area + summary) survives save/load without any managed state.
 
 using System;
 using System.Collections.Generic;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     /// <summary>Flags kept with a group. Values are save format: never renumber.</summary>
     [Flags]
@@ -29,7 +29,7 @@ namespace Placemaker.Core.Build
     }
 
     /// <summary>
-    /// Everything Placemaker remembers about a build. Encoded with <see cref="ReceiptCodec"/>.
+    /// Everything Citymaker remembers about a build. Encoded with <see cref="ReceiptCodec"/>.
     /// Field additions go to the end of the codec with a version bump; never reorder.
     /// </summary>
     public sealed class GroupRecord

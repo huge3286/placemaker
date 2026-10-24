@@ -1,4 +1,4 @@
-// Placemaker roads layer (smarter roads) — a grid with some life in it, but only where something gives it a reason
+// Citymaker roads layer (smarter roads) — a grid with some life in it, but only where something gives it a reason
 // ("Grid character"). Real grids are not perfect: an old road or a desire line cuts across them (Broadway), hills bend and
 // break them (RoadTerrainFit). Random imperfection looks bad (tried: a diagonal for its own sake sliced every block).
 //   strict   the plain grid: every street straight through, whatever the ground and the city around;
@@ -14,11 +14,11 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Roads.Generators;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Roads.Generators;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads
+namespace Citymaker.Core.Layers.Roads
 {
     internal static class RoadCharacter
     {

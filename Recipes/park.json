@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "park",
-  "nameKey": "Placemaker.Recipe.Park",
-  "descriptionKey": "Placemaker.Recipe.Park.Description",
+  "nameKey": "Citymaker.Recipe.Park",
+  "descriptionKey": "Citymaker.Recipe.Park.Description",
   "icon": "Media/Game/Icons/ParksAndRecreation.svg",
   "root": {
     "layer": "park",

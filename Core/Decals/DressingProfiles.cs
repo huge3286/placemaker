@@ -1,4 +1,4 @@
-// Placemaker — decal dressing: settings, controls and per-type profiles (s21). GPL-3.0.
+// Citymaker — decal dressing: settings, controls and per-type profiles (s21). GPL-3.0.
 //
 // Decals are a sub-feature of every other feature, not something sprinkled on their own. Every fill
 // type gets the same two controls in its "Decals" section — Decals (overall amount, 0–300 %) and
@@ -11,7 +11,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Placemaker.Core.Decals
+namespace Citymaker.Core.Decals
 {
     public enum DressStyle { Clean = 0, LivedIn = 1, Gritty = 2 }
 
@@ -168,7 +168,7 @@ namespace Placemaker.Core.Decals
         /// <summary>(s33) The "Ground paint" section (the terrain-texture controls).</summary>
         public const string PaintGroup = "groundPaint";
         public const string Group = "decals";
-        public const string KeyPrefix = "Placemaker.Dress.";
+        public const string KeyPrefix = "Citymaker.Dress.";
         public static readonly string[] Styles = { "clean", "livedIn", "gritty" };
 
         public static string FamilyId(DressFamily f) => "dress" + f;
@@ -211,7 +211,7 @@ namespace Placemaker.Core.Decals
             list.Add(style);
             // s33: one "Ground paint" section: the lawn choice (types with a lawn), the amount of everything painted into
             // the terrain texture as dressing (s28 wear + s33 mulch / lawn variation / type extras) and a few toggles.
-            // Permanent, like all Placemaker paint.
+            // Permanent, like all Citymaker paint.
             string lawnDefault = Layers.Common.Lawn.DefaultFor(layerId, null);
             if (lawnDefault != null)
             {

@@ -1,15 +1,15 @@
 // Ported from ParkManager (tomkpunkt, GPL-3.0), Geometry/ParkPathPlan.cs.
-// Changes: Placemaker namespace; per-layer edge widths; the naturalness score takes the wanted
+// Changes: Citymaker namespace; per-layer edge widths; the naturalness score takes the wanted
 // loop count from the "paths" control instead of a fixed area rule; corner cutting is replaced
 // by tangent-continuous Bézier output in ParkPathPlanner.EmitCurves (CS2 nets curve natively,
 // so one curved course reads better than several short straight ones).
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Park
+namespace Citymaker.Core.Layers.Park
 {
     public enum PathNodeKind { Interior = 0, Gate = 1 }
     public enum PathEdgeKind { Secondary = 0, Primary = 1, GateApproach = 2 }

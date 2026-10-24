@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 
-namespace Placemaker.Core
+namespace Citymaker.Core
 {
     /// <summary>Laps into a list of (step, ms): each lap the time since the one before (or since the clock started).</summary>
     public sealed class PlanClock

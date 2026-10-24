@@ -2,7 +2,7 @@
 // more general one through LeisureKit.Category chains in the layers ("a food truck, else a kiosk"),
 // so an install without event props still builds a sensible site.
 
-namespace Placemaker.Core
+namespace Citymaker.Core
 {
     public static partial class AssetCategories
     {

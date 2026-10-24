@@ -1,7 +1,7 @@
 // In-game test suite: builds the fixture world fresh every run (docs/teardown/10-ingame-suite.md §5, revised): the game's
 // flat default world, one heightmap replacement (slope rows, rough blocks), a grid of vanilla roads, residential zoning
 // on the zoned row's south street, two plopped park buildings in the "survive" block. Roads, zoning and buildings go in
-// as ordinary vanilla definitions through SuiteFixtureToolSystem — nothing of Placemaker's own build code is used, so the
+// as ordinary vanilla definitions through SuiteFixtureToolSystem — nothing of Citymaker's own build code is used, so the
 // fixture does not depend on the code under test.
 
 using System;
@@ -15,13 +15,13 @@ using Game.Prefabs;
 using Game.Simulation;
 using Game.Tools;
 using Game.Zones;
-using Placemaker.Core.Suite;
+using Citymaker.Core.Suite;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     internal sealed partial class SuiteFixture
     {
@@ -48,7 +48,7 @@ namespace Placemaker.Game.Suite
         private void Note(string s)
         {
             Log.Add(s);
-            Mod.Log.Info("Placemaker suite fixture: " + s);
+            Mod.Log.Info("Citymaker suite fixture: " + s);
         }
 
         public float HalfWidth(string road) => HalfWidths.TryGetValue(road ?? "", out var w) ? w : 8f;

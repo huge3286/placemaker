@@ -1,10 +1,10 @@
-// Placemaker — texture swatches for surfaces without a UI icon (GPL-3.0).
+// Citymaker — texture swatches for surfaces without a UI icon (GPL-3.0).
 //
 // Vanilla SurfacePrefabs mostly have no UIObject icon (Asset Icon Library adds 17); ImageSystem then
 // returns a "thumbnail://ThumbnailCamera/…" URL, which renders nothing for an area. As a fallback we
 // render the surface's own albedo (RenderedArea.m_BaseColorMap, tinted with m_BaseColor) into a small
-// PNG in ModsData/Placemaker/thumbs and serve it through a coui host location:
-//   coui://placemaker-thumbs/<file>.png
+// PNG in ModsData/Citymaker/thumbs and serve it through a coui host location:
+//   coui://citymaker-thumbs/<file>.png
 // PNGs are cached on disk by prefab name; a few are generated per frame so a scan never stalls.
 
 using System;
@@ -13,14 +13,14 @@ using System.IO;
 using System.Text;
 using Colossal.IO.AssetDatabase;
 using Game.Prefabs;
-using Placemaker.Game.Settings;
+using Citymaker.Game.Settings;
 using UnityEngine;
 
-namespace Placemaker.Game.Assets
+namespace Citymaker.Game.Assets
 {
     public static class SurfaceSwatches
     {
-        public const string Host = "placemaker-thumbs";
+        public const string Host = "citymaker-thumbs";
         private const int Size = 96;
         private static bool _hostRegistered;
         private static bool _disabled;
@@ -56,7 +56,7 @@ namespace Placemaker.Game.Assets
             catch (Exception e)
             {
                 _disabled = true;
-                Mod.Log.Warn("Placemaker could not register the thumbnail host; surfaces keep the game's thumbnail: " + e.Message);
+                Mod.Log.Warn("Citymaker could not register the thumbnail host; surfaces keep the game's thumbnail: " + e.Message);
             }
             return _hostRegistered;
         }
@@ -126,7 +126,7 @@ namespace Placemaker.Game.Assets
             }
             catch (Exception e)
             {
-                Mod.Log.Info($"Placemaker could not render a swatch for surface {prefab.name}: {e.Message}");
+                Mod.Log.Info($"Citymaker could not render a swatch for surface {prefab.name}: {e.Message}");
                 return null;
             }
             finally

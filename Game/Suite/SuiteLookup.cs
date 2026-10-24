@@ -6,11 +6,11 @@ using System.Collections.Generic;
 using Game.Net;
 using Game.Prefabs;
 using Game.Zones;
-using Placemaker.Core;
-using Placemaker.Game.Groups;
+using Citymaker.Core;
+using Citymaker.Game.Groups;
 using Unity.Entities;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     internal sealed class SuiteLookup
     {
@@ -40,13 +40,13 @@ namespace Placemaker.Game.Suite
         {
             try
             {
-                if (_em.Exists(e) && _em.HasComponent<PlacemakerMember>(e)) return _em.GetComponentData<PlacemakerMember>(e).GroupId;
+                if (_em.Exists(e) && _em.HasComponent<CitymakerMember>(e)) return _em.GetComponentData<CitymakerMember>(e).GroupId;
                 return Services.Groups?.GroupOf(e) ?? 0;
             }
             catch (Exception) { return 0; }
         }
 
-        /// <summary>A net (edge or node) that is a city street: a road prefab no Placemaker group owns.</summary>
+        /// <summary>A net (edge or node) that is a city street: a road prefab no Citymaker group owns.</summary>
         public bool CityNet(Entity e)
         {
             if (!_em.Exists(e) || (!_em.HasComponent<Edge>(e) && !_em.HasComponent<global::Game.Net.Node>(e))) return false;

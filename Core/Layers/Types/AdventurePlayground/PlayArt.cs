@@ -2,9 +2,9 @@
 // boom on the splash pad ("water.jets") and a chainsaw logger among the play logs ("play.nature"); these
 // are the vanilla pieces the game's own playgrounds and campfire sites use.
 
-using Placemaker.Core.Layers.Park;
+using Citymaker.Core.Layers.Park;
 
-namespace Placemaker.Core.Layers.Types.AdventurePlayground
+namespace Citymaker.Core.Layers.Types.AdventurePlayground
 {
     public static class PlayArt
     {

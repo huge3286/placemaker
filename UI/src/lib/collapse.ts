@@ -3,7 +3,7 @@
 // defaults for this session.
 import { useCallback, useEffect, useState } from "react";
 
-const KEY = "placemaker.sections.v1";
+const KEY = "citymaker.sections.v1";
 let cache: Record<string, boolean> | null = null;
 const listeners = new Set<() => void>();
 

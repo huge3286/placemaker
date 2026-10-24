@@ -1,4 +1,4 @@
-// Placemaker — turn resolved decals so their long side lies the way the plan meant (s21). GPL-3.0.
+// Citymaker — turn resolved decals so their long side lies the way the plan meant (s21). GPL-3.0.
 //
 // Plans place decorative decals by intent: Yaw = the direction the decal's long axis should follow
 // (path tangent, bay axis, shoreline, wheel line). Which prefab is used is decided later by the
@@ -10,7 +10,7 @@
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Decals
+namespace Citymaker.Core.Decals
 {
     public static class DecalFit
     {

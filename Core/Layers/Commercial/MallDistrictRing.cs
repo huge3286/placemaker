@@ -5,11 +5,11 @@
 // in on Downtown. Nothing joins a street but the player's entrances (drives and driveways into the ring, walks).
 
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Commercial
+namespace Citymaker.Core.Layers.Commercial
 {
     public sealed partial class MallDistrictLayer
     {

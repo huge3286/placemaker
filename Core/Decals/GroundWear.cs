@@ -1,4 +1,4 @@
-// Placemaker — ground paint dressing: wear, mulch, lawn variation painted into the terrain texture (s28, s33). GPL-3.0.
+// Citymaker — ground paint dressing: wear, mulch, lawn variation painted into the terrain texture (s28, s33). GPL-3.0.
 //
 // User (s28): use the terrain "Paint texture" materials as ground dressing; (s33) "terrain paint is what gives us
 // power … draw dark mulch under each tree". Built on the Core/Paint toolkit (PaintShape fields, one PlannedPaint per
@@ -20,19 +20,19 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Build;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Paint;
+using Citymaker.Core.Build;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Paint;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Decals
+namespace Citymaker.Core.Decals
 {
     public static class GroundWear
     {
         /// <summary>Paints per fill step at most (keeps the raster and the permanent area small).</summary>
         public const int MaxPaints = 360;
-        public const string StatKey = "Placemaker.Stat.GroundWear";
+        public const string StatKey = "Citymaker.Stat.GroundWear";
         /// <summary>Trees that get mulch per step at most (one union paint; beyond this the crowns overlap into forest floor anyway).</summary>
         public const int MaxMulchTrees = 2500;
 

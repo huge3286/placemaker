@@ -1,7 +1,7 @@
 // In-game test suite: camera framing and PNG capture.
 //   * One capture path for the scene: the main camera rendered into a window-sized render texture, 8 frames for TAA to
 //     converge (the game's ScreenCaptureHelper does the same for save previews). "render" hides the overlay (the clean
-//     scene: no outline, no notification icons, no street names); "overlay" keeps Placemaker's overlay (outline, ghost
+//     scene: no outline, no notification icons, no street names); "overlay" keeps Citymaker's overlay (outline, ghost
 //     symbols, entrance markers) with street names unhooked and notification icons switched off by SuiteLook.
 //   * "ui": the real screen with the panel, grabbed at the end of the frame (what a person sees).
 // The window is set to the shot size (SuiteLook), so every mode has the same size, aspect and framing.
@@ -20,7 +20,7 @@ using UnityEngine.Experimental.Rendering;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     internal static class SuiteCapture
     {
@@ -46,7 +46,7 @@ namespace Placemaker.Game.Suite
             }
             catch (Exception e)
             {
-                Mod.Log.Warn("Placemaker suite: camera aim failed: " + e.Message);
+                Mod.Log.Warn("Citymaker suite: camera aim failed: " + e.Message);
                 return false;
             }
         }
@@ -72,7 +72,7 @@ namespace Placemaker.Game.Suite
                     s_savedFov = null;
                 }
             }
-            catch (Exception e) { Mod.Log.Warn("Placemaker suite: camera fov failed: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker suite: camera fov failed: " + e.Message); }
         }
 
         /// <summary>The game camera controller's pivot is within <paramref name="tolerance"/> m of the point (x, z).</summary>
@@ -174,7 +174,7 @@ namespace Placemaker.Game.Suite
                 if (!on && !s_labelsOff) { RenderPipelineManager.beginContextRendering -= s_labels; s_labelsOff = true; }
                 else if (on && s_labelsOff) { RenderPipelineManager.beginContextRendering += s_labels; s_labelsOff = false; }
             }
-            catch (Exception e) { Mod.Log.Warn("Placemaker suite: labels toggle failed: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker suite: labels toggle failed: " + e.Message); }
         }
 
         public static bool LabelsOff => s_labelsOff;
@@ -194,7 +194,7 @@ namespace Placemaker.Game.Suite
 
         /// <summary>
         /// The main camera rendered into a new texture of the given size (8 renders for TAA, like the game's save
-        /// preview). overlay=false hides the overlay (outline, icons, labels); true keeps Placemaker's overlay.
+        /// preview). overlay=false hides the overlay (outline, icons, labels); true keeps Citymaker's overlay.
         /// </summary>
         public static Texture2D RenderTexture2D(int width, int height, bool overlay, out string error)
         {
@@ -212,7 +212,7 @@ namespace Placemaker.Game.Suite
                 HDRPDotsInputs.punctualLightsJobHandle.Complete();
                 var fmt = (QualitySettings.GetRenderPipelineAssetAt(QualitySettings.GetQualityLevel()) as HDRenderPipelineAsset).currentPlatformRenderPipelineSettings.colorBufferFormat;
                 rt = new RenderTexture(width, height, 16, (GraphicsFormat)fmt, 0);
-                dest = ScreenCaptureHelper.CreateRenderTarget("Placemaker Suite Shot", width, height);
+                dest = ScreenCaptureHelper.CreateRenderTarget("Citymaker Suite Shot", width, height);
                 if (!overlay) Colossal.CustomPassCache.SetPassEnabled("Outlines Pass", enabled: false);
                 if (UIManager.defaultUISystem != null) UIManager.defaultUISystem.enabled = false;
                 if (rs != null) rs.hideOverlay = !overlay;

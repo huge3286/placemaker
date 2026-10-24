@@ -1,4 +1,4 @@
-// Placemaker neighbourhood polish — what Global outgrow shows: the numbers, their last two minutes, and the status lens
+// Citymaker neighbourhood polish — what Global outgrow shows: the numbers, their last two minutes, and the status lens
 // (GPL-3.0).
 //
 // Worked out with the status line, about once a second: growable buildings and how many are outgrown by kind and by zone
@@ -10,12 +10,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Game.Prefabs;
-using Placemaker.Core.Neighbours;
+using Citymaker.Core.Neighbours;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Neighbours
+namespace Citymaker.Game.Neighbours
 {
     public sealed partial class NeighbourPolishSystem
     {

@@ -1,4 +1,4 @@
-// Placemaker — measured colour of pack decals (s28 decal art pass). GPL-3.0. GENERATED: do not edit by hand.
+// Citymaker — measured colour of pack decals (s28 decal art pass). GPL-3.0. GENERATED: do not edit by hand.
 //
 // Alpha-weighted mean colour of each decal's _BaseColorMap.png and its opaque coverage (0..1), measured from the packs'
 // CustomDecals folders in the local mods cache (scratch tool colours.ps1, documented in docs/DECALS.md "Colour").
@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 
-namespace Placemaker.Core.Decals
+namespace Citymaker.Core.Decals
 {
     public static partial class DecalColours
     {

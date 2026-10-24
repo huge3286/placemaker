@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "wetland",
-  "nameKey": "Placemaker.Recipe.Wetland",
-  "descriptionKey": "Placemaker.Recipe.Wetland.Description",
+  "nameKey": "Citymaker.Recipe.Wetland",
+  "descriptionKey": "Citymaker.Recipe.Wetland.Description",
   "icon": "Media/Game/Icons/Water.svg",
   "root": {
     "layer": "wetland",

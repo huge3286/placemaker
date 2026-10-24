@@ -6,10 +6,10 @@
 // No arch installed → pylons; no columns → statues (Info issue, never nothing).
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns.Monuments
+namespace Citymaker.Core.Layers.AddOns.Monuments
 {
     [AreaGenerator(173)]
     public sealed class TriumphalArchAddOn : MonumentAddOn
@@ -167,7 +167,7 @@ namespace Placemaker.Core.Layers.AddOns.Monuments
                                 new AssetRef(""), hc, 0.6f, Hashing.Mix(ctx.Seed, 0x4ED0u), 1f, 0.2f, 0.1f);
                         }
             }
-            ctx.Stat("Placemaker.Stat.Monuments", 1, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Monuments", 1, Keys.UnitCount);
         }
     }
 }

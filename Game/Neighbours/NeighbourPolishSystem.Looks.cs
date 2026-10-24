@@ -1,6 +1,6 @@
-// Placemaker neighbourhood polish — looks and zone looks in the game (GPL-3.0).
+// Citymaker neighbourhood polish — looks and zone looks in the game (GPL-3.0).
 //
-// The looks (Core/Neighbours/PolishLooks): the built-in ones and the player's own, kept in ModsData/Placemaker/
+// The looks (Core/Neighbours/PolishLooks): the built-in ones and the player's own, kept in ModsData/Citymaker/
 // polish-looks.json for every city, with the player's changes to built-in looks (Save on a built-in look changes what that
 // look is everywhere it is used; Back to default drops the changes). A polished lot keeps its look by id (PolishedLot.Look, a hash) and the changes it was
 // polished with that the look does not have (PolishLookOverride); the planner gets every knob per house. Zone looks: each
@@ -14,13 +14,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Game.Prefabs;
-using Placemaker.Core.Neighbours;
-using Placemaker.Core.Tool;
-using Placemaker.Game.Settings;
+using Citymaker.Core.Neighbours;
+using Citymaker.Core.Tool;
+using Citymaker.Game.Settings;
 using Unity.Collections;
 using Unity.Entities;
 
-namespace Placemaker.Game.Neighbours
+namespace Citymaker.Game.Neighbours
 {
     public sealed partial class NeighbourPolishSystem
     {
@@ -46,7 +46,7 @@ namespace Placemaker.Game.Neighbours
                 s_custom = PolishLooks.Read(json);
                 foreach (var e in PolishLooks.ReadEdits(json)) s_edits[e.Id] = e;
             }
-            catch (Exception e) { Mod.Log.Warn("Placemaker polish: looks not read: " + e.Message); s_custom = new List<PolishLook>(); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker polish: looks not read: " + e.Message); s_custom = new List<PolishLook>(); }
             s_byHash = null;
         }
 
@@ -75,7 +75,7 @@ namespace Placemaker.Game.Neighbours
         private static void PersistLooks()
         {
             try { File.WriteAllText(LooksPath, PolishLooks.Write(s_custom, s_edits.Values)); }
-            catch (Exception e) { Mod.Log.Warn("Placemaker polish: looks not saved: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker polish: looks not saved: " + e.Message); }
             s_byHash = null;
             LooksVersion++;
         }
@@ -93,7 +93,7 @@ namespace Placemaker.Game.Neighbours
                 if (same) s_edits.Remove(id); else s_edits[id] = edit;
                 SettingsChanged = true;
                 PersistLooks();
-                Mod.Log.Info($"Placemaker polish: built-in look {id} {(same ? "back as it ships" : $"changed ({PolishLooks.Diff(edit.Values(), builtIn.Values()).Count} settings)")}");
+                Mod.Log.Info($"Citymaker polish: built-in look {id} {(same ? "back as it ships" : $"changed ({PolishLooks.Diff(edit.Values(), builtIn.Values()).Count} settings)")}");
                 return id;
             }
             var look = id == null ? null : s_custom.FirstOrDefault(l => l.Id == id);
@@ -112,7 +112,7 @@ namespace Placemaker.Game.Neighbours
             look.Knobs = PolishLooks.Diff(values, PolishLooks.Defaults);
             SettingsChanged = true;
             PersistLooks();
-            Mod.Log.Info($"Placemaker polish: look '{look.Name}' ({look.Id}) saved, {look.Knobs.Count} settings of its own");
+            Mod.Log.Info($"Citymaker polish: look '{look.Name}' ({look.Id}) saved, {look.Knobs.Count} settings of its own");
             return look.Id;
         }
 
@@ -142,7 +142,7 @@ namespace Placemaker.Game.Neighbours
             if (!s_edits.Remove(id)) return false;
             SettingsChanged = true;
             PersistLooks();
-            Mod.Log.Info($"Placemaker polish: built-in look {id} back as it ships");
+            Mod.Log.Info($"Citymaker polish: built-in look {id} back as it ships");
             return true;
         }
 
@@ -214,7 +214,7 @@ namespace Placemaker.Game.Neighbours
                 foreach (var kv in JsonValue.Parse(json).Properties)
                     if (kv.Value.Kind == JsonKind.String && !string.IsNullOrEmpty(kv.Value.AsString())) s_zoneLooks[kv.Key] = kv.Value.AsString();
             }
-            catch (Exception e) { Mod.Log.Warn("Placemaker polish: zone looks not read: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker polish: zone looks not read: " + e.Message); }
         }
 
         public static string ZoneLooksJson()

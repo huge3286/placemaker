@@ -18,7 +18,7 @@ export const NOT_OUTGROWN = "#4b5361";
 export const SERIES = ["#3987e5", "#d95926", "#199e70", "#c98500", "#d55181", "#008300", "#9085e9", "#e66767"];
 const NOT = "rgba(255, 255, 255, 0.14)";
 const OTHER = "#8a93a3";
-/** The status lens's colours (PlacemakerOverlaySystem.LensTints), for its legend. */
+/** The status lens's colours (CitymakerOverlaySystem.LensTints), for its legend. */
 export const LENS = [
     { color: "#78e054", key: "polished", en: "Outgrown" },
     { color: NOT_OUTGROWN, key: "not", en: "Not outgrown" },
@@ -134,12 +134,12 @@ const Chart = ({ series, unit, hover, setHover, axis, t }: { series: { label: st
                     {hover != null ? <line x1={xOf(hover)} y1={0} x2={xOf(hover)} y2={H} stroke="rgba(255,255,255,0.5)" strokeWidth={1} /> : null}
                 </svg>
                 <div className={s.plotMax}>{`${fmt1(max)}${unit}`}</div>
-                {n < 2 ? <div className={s.plotEmpty}>{t("Placemaker.UI.Outgrow.Gathering", "Gathering…")}</div> : null}
+                {n < 2 ? <div className={s.plotEmpty}>{t("Citymaker.UI.Outgrow.Gathering", "Gathering…")}</div> : null}
             </div>
             {axis ? (
                 <div className={s.axis}>
-                    <div className={s.axisText}>{hover != null && n > 1 ? t("Placemaker.UI.Outgrow.Ago", "{0} s ago", [n - 1 - hover]) : t("Placemaker.UI.Outgrow.TwoMin", "2 min ago")}</div>
-                    <div className={s.axisText}>{t("Placemaker.UI.Outgrow.Now", "now")}</div>
+                    <div className={s.axisText}>{hover != null && n > 1 ? t("Citymaker.UI.Outgrow.Ago", "{0} s ago", [n - 1 - hover]) : t("Citymaker.UI.Outgrow.TwoMin", "2 min ago")}</div>
+                    <div className={s.axisText}>{t("Citymaker.UI.Outgrow.Now", "now")}</div>
                 </div>
             ) : null}
         </div>
@@ -155,9 +155,9 @@ function niceCeil(v: number): number {
 
 /** A duration in plain words ("about 2 min"). */
 function eta(t: TFunc, seconds: number): string {
-    if (seconds < 90) return t("Placemaker.UI.Outgrow.Seconds", "about {0} s", [Math.max(1, Math.round(seconds))]);
-    if (seconds < 5400) return t("Placemaker.UI.Outgrow.Minutes", "about {0} min", [Math.round(seconds / 60)]);
-    return t("Placemaker.UI.Outgrow.Hours", "about {0} h", [Math.round(seconds / 360) / 10]);
+    if (seconds < 90) return t("Citymaker.UI.Outgrow.Seconds", "about {0} s", [Math.max(1, Math.round(seconds))]);
+    if (seconds < 5400) return t("Citymaker.UI.Outgrow.Minutes", "about {0} min", [Math.round(seconds / 60)]);
+    return t("Citymaker.UI.Outgrow.Hours", "about {0} h", [Math.round(seconds / 360) / 10]);
 }
 
 const DETAIL_NAMES: Record<string, string> = {
@@ -185,7 +185,7 @@ const KIND_NAMES = [
 /** The whole city at a glance (under the window's buttons): outgrown, waiting, frames per second. */
 export const StatusStrip = ({ polished, total, st }: { polished: number; total: number; st?: PainterStats | null }) => {
     const { t } = useT();
-    const L = (id: string, en: string) => t("Placemaker.UI.Outgrow." + id, en);
+    const L = (id: string, en: string) => t("Citymaker.UI.Outgrow." + id, en);
     const cells = [
         { key: "outgrown", value: `${fmt(polished)} / ${fmt(total)}`, label: L("StripOutgrown", "outgrown") },
         { key: "waiting", value: st ? fmt(st.toFit + st.stamps) : "–", label: L("StripWaiting", "waiting") },
@@ -207,7 +207,7 @@ export const StatusStrip = ({ polished, total, st }: { polished: number; total: 
 /** Global outgrow's Numbers tab. */
 export const OutgrowStats = ({ p, st, typeName, typeColor }: { p: PainterState; st: PainterStats; typeName: (id: string) => string; typeColor: (id: string) => string }) => {
     const { t } = useT();
-    const L = (id: string, en: string, args?: (string | number)[]) => t("Placemaker.UI.Outgrow." + id, en, args);
+    const L = (id: string, en: string, args?: (string | number)[]) => t("Citymaker.UI.Outgrow." + id, en, args);
     const [hover, setHover] = useState<string | null>(null);
     const [at, setAt] = useState<number | null>(null);   // one hover line across the three charts
     const total = st.kindTotal.reduce((a, b) => a + b, 0);
@@ -254,7 +254,7 @@ export const OutgrowStats = ({ p, st, typeName, typeColor }: { p: PainterState; 
                         if (tot === 0) return null;
                         return (
                             <div key={k.key} className={s.kindRow}>
-                                <div className={s.kindName}>{t("Placemaker.UI.Polish.Kind." + k.key, k.en)}</div>
+                                <div className={s.kindName}>{t("Citymaker.UI.Polish.Kind." + k.key, k.en)}</div>
                                 <div className={s.bar}>
                                     <div className={s.barFill} style={{ width: `${(pol / tot) * 100}%` }} />
                                 </div>
@@ -318,7 +318,7 @@ export const LensLegend = ({ p }: { p: PainterState }) => {
             {LENS.map((l, i) => (
                 <div key={l.key} className={classNames(s.lensItem, { [s.lensItemNone]: !(counts[i] > 0) })}>
                     <div className={s.swatch} style={{ backgroundColor: l.color }} />
-                    <div className={s.legendName}>{t("Placemaker.UI.Outgrow.Lens." + l.key, l.en)}</div>
+                    <div className={s.legendName}>{t("Citymaker.UI.Outgrow.Lens." + l.key, l.en)}</div>
                     <div className={s.legendValue}>{fmt(counts[i] ?? 0)}</div>
                 </div>
             ))}

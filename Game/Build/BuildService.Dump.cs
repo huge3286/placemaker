@@ -1,10 +1,10 @@
-// Placemaker — "Debug: dump terrain after build" (s30, GPL-3.0).
+// Citymaker — "Debug: dump terrain after build" (s30, GPL-3.0).
 //
 // The offline gallery models the terraform raster, not what CS2 then does with it (net terrain clipping, the heightmap's
 // 3.5 m texels, quay walls). With the setting on, every finished build writes the live result to
-// ModsData/Placemaker/debug/<group>.json (Core/Build/TerrainDump): heights before (sampled at build start) and after
+// ModsData/Citymaker/debug/<group>.json (Core/Build/TerrainDump): heights before (sampled at build start) and after
 // (sampled at Finish, after the terraform passes and Apply), water depth, the planned terraform target, the group's
-// built nets (live curves) and objects, the plan's facts. `dotnet run --project Tests/Placemaker.Gallery -- --dump <file>`
+// built nets (live curves) and objects, the plan's facts. `dotnet run --project Tests/Citymaker.Gallery -- --dump <file>`
 // renders it. Off by default: sampling ~90 k heights and writing ~0.5 MB takes a few frames.
 
 using System;
@@ -14,17 +14,17 @@ using Game.Net;
 using Game.Objects;
 using Game.Prefabs;
 using Game.Simulation;
-using Placemaker.Core;
-using Placemaker.Core.Build;
-using Placemaker.Game.Settings;
+using Citymaker.Core;
+using Citymaker.Core.Build;
+using Citymaker.Game.Settings;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Build
+namespace Citymaker.Game.Build
 {
     public sealed partial class BuildService
     {
-        /// <summary>Set from PlacemakerSettings.DebugTerrainDump.</summary>
+        /// <summary>Set from CitymakerSettings.DebugTerrainDump.</summary>
         public static bool DebugTerrainDump;
 
         private const int DumpMaxSide = 300;
@@ -62,7 +62,7 @@ namespace Placemaker.Game.Build
             }
             catch (Exception e)
             {
-                Mod.Log.Warn("Placemaker terrain dump (start) failed: " + e.Message);
+                Mod.Log.Warn("Citymaker terrain dump (start) failed: " + e.Message);
                 _dump = null;
             }
         }
@@ -80,7 +80,7 @@ namespace Placemaker.Game.Build
             return g;
         }
 
-        /// <summary>Finish: the live ground, water, planned target, the group's nets and objects, written to ModsData/Placemaker/debug.</summary>
+        /// <summary>Finish: the live ground, water, planned target, the group's nets and objects, written to ModsData/Citymaker/debug.</summary>
         private void DumpFinish(int groupId)
         {
             var d = _dump;
@@ -104,7 +104,7 @@ namespace Placemaker.Game.Build
                             d.Water[j * d.Nx + i] = WaterUtils.SampleDepth(ref water, new float3(p.x, 0f, p.y));
                         }
                 }
-                catch (Exception e) { Mod.Log.Warn("Placemaker terrain dump: water sampling failed: " + e.Message); }
+                catch (Exception e) { Mod.Log.Warn("Citymaker terrain dump: water sampling failed: " + e.Message); }
                 // The planned target where the raster touched the ground.
                 if (_tfRaster != null)
                 {
@@ -163,11 +163,11 @@ namespace Placemaker.Game.Build
                 Directory.CreateDirectory(dir);
                 var file = Path.Combine(dir, $"group-{groupId}-{DateTime.Now:yyyyMMdd-HHmmss}.json");
                 File.WriteAllText(file, d.ToJson());
-                Mod.Log.Info($"Placemaker terrain dump: {file} ({d.Nx}x{d.Ny} @ {d.Cell:F1} m, {d.Nets.Count} nets, {d.Objects.Count} objects; {d.Metrics()})");
+                Mod.Log.Info($"Citymaker terrain dump: {file} ({d.Nx}x{d.Ny} @ {d.Cell:F1} m, {d.Nets.Count} nets, {d.Objects.Count} objects; {d.Metrics()})");
             }
             catch (Exception e)
             {
-                Mod.Log.Warn("Placemaker terrain dump failed: " + e.Message);
+                Mod.Log.Warn("Citymaker terrain dump failed: " + e.Message);
             }
         }
 

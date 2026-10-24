@@ -9,10 +9,10 @@
 // The park (Park planner, its own style) plans on what is left, so its paths and trees fill the gaps.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Commercial
+namespace Citymaker.Core.Layers.Commercial
 {
     [AreaGenerator(18, Group = Group)]
     public sealed class ShopsParkLayer : CommercialLayer

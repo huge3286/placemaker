@@ -1,4 +1,4 @@
-// Placemaker roads — the road ROLES of a layout (street, avenue, local, roundabout ring, perimeter,
+// Citymaker roads — the road ROLES of a layout (street, avenue, local, roundabout ring, perimeter,
 // car-free street), what Automatic places for each, their preview colours, and the "road mixes"
 // (named combinations of which road goes in each role). s16 / user feedback: "What am I actually
 // getting? What are these roads being drawn on my screen?"
@@ -13,7 +13,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads
+namespace Citymaker.Core.Layers.Roads
 {
     /// <summary>A vanilla road the roads layer knows by name (display name and width for swatches, gallery and tests).</summary>
     public sealed class KnownRoad
@@ -26,7 +26,7 @@ namespace Placemaker.Core.Layers.Roads
 
     public static class RoadRoles
     {
-        // ── Role ids (legend, swatches, Lang keys "Placemaker.Roads.Role.<id>") ──
+        // ── Role ids (legend, swatches, Lang keys "Citymaker.Roads.Role.<id>") ──
         public const string Street = "street";
         public const string Avenue = "avenue";
         public const string Local = "local";
@@ -93,7 +93,7 @@ namespace Placemaker.Core.Layers.Roads
             return new float3(((v >> 16) & 255) / 255f, ((v >> 8) & 255) / 255f, (v & 255) / 255f);
         }
 
-        public static string LabelKey(string role) => "Placemaker.Roads.Role." + role;
+        public static string LabelKey(string role) => "Citymaker.Roads.Role." + role;
 
         /// <summary>The road-type control that picks the road of a role.</summary>
         public static string ControlOf(NetRole role)

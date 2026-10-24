@@ -1,6 +1,6 @@
-// Placemaker — classification for the leisure categories of round 4 (decals, sports, dog park,
+// Citymaker — classification for the leisure categories of round 4 (decals, sports, dog park,
 // gardens, stage, lookout, cafe seating, market stalls, centrepiece kinds, graves). Kept apart from
-// AssetHeuristics so curation against ModsData/Placemaker/catalog-dump.json can refine these rules
+// AssetHeuristics so curation against ModsData/Citymaker/catalog-dump.json can refine these rules
 // without touching the general classifier. Names are the fallback only: vanilla prefabs use
 // English CamelCase ("BasketballHoop01"), so matching is on the lower-cased name.
 //
@@ -10,7 +10,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     public static class LeisureHeuristics
     {

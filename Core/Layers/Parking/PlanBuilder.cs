@@ -11,14 +11,14 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Parking
+namespace Citymaker.Core.Layers.Parking
 {
     internal static class PlanBuilder
     {
-        private const string K = "Placemaker.Parking.";
+        private const string K = "Citymaker.Parking.";
 
         private sealed class Seg
         {
@@ -263,7 +263,7 @@ namespace Placemaker.Core.Layers.Parking
 
         /// <summary>
         /// Bus stops on the street in front of the lot (PLT Tools/ParkingLotBusStops.cs put them on its
-        /// internal zoning roads, which Placemaker does not build). The object stands on the lot-side
+        /// internal zoning roads, which Citymaker does not build). The object stands on the lot-side
         /// sidewalk; yaw = travel direction of the lane next to the kerb (PLT BusStopSnap.TravelDirection).
         /// </summary>
         private static void EmitBusStops(AreaPlan plan, List<double2> busStops, List<double2> world, List<RoadLine> roads, SiteContext site, Func<double2, float> H)
@@ -377,7 +377,7 @@ namespace Placemaker.Core.Layers.Parking
                 for (int v = 0, u = ring.Length - 1; v < ring.Length; u = v++) signed += (double)ring[u].x * ring[v].z - (double)ring[v].x * ring[u].z;
                 if (signed < 0) Array.Reverse(ring);
                 var c = Poly.Centroid(Poly.To2D(ring));
-                float th = global::Placemaker.Core.Build.TerraformSurface.At(ring, c);
+                float th = global::Citymaker.Core.Build.TerraformSurface.At(ring, c);
                 plan.Terraform.Add(new PlannedTerraform { Ring = ring, Kind = th >= H(new double2(c.x, c.y)) ? TerraformKind.Raise : TerraformKind.Lower, TargetHeight = th, Permanent = true, Sloped = true, Apron = apron });
             }
             Piece(new[] { V(from - n * half, h0), V(kerb - n * half, hs), V(kerb + n * half, hs), V(from + n * half, h0) }, true);

@@ -1,4 +1,4 @@
-// Placemaker — registry of built groups (GPL-3.0).
+// Citymaker — registry of built groups (GPL-3.0).
 // Ownership approach credited to ParkManager (tomkpunkt, GPL-3.0: headless build record +
 // ParkPathMember tags) with ParkingLotTool's lessons (KruemelGames, GPL-3.0: carrier SubNet is
 // lost on load, orphans after saving without the mod) built in.
@@ -13,13 +13,13 @@ using Colossal.Serialization.Entities;
 using Game;
 using Game.Common;
 using Game.Tools;
-using Placemaker.Core;
-using Placemaker.Core.Build;
+using Citymaker.Core;
+using Citymaker.Core.Build;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine.Scripting;
 
-namespace Placemaker.Game.Groups
+namespace Citymaker.Game.Groups
 {
     public sealed partial class GroupRegistrySystem : GameSystemBase, IGroupRegistry
     {
@@ -59,39 +59,39 @@ namespace Placemaker.Game.Groups
             base.OnCreate();
             _recordQuery = GetEntityQuery(new EntityQueryDesc
             {
-                All = new[] { ComponentType.ReadOnly<PlacemakerGroup>() },
+                All = new[] { ComponentType.ReadOnly<CitymakerGroup>() },
                 None = new[] { ComponentType.ReadOnly<Deleted>() },
             });
             _memberQuery = GetEntityQuery(new EntityQueryDesc
             {
-                All = new[] { ComponentType.ReadOnly<PlacemakerMember>() },
+                All = new[] { ComponentType.ReadOnly<CitymakerMember>() },
                 None = new[] { ComponentType.ReadOnly<Deleted>(), ComponentType.ReadOnly<Temp>() },
             });
             _changedMemberQuery = GetEntityQuery(new EntityQueryDesc
             {
-                All = new[] { ComponentType.ReadOnly<PlacemakerMember>() },
+                All = new[] { ComponentType.ReadOnly<CitymakerMember>() },
                 Any = new[] { ComponentType.ReadOnly<Created>(), ComponentType.ReadOnly<Deleted>() },
                 None = new[] { ComponentType.ReadOnly<Temp>() },
             });
             _deletedMemberQuery = GetEntityQuery(new EntityQueryDesc
             {
-                All = new[] { ComponentType.ReadOnly<PlacemakerMember>(), ComponentType.ReadOnly<Deleted>() },
+                All = new[] { ComponentType.ReadOnly<CitymakerMember>(), ComponentType.ReadOnly<Deleted>() },
                 None = new[] { ComponentType.ReadOnly<Temp>() },
             });
             _changedRecordQuery = GetEntityQuery(new EntityQueryDesc
             {
-                All = new[] { ComponentType.ReadOnly<PlacemakerGroup>() },
+                All = new[] { ComponentType.ReadOnly<CitymakerGroup>() },
                 Any = new[] { ComponentType.ReadOnly<Created>(), ComponentType.ReadOnly<Deleted>() },
             });
             _createdNetQuery = GetEntityQuery(new EntityQueryDesc
             {
                 All = new[] { ComponentType.ReadOnly<Created>() },
                 Any = new[] { ComponentType.ReadOnly<global::Game.Net.Edge>(), ComponentType.ReadOnly<global::Game.Net.Node>() },
-                None = new[] { ComponentType.ReadOnly<Temp>(), ComponentType.ReadOnly<Deleted>(), ComponentType.ReadOnly<PlacemakerMember>() },
+                None = new[] { ComponentType.ReadOnly<Temp>(), ComponentType.ReadOnly<Deleted>(), ComponentType.ReadOnly<CitymakerMember>() },
             });
             Services.Groups = this;
             Instance = this;
-            Patches.PlacemakerHarmony.Install();
+            Patches.CitymakerHarmony.Install();
         }
 
         [Preserve]
@@ -101,7 +101,7 @@ namespace Placemaker.Game.Groups
             if (ReferenceEquals(Instance, this))
             {
                 Instance = null;
-                Patches.PlacemakerHarmony.Uninstall();
+                Patches.CitymakerHarmony.Uninstall();
             }
             base.OnDestroy();
         }
@@ -148,7 +148,7 @@ namespace Placemaker.Game.Groups
             }
             catch (Exception e)
             {
-                Mod.Log.Error(e, "Placemaker group registry update failed");
+                Mod.Log.Error(e, "Citymaker group registry update failed");
             }
         }
 
@@ -156,8 +156,8 @@ namespace Placemaker.Game.Groups
 
         public int GroupOf(Entity e)
         {
-            if (e == Entity.Null || !EntityManager.Exists(e) || !EntityManager.HasComponent<PlacemakerMember>(e)) return 0;
-            int id = EntityManager.GetComponentData<PlacemakerMember>(e).GroupId;
+            if (e == Entity.Null || !EntityManager.Exists(e) || !EntityManager.HasComponent<CitymakerMember>(e)) return 0;
+            int id = EntityManager.GetComponentData<CitymakerMember>(e).GroupId;
             EnsureIndex();
             return _records.ContainsKey(id) ? id : 0;
         }
@@ -214,10 +214,10 @@ namespace Placemaker.Game.Groups
         {
             EnsureIndex();
             if (!_records.TryGetValue(groupId, out var record) || !EntityManager.Exists(record)) return false;
-            if (EntityManager.HasComponent<PlacemakerUnderConstruction>(record)) EntityManager.RemoveComponent<PlacemakerUnderConstruction>(record);
-            if (!EntityManager.HasComponent<PlacemakerRemoval>(record))
-                EntityManager.AddComponentData(record, new PlacemakerRemoval());
-            Mod.Log.Info($"Placemaker: removal of group {groupId} requested ({CountMembers(groupId, true)} members).");
+            if (EntityManager.HasComponent<CitymakerUnderConstruction>(record)) EntityManager.RemoveComponent<CitymakerUnderConstruction>(record);
+            if (!EntityManager.HasComponent<CitymakerRemoval>(record))
+                EntityManager.AddComponentData(record, new CitymakerRemoval());
+            Mod.Log.Info($"Citymaker: removal of group {groupId} requested ({CountMembers(groupId, true)} members).");
             Bump();
             return true;
         }
@@ -232,14 +232,14 @@ namespace Placemaker.Game.Groups
         /// <summary>
         /// Ungroup (or group again): clicks on a part pick that part, the bulldozer removes single parts, and the owner lot is
         /// never hit, so nothing removes the whole build by accident. Kept on the record (ECS flags and receipt) so it survives
-        /// a save. Remove/Edit in Placemaker's panels still work on the whole build.
+        /// a save. Remove/Edit in Citymaker's panels still work on the whole build.
         /// </summary>
         public bool SetUngrouped(int groupId, bool ungrouped)
         {
             EnsureIndex();
             if (!_records.TryGetValue(groupId, out var entity) || !EntityManager.Exists(entity)) return false;
-            if (EntityManager.HasComponent<PlacemakerRemoval>(entity)) return false;
-            var g = EntityManager.GetComponentData<PlacemakerGroup>(entity);
+            if (EntityManager.HasComponent<CitymakerRemoval>(entity)) return false;
+            var g = EntityManager.GetComponentData<CitymakerGroup>(entity);
             int flags = ungrouped ? g.Flags | (int)GroupFlags.Ungrouped : g.Flags & ~(int)GroupFlags.Ungrouped;
             if (flags == g.Flags) return true;
             g.Flags = flags;
@@ -251,7 +251,7 @@ namespace Placemaker.Game.Groups
                 WriteRecord(entity, rec);
             }
             if (ungrouped) { _ungrouped.Add(groupId); _releasePending.Add(groupId); } else _ungrouped.Remove(groupId);
-            Mod.Log.Info($"Placemaker: group {groupId} {(ungrouped ? "ungrouped (its parts are picked one by one)" : "grouped again")}.");
+            Mod.Log.Info($"Citymaker: group {groupId} {(ungrouped ? "ungrouped (its parts are picked one by one)" : "grouped again")}.");
             Bump();
             return true;
         }
@@ -264,17 +264,17 @@ namespace Placemaker.Game.Groups
         internal bool TryUngroupedPick(Entity owner, Entity hit, out Entity pick)
         {
             pick = Entity.Null;
-            if (owner == Entity.Null || !EntityManager.Exists(owner) || !EntityManager.HasComponent<PlacemakerMember>(owner)) return false;
-            var tag = EntityManager.GetComponentData<PlacemakerMember>(owner);
+            if (owner == Entity.Null || !EntityManager.Exists(owner) || !EntityManager.HasComponent<CitymakerMember>(owner)) return false;
+            var tag = EntityManager.GetComponentData<CitymakerMember>(owner);
             if (!IsUngrouped(tag.GroupId)) return false;
             if (tag.Role == MemberRole.OwnerArea) return true;
             if (tag.Kind != MemberKind.Auxiliary) return false;
             var e = hit;
             for (int depth = 0; depth < 4 && e != Entity.Null && e != owner && EntityManager.Exists(e); depth++)
             {
-                if (EntityManager.HasComponent<PlacemakerMember>(e))
+                if (EntityManager.HasComponent<CitymakerMember>(e))
                 {
-                    var t = EntityManager.GetComponentData<PlacemakerMember>(e);
+                    var t = EntityManager.GetComponentData<CitymakerMember>(e);
                     if (t.GroupId == tag.GroupId && t.Kind != MemberKind.Auxiliary) { pick = e; return true; }
                 }
                 if (!EntityManager.HasComponent<Owner>(e)) break;
@@ -296,9 +296,9 @@ namespace Placemaker.Game.Groups
             EnsureIndex();
             foreach (var id in new List<int>(_releasePending))
             {
-                if (!TryGetRecordEntity(id, out var rec) || !_ungrouped.Contains(id) || EntityManager.HasComponent<PlacemakerRemoval>(rec)) { _releasePending.Remove(id); continue; }
-                if (EntityManager.HasComponent<PlacemakerUnderConstruction>(rec)) continue;   // after its build
-                var carrier = EntityManager.GetComponentData<PlacemakerGroup>(rec).Carrier;
+                if (!TryGetRecordEntity(id, out var rec) || !_ungrouped.Contains(id) || EntityManager.HasComponent<CitymakerRemoval>(rec)) { _releasePending.Remove(id); continue; }
+                if (EntityManager.HasComponent<CitymakerUnderConstruction>(rec)) continue;   // after its build
+                var carrier = EntityManager.GetComponentData<CitymakerGroup>(rec).Carrier;
                 var free = new HashSet<Entity>();
                 if (carrier != Entity.Null && EntityManager.Exists(carrier) && _members.TryGetValue(id, out var members))
                     foreach (var e in members)
@@ -306,7 +306,7 @@ namespace Placemaker.Game.Groups
                         if (!EntityManager.Exists(e) || EntityManager.HasComponent<Temp>(e) || EntityManager.HasComponent<Deleted>(e)) continue;
                         if (!EntityManager.HasComponent<global::Game.Objects.Object>(e) || !EntityManager.HasComponent<Owner>(e)) continue;
                         if (EntityManager.GetComponentData<Owner>(e).m_Owner != carrier) continue;
-                        var tag = EntityManager.GetComponentData<PlacemakerMember>(e);
+                        var tag = EntityManager.GetComponentData<CitymakerMember>(e);
                         if (tag.Kind == MemberKind.Auxiliary || tag.Role == MemberRole.ParkingBay) continue;
                         free.Add(e);
                     }
@@ -320,7 +320,7 @@ namespace Placemaker.Game.Groups
                     foreach (var e in free) EntityManager.RemoveComponent<Owner>(e);
                 }
                 _releasePending.Remove(id);
-                Mod.Log.Info($"Placemaker: ungrouped group {id}: {free.Count} prop(s) and tree(s) now stand on their own, so the bulldozer takes them one by one.");
+                Mod.Log.Info($"Citymaker: ungrouped group {id}: {free.Count} prop(s) and tree(s) now stand on their own, so the bulldozer takes them one by one.");
             }
         }
 
@@ -355,9 +355,9 @@ namespace Placemaker.Game.Groups
             var e = hit;
             for (int depth = 0; depth < 4 && e != Entity.Null && EntityManager.Exists(e); depth++)
             {
-                if (EntityManager.HasComponent<PlacemakerMember>(e))
+                if (EntityManager.HasComponent<CitymakerMember>(e))
                 {
-                    var tag = EntityManager.GetComponentData<PlacemakerMember>(e);
+                    var tag = EntityManager.GetComponentData<CitymakerMember>(e);
                     if (tag.Role == MemberRole.OwnerArea) return false;   // already the owner
                     if (IsUngrouped(tag.GroupId)) return false;            // ungrouped: the part itself
                     owner = OwnerAreaOf(tag.GroupId);
@@ -383,21 +383,21 @@ namespace Placemaker.Game.Groups
         internal bool IsOwnerlessGroupPart(Entity entity, out int groupId)
         {
             groupId = 0;
-            if (entity == Entity.Null || !EntityManager.Exists(entity) || !EntityManager.HasComponent<PlacemakerMember>(entity)) return false;
-            var tag = EntityManager.GetComponentData<PlacemakerMember>(entity);
+            if (entity == Entity.Null || !EntityManager.Exists(entity) || !EntityManager.HasComponent<CitymakerMember>(entity)) return false;
+            var tag = EntityManager.GetComponentData<CitymakerMember>(entity);
             if (tag.Role == MemberRole.OwnerArea || tag.Kind == MemberKind.Edge || tag.Kind == MemberKind.Node || tag.Kind == MemberKind.Auxiliary) return false;
             if (IsUngrouped(tag.GroupId)) return false;   // ungrouped: bulldozing a part removes that part only
-            if (!TryGetRecordEntity(tag.GroupId, out var rec) || EntityManager.HasComponent<PlacemakerRemoval>(rec)
-                || EntityManager.HasComponent<PlacemakerUnderConstruction>(rec)) return false;
+            if (!TryGetRecordEntity(tag.GroupId, out var rec) || EntityManager.HasComponent<CitymakerRemoval>(rec)
+                || EntityManager.HasComponent<CitymakerUnderConstruction>(rec)) return false;
             if (OwnerAreaOf(tag.GroupId) != Entity.Null) return false;
             groupId = tag.GroupId;
             return true;
         }
 
-        /// <summary>True when <paramref name="entity"/> is the owner lot of a Placemaker group.</summary>
+        /// <summary>True when <paramref name="entity"/> is the owner lot of a Citymaker group.</summary>
         internal bool IsOwnerArea(Entity entity) =>
-            entity != Entity.Null && EntityManager.Exists(entity) && EntityManager.HasComponent<PlacemakerMember>(entity)
-            && EntityManager.GetComponentData<PlacemakerMember>(entity).Role == MemberRole.OwnerArea;
+            entity != Entity.Null && EntityManager.Exists(entity) && EntityManager.HasComponent<CitymakerMember>(entity)
+            && EntityManager.GetComponentData<CitymakerMember>(entity).Role == MemberRole.OwnerArea;
 
         /// <summary>Owners need SubArea/SubNet/SubObject buffers even when empty (RESEARCH-NOTES 8).</summary>
         internal void EnsureOwnerBuffers(Entity owner)
@@ -409,7 +409,7 @@ namespace Placemaker.Game.Groups
         }
 
         public bool IsRemoving(int groupId) =>
-            _records.TryGetValue(groupId, out var e) && EntityManager.Exists(e) && EntityManager.HasComponent<PlacemakerRemoval>(e);
+            _records.TryGetValue(groupId, out var e) && EntityManager.Exists(e) && EntityManager.HasComponent<CitymakerRemoval>(e);
 
         /// <summary>Prefab names of this group that are not loaded (empty = complete).</summary>
         public IReadOnlyList<string> MissingAssets(int groupId) =>
@@ -424,7 +424,7 @@ namespace Placemaker.Game.Groups
             foreach (var id in _records.Keys) if (id > max) max = id;
             // Also scan member tags: a record lost to a "saved without the mod" round trip must not
             // have its id reused while stale tags still carry it.
-            using (var members = _memberQuery.ToComponentDataArray<PlacemakerMember>(Allocator.Temp))
+            using (var members = _memberQuery.ToComponentDataArray<CitymakerMember>(Allocator.Temp))
                 for (int i = 0; i < members.Length; i++) if (members[i].GroupId > max) max = members[i].GroupId;
             return max + 1;
         }
@@ -432,9 +432,9 @@ namespace Placemaker.Game.Groups
         public Entity CreateRecord(GroupRecord rec, bool underConstruction)
         {
             var e = EntityManager.CreateEntity();
-            EntityManager.AddComponentData(e, new PlacemakerGroup { GroupId = rec.GroupId, Flags = (int)rec.Flags });
-            EntityManager.AddBuffer<PlacemakerGroupBlob>(e);
-            if (underConstruction) EntityManager.AddComponent<PlacemakerUnderConstruction>(e);
+            EntityManager.AddComponentData(e, new CitymakerGroup { GroupId = rec.GroupId, Flags = (int)rec.Flags });
+            EntityManager.AddBuffer<CitymakerGroupBlob>(e);
+            if (underConstruction) EntityManager.AddComponent<CitymakerUnderConstruction>(e);
             WriteRecord(e, rec);
             _records[rec.GroupId] = e;
             if (!_allIds.Contains(rec.GroupId)) _allIds.Add(rec.GroupId);
@@ -443,12 +443,12 @@ namespace Placemaker.Game.Groups
 
         public void WriteRecord(Entity e, GroupRecord rec)
         {
-            if (!EntityManager.Exists(e) || !EntityManager.HasComponent<PlacemakerGroup>(e)) return;
+            if (!EntityManager.Exists(e) || !EntityManager.HasComponent<CitymakerGroup>(e)) return;
             var bytes = ReceiptCodec.Encode(rec);
-            var buffer = EntityManager.GetBuffer<PlacemakerGroupBlob>(e);
+            var buffer = EntityManager.GetBuffer<CitymakerGroupBlob>(e);
             buffer.ResizeUninitialized(bytes.Length);
-            for (int i = 0; i < bytes.Length; i++) buffer[i] = new PlacemakerGroupBlob { Value = bytes[i] };
-            var g = EntityManager.GetComponentData<PlacemakerGroup>(e);
+            for (int i = 0; i < bytes.Length; i++) buffer[i] = new CitymakerGroupBlob { Value = bytes[i] };
+            var g = EntityManager.GetComponentData<CitymakerGroup>(e);
             g.Flags = (int)rec.Flags;
             EntityManager.SetComponentData(e, g);
             if ((rec.Flags & GroupFlags.Ungrouped) != 0) { if (_ungrouped.Add(rec.GroupId)) _releasePending.Add(rec.GroupId); }
@@ -468,16 +468,16 @@ namespace Placemaker.Game.Groups
         {
             EnsureIndex();
             if (_decoded.TryGetValue(groupId, out var rec)) return rec;
-            if (!_records.TryGetValue(groupId, out var e) || !EntityManager.HasBuffer<PlacemakerGroupBlob>(e)) return null;
-            var buffer = EntityManager.GetBuffer<PlacemakerGroupBlob>(e, true);
+            if (!_records.TryGetValue(groupId, out var e) || !EntityManager.HasBuffer<CitymakerGroupBlob>(e)) return null;
+            var buffer = EntityManager.GetBuffer<CitymakerGroupBlob>(e, true);
             var bytes = new byte[buffer.Length];
             for (int i = 0; i < bytes.Length; i++) bytes[i] = buffer[i].Value;
             rec = ReceiptCodec.Decode(bytes);
             if (rec == null)
             {
                 // Unreadable blob: keep the group manageable (remove still works) with a neutral name.
-                Mod.Log.Warn($"Placemaker: receipt of group {groupId} is unreadable; the group can be removed but not edited.");
-                rec = new GroupRecord { GroupId = groupId, RecipeNameKey = "Placemaker.Group.Unknown" };
+                Mod.Log.Warn($"Citymaker: receipt of group {groupId} is unreadable; the group can be removed but not edited.");
+                rec = new GroupRecord { GroupId = groupId, RecipeNameKey = "Citymaker.Group.Unknown" };
             }
             rec.GroupId = groupId;
             _decoded[groupId] = rec;
@@ -492,7 +492,7 @@ namespace Placemaker.Game.Groups
             foreach (var e in list)
             {
                 if (!EntityManager.Exists(e) || EntityManager.HasComponent<Deleted>(e)) continue;
-                if (!includeAuxiliary && EntityManager.GetComponentData<PlacemakerMember>(e).Kind == MemberKind.Auxiliary) continue;
+                if (!includeAuxiliary && EntityManager.GetComponentData<CitymakerMember>(e).Kind == MemberKind.Auxiliary) continue;
                 n++;
             }
             return n;
@@ -503,7 +503,7 @@ namespace Placemaker.Game.Groups
         private void Bump()
         {
             _version++;
-            try { Changed?.Invoke(); } catch (Exception e) { Mod.Log.Warn("Placemaker group listener failed: " + e.Message); }
+            try { Changed?.Invoke(); } catch (Exception e) { Mod.Log.Warn("Citymaker group listener failed: " + e.Message); }
         }
 
         // ───────────────────────── index ─────────────────────────
@@ -520,12 +520,12 @@ namespace Placemaker.Game.Groups
             using (var records = _recordQuery.ToEntityArray(Allocator.Temp))
                 for (int i = 0; i < records.Length; i++)
                 {
-                    var g = EntityManager.GetComponentData<PlacemakerGroup>(records[i]);
+                    var g = EntityManager.GetComponentData<CitymakerGroup>(records[i]);
                     if (g.GroupId <= 0) continue;
                     if (_records.ContainsKey(g.GroupId))
                     {
                         // once per id: the index is rebuilt every frame something changes (issue #6: thousands of lines)
-                        if (_duplicateWarned.Add(g.GroupId)) Mod.Log.Warn($"Placemaker: duplicate group id {g.GroupId}; keeping the first record.");
+                        if (_duplicateWarned.Add(g.GroupId)) Mod.Log.Warn($"Citymaker: duplicate group id {g.GroupId}; keeping the first record.");
                         continue;
                     }
                     _records[g.GroupId] = records[i];
@@ -536,7 +536,7 @@ namespace Placemaker.Game.Groups
             _allIds.Sort();
             foreach (var id in new List<int>(_decoded.Keys)) if (!_records.ContainsKey(id)) _decoded.Remove(id);
             using (var entities = _memberQuery.ToEntityArray(Allocator.Temp))
-            using (var tags = _memberQuery.ToComponentDataArray<PlacemakerMember>(Allocator.Temp))
+            using (var tags = _memberQuery.ToComponentDataArray<CitymakerMember>(Allocator.Temp))
                 for (int i = 0; i < entities.Length; i++)
                 {
                     if (!_members.TryGetValue(tags[i].GroupId, out var list)) _members[tags[i].GroupId] = list = new List<Entity>();
@@ -558,19 +558,19 @@ namespace Placemaker.Game.Groups
             for (int i = 0; i < deleted.Length; i++)
             {
                 var e = deleted[i];
-                var tag = EntityManager.GetComponentData<PlacemakerMember>(e);
+                var tag = EntityManager.GetComponentData<CitymakerMember>(e);
                 touchedGroups.Add(tag.GroupId);
                 if (tag.Role == MemberRole.OwnerArea)
                 {
                     // The player bulldozed the ONE thing (US7): cascade to every member. Removal marks
                     // Deleted in PreTool of the next frame (RESEARCH-NOTES 11–12), never here.
-                    if (TryGetRecordEntity(tag.GroupId, out var ownerRec) && !EntityManager.HasComponent<PlacemakerRemoval>(ownerRec)
-                        && !EntityManager.HasComponent<PlacemakerUnderConstruction>(ownerRec) && IsUngrouped(tag.GroupId))
-                        Mod.Log.Warn($"Placemaker: the owner area of ungrouped group {tag.GroupId} was deleted by another tool; its parts stay.");
-                    else if (TryGetRecordEntity(tag.GroupId, out ownerRec) && !EntityManager.HasComponent<PlacemakerRemoval>(ownerRec)
-                        && !EntityManager.HasComponent<PlacemakerUnderConstruction>(ownerRec))
+                    if (TryGetRecordEntity(tag.GroupId, out var ownerRec) && !EntityManager.HasComponent<CitymakerRemoval>(ownerRec)
+                        && !EntityManager.HasComponent<CitymakerUnderConstruction>(ownerRec) && IsUngrouped(tag.GroupId))
+                        Mod.Log.Warn($"Citymaker: the owner area of ungrouped group {tag.GroupId} was deleted by another tool; its parts stay.");
+                    else if (TryGetRecordEntity(tag.GroupId, out ownerRec) && !EntityManager.HasComponent<CitymakerRemoval>(ownerRec)
+                        && !EntityManager.HasComponent<CitymakerUnderConstruction>(ownerRec))
                     {
-                        Mod.Log.Info($"Placemaker: owner area of group {tag.GroupId} was bulldozed; removing the whole group.");
+                        Mod.Log.Info($"Citymaker: owner area of group {tag.GroupId} was bulldozed; removing the whole group.");
                         RemoveInternal(tag.GroupId);
                     }
                     continue;
@@ -579,14 +579,14 @@ namespace Placemaker.Game.Groups
                 {
                     // No owner lot to bulldoze: the player bulldozed a part instead (confirmed by the
                     // bulldoze confirmation patch). Remove the whole group, phase-correct, next PreTool.
-                    Mod.Log.Info($"Placemaker: a part of group {ownerless} (no owner lot) was bulldozed; removing the whole group.");
+                    Mod.Log.Info($"Citymaker: a part of group {ownerless} (no owner lot) was bulldozed; removing the whole group.");
                     RemoveInternal(ownerless);
                     continue;
                 }
                 if (tag.Kind != MemberKind.Edge) continue;
                 if (!_records.TryGetValue(tag.GroupId, out var rec) && !TryGetRecordEntity(tag.GroupId, out rec)) continue;
                 if (!EntityManager.Exists(rec)) continue;
-                var g = EntityManager.GetComponentData<PlacemakerGroup>(rec);
+                var g = EntityManager.GetComponentData<CitymakerGroup>(rec);
                 if (g.Carrier == Entity.Null || !EntityManager.Exists(g.Carrier) || !EntityManager.HasBuffer<global::Game.Net.SubNet>(g.Carrier)) continue;
                 var subNets = EntityManager.GetBuffer<global::Game.Net.SubNet>(g.Carrier);
                 for (int k = subNets.Length - 1; k >= 0; k--) if (subNets[k].m_SubNet == e) subNets.RemoveAt(k);
@@ -595,7 +595,7 @@ namespace Placemaker.Game.Groups
             foreach (var id in touchedGroups)
             {
                 if (!TryGetRecordEntity(id, out var rec)) continue;
-                if (EntityManager.HasComponent<PlacemakerRemoval>(rec) || EntityManager.HasComponent<PlacemakerUnderConstruction>(rec)) continue;
+                if (EntityManager.HasComponent<CitymakerRemoval>(rec) || EntityManager.HasComponent<CitymakerUnderConstruction>(rec)) continue;
                 var r = GetRecord(id);
                 if (r != null && (r.Flags & GroupFlags.Modified) == 0)
                 {
@@ -609,11 +609,11 @@ namespace Placemaker.Game.Groups
             foreach (var id in touchedGroups)
             {
                 if (!_records.TryGetValue(id, out var rec)) continue;
-                if (EntityManager.HasComponent<PlacemakerRemoval>(rec) || EntityManager.HasComponent<PlacemakerUnderConstruction>(rec)) continue;
+                if (EntityManager.HasComponent<CitymakerRemoval>(rec) || EntityManager.HasComponent<CitymakerUnderConstruction>(rec)) continue;
                 if (CountLiveNonAuxiliaryExcluding(id) == 0)
                 {
-                    EntityManager.AddComponentData(rec, new PlacemakerRemoval());
-                    Mod.Log.Info($"Placemaker: group {id} lost its last element; removing its record.");
+                    EntityManager.AddComponentData(rec, new CitymakerRemoval());
+                    Mod.Log.Info($"Citymaker: group {id} lost its last element; removing its record.");
                 }
             }
         }
@@ -629,13 +629,13 @@ namespace Placemaker.Game.Groups
         private int AdoptReplacements(NativeArray<Entity> deleted)
         {
             if (_createdNetQuery.IsEmptyIgnoreFilter) return 0;
-            var lost = new List<(Colossal.Mathematics.Bezier4x3 Curve, PlacemakerMember Tag)>();
+            var lost = new List<(Colossal.Mathematics.Bezier4x3 Curve, CitymakerMember Tag)>();
             for (int i = 0; i < deleted.Length; i++)
             {
                 var e = deleted[i];
-                var tag = EntityManager.GetComponentData<PlacemakerMember>(e);
+                var tag = EntityManager.GetComponentData<CitymakerMember>(e);
                 if (tag.Kind != MemberKind.Edge || !EntityManager.HasComponent<global::Game.Net.Curve>(e)) continue;
-                if (!TryGetRecordEntity(tag.GroupId, out var rec) || EntityManager.HasComponent<PlacemakerRemoval>(rec)) continue;
+                if (!TryGetRecordEntity(tag.GroupId, out var rec) || EntityManager.HasComponent<CitymakerRemoval>(rec)) continue;
                 lost.Add((EntityManager.GetComponentData<global::Game.Net.Curve>(e).m_Bezier, tag));
             }
             if (lost.Count == 0) return 0;
@@ -656,7 +656,7 @@ namespace Placemaker.Game.Groups
                     adoptedEdges[c] = l.Tag.GroupId;
                     if (l.Tag.Role == MemberRole.ParkingAisle && TryGetRecordEntity(l.Tag.GroupId, out var rec))
                     {
-                        var g = EntityManager.GetComponentData<PlacemakerGroup>(rec);
+                        var g = EntityManager.GetComponentData<CitymakerGroup>(rec);
                         if (g.Carrier != Entity.Null && EntityManager.Exists(g.Carrier) && EntityManager.HasBuffer<global::Game.Net.SubNet>(g.Carrier))
                             EntityManager.GetBuffer<global::Game.Net.SubNet>(g.Carrier).Add(new global::Game.Net.SubNet(c));
                     }
@@ -668,7 +668,7 @@ namespace Placemaker.Game.Groups
             // New nodes whose every edge is ours (the split point between two adopted pieces).
             foreach (var n in created)
             {
-                if (!EntityManager.HasComponent<global::Game.Net.Node>(n) || EntityManager.HasComponent<PlacemakerMember>(n)
+                if (!EntityManager.HasComponent<global::Game.Net.Node>(n) || EntityManager.HasComponent<CitymakerMember>(n)
                     || !EntityManager.HasBuffer<global::Game.Net.ConnectedEdge>(n)) continue;
                 var edges = EntityManager.GetBuffer<global::Game.Net.ConnectedEdge>(n, true);
                 int group = 0; bool all = edges.Length > 0;
@@ -676,13 +676,13 @@ namespace Placemaker.Game.Groups
                 {
                     var edge = edges[k].m_Edge;
                     int g = adoptedEdges.TryGetValue(edge, out var ag) ? ag
-                        : EntityManager.HasComponent<PlacemakerMember>(edge) ? EntityManager.GetComponentData<PlacemakerMember>(edge).GroupId : 0;
+                        : EntityManager.HasComponent<CitymakerMember>(edge) ? EntityManager.GetComponentData<CitymakerMember>(edge).GroupId : 0;
                     if (g == 0 || (group != 0 && g != group)) all = false;
                     group = g;
                 }
-                if (all) EntityManager.AddComponentData(n, new PlacemakerMember { GroupId = group, Kind = MemberKind.Node, Role = MemberRole.Generic });
+                if (all) EntityManager.AddComponentData(n, new CitymakerMember { GroupId = group, Kind = MemberKind.Node, Role = MemberRole.Generic });
             }
-            Mod.Log.Info($"Placemaker kept {adopted} replaced/split edges in their group.");
+            Mod.Log.Info($"Citymaker kept {adopted} replaced/split edges in their group.");
             return adopted;
         }
 
@@ -692,7 +692,7 @@ namespace Placemaker.Game.Groups
             int n = 0;
             foreach (var e in list)
                 if (EntityManager.Exists(e) && !EntityManager.HasComponent<Deleted>(e)
-                    && EntityManager.GetComponentData<PlacemakerMember>(e).Kind != MemberKind.Auxiliary) n++;
+                    && EntityManager.GetComponentData<CitymakerMember>(e).Kind != MemberKind.Auxiliary) n++;
             return n;
         }
 
@@ -715,17 +715,17 @@ namespace Placemaker.Game.Groups
             foreach (var e in orphanEntities)
             {
                 if (!EntityManager.Exists(e)) continue;
-                EntityManager.RemoveComponent<PlacemakerMember>(e);
+                EntityManager.RemoveComponent<CitymakerMember>(e);
                 orphans++;
             }
             if (orphans > 0)
-                Mod.Log.Warn($"Placemaker: {orphans} built elements reference groups that no longer exist (saved without Placemaker?). They stay as normal city objects.");
+                Mod.Log.Warn($"Citymaker: {orphans} built elements reference groups that no longer exist (saved without Citymaker?). They stay as normal city objects.");
 
             int restored = 0;
             foreach (var kv in _records)
             {
                 var rec = kv.Value;
-                var g = EntityManager.GetComponentData<PlacemakerGroup>(rec);
+                var g = EntityManager.GetComponentData<CitymakerGroup>(rec);
                 if (g.Carrier != Entity.Null && !EntityManager.Exists(g.Carrier)) { g.Carrier = Entity.Null; EntityManager.SetComponentData(rec, g); }
                 if (g.Companion != Entity.Null && !EntityManager.Exists(g.Companion)) { g.Companion = Entity.Null; EntityManager.SetComponentData(rec, g); }
                 if (g.Owner != Entity.Null)
@@ -751,18 +751,18 @@ namespace Placemaker.Game.Groups
                 }
                 foreach (var m in list)
                 {
-                    var tag = EntityManager.GetComponentData<PlacemakerMember>(m);
+                    var tag = EntityManager.GetComponentData<CitymakerMember>(m);
                     if (tag.Role != MemberRole.ParkingAisle || tag.Kind != MemberKind.Edge || present.Contains(m)) continue;
                     subNets = EntityManager.GetBuffer<global::Game.Net.SubNet>(g.Carrier);
                     subNets.Add(new global::Game.Net.SubNet(m));
                     restored++;
                 }
             }
-            if (restored > 0) Mod.Log.Info($"Placemaker restored {restored} parking aisle links after load.");
+            if (restored > 0) Mod.Log.Info($"Citymaker restored {restored} parking aisle links after load.");
             RestoreOwnHidden();
             foreach (var id in _records.Keys) GetRecord(id);
             SyncParkStats();
-            Mod.Log.Info($"Placemaker loaded {_records.Count} groups.");
+            Mod.Log.Info($"Citymaker loaded {_records.Count} groups.");
             Bump();
         }
 
@@ -780,14 +780,14 @@ namespace Placemaker.Game.Groups
             using (var records = _recordQuery.ToEntityArray(Allocator.Temp))
                 for (int i = 0; i < records.Length; i++)
                 {
-                    int id = EntityManager.GetComponentData<PlacemakerGroup>(records[i]).GroupId;
+                    int id = EntityManager.GetComponentData<CitymakerGroup>(records[i]).GroupId;
                     if (!byId.TryGetValue(id, out var list)) byId[id] = list = new List<Entity>();
                     list.Add(records[i]);
                 }
             if (byId.Count == 0) return;
             var members = new Dictionary<int, List<Entity>>();
             using (var entities = _memberQuery.ToEntityArray(Allocator.Temp))
-            using (var tags = _memberQuery.ToComponentDataArray<PlacemakerMember>(Allocator.Temp))
+            using (var tags = _memberQuery.ToComponentDataArray<CitymakerMember>(Allocator.Temp))
                 for (int i = 0; i < entities.Length; i++)
                 {
                     if (!members.TryGetValue(tags[i].GroupId, out var list)) members[tags[i].GroupId] = list = new List<Entity>();
@@ -815,14 +815,14 @@ namespace Placemaker.Game.Groups
             }
             if (drop.Count == 0) return;
             foreach (var r in drop) EntityManager.DestroyEntity(r);
-            Mod.Log.Warn($"Placemaker load: {copies} duplicate group record(s) and {empty} record(s) of groups this city does not have were dropped "
+            Mod.Log.Warn($"Citymaker load: {copies} duplicate group record(s) and {empty} record(s) of groups this city does not have were dropped "
                 + "(the city was saved after a second load in the same game; GitHub issue #6).");
         }
 
         /// <summary>A record's live references: owner lot 4, carrier 2, companion 1.</summary>
         private int LiveReferences(Entity record)
         {
-            var g = EntityManager.GetComponentData<PlacemakerGroup>(record);
+            var g = EntityManager.GetComponentData<CitymakerGroup>(record);
             bool Live(Entity e) => e != Entity.Null && EntityManager.Exists(e) && !EntityManager.HasComponent<Deleted>(e);
             return (Live(g.Owner) && EntityManager.HasComponent<global::Game.Areas.Area>(g.Owner) ? 4 : 0)
                 + (Live(g.Carrier) ? 2 : 0) + (Live(g.Companion) ? 1 : 0);
@@ -831,8 +831,8 @@ namespace Placemaker.Game.Groups
         /// <summary>How many of the members (up to 200) stand inside the outline of this record's receipt.</summary>
         private int MembersInsideOutline(Entity record, List<Entity> members)
         {
-            if (!EntityManager.HasBuffer<PlacemakerGroupBlob>(record)) return 0;
-            var buffer = EntityManager.GetBuffer<PlacemakerGroupBlob>(record, true);
+            if (!EntityManager.HasBuffer<CitymakerGroupBlob>(record)) return 0;
+            var buffer = EntityManager.GetBuffer<CitymakerGroupBlob>(record, true);
             var bytes = new byte[buffer.Length];
             for (int i = 0; i < bytes.Length; i++) bytes[i] = buffer[i].Value;
             var ring = ReceiptCodec.Decode(bytes)?.Area?.Ring2D();
@@ -847,7 +847,7 @@ namespace Placemaker.Game.Groups
                 else if (EntityManager.HasComponent<global::Game.Net.Curve>(m))
                     p = Colossal.Mathematics.MathUtils.Position(EntityManager.GetComponentData<global::Game.Net.Curve>(m).m_Bezier, 0.5f).xz;
                 else continue;
-                if (Placemaker.Core.Geometry.Poly.Contains(ring, p)) inside++;
+                if (Citymaker.Core.Geometry.Poly.Contains(ring, p)) inside++;
             }
             return inside;
         }
@@ -862,8 +862,8 @@ namespace Placemaker.Game.Groups
         {
             try
             {
-                if (!Placemaker.Game.Build.BuildService.IgnoreOwnCollisions) return;
-                var q = GetEntityQuery(ComponentType.ReadOnly<PlacemakerMember>(), ComponentType.ReadOnly<Overridden>(), ComponentType.ReadOnly<global::Game.Objects.Transform>(),
+                if (!Citymaker.Game.Build.BuildService.IgnoreOwnCollisions) return;
+                var q = GetEntityQuery(ComponentType.ReadOnly<CitymakerMember>(), ComponentType.ReadOnly<Overridden>(), ComponentType.ReadOnly<global::Game.Objects.Transform>(),
                     ComponentType.ReadOnly<Owner>(), ComponentType.Exclude<Deleted>(), ComponentType.Exclude<Temp>());
                 if (q.IsEmptyIgnoreFilter) return;
                 var bq = GetEntityQuery(ComponentType.ReadOnly<global::Game.Buildings.Building>(), ComponentType.ReadOnly<global::Game.Objects.Transform>(),
@@ -872,7 +872,7 @@ namespace Placemaker.Game.Groups
                 using (var buildings = bq.ToEntityArray(Allocator.Temp))
                     foreach (var b in buildings)
                     {
-                        if (EntityManager.HasComponent<PlacemakerMember>(b)) continue;
+                        if (EntityManager.HasComponent<CitymakerMember>(b)) continue;
                         float r = 12f;
                         try
                         {
@@ -890,10 +890,10 @@ namespace Placemaker.Game.Groups
                 using var entities = q.ToEntityArray(Allocator.Temp);
                 foreach (var e in entities)
                 {
-                    var tag = EntityManager.GetComponentData<PlacemakerMember>(e);
+                    var tag = EntityManager.GetComponentData<CitymakerMember>(e);
                     if (tag.Kind != MemberKind.Object || tag.Role == MemberRole.ParkingBay) continue;
                     if (!_records.TryGetValue(tag.GroupId, out var rec)) continue;
-                    var carrier = EntityManager.GetComponentData<PlacemakerGroup>(rec).Carrier;
+                    var carrier = EntityManager.GetComponentData<CitymakerGroup>(rec).Carrier;
                     if (carrier == Entity.Null || EntityManager.GetComponentData<Owner>(e).m_Owner != carrier) continue;
                     var pos = EntityManager.GetComponentData<global::Game.Objects.Transform>(e).m_Position.xz;
                     bool blocked = false;
@@ -903,9 +903,9 @@ namespace Placemaker.Game.Groups
                     EntityManager.AddComponent<BatchesUpdated>(e);
                     shown++;
                 }
-                if (shown > 0 || kept > 0) Mod.Log.Info($"Placemaker load: {shown} hidden object(s) of our own builds shown again, {kept} stay hidden (next to another building).");
+                if (shown > 0 || kept > 0) Mod.Log.Info($"Citymaker load: {shown} hidden object(s) of our own builds shown again, {kept} stay hidden (next to another building).");
             }
-            catch (Exception ex) { Mod.Log.Warn("Placemaker: restoring hidden objects after load failed: " + ex.Message); }
+            catch (Exception ex) { Mod.Log.Warn("Citymaker: restoring hidden objects after load failed: " + ex.Message); }
         }
 
         private void CheckMissingAssets()
@@ -932,7 +932,7 @@ namespace Placemaker.Game.Groups
                     WriteRecord(kv.Value, rec);
                 }
                 if (missing.Count > 0)
-                    Mod.Log.Warn($"Placemaker group {kv.Key} uses {missing.Count} assets that are not loaded (e.g. '{missing[0]}'); offer repair via rebuild.");
+                    Mod.Log.Warn($"Citymaker group {kv.Key} uses {missing.Count} assets that are not loaded (e.g. '{missing[0]}'); offer repair via rebuild.");
             }
         }
     }

@@ -4,10 +4,10 @@
 // Everything goes into free space only, so the plaza's centrepiece, furniture and access stay clear.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns
+namespace Citymaker.Core.Layers.AddOns
 {
     [AreaGenerator(145)]
     public sealed class PlazaTreesAddOn : AddOnLayer
@@ -43,7 +43,7 @@ namespace Placemaker.Core.Layers.AddOns
             var occ = Occupancy(ctx);
             float spacing = math.max(4f, ctx.F("spacing"));
             int placed = ctx.S("layout") == "islands" ? Islands(ctx, occ, ids, spacing) : Grid(ctx, occ, ids, spacing);
-            if (placed == 0) NoSpace(ctx, "Placemaker.AddOn.PlazaTrees.Name");
+            if (placed == 0) NoSpace(ctx, "Citymaker.AddOn.PlazaTrees.Name");
             ctx.Stat(Keys.StatTrees, placed, Keys.UnitCount);
         }
 

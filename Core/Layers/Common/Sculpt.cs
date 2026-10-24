@@ -13,11 +13,11 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Build;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Build;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Common
+namespace Citymaker.Core.Layers.Common
 {
     /// <summary>Cut/fill statistics of a sculpt (m, m³).</summary>
     public struct Earthwork

@@ -1,4 +1,4 @@
-// Placemaker — decal dressing: the complement pass (s21, docs/DECALS.md). GPL-3.0.
+// Citymaker — decal dressing: the complement pass (s21, docs/DECALS.md). GPL-3.0.
 //
 // "Decals are not a thing you sprinkle around. They complement every other feature." After the whole
 // recipe is composed (and before zoning cutouts and building lots are enforced), this pass looks at
@@ -29,17 +29,17 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Decals
+namespace Citymaker.Core.Decals
 {
     public static class Dressing
     {
         /// <summary>Decal budget per hectare at Decals = 100 % (scales with the amount). Decals have their own budget, never the object cap.</summary>
         public const float BudgetPerHa = 1800f;
         public const int MinBudget = 300;
-        public const string StatKey = "Placemaker.Stat.Decals";
+        public const string StatKey = "Citymaker.Stat.Decals";
 
         public sealed class Report
         {

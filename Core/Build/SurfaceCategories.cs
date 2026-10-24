@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     public static class SurfaceCategories
     {

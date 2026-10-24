@@ -14,13 +14,13 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Leisure;
-using Placemaker.Core.Layers.Plaza;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Leisure;
+using Citymaker.Core.Layers.Plaza;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Events
+namespace Citymaker.Core.Layers.Types.Events
 {
     [AreaGenerator(80, Group = "events")]
     public sealed class FairgroundLayer : LeisureLayer, ILinkedControls
@@ -30,7 +30,7 @@ namespace Placemaker.Core.Layers.Types.Events
         public void Derive(SettingsBag settings) => GroundPalettes.Derive(settings, "pavingSurface");
 
         public const string FieldPlace = Composer.PlacePrefix + "field";
-        private const string K = "Placemaker.Fairground.";
+        private const string K = "Citymaker.Fairground.";
 
         protected override string Area => "Fairground";
         public override string Id => "fairground";
@@ -48,7 +48,7 @@ namespace Placemaker.Core.Layers.Types.Events
         internal static FeatureInfo BigTrees()
         {
             var f = Feature("bigtrees");
-            f.LabelKey = "Placemaker.Park.Feature.bigtrees";
+            f.LabelKey = "Citymaker.Park.Feature.bigtrees";
             return f;
         }
 
@@ -309,10 +309,10 @@ namespace Placemaker.Core.Layers.Types.Events
             if (pieces.Count == 0 && !st.HasField) ctx.AddRegion(region.Ring, "green:0", RegionTags.Green, RegionTags.Core);
 
             CommonStats(ctx);
-            ctx.Stat("Placemaker.Stat.Stalls", stalls, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Rides", rides, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Toilets", toilets, Keys.UnitCount);
-            if (st.HasField) ctx.Stat("Placemaker.Stat.FieldArea", Math.Round(st.Field.HalfLength * st.Field.HalfWidth * 4f), Keys.UnitM2);
+            ctx.Stat("Citymaker.Stat.Stalls", stalls, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Rides", rides, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Toilets", toilets, Keys.UnitCount);
+            if (st.HasField) ctx.Stat("Citymaker.Stat.FieldArea", Math.Round(st.Field.HalfLength * st.Field.HalfWidth * 4f), Keys.UnitM2);
             ctx.Plan.Facts["stalls"] = stalls;
             ctx.Plan.Facts["rides"] = rides;
             ctx.Plan.Facts["tables"] = tables;

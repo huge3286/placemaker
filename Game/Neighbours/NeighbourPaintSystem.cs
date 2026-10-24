@@ -1,4 +1,4 @@
-// Placemaker neighbourhood polish — the ground paint YardStitch plans (GPL-3.0).
+// Citymaker neighbourhood polish — the ground paint YardStitch plans (GPL-3.0).
 //
 // Same engine path as a build's terrain paint (Game/Build/BuildService.Paint.cs, docs/TERRAIN-PAINT.md): Core PaintRaster
 // turns the planned paints into square strength masks on a worker thread, and each mask is one
@@ -12,14 +12,14 @@ using Game;
 using Game.Prefabs;
 using Game.Simulation;
 using Game.Tools;
-using Placemaker.Core;
-using Placemaker.Core.Build;
+using Citymaker.Core;
+using Citymaker.Core.Build;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine.Scripting;
 
-namespace Placemaker.Game.Neighbours
+namespace Citymaker.Game.Neighbours
 {
     public sealed partial class NeighbourPaintSystem : GameSystemBase
     {
@@ -61,13 +61,13 @@ namespace Placemaker.Game.Neighbours
                 {
                     if (!_job.IsCompleted) return;
                     _stamps = _job.IsFaulted || _job.IsCanceled ? null : _job.Result;
-                    if (_job.IsFaulted) Mod.Log.Warn("Placemaker neighbourhood paint raster failed: " + _job.Exception?.GetBaseException().Message);
+                    if (_job.IsFaulted) Mod.Log.Warn("Citymaker neighbourhood paint raster failed: " + _job.Exception?.GetBaseException().Message);
                     _job = null;
                     _cursor = 0;
                     return;
                 }
                 if (Queue.Count == 0 || _unavailable) { Queue.Clear(); return; }
-                if (!Resolve()) { _unavailable = true; Mod.Log.Warn("Placemaker neighbourhood paint: no terrain material brush in this game."); return; }
+                if (!Resolve()) { _unavailable = true; Mod.Log.Warn("Citymaker neighbourhood paint: no terrain material brush in this game."); return; }
                 var paints = new List<PlannedPaint>(Queue);
                 Queue.Clear();
                 float texel = 3.5f;
@@ -77,7 +77,7 @@ namespace Placemaker.Game.Neighbours
             }
             catch (Exception e)
             {
-                Mod.Log.Warn("Placemaker neighbourhood paint failed: " + e.Message);
+                Mod.Log.Warn("Citymaker neighbourhood paint failed: " + e.Message);
                 _stamps = null;
                 _job = null;
             }
@@ -89,7 +89,7 @@ namespace Placemaker.Game.Neighbours
             if (!_prefabs.TryGetPrefab<BrushPrefab>(_brush, out var brushPrefab) || brushPrefab == null) return;
             var materials = World.GetOrCreateSystemManaged<global::Game.Rendering.TerrainMaterialSystem>();
             int n = stamp.N;
-            var tex = new UnityEngine.Texture2D(n, n, UnityEngine.TextureFormat.RGBA32, false, true) { wrapMode = UnityEngine.TextureWrapMode.Clamp, filterMode = UnityEngine.FilterMode.Bilinear, name = "PlacemakerPolishMask" };
+            var tex = new UnityEngine.Texture2D(n, n, UnityEngine.TextureFormat.RGBA32, false, true) { wrapMode = UnityEngine.TextureWrapMode.Clamp, filterMode = UnityEngine.FilterMode.Bilinear, name = "CitymakerPolishMask" };
             var bytes = new byte[n * n * 4];
             for (int i = 0; i < n * n; i++)
             {

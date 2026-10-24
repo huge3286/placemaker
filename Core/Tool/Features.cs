@@ -1,4 +1,4 @@
-// Placemaker — built-in features of a Fill layer (playground in a park, zoning along new streets…).
+// Citymaker — built-in features of a Fill layer (playground in a park, zoning along new streets…).
 //
 // A feature is not a separate thing in the recipe: it IS a direct child step of the fill step whose
 // Layer and Target match the FeatureInfo. "Enabled" in the UI = such a child exists (and is
@@ -9,7 +9,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Placemaker.Core.Tool
+namespace Citymaker.Core.Tool
 {
     public static class Features
     {

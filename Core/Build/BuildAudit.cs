@@ -1,16 +1,16 @@
 // s53 — build audit: everything that did not make it into the final placement, with the reason.
 //
 // The build service records one entry per planned piece it left out (or kept despite a game error) and the plan-time drops
-// (declutter). Pure data + formatting: the log block, the ModsData/Placemaker/audit JSON and the "Left out" chip in the panel
+// (declutter). Pure data + formatting: the log block, the ModsData/Citymaker/audit JSON and the "Left out" chip in the panel
 // (summary.audit) all read from here.
 
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Placemaker.Core.Tool;
+using Citymaker.Core.Tool;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     public static class AuditReason
     {
@@ -28,9 +28,9 @@ namespace Placemaker.Core.Build
         public static string Rejected(string errorType) => RejectedPrefix + (string.IsNullOrEmpty(errorType) ? "Unknown" : errorType);
         public static bool IsKept(string reason) => reason == Anarchy;
 
-        /// <summary>Localisation key of the reason ("Placemaker.Audit.Reason.rejected" with the error type as {0} for rejects).</summary>
+        /// <summary>Localisation key of the reason ("Citymaker.Audit.Reason.rejected" with the error type as {0} for rejects).</summary>
         public static string LabelKey(string reason) => reason.StartsWith(RejectedPrefix, StringComparison.Ordinal)
-            ? "Placemaker.Audit.Reason.rejected" : "Placemaker.Audit.Reason." + reason;
+            ? "Citymaker.Audit.Reason.rejected" : "Citymaker.Audit.Reason." + reason;
 
         public static string Arg(string reason) => reason.StartsWith(RejectedPrefix, StringComparison.Ordinal) ? reason.Substring(RejectedPrefix.Length) : "";
     }
@@ -120,7 +120,7 @@ namespace Placemaker.Core.Build
             return sb.ToString();
         }
 
-        /// <summary>The full per-item list for ModsData/Placemaker/audit.</summary>
+        /// <summary>The full per-item list for ModsData/Citymaker/audit.</summary>
         public string ToJson(int groupId, string time)
         {
             var o = JsonValue.Obj().Set("group", groupId).Set("time", time).Set("planned", Planned).Set("built", Built)

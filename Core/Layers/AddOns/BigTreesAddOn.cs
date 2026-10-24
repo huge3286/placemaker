@@ -3,10 +3,10 @@
 // scatter sampler and are taken most-open-first.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns
+namespace Citymaker.Core.Layers.AddOns
 {
     [AreaGenerator(140)]
     public sealed class BigTreesAddOn : AddOnLayer
@@ -53,7 +53,7 @@ namespace Placemaker.Core.Layers.AddOns
                 occ.Take(p, 2.5f, 0);
                 placed.Add(p);
             }
-            if (placed.Count == 0) NoSpace(ctx, "Placemaker.AddOn.BigTrees.Name");
+            if (placed.Count == 0) NoSpace(ctx, "Citymaker.AddOn.BigTrees.Name");
             ctx.Stat(Keys.StatTrees, placed.Count, Keys.UnitCount);
         }
     }

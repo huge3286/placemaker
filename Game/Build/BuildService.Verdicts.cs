@@ -1,4 +1,4 @@
-// Placemaker — s59: one validation pass, then build what was planned (GPL-3.0).
+// Citymaker — s59: one validation pass, then build what was planned (GPL-3.0).
 //
 // Replaces the s53 anarchy classifier and the exclude-and-retry loop (MaxAutoExcludeAttempts = 6, since the first game
 // layer commit). Why the loop could never work, and what the game really does (decompiled Game.dll 1.6.2f1):
@@ -20,14 +20,14 @@ using Game.Common;
 using Game.Net;
 using Game.Prefabs;
 using Game.Tools;
-using Placemaker.Core;
-using Placemaker.Core.Build;
-using Placemaker.Game.Selection;
+using Citymaker.Core;
+using Citymaker.Core.Build;
+using Citymaker.Game.Selection;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Build
+namespace Citymaker.Game.Build
 {
     public sealed partial class BuildService
     {
@@ -146,7 +146,7 @@ namespace Placemaker.Game.Build
             {
                 var b = d.Blocker.Value;
                 string type = d.FailErrorType ?? "OverlapExisting";
-                Mod.Log.Warn($"Placemaker build stopped by the game ({type}): {BuildVerdicts.Describe(b)}"
+                Mod.Log.Warn($"Citymaker build stopped by the game ({type}): {BuildVerdicts.Describe(b)}"
                     + (b.TouchesBuilding ? " touches an existing building" : "") + $". All flagged: {histogram}.");
                 _status.ErrorPositions = new List<float3> { b.At };
                 _errorTypeName = type;
@@ -164,7 +164,7 @@ namespace Placemaker.Game.Build
             {
                 if (_itemByKey.TryGetValue(kv.Key.Key, out var w)) AuditItem(w, kv.Value);
                 string what = kv.Key.Kind == VerdictKind.Net ? "Net" : kv.Key.Kind == VerdictKind.Surface ? "Surface" : kv.Key.Kind == VerdictKind.Area ? "Area" : "Object";
-                NoteSkip("Placemaker.Build.Skipped." + what, kv.Key.At);
+                NoteSkip("Citymaker.Build.Skipped." + what, kv.Key.At);
             }
             var keptKeys = new HashSet<long>();
             foreach (var k in d.KeptDespite)
@@ -174,8 +174,8 @@ namespace Placemaker.Game.Build
             }
             _keptDespite = keptKeys.Count;
             foreach (var n in d.NetsByBuildings)
-                Mod.Log.Info($"Placemaker: {BuildVerdicts.Describe(n)} touches an existing building or its lot; built anyway (anarchy) — existing buildings are never removed.");
-            Mod.Log.Info($"Placemaker validation: {flagged.Count} flagged temporaries ({histogram}); "
+                Mod.Log.Info($"Citymaker: {BuildVerdicts.Describe(n)} touches an existing building or its lot; built anyway (anarchy) — existing buildings are never removed.");
+            Mod.Log.Info($"Citymaker validation: {flagged.Count} flagged temporaries ({histogram}); "
                 + (IgnoreOwnCollisions ? "anarchy: building everything" : "vanilla rules")
                 + $" — kept {_keptDespite} piece(s) despite errors, left out {d.Drop.Count} ({cancelled} temporaries cancelled in place).");
             return true;
@@ -253,9 +253,9 @@ namespace Placemaker.Game.Build
             if (keptBuildings > 0)
             {
                 _buildingsProtected += keptBuildings;
-                Mod.Log.Info($"Placemaker: {keptBuildings} existing building(s)/road(s) the game would have removed are kept standing.");
+                Mod.Log.Info($"Citymaker: {keptBuildings} existing building(s)/road(s) the game would have removed are kept standing.");
             }
-            if (freedOwn > 0) Mod.Log.Info($"Placemaker anarchy: {freedOwn} of our pieces were marked by the game to be removed or hidden; all are built.");
+            if (freedOwn > 0) Mod.Log.Info($"Citymaker anarchy: {freedOwn} of our pieces were marked by the game to be removed or hidden; all are built.");
         }
 
         private bool IsBuildingOrPartOfOne(Entity e)

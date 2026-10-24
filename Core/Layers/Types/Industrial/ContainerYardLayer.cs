@@ -7,10 +7,10 @@
 //             office, a screen of trees, everything square.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Yards
+namespace Citymaker.Core.Layers.Types.Yards
 {
     [AreaGenerator(64, Group = "industrial")]
     public sealed class ContainerYardLayer : IndustrialYardLayer

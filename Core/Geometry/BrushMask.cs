@@ -1,4 +1,4 @@
-// Placemaker — painted area selection ("Paint" mode).
+// Citymaker — painted area selection ("Paint" mode).
 //
 // Adapted from Grid Road Generator (Ti4goc), Core/BrushMask.cs: tiled bool cells, round /
 // rotated-square stamps, gap-free strokes, incrementally maintained edge cells for a cheap live
@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Geometry
+namespace Citymaker.Core.Geometry
 {
     /// <summary>
     /// Brush-painted area on a square cell grid (XZ, cells of <see cref="CellSize"/> metres; cell (i, j)

@@ -10,11 +10,11 @@
 
 using System.Collections.Generic;
 using System.Threading;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Golf
+namespace Citymaker.Core.Layers.Types.Golf
 {
     public sealed class GolfHole
     {

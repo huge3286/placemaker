@@ -7,14 +7,14 @@
 // Everything here places through Occupancy (input.Reserved + what the layer placed), so the
 // shared invariants hold: inside the outline, clear of paths and of reserved space.
 
-using Placemaker.Core.Layers.Types.Scrapyard;
+using Citymaker.Core.Layers.Types.Scrapyard;
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Ruins
+namespace Citymaker.Core.Layers.Types.Ruins
 {
     /// <summary>Hard zones a layer laid out itself (slabs, pads, modules): kept out of scatters, never handed to Occupancy.</summary>
     public sealed class Zones

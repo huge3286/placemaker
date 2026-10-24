@@ -5,10 +5,10 @@
 // issue and place nothing instead of failing.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns
+namespace Citymaker.Core.Layers.AddOns
 {
     public abstract class AddOnLayer : LayerBase
     {

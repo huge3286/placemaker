@@ -1,7 +1,7 @@
-// Placemaker — clears the see-through decal copies that older builds left in saves (GPL-3.0).
+// Citymaker — clears the see-through decal copies that older builds left in saves (GPL-3.0).
 //
 // GitHub issue #2 ("white boxes around props after loading"): builds up to 0.1.1 placed decorative decals (all from decal
-// packs; the base game has only markings and Chirper logos) as see-through copies made at runtime ("Placemaker Decal
+// packs; the base game has only markings and Chirper logos) as see-through copies made at runtime ("Citymaker Decal
 // <tier> - <name>", DecalOpacitySystem). A save names them; when a copy did not exist at load (the packs arrive 30–75 s
 // after startup and the copies were given up after 600 frames) the game drew its missing-object box in its place
 // (ResolvePrefabsSystem keeps an obsolete placeholder, InitializeObsoleteSystem gives it MeshSettingsData
@@ -22,7 +22,7 @@ using Unity.Collections;
 using Unity.Entities;
 using UnityEngine.Scripting;
 
-namespace Placemaker.Game.Build
+namespace Citymaker.Game.Build
 {
     public sealed partial class OldDecalCleanupSystem : GameSystemBase
     {
@@ -66,9 +66,9 @@ namespace Placemaker.Game.Build
         {
             if (!_pending) return;
             _pending = false;
-            if (SuiteSkip) { Mod.Log.Info("Placemaker load: old see-through decals left as they are (game runner)"); return; }
+            if (SuiteSkip) { Mod.Log.Info("Citymaker load: old see-through decals left as they are (game runner)"); return; }
             try { Clean(); }
-            catch (Exception e) { Mod.Log.Warn("Placemaker: clearing old see-through decals after load failed: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker: clearing old see-through decals after load failed: " + e.Message); }
         }
 
         private void Clean()
@@ -105,8 +105,8 @@ namespace Placemaker.Game.Build
             }
             finally { doomed.Dispose(); }
             World.GetExistingSystemManaged<Groups.GroupRegistrySystem>()?.MarkDirty();
-            Mod.Log.Info($"Placemaker load: removed {LastRemoved} see-through decal(s) of older builds ({names.Count} missing copies, e.g. '{names[0]}'); "
-                + "Placemaker no longer places decorative decals (GitHub issue #2).");
+            Mod.Log.Info($"Citymaker load: removed {LastRemoved} see-through decal(s) of older builds ({names.Count} missing copies, e.g. '{names[0]}'); "
+                + "Citymaker no longer places decorative decals (GitHub issue #2).");
         }
     }
 }

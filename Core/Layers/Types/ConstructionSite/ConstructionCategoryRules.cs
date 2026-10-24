@@ -5,9 +5,9 @@
 // still see the same asset. Decals are classified before plug-ins (mud/dirt decals use decal.dirt).
 
 using System.Collections.Generic;
-using Placemaker.Core.Build;
+using Citymaker.Core.Build;
 
-namespace Placemaker.Core.Layers.Types.ConstructionSite
+namespace Citymaker.Core.Layers.Types.ConstructionSite
 {
     public sealed class ConstructionCategoryRules : ICategoryRules
     {

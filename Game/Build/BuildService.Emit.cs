@@ -1,4 +1,4 @@
-// Placemaker — emitting CreationDefinitions for each plan element (GPL-3.0).
+// Citymaker — emitting CreationDefinitions for each plan element (GPL-3.0).
 // Net courses follow ParkManager's CreateNetCourseDefinition and GridRoadGenerator's
 // CreateGridDefinitions/MakeCoursePos (attach to an existing edge via m_Entity + m_SplitPosition,
 // Upgraded composition flags on the definition). Object definitions follow ParkingLotTool's
@@ -13,12 +13,12 @@ using Game.Net;
 using Game.Prefabs;
 using Game.Simulation;
 using Game.Tools;
-using Placemaker.Core;
-using Placemaker.Core.Build;
+using Citymaker.Core;
+using Citymaker.Core.Build;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Build
+namespace Citymaker.Game.Build
 {
     public sealed partial class BuildService
     {
@@ -70,8 +70,8 @@ namespace Placemaker.Game.Build
             }
             if (missing > 0)
             {
-                _warnings.Add("Placemaker.Build.AssetsMissing");
-                Mod.Log.Warn($"Placemaker: {missing} planned parts have no usable asset in this playset and are skipped.");
+                _warnings.Add("Citymaker.Build.AssetsMissing");
+                Mod.Log.Warn($"Citymaker: {missing} planned parts have no usable asset in this playset and are skipped.");
             }
         }
 
@@ -161,11 +161,11 @@ namespace Placemaker.Game.Build
                         EndAttach = net.EndAttach >= 0 || pathEnds.Shared(net.D) ? 0 : -1,
                     };
                     float half = EntityManager.GetComponentData<NetGeometryData>(prefab).m_DefaultWidth * 0.5f;
-                    if (Placemaker.Core.Layers.Common.StreetJoins.ClearOfRoads(probe, _request.Plan.ExistingNets, half) > 0)
+                    if (Citymaker.Core.Layers.Common.StreetJoins.ClearOfRoads(probe, _request.Plan.ExistingNets, half) > 0)
                     {
                         course = new Cubic(probe.A, probe.B, probe.C, probe.D);
                         if (clearNotes++ < 12)
-                            Mod.Log.Info($"Placemaker: a footpath end near a street was kept {half:F1} m (its half width) + {Placemaker.Core.Layers.Common.StreetJoins.KerbGap} m off it, so the game joins it to the sidewalk instead of cutting the street: ({net.A.x:F1}, {net.A.z:F1})-({net.D.x:F1}, {net.D.z:F1}) now ({probe.A.x:F1}, {probe.A.z:F1})-({probe.D.x:F1}, {probe.D.z:F1}).");
+                            Mod.Log.Info($"Citymaker: a footpath end near a street was kept {half:F1} m (its half width) + {Citymaker.Core.Layers.Common.StreetJoins.KerbGap} m off it, so the game joins it to the sidewalk instead of cutting the street: ({net.A.x:F1}, {net.A.z:F1})-({net.D.x:F1}, {net.D.z:F1}) now ({probe.A.x:F1}, {probe.A.z:F1})-({probe.D.x:F1}, {probe.D.z:F1}).");
                     }
                 }
                 // Bridges/piers/boardwalks keep their planned deck: short pieces, each node with its own
@@ -188,7 +188,7 @@ namespace Placemaker.Game.Build
                         if (math.abs(mid.y - planned) > 1f)
                         {
                             _sagNotes++;
-                            Mod.Log.Warn($"Placemaker net course off its plan: {net.Role} piece {p + 1}/{pieces.Count} at ({mid.x:F0}, {mid.z:F0}) y {c.A.y:F1}/{c.B.y:F1}/{c.C.y:F1}/{c.D.y:F1} (middle {mid.y:F1}), planned {planned:F1}; "
+                            Mod.Log.Warn($"Citymaker net course off its plan: {net.Role} piece {p + 1}/{pieces.Count} at ({mid.x:F0}, {mid.z:F0}) y {c.A.y:F1}/{c.B.y:F1}/{c.C.y:F1}/{c.D.y:F1} (middle {mid.y:F1}), planned {planned:F1}; "
                                 + $"ground {GroundHeight(c.Position(1f / 3f).xz):F1}/{GroundHeight(c.Position(2f / 3f).xz):F1} at 1/3, 2/3 (live {Height(c.Position(1f / 3f).xz):F1}/{Height(c.Position(2f / 3f).xz):F1}), length {c.Length():F1} m, {(_gEmission ? "ghost" : "build")}.");
                         }
                     }
@@ -287,7 +287,7 @@ namespace Placemaker.Game.Build
                 else { pos.m_Entity = target; pos.m_SplitPosition = t; }
                 pos.m_Position = MathUtils.Position(curve, t);
                 if (EntityManager.HasComponent<PathwayData>(prefab) && _splitNotes++ < 12)
-                    Mod.Log.Info($"Placemaker: a footpath end at ({position.x:F1}, {position.z:F1}) splits '{_catalog.NameOf(EntityManager.GetComponentData<PrefabRef>(target).m_Prefab)}' {d:F1} m from its centre line (an entrance with a crosswalk).");
+                    Mod.Log.Info($"Citymaker: a footpath end at ({position.x:F1}, {position.z:F1}) splits '{_catalog.NameOf(EntityManager.GetComponentData<PrefabRef>(target).m_Prefab)}' {d:F1} m from its centre line (an entrance with a crosswalk).");
             }
             else if (EntityManager.HasComponent<global::Game.Net.Node>(target))
             {
@@ -390,7 +390,7 @@ namespace Placemaker.Game.Build
             float len = c.LengthXZ();
             // FEEDBACK-4: never overlapping — the game cancels (ghost) or hides (build) one of every two
             // overlapping props, which left every other hedge piece missing. Small even gaps instead.
-            int count = Placemaker.Core.Layers.Common.Fences.SpacedPieceCount(len, piece);
+            int count = Citymaker.Core.Layers.Common.Fences.SpacedPieceCount(len, piece);
             int seed = AutoAssets.UniformSeed(w.Category, (uint)_groupId);   // one look for every piece
             // Pieces run along their longer local axis (fences usually X; vanilla hedge pieces are long in Z).
             bool alongZ = size.z > size.x;
@@ -506,7 +506,7 @@ namespace Placemaker.Game.Build
             var group = GeneratorGroups.Of(GeneratorRegistry.Get(w.GeneratorId ?? ""));
             if (group == "farms" || group == "industrial") return false;
             if (_refusedLots++ == 0)
-                Mod.Log.Warn($"Placemaker: left out the vanilla industry lot '{_prefabs.GetPrefabName(prefab)}' planned by '{w.GeneratorId}' (no farm or extractor lot outside farm and industry builds).");
+                Mod.Log.Warn($"Citymaker: left out the vanilla industry lot '{_prefabs.GetPrefabName(prefab)}' planned by '{w.GeneratorId}' (no farm or extractor lot outside farm and industry builds).");
             return true;
         }
 
@@ -528,9 +528,9 @@ namespace Placemaker.Game.Build
                 float snap = EntityManager.GetComponentData<AreaGeometryData>(prefab).m_SnapDistance;
                 if (math.isfinite(snap) && snap > 0f) d = AreaRings.MinNodeDistanceForSnap(snap);
             }
-            var ring2 = Placemaker.Core.Geometry.Poly.To2D(ring);
+            var ring2 = Citymaker.Core.Geometry.Poly.To2D(ring);
             List<float2[]> rings;
-            if (AreaRings.IsValid(ring2, d + AreaRings.Margin) && (!surface || Placemaker.Core.Geometry.SurfaceAcceptance.IsAccepted(ring2)))
+            if (AreaRings.IsValid(ring2, d + AreaRings.Margin) && (!surface || Citymaker.Core.Geometry.SurfaceAcceptance.IsAccepted(ring2)))
                 rings = new List<float2[]> { ring2 };
             else
             {
@@ -544,11 +544,11 @@ namespace Placemaker.Game.Build
                 bool first = _notedRings.Add(PlanWork.Key(w));   // retries re-emit: count each piece once
                 if (rings.Count == 0)
                 {
-                    if (first) NoteSkip(surface ? "Placemaker.Build.Skipped.Surface" : "Placemaker.Build.Skipped.Area", at);
-                    Mod.Log.Info($"Placemaker skipped a {(surface ? "surface" : "area")} ring the game would reject ({ring.Length} nodes, d={d:0.###}; {w.GeneratorId} layer {w.Layer} #{w.Index}, first violation at node {AreaRings.FirstViolation(ring2, d + AreaRings.Margin)}): {string.Join(" ", System.Linq.Enumerable.Select(ring2, p => $"({p.x:F2},{p.y:F2})"))}.");
+                    if (first) NoteSkip(surface ? "Citymaker.Build.Skipped.Surface" : "Citymaker.Build.Skipped.Area", at);
+                    Mod.Log.Info($"Citymaker skipped a {(surface ? "surface" : "area")} ring the game would reject ({ring.Length} nodes, d={d:0.###}; {w.GeneratorId} layer {w.Layer} #{w.Index}, first violation at node {AreaRings.FirstViolation(ring2, d + AreaRings.Margin)}): {string.Join(" ", System.Linq.Enumerable.Select(ring2, p => $"({p.x:F2},{p.y:F2})"))}.");
                     return;
                 }
-                if (first) NoteSkip(surface ? "Placemaker.Build.Repaired.Surface" : "Placemaker.Build.Repaired.Area", at, IssueSeverity.Info);
+                if (first) NoteSkip(surface ? "Citymaker.Build.Repaired.Surface" : "Citymaker.Build.Repaired.Area", at, IssueSeverity.Info);
             }
             long key = PlanWork.Key(w);
             for (int i = 0; i < rings.Count; i++)

@@ -1,4 +1,4 @@
-// Placemaker roads layer ("roads"): street patterns from Grid Road Generator (Ti4goc) behind the
+// Citymaker roads layer ("roads"): street patterns from Grid Road Generator (Ti4goc) behind the
 // IAreaGenerator contract. Emits PlannedNets (with connections to existing roads), cul-de-sac caps,
 // roundabout islands, and the city blocks between the roads as "block" regions plus frontage
 // strips as "edge" regions, so recipes like "roads + parks" or "roads + zoning" compose.
@@ -6,11 +6,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Roads.Generators;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Roads.Generators;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads
+namespace Citymaker.Core.Layers.Roads
 {
     [AreaGenerator(400, Group = "roads", Loose = true)]
     public sealed class RoadsLayer : IAreaGenerator, IHasFeatures, ILinkedControls, IAutoAssetHints
@@ -27,7 +27,7 @@ namespace Placemaker.Core.Layers.Roads
         }
 
         public string Id => LayerId;
-        public string NameKey => "Placemaker.Roads.Name";
+        public string NameKey => "Citymaker.Roads.Name";
         public string Icon => "Media/Game/Icons/Roads.svg";
         public LayerKind Kind => LayerKind.Fill;
         public string[] Accepts => Array.Empty<string>();
@@ -119,7 +119,7 @@ namespace Placemaker.Core.Layers.Roads
             if (ring == null || ring.Length < 3)
             {
                 r.Ready = false;
-                r.ReasonKey = "Placemaker.Roads.Reason.NoArea";
+                r.ReasonKey = "Citymaker.Roads.Reason.NoArea";
                 return r;
             }
             var settings = input.Settings ?? new SettingsBag();
@@ -180,7 +180,7 @@ namespace Placemaker.Core.Layers.Roads
                 if (mix != null) RoadMixes.Apply(b, mix);
                 foreach (var (k, v) in values) b.Values[k] = v;
                 Derive(b);   // the mix reads what the preset picks (no false "modified")
-                return new PresetInfo { Id = id, LabelKey = "Placemaker.Roads.Preset." + id, Values = b };
+                return new PresetInfo { Id = id, LabelKey = "Citymaker.Roads.Preset." + id, Values = b };
             }
             return new List<PresetInfo>
             {

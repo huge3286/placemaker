@@ -1,4 +1,4 @@
-// Placemaker — every design edit the panel can trigger, as pure operations on a Recipe.
+// Citymaker — every design edit the panel can trigger, as pure operations on a Recipe.
 //
 // The tool clones the committed recipe, applies one operation, and commits the result to History
 // when the operation reports a change. Nothing here throws for bad input from the UI (unknown
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Tool
+namespace Citymaker.Core.Tool
 {
     public sealed class DesignEditor
     {
@@ -344,7 +344,7 @@ namespace Placemaker.Core.Tool
             {
                 if (string.IsNullOrEmpty(f)) continue;
                 bool on = f[0] != '-';
-                changed |= SetFeature(recipe, path, on ? f : f.Substring(1), on, Placemaker.Core.Layers.Common.Hashing.Mix(fs, Seeds.Hash(f)));
+                changed |= SetFeature(recipe, path, on ? f : f.Substring(1), on, Citymaker.Core.Layers.Common.Hashing.Mix(fs, Seeds.Hash(f)));
             }
             changed |= ApplyFeatureValues(step, gen, preset);
             return changed;
@@ -515,7 +515,7 @@ namespace Placemaker.Core.Tool
 
         /// <summary>s14: a saved value of a retired option, mapped to its successor by the layer (LayerBase.Migrate).</summary>
         private static object Migrated(IAreaGenerator gen, string id, object value) =>
-            gen is Placemaker.Core.Layers.Common.LayerBase lb ? lb.Migrate(id, value) : value;
+            gen is Citymaker.Core.Layers.Common.LayerBase lb ? lb.Migrate(id, value) : value;
 
         /// <summary>Converts a raw value to the control's storage type; null when it does not fit.</summary>
         public static object Coerce(ControlSchema c, object value)

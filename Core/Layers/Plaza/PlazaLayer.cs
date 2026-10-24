@@ -10,13 +10,13 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Layers.AddOns;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Common.Shore;
+using Citymaker.Core.Layers.AddOns;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common.Shore;
 using Unity.Mathematics;
 using Random = Unity.Mathematics.Random;
 
-namespace Placemaker.Core.Layers.Plaza
+namespace Citymaker.Core.Layers.Plaza
 {
     [AreaGenerator(20, Group = "squares")]
     public sealed class PlazaLayer : LayerBase, IHasFeatures, ILinkedControls
@@ -57,18 +57,18 @@ namespace Placemaker.Core.Layers.Plaza
         {
             LeisureKit.FocalPoint(ctx.LayerRegion, out float inscribed);
             if (!PlazaTiers.IsCompact(PlazaTiers.Of(ctx.LayerRegion.Area, inscribed))) return true;
-            ctx.Issue(IssueSeverity.Info, "Placemaker.Feature.streetShops.Issue.TooSmall");
+            ctx.Issue(IssueSeverity.Info, "Citymaker.Feature.streetShops.Issue.TooSmall");
             return false;
         }
         public override float MinArea => 60f;
 
         private static readonly FeatureInfo[] FeatureList = WithAmenities(new[]
         {
-            new FeatureInfo { Layer = "playground", LabelKey = "Placemaker.Plaza.Feature.playground", Preset = Park.ParkLayer.Bag(("size", "small"), ("fence", true)) },
+            new FeatureInfo { Layer = "playground", LabelKey = "Citymaker.Plaza.Feature.playground", Preset = Park.ParkLayer.Bag(("size", "small"), ("fence", true)) },
             // Fountain before the trees: children plan in list order and the fountain wants the middle.
             new FeatureInfo
             {
-                Layer = "fountain", LabelKey = "Placemaker.Plaza.Feature.fountain", TooltipKey = "Placemaker.Plaza.Feature.fountain.Tooltip",
+                Layer = "fountain", LabelKey = "Citymaker.Plaza.Feature.fountain", TooltipKey = "Citymaker.Plaza.Feature.fountain.Tooltip",
                 // The plaza lays the rondel itself (paving tiling): no apron surface on top of it.
                 // s18: automatic asset (the large kit starts with LargeFountain02) so a small square gets a fountain that
                 // fits, centred on its focal point; the square lights itself (no second lamp ring).
@@ -76,14 +76,14 @@ namespace Placemaker.Core.Layers.Plaza
             },
             // Art pass a2: the square plants its own trees (treeLayout: allée / bosque / groves) — the scattered
             // feature trees are opt-in.
-            new FeatureInfo { Layer = "plazatrees", LabelKey = "Placemaker.Plaza.Feature.trees", TooltipKey = "Placemaker.Plaza.Feature.trees.Tooltip",
+            new FeatureInfo { Layer = "plazatrees", LabelKey = "Citymaker.Plaza.Feature.trees", TooltipKey = "Citymaker.Plaza.Feature.trees.Tooltip",
                 Preset = Park.ParkLayer.Bag(("layout", "islands"), ("spacing", 16.0)) },
-            new FeatureInfo { Layer = "kiosk", LabelKey = "Placemaker.Plaza.Feature.kiosk" },
-            new FeatureInfo { Layer = "flowerbeds", LabelKey = "Placemaker.Plaza.Feature.flowerbeds", Preset = Park.ParkLayer.Bag(("density", 30.0), ("nearPaths", false)) },
-            new FeatureInfo { Layer = "shops", LabelKey = "Placemaker.Feature.shops", TooltipKey = "Placemaker.Feature.shops.Tooltip", Preset = Park.ParkLayer.Bag(("count", 3.0), ("where", "edges")) },
+            new FeatureInfo { Layer = "kiosk", LabelKey = "Citymaker.Plaza.Feature.kiosk" },
+            new FeatureInfo { Layer = "flowerbeds", LabelKey = "Citymaker.Plaza.Feature.flowerbeds", Preset = Park.ParkLayer.Bag(("density", 30.0), ("nearPaths", false)) },
+            new FeatureInfo { Layer = "shops", LabelKey = "Citymaker.Feature.shops", TooltipKey = "Citymaker.Feature.shops.Tooltip", Preset = Park.ParkLayer.Bag(("count", 3.0), ("where", "edges")) },
             StreetShopsFeature("Plaza", "plaza"),
-            new FeatureInfo { Layer = "decals", LabelKey = "Placemaker.Feature.decals", Preset = Park.ParkLayer.Bag(("theme", "cracks"), ("ground", "paved"), ("density", 0.8)) },
-            new FeatureInfo { Layer = "terrain", LabelKey = "Placemaker.Feature.flatten", TooltipKey = "Placemaker.Feature.terrain.Tooltip", Preset = Park.ParkLayer.Bag(("shape", "flatten")) },
+            new FeatureInfo { Layer = "decals", LabelKey = "Citymaker.Feature.decals", Preset = Park.ParkLayer.Bag(("theme", "cracks"), ("ground", "paved"), ("density", 0.8)) },
+            new FeatureInfo { Layer = "terrain", LabelKey = "Citymaker.Feature.flatten", TooltipKey = "Citymaker.Feature.terrain.Tooltip", Preset = Park.ParkLayer.Bag(("shape", "flatten")) },
             // g2: on by default, idle unless the square is partly in (or along) water: a harbour quay.
             ShoreKit.Feature(("style", "wharf"), ("wharfShare", 100.0), ("bandWidth", 8.0), ("railings", false)),
         });
@@ -110,10 +110,10 @@ namespace Placemaker.Core.Layers.Plaza
                 var spec = Amenities.Spec(id);
                 if (!Amenities.TrySolve(region, occ, spec.Length, spec.Width, ctx.S(Amenities.AtControl(id)), gates, Hashing.Mix(ctx.Seed, Seeds.Hash(id)), null, out var rect, out bool moved, 0.5f))
                 {
-                    ctx.Issue(IssueSeverity.Warning, "Placemaker.Plaza.Issue.NoRoomForAmenity", "Placemaker.Feature." + id);
+                    ctx.Issue(IssueSeverity.Warning, "Citymaker.Plaza.Issue.NoRoomForAmenity", "Citymaker.Feature." + id);
                     continue;
                 }
-                if (moved) ctx.Issue(IssueSeverity.Info, "Placemaker.Plaza.Issue.AmenityMoved", "Placemaker.Feature." + id);
+                if (moved) ctx.Issue(IssueSeverity.Info, "Citymaker.Plaza.Issue.AmenityMoved", "Citymaker.Feature." + id);
                 Amenities.Take(occ, rect, 0.5f, 6);
                 ctx.AddRegion(rect.Ring, Amenities.Place(id), Amenities.Place(id), RegionTags.Paved);
                 result.Add((id, rect));
@@ -376,7 +376,7 @@ namespace Placemaker.Core.Layers.Plaza
                 ArrangementGap = ctx.F("arrangementGap"), Groups = ctx.I("furniture"), Arrangement = items,
                 PreferredCenter = focal, KeepClear = fountainApron > 0f ? fountainApron + 1.0f : 0f,
             });
-            if (layout.CenterpieceDropped && !fountainFeature) ctx.Issue(IssueSeverity.Info, "Placemaker.Plaza.Issue.CenterpieceDoesNotFit");
+            if (layout.CenterpieceDropped && !fountainFeature) ctx.Issue(IssueSeverity.Info, "Citymaker.Plaza.Issue.CenterpieceDoesNotFit");
             ctx.Check();
 
             // Emit.

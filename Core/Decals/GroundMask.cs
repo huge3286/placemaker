@@ -1,4 +1,4 @@
-// Placemaker — where bare terrain shows inside a fill step, baked into a paint mask (s33). GPL-3.0.
+// Citymaker — where bare terrain shows inside a fill step, baked into a paint mask (s33). GPL-3.0.
 //
 // Terrain paint only shows where the terrain itself shows: not under a planned surface (grass included), a net, paving,
 // sand, water or a zoning cutout. The s28 wear asked that per sample point; the s33 toolkit paints FIELDS, so the
@@ -10,12 +10,12 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Paint;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Paint;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Decals
+namespace Citymaker.Core.Decals
 {
     internal sealed class GroundMask
     {

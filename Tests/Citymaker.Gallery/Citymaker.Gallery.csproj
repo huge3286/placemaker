@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    Citymaker visual review gallery: composes every type x preset (plus feature combos) with the
+    REAL engine-free Core and real catalog footprints (Tests/Citymaker.Tests/Fixtures/catalog-bounds.json)
+    and renders top-down PNGs + index.html. Pure .NET (own rasterizer + PNG writer, no packages).
+    Lives under Tests/ so the mod csproj (which removes Tests\**) never compiles it.
+      Command line: see the header of Program.cs.
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <RollForward>Major</RollForward>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AssemblyName>Citymaker.Gallery</AssemblyName>
+    <RootNamespace>Citymaker.Gallery</RootNamespace>
+    <NoWarn>$(NoWarn);CS1591;CS0649</NoWarn>
+    <ManagedPath Condition="'$(ManagedPath)' == ''">C:\Program Files (x86)\Steam\steamapps\common\Cities Skylines II\Cities2_Data\Managed</ManagedPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Core\**\*.cs" Link="Core\%(RecursiveDir)%(Filename)%(Extension)" />
+    <Reference Include="Unity.Mathematics"><HintPath>$(ManagedPath)\Unity.Mathematics.dll</HintPath></Reference>
+  </ItemGroup>
+</Project>

@@ -77,7 +77,7 @@ export function fakeLegend(plan: ComposeResult, entrances: number): LegendEntry[
         let x = by.get(id);
         if (!x) {
             x = {
-                id, label: id.startsWith("road:") ? "Placemaker.Roads.Role." + id.slice(5) : "Placemaker.Legend." + id, color: legendColor(id), count: 0,
+                id, label: id.startsWith("road:") ? "Citymaker.Roads.Role." + id.slice(5) : "Citymaker.Legend." + id, color: legendColor(id), count: 0,
                 defaultOff: defaultVisible(id) ? undefined : true, group: id.startsWith("road:") ? "roads" : undefined,
                 color2: id === "terrain" ? "#4da6ff" : undefined,
             };

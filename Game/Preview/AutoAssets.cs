@@ -1,4 +1,4 @@
-// Placemaker — resolve "automatic" assets (empty AssetRef.Id, or ids missing from this playset)
+// Citymaker — resolve "automatic" assets (empty AssetRef.Id, or ids missing from this playset)
 // to concrete prefab names BEFORE pricing and Build, so the price shown is what Build places
 // (FEEDBACK-1: "construction cost shows $0" — Pricing only prices explicit ids).
 //
@@ -13,9 +13,9 @@
 // • Natural-variety objects (trees, bushes, flowerbeds): one of the category's best vanilla items,
 //   picked by a hash of PlannedObject.Variation, so a park is not one cloned tree.
 
-using Placemaker.Core;
+using Citymaker.Core;
 
-namespace Placemaker.Game.Preview
+namespace Citymaker.Game.Preview
 {
     public static class AutoAssets
     {

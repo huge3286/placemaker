@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "fairground",
-  "nameKey": "Placemaker.Recipe.Fairground",
-  "descriptionKey": "Placemaker.Recipe.Fairground.Description",
+  "nameKey": "Citymaker.Recipe.Fairground",
+  "descriptionKey": "Citymaker.Recipe.Fairground.Description",
   "icon": "Media/Game/Icons/Entertainment.svg",
   "root": {
     "layer": "fairground",

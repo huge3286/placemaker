@@ -1,14 +1,14 @@
 {
-  "Placemaker.Category.surface.crop": "farmland surfaces",
-  "Placemaker.Category.surface.crop.soil": "tilled soil surfaces",
-  "Placemaker.Category.surface.crop.plowed": "ploughed soil surfaces",
-  "Placemaker.Category.surface.crop.rows": "crop row surfaces",
-  "Placemaker.Category.surface.crop.green": "green crop surfaces",
-  "Placemaker.Category.surface.crop.straw": "straw / cereal surfaces",
-  "Placemaker.Category.surface.crop.flower": "flowering crop surfaces",
-  "Placemaker.Category.surface.crop.lavender": "lavender-coloured crop surfaces",
-  "Placemaker.Category.surface.crop.yellow": "yellow crop surfaces",
-  "Placemaker.Category.decal.farm": "farm track decals",
-  "Placemaker.GroundCover.Issue.Painted": "No farmland surface is installed, so the fields are painted on the terrain instead (permanent).",
-  "Placemaker.Common.Issue.ObjectBudget": "This design wanted {0} objects; {2} repetitive props were thinned to stay near {1}. Fields and beds are drawn as ground surfaces instead."
+  "Citymaker.Category.surface.crop": "farmland surfaces",
+  "Citymaker.Category.surface.crop.soil": "tilled soil surfaces",
+  "Citymaker.Category.surface.crop.plowed": "ploughed soil surfaces",
+  "Citymaker.Category.surface.crop.rows": "crop row surfaces",
+  "Citymaker.Category.surface.crop.green": "green crop surfaces",
+  "Citymaker.Category.surface.crop.straw": "straw / cereal surfaces",
+  "Citymaker.Category.surface.crop.flower": "flowering crop surfaces",
+  "Citymaker.Category.surface.crop.lavender": "lavender-coloured crop surfaces",
+  "Citymaker.Category.surface.crop.yellow": "yellow crop surfaces",
+  "Citymaker.Category.decal.farm": "farm track decals",
+  "Citymaker.GroundCover.Issue.Painted": "No farmland surface is installed, so the fields are painted on the terrain instead (permanent).",
+  "Citymaker.Common.Issue.ObjectBudget": "This design wanted {0} objects; {2} repetitive props were thinned to stay near {1}. Fields and beds are drawn as ground surfaces instead."
 }

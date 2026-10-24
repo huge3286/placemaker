@@ -1,4 +1,4 @@
-// Placemaker — a net edge's ground surface as polygons, from the game's own geometry (GPL-3.0).
+// Citymaker — a net edge's ground surface as polygons, from the game's own geometry (GPL-3.0).
 //
 // Each edge's two halves (EdgeGeometry) and its two ends at the junctions (Start/EndNodeGeometry, cut like
 // Game.Zones.CellBlockJobs cuts zone cells with them): junction corners, roundabouts and dead ends' turning circles come out
@@ -11,11 +11,11 @@ using System.Collections.Generic;
 using Colossal.Mathematics;
 using Game.Net;
 using Game.Prefabs;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Selection
+namespace Citymaker.Game.Selection
 {
     public static class RoadSurfaces
     {

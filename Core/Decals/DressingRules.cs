@@ -1,4 +1,4 @@
-// Placemaker — the dressing rules, one per family (s21). See Dressing.cs for the overview.
+// Citymaker — the dressing rules, one per family (s21). See Dressing.cs for the overview.
 //
 // Numbers are expectations per host at Decals = 100 %, family = 100 %, Lived-in, before the style
 // weight of the decal's kind (Dressing.StyleWeights). Priority orders the budget: what defines the
@@ -6,12 +6,12 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Build;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Build;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
-using Kind = Placemaker.Core.Decals.Dressing.Kind;
+using Kind = Citymaker.Core.Decals.Dressing.Kind;
 
-namespace Placemaker.Core.Decals
+namespace Citymaker.Core.Decals
 {
     internal static class Rules
     {

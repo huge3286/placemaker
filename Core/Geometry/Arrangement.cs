@@ -1,4 +1,4 @@
-// Placemaker — planar arrangement: the one robust engine behind booleans, offsets, self-intersection
+// Citymaker — planar arrangement: the one robust engine behind booleans, offsets, self-intersection
 // removal, polygon splitting and hole cutting.
 //
 // Why one engine: every "polygon with problems" case (self-touching rings, pinching offsets, split
@@ -21,7 +21,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Geometry
+namespace Citymaker.Core.Geometry
 {
     internal sealed class Arrangement
     {

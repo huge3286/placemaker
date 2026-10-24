@@ -1,15 +1,15 @@
-// Game runner lab (exploration, not a Placemaker feature): procedural meshes for the "custom assets on the fly" spike.
+// Game runner lab (exploration, not a Citymaker feature): procedural meshes for the "custom assets on the fly" spike.
 // A footprint (any simple outline in metres, object space XZ, origin on the ground) is extruded into walls and a roof:
 // the shape a building made to fit a gap of land would have. Winding is set from each face's own normal, so the
 // outline may be either orientation.
 
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     internal static class SuiteLabMesh
     {

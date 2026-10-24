@@ -3,12 +3,12 @@
 // the outline (or freestanding in the open), only where every skip fits.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.AddOns;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Types.Scrapyard;
+using Citymaker.Core.Layers.AddOns;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Types.Scrapyard;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Landfill
+namespace Citymaker.Core.Layers.Types.Landfill
 {
     [AreaGenerator(1320, Hidden = true)]
     public sealed class SkipRowAddOn : AddOnLayer
@@ -68,7 +68,7 @@ namespace Placemaker.Core.Layers.Types.Landfill
                     if (TryRow(region, occ, a, a + axis * (len - pitch), count, slots)) { dir = axis; face = new float2(-axis.y, axis.x); found = true; }
                 }
             }
-            if (!found) { NoSpace(ctx, "Placemaker.AddOn.SkipRow.Name"); return; }
+            if (!found) { NoSpace(ctx, "Citymaker.AddOn.SkipRow.Name"); return; }
 
             if (ctx.B("pad"))
             {
@@ -82,7 +82,7 @@ namespace Placemaker.Core.Layers.Types.Landfill
                 if (LeisureKit.Put(ctx, occ, slots[i], LeisureKit.Yaw(slots[i], slots[i] + face), ObjectRole.Furniture, AssetMix.Pick(ids, v), cat, 1.6f, v, 0.4f, 0.05f))
                     placed++;
             }
-            ctx.Stat("Placemaker.Stat.Skips", placed, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Skips", placed, Keys.UnitCount);
         }
 
         private static bool TryRow(LayerRegion region, Occupancy occ, float2 a, float2 b, int count, List<float2> into)

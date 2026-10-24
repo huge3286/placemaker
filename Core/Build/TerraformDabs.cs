@@ -1,10 +1,10 @@
-// Placemaker — brush dab placement for terraforming (GPL-3.0).
+// Citymaker — brush dab placement for terraforming (GPL-3.0).
 // Adapted from ParkManager's ParkLakePlanner.ExcavationDabs/WaterAnchor (tomkpunkt, GPL-3.0).
 
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     public static class TerraformDabs
     {

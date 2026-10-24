@@ -14,17 +14,17 @@
 //     parents see every zone from the benches; shade trees stand on the far side of each zone.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Leisure;
-using Placemaker.Core.Layers.Park;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Leisure;
+using Citymaker.Core.Layers.Park;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.AdventurePlayground
+namespace Citymaker.Core.Layers.Types.AdventurePlayground
 {
     [AreaGenerator(217, Group = "parks")]
     public sealed class AdventurePlaygroundLayer : LeisureLayer
     {
-        public const string K = "Placemaker.AdvPlay.";
+        public const string K = "Citymaker.AdvPlay.";
         public static readonly string[] Styles = { "adventure", "toddler", "water", "nature", "jungle" };
 
         protected override string Area => "AdvPlay";

@@ -1,4 +1,4 @@
-// Placemaker — catalog thumbnails (GPL-3.0).
+// Citymaker — catalog thumbnails (GPL-3.0).
 //
 // Every CatalogItem gets an Icon, best source first:
 //   1. "ui"        UIObject.m_Icon (vanilla, or supplied by Asset Icon Library — it writes m_Icon in its
@@ -14,7 +14,7 @@ using Game.UI;
 using Game.Common;
 using Unity.Entities;
 
-namespace Placemaker.Game.Assets
+namespace Citymaker.Game.Assets
 {
     public sealed partial class AssetCatalogSystem
     {
@@ -63,11 +63,11 @@ namespace Placemaker.Game.Assets
             _swatchQueue.Clear();
             foreach (var kv in byName)
                 if (IsSurfaceItem(kv.Value) && IconSourceOf(kv.Key) != "ui" && IconSourceOf(kv.Key) != "swatch") _swatchQueue.Enqueue(kv.Key);
-            if (_swatchQueue.Count > 0) Mod.Log.Info($"Placemaker renders texture swatches for {_swatchQueue.Count} surfaces without an icon.");
+            if (_swatchQueue.Count > 0) Mod.Log.Info($"Citymaker renders texture swatches for {_swatchQueue.Count} surfaces without an icon.");
         }
 
         private bool IsSurfaceItem(CatalogItem it) =>
-            it?.Tags != null && Array.IndexOf(it.Tags, Placemaker.Core.AssetCategories.SurfaceAny) >= 0;
+            it?.Tags != null && Array.IndexOf(it.Tags, Citymaker.Core.AssetCategories.SurfaceAny) >= 0;
 
 
         /// <summary>Per frame: a couple of swatches; every RecheckFrames: pick up icons that appeared late (AIL).</summary>
@@ -115,8 +115,8 @@ namespace Placemaker.Game.Assets
                 if (IsSurfaceItem(kv.Value) && IconSourceOf(kv.Key) != "ui" && IconSourceOf(kv.Key) != "swatch") missing.Add(kv.Key);
             missing.Sort(StringComparer.Ordinal);
             Mod.Log.Info(missing.Count == 0
-                ? "Placemaker: every surface has an icon or a texture swatch."
-                : $"Placemaker: {missing.Count} surfaces still have no image: {string.Join(", ", missing)}");
+                ? "Citymaker: every surface has an icon or a texture swatch."
+                : $"Citymaker: {missing.Count} surfaces still have no image: {string.Join(", ", missing)}");
         }
     }
 }

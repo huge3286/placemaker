@@ -4,15 +4,15 @@
 // arrangement placed either in point-mirrored pairs on a stadium ring around the centre, or as
 // groups along the edges (mirrored across the outline's own symmetry axis when it has one).
 // Changes: every candidate is also checked against Occupancy (input.Reserved and site
-// obstacles), arrangement items carry Placemaker roles/categories/assets, and the
+// obstacles), arrangement items carry Citymaker roles/categories/assets, and the
 // "density %" became an explicit group count.
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Plaza
+namespace Citymaker.Core.Layers.Plaza
 {
     public enum CenterMode { Single = 0, Mirrored = 1, Axis = 2, None = 3 }
     public enum ArrangementMode { AroundCenter = 0, AlongEdges = 1 }

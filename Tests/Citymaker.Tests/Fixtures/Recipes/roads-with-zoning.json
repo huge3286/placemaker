@@ -1,0 +1,14 @@
+{
+  "formatVersion": 1,
+  "id": "roads-with-zoning",
+  "nameKey": "Citymaker.Recipe.RoadsWithZoning",
+  "descriptionKey": "Citymaker.Recipe.RoadsWithZoning.Description",
+  "icon": "Media/Game/Icons/Zones.svg",
+  "root": {
+    "layer": "roads",
+    "settings": {},
+    "children": [
+      { "layer": "edgeZoning", "target": "edge" }
+    ]
+  }
+}

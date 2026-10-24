@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "roads",
-  "nameKey": "Placemaker.Recipe.Roads",
-  "descriptionKey": "Placemaker.Recipe.Roads.Description",
+  "nameKey": "Citymaker.Recipe.Roads",
+  "descriptionKey": "Citymaker.Recipe.Roads.Description",
   "icon": "Media/Game/Icons/Roads.svg",
   "root": {
     "layer": "roads",

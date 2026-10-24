@@ -3,11 +3,11 @@
 // reads as a yard that is filling up, not as holes. Variety comes from choosing per row / per bay, never per prop.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Types.Scrapyard;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Types.Scrapyard;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Yards
+namespace Citymaker.Core.Layers.Types.Yards
 {
     public static class YardFill
     {

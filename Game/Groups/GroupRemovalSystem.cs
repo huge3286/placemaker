@@ -1,4 +1,4 @@
-// Placemaker — phase-correct removal of a whole group (GPL-3.0).
+// Citymaker — phase-correct removal of a whole group (GPL-3.0).
 // Ordering comes from Core/Build/RemovalPlanner; the engine reasons are from ParkingLotTool's
 // measured crash notes (KruemelGames, GPL-3.0) and ParkManager's ParkBundleCleanup (tomkpunkt):
 //
@@ -13,12 +13,12 @@ using Game;
 using Game.Common;
 using Game.Net;
 using Game.Tools;
-using Placemaker.Core.Build;
+using Citymaker.Core.Build;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine.Scripting;
 
-namespace Placemaker.Game.Groups
+namespace Citymaker.Game.Groups
 {
     public sealed partial class GroupRemovalSystem : GameSystemBase
     {
@@ -43,12 +43,12 @@ namespace Placemaker.Game.Groups
             });
             _requestQuery = GetEntityQuery(new EntityQueryDesc
             {
-                All = new[] { ComponentType.ReadOnly<PlacemakerGroup>(), ComponentType.ReadWrite<PlacemakerRemoval>() },
+                All = new[] { ComponentType.ReadOnly<CitymakerGroup>(), ComponentType.ReadWrite<CitymakerRemoval>() },
                 None = new[] { ComponentType.ReadOnly<Deleted>() },
             });
             _memberQuery = GetEntityQuery(new EntityQueryDesc
             {
-                All = new[] { ComponentType.ReadOnly<PlacemakerMember>() },
+                All = new[] { ComponentType.ReadOnly<CitymakerMember>() },
                 None = new[] { ComponentType.ReadOnly<Deleted>() },
             });
             RequireForUpdate(_requestQuery);
@@ -67,8 +67,8 @@ namespace Placemaker.Game.Groups
             }
             catch (Exception e)
             {
-                Mod.Log.Error(e, "Placemaker group removal pass failed; will retry next frame");
-                var r = EntityManager.GetComponentData<PlacemakerRemoval>(record);
+                Mod.Log.Error(e, "Citymaker group removal pass failed; will retry next frame");
+                var r = EntityManager.GetComponentData<CitymakerRemoval>(record);
                 r.Passes++;
                 EntityManager.SetComponentData(record, r);
                 if (r.Passes > MaxPassesWithoutProgress) GiveUp(record);
@@ -77,13 +77,13 @@ namespace Placemaker.Game.Groups
 
         private void ProcessGroup(Entity record)
         {
-            var group = EntityManager.GetComponentData<PlacemakerGroup>(record);
-            var removal = EntityManager.GetComponentData<PlacemakerRemoval>(record);
+            var group = EntityManager.GetComponentData<CitymakerGroup>(record);
+            var removal = EntityManager.GetComponentData<CitymakerRemoval>(record);
 
             var entities = new List<Entity>();
             bool anyTemp = false;
             using (var all = _memberQuery.ToEntityArray(Allocator.Temp))
-            using (var tags = _memberQuery.ToComponentDataArray<PlacemakerMember>(Allocator.Temp))
+            using (var tags = _memberQuery.ToComponentDataArray<CitymakerMember>(Allocator.Temp))
                 for (int i = 0; i < all.Length; i++)
                 {
                     if (tags[i].GroupId != group.GroupId) continue;
@@ -103,7 +103,7 @@ namespace Placemaker.Game.Groups
                 removal.Passes++;
                 if (removal.Passes == ToolReleaseFrames && _toolSystem.activeTool != null && !(_toolSystem.activeTool is DefaultToolSystem))
                 {
-                    Mod.Log.Info($"Placemaker: a tool still previews parts of group {group.GroupId}; switching to the default tool to remove it safely.");
+                    Mod.Log.Info($"Citymaker: a tool still previews parts of group {group.GroupId}; switching to the default tool to remove it safely.");
                     _toolSystem.activeTool = World.GetOrCreateSystemManaged<DefaultToolSystem>();
                 }
                 if (removal.Passes > MaxPassesWithoutProgress) { GiveUp(record); return; }
@@ -118,7 +118,7 @@ namespace Placemaker.Game.Groups
             {
                 long id = Id(e);
                 byId[id] = e;
-                var tag = EntityManager.GetComponentData<PlacemakerMember>(e);
+                var tag = EntityManager.GetComponentData<CitymakerMember>(e);
                 var kind = Classify(e, tag);
                 var m = new RemovalMember { Id = id, Kind = kind };
                 if (kind == MemberKind.Edge)
@@ -162,7 +162,7 @@ namespace Placemaker.Game.Groups
             foreach (var id in pass.Release)
                 if (byId.TryGetValue(id, out var e) && EntityManager.Exists(e))
                 {
-                    EntityManager.RemoveComponent<PlacemakerMember>(e);
+                    EntityManager.RemoveComponent<CitymakerMember>(e);
                     refresh.Add(e);
                 }
             RefreshSurvivors(refresh);
@@ -176,7 +176,7 @@ namespace Placemaker.Game.Groups
                 if (removal.Passes >= 1)
                 {
                     EntityManager.AddComponent<Deleted>(record);
-                    Mod.Log.Info($"Placemaker removed group {group.GroupId}.");
+                    Mod.Log.Info($"Citymaker removed group {group.GroupId}.");
                     ReportLeftovers(group.GroupId);
                     _registry.MarkDirty();
                     return;
@@ -197,7 +197,7 @@ namespace Placemaker.Game.Groups
             return false;
         }
 
-        private MemberKind Classify(Entity e, PlacemakerMember tag)
+        private MemberKind Classify(Entity e, CitymakerMember tag)
         {
             // Trust live components over the stored kind: the tag survives replacements by tools.
             if (EntityManager.HasComponent<Edge>(e)) return MemberKind.Edge;
@@ -211,7 +211,7 @@ namespace Placemaker.Game.Groups
         /// <summary>Per-kind preparation before Deleted (PLT lessons).</summary>
         private void PrepareDelete(Entity e)
         {
-            var tag = EntityManager.GetComponentData<PlacemakerMember>(e);
+            var tag = EntityManager.GetComponentData<CitymakerMember>(e);
             if (tag.Role == MemberRole.Companion && EntityManager.HasComponent<global::Game.Companies.WorkProvider>(e))
             {
                 // Employees leave cleanly instead of pointing at a dead workplace.
@@ -265,7 +265,7 @@ namespace Placemaker.Game.Groups
             var left = new Dictionary<MemberKind, int>();
             var release = new List<Entity>();
             using (var all = _memberQuery.ToEntityArray(Allocator.Temp))
-            using (var tags = _memberQuery.ToComponentDataArray<PlacemakerMember>(Allocator.Temp))
+            using (var tags = _memberQuery.ToComponentDataArray<CitymakerMember>(Allocator.Temp))
                 for (int i = 0; i < all.Length; i++)
                 {
                     if (tags[i].GroupId != groupId) continue;
@@ -277,21 +277,21 @@ namespace Placemaker.Game.Groups
             if (left.Count == 0) return;
             var parts = new List<string>();
             foreach (var kv in left) parts.Add($"{kv.Value} {kv.Key}");
-            Mod.Log.Warn($"Placemaker could not remove everything of group {groupId}: {string.Join(", ", parts)} left in the city.");
-            foreach (var e in release) EntityManager.RemoveComponent<PlacemakerMember>(e);
+            Mod.Log.Warn($"Citymaker could not remove everything of group {groupId}: {string.Join(", ", parts)} left in the city.");
+            foreach (var e in release) EntityManager.RemoveComponent<CitymakerMember>(e);
         }
 
         private void GiveUp(Entity record)
         {
             // Something keeps the remaining members alive (e.g. edited forever by another tool).
             // Drop the record and leave the rest as vanilla objects rather than looping forever.
-            var g = EntityManager.GetComponentData<PlacemakerGroup>(record);
-            Mod.Log.Warn($"Placemaker could not finish removing group {g.GroupId}; remaining elements stay in the city.");
+            var g = EntityManager.GetComponentData<CitymakerGroup>(record);
+            Mod.Log.Warn($"Citymaker could not finish removing group {g.GroupId}; remaining elements stay in the city.");
             using (var all = _memberQuery.ToEntityArray(Allocator.Temp))
-            using (var tags = _memberQuery.ToComponentDataArray<PlacemakerMember>(Allocator.Temp))
+            using (var tags = _memberQuery.ToComponentDataArray<CitymakerMember>(Allocator.Temp))
                 for (int i = 0; i < all.Length; i++)
                     if (tags[i].GroupId == g.GroupId && !EntityManager.HasComponent<Temp>(all[i]))
-                        EntityManager.RemoveComponent<PlacemakerMember>(all[i]);
+                        EntityManager.RemoveComponent<CitymakerMember>(all[i]);
             EntityManager.AddComponent<Deleted>(record);
             _registry.MarkDirty();
         }

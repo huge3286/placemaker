@@ -1,4 +1,4 @@
-namespace Placemaker.Core
+namespace Citymaker.Core
 {
     /// <summary>
     /// Shared asset-category vocabulary between layers (which ask for "a bench") and the game
@@ -65,7 +65,7 @@ namespace Placemaker.Core
 
         // ───── Leisure workstream (round 4). Subcategories ("a.b") are always ALSO classified as their
         // parent where one exists, so a layer can ask for the specific thing and fall back to the general
-        // one. Curation against ModsData/Placemaker/catalog-dump.json happens in Core/Build/LeisureHeuristics.cs;
+        // one. Curation against ModsData/Citymaker/catalog-dump.json happens in Core/Build/LeisureHeuristics.cs;
         // docs/proposals/parkplaza.md lists which element uses which category.
 
         // Surfaces

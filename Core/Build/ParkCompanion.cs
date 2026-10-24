@@ -1,4 +1,4 @@
-// Placemaker — the companion park building of a build (s17, docs/PARK-STATS.md §5): which prefab clone it uses
+// Citymaker — the companion park building of a build (s17, docs/PARK-STATS.md §5): which prefab clone it uses
 // (quantised stats → a stable prefab name) and where it stands (a road frontage inside the outline). Pure.
 //
 // Why a building: leisure, park coverage (wellbeing), land value and upkeep only work on a Building with a road
@@ -8,15 +8,15 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     /// <summary>Quantised park stats of one companion prefab. The name is save format: never change its layout.</summary>
     public struct ParkPrefabKey : IEquatable<ParkPrefabKey>
     {
-        public const string Prefix = "Placemaker Park ";
+        public const string Prefix = "Citymaker Park ";
         public int Attractiveness, Leisure, Range, Capacity, Magnitude, Upkeep;
         public bool Beach;
 
@@ -114,7 +114,7 @@ namespace Placemaker.Core.Build
         public const float CurbGap = 0.5f;
         /// <summary>The outline counts as fronting a road when it runs this close to the road's edge.</summary>
         public const float MaxFrontageGap = 6f;
-        public const string NoRoadKey = "Placemaker.ParkStats.NoRoadEdge";
+        public const string NoRoadKey = "Citymaker.ParkStats.NoRoadEdge";
 
         /// <summary>
         /// Best spot for the companion: on a stretch of the outline that runs along a road, the lot fully inside the

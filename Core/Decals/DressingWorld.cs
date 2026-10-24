@@ -1,4 +1,4 @@
-// Placemaker — what the dressing pass knows about a composed plan (s21). GPL-3.0.
+// Citymaker — what the dressing pass knows about a composed plan (s21). GPL-3.0.
 //
 // One read-only snapshot of everything planned, built once per Compose: trees (crowns, conifers), net
 // corridors (paths, aisles, roads, tracks) with real half widths, ground polygons by kind (paved,
@@ -7,11 +7,11 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Decals
+namespace Citymaker.Core.Decals
 {
     public enum GroundKind { Grass = 0, Paved = 1, Dirt = 2, Sand = 3, Water = 4 }
 

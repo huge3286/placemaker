@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "sportsPark",
-  "nameKey": "Placemaker.Recipe.SportsPark",
-  "descriptionKey": "Placemaker.Recipe.SportsPark.Description",
+  "nameKey": "Citymaker.Recipe.SportsPark",
+  "descriptionKey": "Citymaker.Recipe.SportsPark.Description",
   "icon": "Media/Game/Icons/SportsParks.svg",
   "root": {
     "layer": "sportsPark",

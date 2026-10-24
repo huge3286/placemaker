@@ -1,4 +1,4 @@
-// Placemaker — the zone blocks CS2 will give a road this build adds (s26).
+// Citymaker — the zone blocks CS2 will give a road this build adds (s26).
 //
 // Playtest s26: plots facing a lane the build adds (Shopping plaza, Commercial types) were drawn as floating quads and
 // never zoned — the lane's zone blocks do not exist at design time, ZoneGuard had no cells to snap to, the blockers
@@ -14,7 +14,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     public static class ZoneBlockPredictor
     {

@@ -1,4 +1,4 @@
-// Placemaker — terrain texture painting (PlannedPaint) (GPL-3.0).
+// Citymaker — terrain texture painting (PlannedPaint) (GPL-3.0).
 //
 // CS2 (decompiled 1.6.2f1): the vanilla "Paint texture" tool is TerrainToolSystem with a TerraformingPrefab whose
 // m_Target = TerraformingTarget.Material and whose TerrainMaterialProperties.m_Type is Extra1..Extra4 (None =
@@ -31,13 +31,13 @@ using Colossal.Mathematics;
 using Game.Common;
 using Game.Prefabs;
 using Game.Tools;
-using Placemaker.Core;
-using Placemaker.Core.Build;
+using Citymaker.Core;
+using Citymaker.Core.Build;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Build
+namespace Citymaker.Game.Build
 {
     public sealed partial class BuildService
     {
@@ -114,8 +114,8 @@ namespace Placemaker.Game.Build
                 _paintCursor = 0;
                 if (!ResolveTerraformTools() || !ResolvePaintTools())
                 {
-                    _warnings.Add("Placemaker.Build.PaintUnavailable");
-                    Mod.Log.Warn("Placemaker: no terrain material brush in this game; texture painting skipped.");
+                    _warnings.Add("Citymaker.Build.PaintUnavailable");
+                    Mod.Log.Warn("Citymaker: no terrain material brush in this game; texture painting skipped.");
                     Go(Step.EmitNets);
                     return;
                 }
@@ -143,15 +143,15 @@ namespace Placemaker.Game.Build
                     if ((DateTime.UtcNow - _paintJobStart).TotalSeconds > PaintRasterTimeoutSeconds)
                     {
                         _paintCancel?.Cancel();
-                        Mod.Log.Warn("Placemaker terrain paint raster timed out; texture painting skipped.");
-                        _warnings.Add("Placemaker.Build.PaintUnavailable");
+                        Mod.Log.Warn("Citymaker terrain paint raster timed out; texture painting skipped.");
+                        _warnings.Add("Citymaker.Build.PaintUnavailable");
                         Go(Step.EmitNets);
                     }
                     return;
                 }
                 if (_paintJob.IsFaulted || _paintJob.IsCanceled)
                 {
-                    Mod.Log.Warn("Placemaker terrain paint raster failed, using brush dabs: " + _paintJob.Exception?.GetBaseException().Message);
+                    Mod.Log.Warn("Citymaker terrain paint raster failed, using brush dabs: " + _paintJob.Exception?.GetBaseException().Message);
                     BeginPaintDabs();
                     return;
                 }
@@ -159,7 +159,7 @@ namespace Placemaker.Game.Build
                 _paintStampCursor = 0;
                 _paintLastApplyFrame = frame;
                 int erases = 0; foreach (var s in _paintStamps) if (s.Erase) erases++;
-                Mod.Log.Info($"Placemaker paints the terrain: {_paintStamps.Count} stamps ({erases} erase), {PaintRaster.PaintedArea(_paintStamps):0} m², cell {(_paintStamps.Count > 0 ? _paintStamps[0].Cell : 0f):0.##} m.");
+                Mod.Log.Info($"Citymaker paints the terrain: {_paintStamps.Count} stamps ({erases} erase), {PaintRaster.PaintedArea(_paintStamps):0} m², cell {(_paintStamps.Count > 0 ? _paintStamps[0].Cell : 0f):0.##} m.");
 
             }
 
@@ -170,9 +170,9 @@ namespace Placemaker.Game.Build
                 try { ApplyStamp(stamp); }
                 catch (Exception e)
                 {
-                    Mod.Log.Warn("Placemaker direct terrain painting failed: " + e.Message);
+                    Mod.Log.Warn("Citymaker direct terrain painting failed: " + e.Message);
                     if (_paintStampCursor == 1) { BeginPaintDabs(); return; }   // nothing painted yet: the dabs can still do it
-                    _warnings.Add("Placemaker.Build.PaintUnavailable");
+                    _warnings.Add("Citymaker.Build.PaintUnavailable");
                     _paintStampCursor = _paintStamps.Count;
                 }
                 _paintLastApplyFrame = frame;
@@ -234,7 +234,7 @@ namespace Placemaker.Game.Build
             {
                 wrapMode = UnityEngine.TextureWrapMode.Clamp,
                 filterMode = UnityEngine.FilterMode.Bilinear,
-                name = "PlacemakerPaintMask",
+                name = "CitymakerPaintMask",
             };
             var bytes = new byte[n * n * 4];
             for (int y = 0; y < n; y++)
@@ -273,7 +273,7 @@ namespace Placemaker.Game.Build
                 foreach (var q in TerraformDabs.Dabs(ring, PaintBrushRadius))
                     _paintDabs.Add(new PaintDab { Tool = tool, At = new float3(q.x, Height(q), q.y), Strength = math.saturate(paint.Strength) });
             }
-            Mod.Log.Info($"Placemaker paints the terrain with {_paintDabs.Count} brush dabs (fallback; {skipped} field paints skipped).");
+            Mod.Log.Info($"Citymaker paints the terrain with {_paintDabs.Count} brush dabs (fallback; {skipped} field paints skipped).");
         }
 
         private void PaintDabsFrame(int frame)
@@ -343,7 +343,7 @@ namespace Placemaker.Game.Build
                 if (!_paintTools.ContainsKey(layer)) { _paintTools[layer] = prefabs[i]; names.Add(layer + "=" + tf.name); }
             }
             if (_paintTools.Count > 0)
-                Mod.Log.Info($"Placemaker terrain paint layers available: {string.Join(", ", names)}.");
+                Mod.Log.Info($"Citymaker terrain paint layers available: {string.Join(", ", names)}.");
             return _paintTools.Count > 0;
         }
     }

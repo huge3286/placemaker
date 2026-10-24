@@ -10,11 +10,11 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Scrapyard
+namespace Citymaker.Core.Layers.Types.Scrapyard
 {
     /// <summary>A round heap/mound in the height field: full height inside <c>Flat·R</c>, smooth to 0 at R.</summary>
     public struct Mound

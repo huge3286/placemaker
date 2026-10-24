@@ -15,10 +15,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Parking
+namespace Citymaker.Core.Layers.Parking
 {
     internal sealed class EntranceRequest
     {
@@ -149,7 +149,7 @@ namespace Placemaker.Core.Layers.Parking
                 if (l.Kind == LineKind.Aisle || l.Kind == LineKind.Ring || l.Kind == LineKind.Cross) len += l.Length;
             _out.AisleLength = len;
             if (_out.StallCount == 0)
-                Issue(IssueSeverity.Warning, "Placemaker.Parking.Issue.NoStalls");
+                Issue(IssueSeverity.Warning, "Citymaker.Parking.Issue.NoStalls");
         }
 
         // ───────────────────────────── frame ─────────────────────────────
@@ -157,7 +157,7 @@ namespace Placemaker.Core.Layers.Parking
         private bool SetupFrame()
         {
             var w = _rq.LotWorld;
-            if (w == null || w.Count < 3) { Issue(IssueSeverity.Error, "Placemaker.Parking.Issue.BadShape"); return false; }
+            if (w == null || w.Count < 3) { Issue(IssueSeverity.Error, "Citymaker.Parking.Issue.BadShape"); return false; }
             double2 dir;
             if (_s.AngleMode == RowAngleMode.Fixed)
             {
@@ -174,7 +174,7 @@ namespace Placemaker.Core.Layers.Parking
             _lot = new List<double2>(w.Count);
             foreach (var p in w) _lot.Add(_out.Frame.ToLocal(p));
             _lot = PGeo.EnsureCcw(PGeo.Simplify(_lot, 1e-4, 1e-6));
-            if (_lot.Count < 3 || !PGeo.IsSimple(_lot)) { Issue(IssueSeverity.Error, "Placemaker.Parking.Issue.BadShape"); return false; }
+            if (_lot.Count < 3 || !PGeo.IsSimple(_lot)) { Issue(IssueSeverity.Error, "Citymaker.Parking.Issue.BadShape"); return false; }
             _out.Lot = _lot;
             _out.LotArea = PGeo.Area(_lot);
             return true;
@@ -235,7 +235,7 @@ namespace Placemaker.Core.Layers.Parking
             }
             if (_c1 == null)
             {
-                Issue(IssueSeverity.Error, "Placemaker.Parking.Issue.TooNarrow");
+                Issue(IssueSeverity.Error, "Citymaker.Parking.Issue.TooNarrow");
                 return false;
             }
             _ring = _s.PerimeterRoad;
@@ -251,7 +251,7 @@ namespace Placemaker.Core.Layers.Parking
                 if (_c2 == null || _ca == null || g == null || PGeo.Area(g) < 20)
                 {
                     _ring = false;
-                    Issue(IssueSeverity.Info, "Placemaker.Parking.Issue.PerimeterRoadDropped");
+                    Issue(IssueSeverity.Info, "Citymaker.Parking.Issue.PerimeterRoadDropped");
                 }
                 else _g = g;
             }
@@ -328,7 +328,7 @@ namespace Placemaker.Core.Layers.Parking
                 bool dup = false;
                 foreach (var o in list)
                     if (o.Edge == bestEdge && Math.Abs(o.Along - along) < (o.Width + width) / 2) dup = true;
-                if (dup) { Issue(IssueSeverity.Warning, "Placemaker.Parking.Issue.EntrancesTooClose", ea + tan * along); continue; }
+                if (dup) { Issue(IssueSeverity.Warning, "Citymaker.Parking.Issue.EntrancesTooClose", ea + tan * along); continue; }
                 list.Add(new EntrancePlan
                 {
                     Kind = rq.Kind, Edge = bestEdge, Along = along,
@@ -746,7 +746,7 @@ namespace Placemaker.Core.Layers.Parking
                 var e = _out.Entrances[ei];
                 if (!FindJunction(e.Point, e.Inward, out var j, out _))
                 {
-                    Issue(IssueSeverity.Warning, "Placemaker.Parking.Issue.EntranceNoPath", e.Point, ei + 1);
+                    Issue(IssueSeverity.Warning, "Citymaker.Parking.Issue.EntranceNoPath", e.Point, ei + 1);
                     continue;
                 }
                 e.Junction = j;
@@ -1020,7 +1020,7 @@ namespace Placemaker.Core.Layers.Parking
             int n = 0;
             foreach (var b in _out.Bays)
                 if (!b.Removed && _rq.Blocked(f.ToWorld(b.Center), r)) { b.Removed = true; n++; }
-            if (n > 0) Issue(IssueSeverity.Info, "Placemaker.Parking.Issue.ReservedSpace", null, n);
+            if (n > 0) Issue(IssueSeverity.Info, "Citymaker.Parking.Issue.ReservedSpace", null, n);
         }
 
         internal sealed class Dsu
@@ -1071,7 +1071,7 @@ namespace Placemaker.Core.Layers.Parking
                 if (b.Line < 0 || _out.Lines[b.Line].Removed) { b.Removed = true; lost++; }
             }
             if (lost > 0)
-                Issue(IssueSeverity.Warning, "Placemaker.Parking.Issue.UnreachableStalls", null, lost);
+                Issue(IssueSeverity.Warning, "Citymaker.Parking.Issue.UnreachableStalls", null, lost);
             // footpaths whose lane went away go too
             foreach (var l in _out.Lines)
                 if (l.Kind == LineKind.Footpath && !l.Removed)

@@ -5,10 +5,10 @@
 // one gate towards the path; a bench per court at the net; optional floodlight poles along the sides.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns.Fields
+namespace Citymaker.Core.Layers.AddOns.Fields
 {
     [AreaGenerator(183)]
     public sealed class TennisAddOn : FieldAddOn
@@ -67,7 +67,7 @@ namespace Placemaker.Core.Layers.AddOns.Fields
             var place = j.Place;
             int n = j.Format == "four" ? 4 : j.Format == "three" ? 3 : j.Format == "two" ? 2 : 1;
             n = math.clamp(n, 1, 4);
-            if (n < ctx.I("courts") && !j.HostSized) ctx.Issue(IssueSeverity.Info, "Placemaker.Field.Tennis.Issue.Fewer", n, ctx.I("courts"));
+            if (n < ctx.I("courts") && !j.HostSized) ctx.Issue(IssueSeverity.Info, "Citymaker.Field.Tennis.Issue.Fewer", n, ctx.I("courts"));
             float blockL = CourtL + 2f * Back, blockW = n * CourtW + (n - 1) * Between + 2f * Outer;
             // Courts run along the place's axis when the block is longer than wide (1–2 courts), across it otherwise.
             var axis = blockL >= blockW ? place.Axis : place.Side;
@@ -121,7 +121,7 @@ namespace Placemaker.Core.Layers.AddOns.Fields
                 }
                 FieldKit.Floodlights(j, pts, f.O);
             }
-            ctx.Stat("Placemaker.Stat.Courts", n, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Courts", n, Keys.UnitCount);
             ctx.Plan.Facts["courts"] = n;
         }
     }

@@ -1,7 +1,7 @@
-using Placemaker.Game.Build;
+using Citymaker.Game.Build;
 using Unity.Entities;
 
-namespace Placemaker.Game.Selection
+namespace Citymaker.Game.Selection
 {
     /// <summary>
     /// Entity ↔ the opaque long ids used by Core (BoundaryAttachment.ExternalId, NearbyNet.ExternalId,

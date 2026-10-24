@@ -1,0 +1,6 @@
+{
+  "Citymaker.Name": "citymaker",
+  "Citymaker.Issue.RecipeTooDeep": "该设计具有太多嵌套层。",
+  "Citymaker.Issue.UnknownLayer": "未知层“{0}”——是否缺少 mod？",
+  "Citymaker.Issue.LayerFailed": "{0} 无法计划：{1}"
+}

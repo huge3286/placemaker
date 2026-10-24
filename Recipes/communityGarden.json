@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "communityGarden",
-  "nameKey": "Placemaker.Recipe.CommunityGarden",
-  "descriptionKey": "Placemaker.Recipe.CommunityGarden.Description",
+  "nameKey": "Citymaker.Recipe.CommunityGarden",
+  "descriptionKey": "Citymaker.Recipe.CommunityGarden.Description",
   "icon": "Media/Game/Icons/ZoneAgricultureArea.svg",
   "root": {
     "layer": "communityGarden",

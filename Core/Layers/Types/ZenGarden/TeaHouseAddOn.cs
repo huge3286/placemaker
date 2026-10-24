@@ -2,10 +2,10 @@
 // spot, its waiting bench, a stone water basin with a lantern, and a stepping-stone approach from the
 // nearest path — the roji setting in miniature.
 
-using Placemaker.Core.Layers.AddOns;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.AddOns;
+using Citymaker.Core.Layers.Common;
 
-namespace Placemaker.Core.Layers.Types.ZenGarden
+namespace Citymaker.Core.Layers.Types.ZenGarden
 {
     [AreaGenerator(622)]
     public sealed class TeaHouseAddOn : AddOnLayer
@@ -39,8 +39,8 @@ namespace Placemaker.Core.Layers.Types.ZenGarden
             var gates = PathAnchors.Entrances(occ);
             if (!ZenKit.TeaHouse(ctx, occ, gates, AssetMix.One(ctx.S("asset")), cat, ctx.B("bench"), ctx.B("basin"), ctx.B("lantern"), ctx.B("stones"),
                     (p, r) => occ.HitsPolygon(p, r), out _))
-                NoSpace(ctx, "Placemaker.AddOn.TeaHouse.Name");
-            else ctx.Stat("Placemaker.Stat.TeaHouses", 1, Keys.UnitCount);
+                NoSpace(ctx, "Citymaker.AddOn.TeaHouse.Name");
+            else ctx.Stat("Citymaker.Stat.TeaHouses", 1, Keys.UnitCount);
         }
     }
 }

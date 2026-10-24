@@ -16,13 +16,13 @@
 // back along a chain (pallets → crates → any cargo) and reports Info when nothing is installed.
 
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Types.Scrapyard;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Leisure;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Types.Scrapyard;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Leisure;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Logistics
+namespace Citymaker.Core.Layers.Types.Logistics
 {
     [AreaGenerator(260, Group = "industrial")]
     public sealed class LogisticsYardLayer : LeisureLayer
@@ -180,7 +180,7 @@ namespace Placemaker.Core.Layers.Types.Logistics
                 var inset = region.InsetVertices(buffer);
                 var r = Poly.IsSimple(inset) && Poly.SignedArea(inset) > region.Area * 0.35f ? LayerRegion.From(inset) : null;
                 if (r != null) inner = r;
-                else ctx.Issue(IssueSeverity.Info, "Placemaker.LogisticsYard.Issue.NoBuffer");
+                else ctx.Issue(IssueSeverity.Info, "Citymaker.LogisticsYard.Issue.NoBuffer");
             }
 
             var y = new Yard
@@ -218,9 +218,9 @@ namespace Placemaker.Core.Layers.Types.Logistics
             EmitFreeRegions(ctx, occ, staff);
 
             ctx.Stat(Keys.StatArea, System.Math.Round(region.Area), Keys.UnitM2);
-            ctx.Stat("Placemaker.Stat.StorageSlots", y.Items, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.LoadingBays", y.Bays, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.YardMachines", y.Machines, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.StorageSlots", y.Items, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.LoadingBays", y.Bays, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.YardMachines", y.Machines, Keys.UnitCount);
             ctx.Stat(Keys.StatLamps, y.Lights, Keys.UnitCount);
             ctx.Plan.Facts["storageSlots"] = y.Items;
             ctx.Plan.Facts["loadingBays"] = y.Bays;

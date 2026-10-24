@@ -1,4 +1,4 @@
-// Placemaker — the ground an existing building owns (s15): its lot (BuildingData lot cells × 8 m) and,
+// Citymaker — the ground an existing building owns (s15): its lot (BuildingData lot cells × 8 m) and,
 // where it reaches past the lot (or the prefab has no lot, e.g. a building extension), its collision
 // footprint (ObjectGeometryData bounds). Whatever we build must keep off both: a net or physical area
 // touching a spawnable building deletes it on Apply, and blocked zone cells under its lot condemn it
@@ -10,7 +10,7 @@ using Game.Tools;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Selection
+namespace Citymaker.Game.Selection
 {
     public static class BuildingFootprints
     {

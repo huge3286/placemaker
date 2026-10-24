@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "outdoorMall",
-  "nameKey": "Placemaker.Recipe.OutdoorMall",
-  "descriptionKey": "Placemaker.Recipe.OutdoorMall.Description",
+  "nameKey": "Citymaker.Recipe.OutdoorMall",
+  "descriptionKey": "Citymaker.Recipe.OutdoorMall.Description",
   "icon": "Media/Game/Icons/Pedestrian.svg",
   "root": {
     "layer": "outdoorMall",

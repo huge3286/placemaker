@@ -16,10 +16,10 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns.Fields
+namespace Citymaker.Core.Layers.AddOns.Fields
 {
     /// <summary>One size of a field: id and place size (long side × short side, metres, run-off and dressing included).</summary>
     public sealed class FieldFormat
@@ -93,7 +93,7 @@ namespace Placemaker.Core.Layers.AddOns.Fields
         public static List<FeatureInfo> WithFields(List<FeatureInfo> own)
         {
             foreach (var id in Ids)
-                own.Add(new FeatureInfo { Layer = id, LabelKey = "Placemaker.Feature." + id, TooltipKey = "Placemaker.Feature." + id + ".Tooltip" });
+                own.Add(new FeatureInfo { Layer = id, LabelKey = "Citymaker.Feature." + id, TooltipKey = "Citymaker.Feature." + id + ".Tooltip" });
             return own;
         }
     }
@@ -102,8 +102,8 @@ namespace Placemaker.Core.Layers.AddOns.Fields
     {
         public override string Icon => "Media/Game/Icons/SportsParks.svg";
 
-        public const string SmallerKey = "Placemaker.Field.Issue.Smaller";
-        public const string OrientationKey = "Placemaker.Field.Issue.Orientation";
+        public const string SmallerKey = "Citymaker.Field.Issue.Smaller";
+        public const string OrientationKey = "Citymaker.Field.Issue.Orientation";
         /// <summary>
         /// Region tag a host adds to a place it sized itself (the sports park: "how many, how big" are its options):
         /// the field then takes the biggest format that fits the place, whatever its own format setting says.
@@ -306,13 +306,13 @@ namespace Placemaker.Core.Layers.AddOns.Fields
                     var n = plan.Nets[i];
                     n.A.y = g.HeightAfter(n.A.xz); n.B.y = g.HeightAfter(n.B.xz); n.C.y = g.HeightAfter(n.C.xz); n.D.y = g.HeightAfter(n.D.xz);
                 }
-                ctx.Stat("Placemaker.Stat.TerrainChange", Math.Round(job.Ground.MaxChange, 1), Keys.UnitM);
+                ctx.Stat("Citymaker.Stat.TerrainChange", Math.Round(job.Ground.MaxChange, 1), Keys.UnitM);
             }
-            ctx.Stat("Placemaker.Stat.Fields", 1, Keys.UnitCount);
-            if (job.Equipment > 0) ctx.Stat("Placemaker.Stat.Equipment", job.Equipment, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Fields", 1, Keys.UnitCount);
+            if (job.Equipment > 0) ctx.Stat("Citymaker.Stat.Equipment", job.Equipment, Keys.UnitCount);
             if (job.Lights > 0) ctx.Stat(Keys.StatLamps, job.Lights, Keys.UnitCount);
-            if (job.Stands + job.Benches > 0) ctx.Stat("Placemaker.Stat.Seats", job.Stands + job.Benches, Keys.UnitCount);
-            if (decals > 0) ctx.Stat("Placemaker.Stat.Decals", decals, Keys.UnitCount);
+            if (job.Stands + job.Benches > 0) ctx.Stat("Citymaker.Stat.Seats", job.Stands + job.Benches, Keys.UnitCount);
+            if (decals > 0) ctx.Stat("Citymaker.Stat.Decals", decals, Keys.UnitCount);
             plan.Facts["fieldFormat"] = k;
             plan.Facts["fieldLength"] = place.HalfLength * 2f;
             plan.Facts["fieldWidth"] = place.HalfWidth * 2f;

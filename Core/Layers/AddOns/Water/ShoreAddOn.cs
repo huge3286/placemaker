@@ -15,19 +15,19 @@
 // water it reports one Info issue and places nothing.
 
 using System;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Common.Shore;
-using Placemaker.Core.Layers.Types.Beach;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common.Shore;
+using Citymaker.Core.Layers.Types.Beach;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns.Water
+namespace Citymaker.Core.Layers.AddOns.Water
 {
     [AreaGenerator(104)]
     public sealed class ShoreAddOn : AddOnLayer
     {
         public static readonly string[] Styles = { "auto", "wharf", "promenade", "pier", "boardwalk", "beach", "reeds" };
-        public const string NoWaterKey = "Placemaker.AddOn.Shore.Issue.NoWater";
-        public const string NeedsWaterInsideKey = "Placemaker.AddOn.Shore.Issue.WharfNeedsWater";
+        public const string NoWaterKey = "Citymaker.AddOn.Shore.Issue.NoWater";
+        public const string NeedsWaterInsideKey = "Citymaker.AddOn.Shore.Issue.WharfNeedsWater";
 
         protected override string Area => "AddOn.Shore";
         public override string Id => ShoreKit.LayerId;
@@ -149,7 +149,7 @@ namespace Placemaker.Core.Layers.AddOns.Water
                 case "pier":
                     ShoreTreatments.Walk(w, math.min(walkDepth, w.Hw + 2.5f), end, L - end);
                     if (PlacePiers(w, math.max(1, piers), pierLength, heads, math.max(1, boats / math.max(1, piers)), true, end) == 0)
-                        ctx.Issue(IssueSeverity.Info, "Placemaker.AddOn.Shore.Issue.PiersNeedWater");
+                        ctx.Issue(IssueSeverity.Info, "Citymaker.AddOn.Shore.Issue.PiersNeedWater");
                     ShoreTreatments.Promenade(w, end, L - end, band, false, ctx.B("railings"), benches, lamps);
                     break;
                 case "boardwalk":
@@ -177,10 +177,10 @@ namespace Placemaker.Core.Layers.AddOns.Water
             if (reeds > 0f) ShoreTreatments.Reeds(w, end, L - end, reeds);
             if (ctx.B("connect")) ShoreTreatments.Connect(w);
 
-            ctx.Stat("Placemaker.Stat.Shoreline", Math.Round(L), Keys.UnitM);
-            if (w.Piers > 0) ctx.Stat("Placemaker.Stat.Piers", w.Piers, Keys.UnitCount);
-            if (w.FillArea > 0f) ctx.Stat("Placemaker.Stat.QuayArea", Math.Round(w.FillArea), Keys.UnitM2);
-            if (w.Boats > 0) ctx.Stat("Placemaker.Stat.Boats", w.Boats, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Shoreline", Math.Round(L), Keys.UnitM);
+            if (w.Piers > 0) ctx.Stat("Citymaker.Stat.Piers", w.Piers, Keys.UnitCount);
+            if (w.FillArea > 0f) ctx.Stat("Citymaker.Stat.QuayArea", Math.Round(w.FillArea), Keys.UnitM2);
+            if (w.Boats > 0) ctx.Stat("Citymaker.Stat.Boats", w.Boats, Keys.UnitCount);
             ctx.Stat(Keys.StatBenches, w.Benches, Keys.UnitCount);
             ctx.Stat(Keys.StatLamps, w.Lamps, Keys.UnitCount);
             ctx.Plan.Facts["shoreMode"] = (int)shore.Mode;

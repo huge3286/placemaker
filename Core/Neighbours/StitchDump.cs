@@ -1,7 +1,7 @@
-// Placemaker neighbourhood polish — one plan's input written down exactly, and read back (GPL-3.0).
+// Citymaker neighbourhood polish — one plan's input written down exactly, and read back (GPL-3.0).
 //
 // The game runner's lab op "polishPassDump" writes every pass the game plans (its houses, settings, barriers and ground) to
-// a file; Tests/Placemaker.Tests/OutgrowBench replays them offline, times YardStitch.Plan and checks that a faster planner
+// a file; Tests/Citymaker.Tests/OutgrowBench replays them offline, times YardStitch.Plan and checks that a faster planner
 // plans exactly the same (StitchDump.Signature). Floats are written as the doubles they are, so a replay sees the very same
 // numbers the game did.
 
@@ -10,10 +10,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using Placemaker.Core.Tool;
+using Citymaker.Core.Tool;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Neighbours
+namespace Citymaker.Core.Neighbours
 {
     public static class StitchDump
     {

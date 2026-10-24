@@ -6,10 +6,10 @@
 // floodlight masts at the corners (four) or corners + halfway (six).
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns.Fields
+namespace Citymaker.Core.Layers.AddOns.Fields
 {
     [AreaGenerator(180)]
     public sealed class PitchAddOn : FieldAddOn

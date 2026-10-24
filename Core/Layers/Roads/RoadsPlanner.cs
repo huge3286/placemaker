@@ -1,4 +1,4 @@
-// Placemaker roads layer — the planning pipeline.
+// Citymaker roads layer — the planning pipeline.
 //
 //   generate (Grid Road Generator patterns, Ti4goc) → split at existing roads → avoid obstacles
 //   → perimeter road → drop pieces lying on existing roads → connect ends to existing roads
@@ -9,24 +9,24 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Roads.Generators;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Roads.Generators;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads
+namespace Citymaker.Core.Layers.Roads
 {
     internal static class RoadsPlanner
     {
-        public const string StatLength = "Placemaker.Roads.Stat.Length";
-        public const string StatBlocks = "Placemaker.Roads.Stat.Blocks";
-        public const string StatJunctions = "Placemaker.Roads.Stat.Junctions";
-        public const string StatConnections = "Placemaker.Roads.Stat.Connections";
+        public const string StatLength = "Citymaker.Roads.Stat.Length";
+        public const string StatBlocks = "Citymaker.Roads.Stat.Blocks";
+        public const string StatJunctions = "Citymaker.Roads.Stat.Junctions";
+        public const string StatConnections = "Citymaker.Roads.Stat.Connections";
 
-        public const string IssueNothing = "Placemaker.Roads.Issue.NothingFits";
-        public const string IssueFlat = "Placemaker.Roads.Issue.TerrainFlat";
-        public const string IssueObstacles = "Placemaker.Roads.Issue.ObstaclesAvoided";
-        public const string IssueFailed = "Placemaker.Roads.Issue.GenerationFailed";
-        public const string IssueBadArea = "Placemaker.Roads.Issue.InvalidArea";
+        public const string IssueNothing = "Citymaker.Roads.Issue.NothingFits";
+        public const string IssueFlat = "Citymaker.Roads.Issue.TerrainFlat";
+        public const string IssueObstacles = "Citymaker.Roads.Issue.ObstaclesAvoided";
+        public const string IssueFailed = "Citymaker.Roads.Issue.GenerationFailed";
+        public const string IssueBadArea = "Citymaker.Roads.Issue.InvalidArea";
 
         public const string FactLength = "roads.length";
         public const string FactBlocks = "roads.blocks";
@@ -122,11 +122,11 @@ namespace Placemaker.Core.Layers.Roads
         private const float MinFragmentLength = 30f;
 
         // s34
-        public const string StatWalkways = "Placemaker.Roads.Stat.Walkways";
-        public const string StatSteepest = "Placemaker.Roads.Stat.Steepest";
-        public const string IssueIslands = "Placemaker.Roads.Issue.IslandsDropped";
-        public const string IssueNotConnected = "Placemaker.Roads.Issue.NotConnected";
-        public const string IssueSteep = "Placemaker.Roads.Issue.Steep";
+        public const string StatWalkways = "Citymaker.Roads.Stat.Walkways";
+        public const string StatSteepest = "Citymaker.Roads.Stat.Steepest";
+        public const string IssueIslands = "Citymaker.Roads.Issue.IslandsDropped";
+        public const string IssueNotConnected = "Citymaker.Roads.Issue.NotConnected";
+        public const string IssueSteep = "Citymaker.Roads.Issue.Steep";
         public const string FactWalkways = "roads.walkways";
         public const string FactLinks = "roads.links";
         public const string FactIslandsDropped = "roads.islandsDropped";
@@ -135,10 +135,10 @@ namespace Placemaker.Core.Layers.Roads
         public const string FactSteepest = "roads.steepestGrade";
         private const int MaxSteepIssues = 6;
         // s61: issues that explain themselves
-        public const string IssueDroppedObstacle = "Placemaker.Roads.Issue.DroppedObstacle";
-        public const string IssuePerimeterBlocked = "Placemaker.Roads.Issue.PerimeterBlocked";
-        public const string IssuePerimeterOpen = "Placemaker.Roads.Issue.PerimeterOpen";
-        public const string IssueJunctionCut = "Placemaker.Roads.Issue.JunctionCut";
+        public const string IssueDroppedObstacle = "Citymaker.Roads.Issue.DroppedObstacle";
+        public const string IssuePerimeterBlocked = "Citymaker.Roads.Issue.PerimeterBlocked";
+        public const string IssuePerimeterOpen = "Citymaker.Roads.Issue.PerimeterOpen";
+        public const string IssueJunctionCut = "Citymaker.Roads.Issue.JunctionCut";
         public const string FactBypassed = "roads.bypassed";
         public const string FactPerimeterClosed = "roads.perimeterClosed";
         public const string FactPerimeterOpen = "roads.perimeterOpen";
@@ -980,15 +980,15 @@ namespace Placemaker.Core.Layers.Roads
         }
 
         // s52: hillside terraces
-        public const string StatTerraces = "Placemaker.Roads.Stat.Terraces";
-        public const string StatTerracedArea = "Placemaker.Roads.Stat.TerracedArea";
-        public const string StatCut = "Placemaker.Roads.Stat.Cut";
-        public const string StatFill = "Placemaker.Roads.Stat.Fill";
-        public const string StatDeepest = "Placemaker.Roads.Stat.DeepestCut";
-        public const string StatHighest = "Placemaker.Roads.Stat.HighestFill";
-        public const string IssueTerraceSteep = "Placemaker.Roads.Issue.TerraceSteep";
-        public const string IssueTerraceEarthwork = "Placemaker.Roads.Issue.TerraceEarthwork";
-        public const string IssueTerraceFlat = "Placemaker.Roads.Issue.TerraceFlat";
+        public const string StatTerraces = "Citymaker.Roads.Stat.Terraces";
+        public const string StatTerracedArea = "Citymaker.Roads.Stat.TerracedArea";
+        public const string StatCut = "Citymaker.Roads.Stat.Cut";
+        public const string StatFill = "Citymaker.Roads.Stat.Fill";
+        public const string StatDeepest = "Citymaker.Roads.Stat.DeepestCut";
+        public const string StatHighest = "Citymaker.Roads.Stat.HighestFill";
+        public const string IssueTerraceSteep = "Citymaker.Roads.Issue.TerraceSteep";
+        public const string IssueTerraceEarthwork = "Citymaker.Roads.Issue.TerraceEarthwork";
+        public const string IssueTerraceFlat = "Citymaker.Roads.Issue.TerraceFlat";
 
         /// <summary>Terraced blocks: the earthwork readout, the bank paint and trees (as the terraces').</summary>
         private static void BlockReport(AreaPlan plan, Terraces.BlockField.Survey survey, Terraces.TerraceOptions o, Terraces.TerraceGround g,

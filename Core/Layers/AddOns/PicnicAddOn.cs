@@ -2,10 +2,10 @@
 // trees on the outside, spread over the open lawn.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns
+namespace Citymaker.Core.Layers.AddOns
 {
     [AreaGenerator(130)]
     public sealed class PicnicAddOn : AddOnLayer
@@ -116,7 +116,7 @@ namespace Placemaker.Core.Layers.AddOns
                     placedTrees++;
                 }
             }
-            if (spots.Count == 0) NoSpace(ctx, "Placemaker.AddOn.Picnic.Name");
+            if (spots.Count == 0) NoSpace(ctx, "Citymaker.AddOn.Picnic.Name");
             ctx.Stat(Keys.StatPicnicTables, placedTables, Keys.UnitCount);
             ctx.Stat(Keys.StatTrees, placedTrees, Keys.UnitCount);
         }

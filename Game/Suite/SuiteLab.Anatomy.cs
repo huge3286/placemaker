@@ -14,7 +14,7 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     public sealed partial class SuiteRunner
     {
@@ -92,8 +92,8 @@ namespace Placemaker.Game.Suite
             rec["underConstruction"] = underConstruction;
             rec["partKinds"] = new JArray(kinds.OrderByDescending(k => k.Value).Select(k => $"{k.Key} x{k.Value}"));
             rec["examples"] = detail;
-            Mod.Log.Info($"Placemaker lab: anatomy of {houses.Count} houses ({underConstruction} under construction): {string.Join("; ", kinds.OrderByDescending(k => k.Value).Select(k => $"{k.Key} x{k.Value}"))}");
-            foreach (var d in detail) Mod.Log.Info("Placemaker lab: anatomy example " + d.ToString(Newtonsoft.Json.Formatting.None));
+            Mod.Log.Info($"Citymaker lab: anatomy of {houses.Count} houses ({underConstruction} under construction): {string.Join("; ", kinds.OrderByDescending(k => k.Value).Select(k => $"{k.Key} x{k.Value}"))}");
+            foreach (var d in detail) Mod.Log.Info("Citymaker lab: anatomy example " + d.ToString(Newtonsoft.Json.Formatting.None));
         }
     }
 }

@@ -1,4 +1,4 @@
-// Mock of Game/UI/PlacemakerUISystem + the tool's stage machine, faithful enough to click through the
+// Mock of Game/UI/CitymakerUISystem + the tool's stage machine, faithful enough to click through the
 // whole flow in a browser: area → design → review → build, roll back to any reachable stage, one undo
 // stack for shape + design edits, previews while dragging, markers, per-region overrides, presets,
 // randomize (respecting locks), player recipes, built groups with manage/edit/remove.
@@ -25,7 +25,7 @@ import { SHELF_CATEGORIES, shelve, styleShelved } from "./shelf";
 
 /** s33: like Core UiModels.NeedsAck — ground paint alone needs no tick. */
 function needsAck(permanent: { key: string }[]): boolean {
-    return permanent.some((p) => p.key !== "Placemaker.Permanent.Paint");
+    return permanent.some((p) => p.key !== "Citymaker.Permanent.Paint");
 }
 
 const EN: Record<string, string> = { ...FAKE_STRINGS };
@@ -33,7 +33,7 @@ const en = (key: string, fallback?: string) => EN[key] ?? fallback ?? key.split(
 
 /** (C# PresetStore.StandardId / StandardNameKey) Every fill type's own design, a style like the others. */
 const STANDARD_ID = "standard";
-const STANDARD_KEY = "Placemaker.UI.Preset.Standard";
+const STANDARD_KEY = "Citymaker.UI.Preset.Standard";
 
 interface Snapshot {
     ring: V2[];
@@ -65,7 +65,7 @@ function canon(v: unknown): string {
     return JSON.stringify(v);
 }
 
-export const PRESETS_FILE = "C:\\Users\\Player\\AppData\\LocalLow\\Colossal Order\\Cities Skylines II\\ModsData\\Placemaker\\presets.json";
+export const PRESETS_FILE = "C:\\Users\\Player\\AppData\\LocalLow\\Colossal Order\\Cities Skylines II\\ModsData\\Citymaker\\presets.json";
 
 interface Entry {
     label: LocText;
@@ -105,11 +105,11 @@ export class MockBackend {
     areaModes: ToolState["areaModes"] = (["draw", "block", "blockPaint", "paint", "perimeter"] as AreaMode[]).map((mode) => ({ mode, enabled: true }));
     userCollapsed: boolean | null = null;
     anarchy = { available: true, enabled: false };
-    /** Entrances placed next come with a crosswalk (C# PlacemakerToolSystem._markerCrosswalk). */
+    /** Entrances placed next come with a crosswalk (C# CitymakerToolSystem._markerCrosswalk). */
     entranceCrosswalk = false;
     /** Review's "One group" switch off: the next build is born ungrouped. */
     buildSeparate = false;
-    /** Review's "Keep area" switch: Build keeps the area (C# PlacemakerToolSystem._keepArea). */
+    /** Review's "Keep area" switch: Build keeps the area (C# CitymakerToolSystem._keepArea). */
     keepArea = true;
     /** Ungrouped builds (C# GroupFlags.Ungrouped). */
     ungrouped = new Set<number>();
@@ -131,7 +131,7 @@ export class MockBackend {
     modified = false;
     /** Preset applied to the root step (null = none yet). */
     active: ActiveModel | null = null;
-    /** Player presets per layer id (in-memory; C# keeps them in ModsData/Placemaker/presets.json). */
+    /** Player presets per layer id (in-memory; C# keeps them in ModsData/Citymaker/presets.json). */
     customPresets: Record<string, CustomPreset[]> = {};
     /** Saved-over built-ins, "layer|presetId" -> data. */
     presetOverrides: Record<string, PresetData> = {};
@@ -144,7 +144,7 @@ export class MockBackend {
     parkStats: { keepVanilla: boolean; overrides: Record<string, number> } = { keepVanilla: true, overrides: {} };
     /** Player's preview choice and the stage it was made on (a new stage starts from its default again). */
     previewChoice: { mode: "sketch" | "ghost"; stage: Stage } | null = null;
-    /** s22 legend: the hovered layer ("" = none) and the player's show / hide choices (like C# PlacemakerToolSystem.Legend). */
+    /** s22 legend: the hovered layer ("" = none) and the player's show / hide choices (like C# CitymakerToolSystem.Legend). */
     legendHover = "";
     legendVisibility: Record<string, boolean> = {};
     /** s22: layer ids the map drew in its last frame (tests check hover-isolate and toggles with it). */
@@ -342,8 +342,8 @@ export class MockBackend {
 
     problem(): LocText | undefined {
         if (!this.closed || this.ring.length < 3) return undefined;
-        if (selfIntersects(this.ring)) return { key: "Placemaker.Problem.Crossing" };
-        if (area(this.ring) < 150) return { key: "Placemaker.Problem.TooSmall", args: [150] };
+        if (selfIntersects(this.ring)) return { key: "Citymaker.Problem.Crossing" };
+        if (area(this.ring) < 150) return { key: "Citymaker.Problem.TooSmall", args: [150] };
         return undefined;
     }
 
@@ -508,26 +508,26 @@ export class MockBackend {
     addPoint(p: V2) {
         if (this.closed) return;
         if (this.ring.length >= 3 && dist(p, this.ring[0]) < 8) {
-            this.edit({ key: "Placemaker.Undo.CloseArea" }, () => (this.closed = true));
+            this.edit({ key: "Citymaker.Undo.CloseArea" }, () => (this.closed = true));
             return;
         }
-        this.edit({ key: "Placemaker.Undo.AddPoint" }, () => this.ring.push(p));
+        this.edit({ key: "Citymaker.Undo.AddPoint" }, () => this.ring.push(p));
     }
 
     closeRing() {
-        if (this.ring.length >= 3 && !this.closed) this.edit({ key: "Placemaker.Undo.CloseArea" }, () => (this.closed = true));
+        if (this.ring.length >= 3 && !this.closed) this.edit({ key: "Citymaker.Undo.CloseArea" }, () => (this.closed = true));
     }
 
     removePoint(i: number) {
         if (i < 0 || i >= this.ring.length) return;
-        this.edit({ key: "Placemaker.Undo.RemovePoint" }, () => {
+        this.edit({ key: "Citymaker.Undo.RemovePoint" }, () => {
             this.ring.splice(i, 1);
             if (this.ring.length < 3) this.closed = false;
         });
     }
 
     insertPoint(seg: number, p: V2) {
-        this.edit({ key: "Placemaker.Undo.InsertPoint" }, () => this.ring.splice(seg + 1, 0, p));
+        this.edit({ key: "Citymaker.Undo.InsertPoint" }, () => this.ring.splice(seg + 1, 0, p));
     }
 
     movePoint(i: number, p: V2) {
@@ -537,7 +537,7 @@ export class MockBackend {
 
     pickBlock(b: Block, additive: boolean) {
         const idx = BLOCKS.indexOf(b);
-        this.edit({ key: additive ? "Placemaker.Undo.AddBlock" : "Placemaker.Undo.SelectBlock" }, () => {
+        this.edit({ key: additive ? "Citymaker.Undo.AddBlock" : "Citymaker.Undo.SelectBlock" }, () => {
             this.picked = additive ? Array.from(new Set([...this.picked, idx])) : [idx];
             this.ring = blocksRing(this.picked.map((i) => BLOCKS[i]));
             this.closed = true;
@@ -559,7 +559,7 @@ export class MockBackend {
             this.closeRing();
             return;
         }
-        this.edit({ key: "Placemaker.Undo.AddNode" }, () => this.ring.push([p[0], p[1]]));
+        this.edit({ key: "Citymaker.Undo.AddNode" }, () => this.ring.push([p[0], p[1]]));
     }
 
     addMarker(p: V2) {
@@ -571,7 +571,7 @@ export class MockBackend {
         const kind = this.markerMode.kind;
         const walks = !!this.markerKindsOf(step)?.find((k) => k.kind === kind && k.crosswalk);
         const stored = this.entranceCrosswalk && walks ? kind + "+crosswalk" : kind;
-        this.edit({ key: "Placemaker.Undo.AddMarker", args: [en(`Placemaker.Marker.${kind}`, kind)] }, () => step.markers.push({ kind: stored, p: q.q }));
+        this.edit({ key: "Citymaker.Undo.AddMarker", args: [en(`Citymaker.Marker.${kind}`, kind)] }, () => step.markers.push({ kind: stored, p: q.q }));
     }
 
     removeMarkerNear(p: V2) {
@@ -579,7 +579,7 @@ export class MockBackend {
         const step = this.get(this.markerMode.stepPath);
         if (!step) return;
         const i = step.markers.findIndex((m) => dist(m.p, p) < 10);
-        if (i >= 0) this.edit({ key: "Placemaker.Undo.RemoveMarker" }, () => step.markers.splice(i, 1));
+        if (i >= 0) this.edit({ key: "Citymaker.Undo.RemoveMarker" }, () => step.markers.splice(i, 1));
     }
 
     clickGroup(id: number) {
@@ -592,7 +592,7 @@ export class MockBackend {
 
     /** Test/dev helper: set a ready-made closed area. */
     setArea(ring: V2[]) {
-        this.edit({ key: "Placemaker.Undo.CloseArea" }, () => {
+        this.edit({ key: "Citymaker.Undo.CloseArea" }, () => {
             this.ring = ring.map((p) => [p[0], p[1]] as V2);
             this.closed = true;
             this.picked = [];
@@ -671,7 +671,7 @@ export class MockBackend {
                 this.brushRules = { ...DEFAULT_BRUSH_RULES, walls: { ...DEFAULT_BRUSH_RULES.walls } };
                 break;
             case "clearArea":
-                this.edit({ key: "Placemaker.Undo.ClearArea" }, () => {
+                this.edit({ key: "Citymaker.Undo.ClearArea" }, () => {
                     this.ring = [];
                     this.closed = false;
                     this.cells.clear();
@@ -682,7 +682,7 @@ export class MockBackend {
             case "selectRecipe": {
                 const r = this.recipes.find((x) => x.info.id === a[0]);
                 if (!r) break;
-                this.edit({ key: "Placemaker.Undo.SelectRecipe", args: [r.info.custom ? r.info.name : en(r.info.name)] }, () => {
+                this.edit({ key: "Citymaker.Undo.SelectRecipe", args: [r.info.custom ? r.info.name : en(r.info.name)] }, () => {
                     this.recipeId = r.info.id;
                     this.root = this.instantiate(r.root);
                     // a type starts on its Standard: one the player saved over is applied (C# SwitchRecipe)
@@ -700,7 +700,7 @@ export class MockBackend {
             case "addLayer": {
                 const parent = this.get(a[0]);
                 if (!parent || !this.layer(a[1])) break;
-                this.edit({ key: "Placemaker.Undo.AddLayer", args: [this.layerName(a[1])] }, () => {
+                this.edit({ key: "Citymaker.Undo.AddLayer", args: [this.layerName(a[1])] }, () => {
                     parent.children.push(this.instantiate({ layer: a[1], target: a[2] ?? "" }));
                     this.focus = a[0] + "/" + (parent.children.length - 1);
                     this.modified = true;
@@ -712,7 +712,7 @@ export class MockBackend {
                 const parent = pp ? this.get(pp) : null;
                 const step = this.get(a[0]);
                 if (!parent || !step) break;
-                this.edit({ key: "Placemaker.Undo.RemoveLayer", args: [this.layerName(step.layer)] }, () => {
+                this.edit({ key: "Citymaker.Undo.RemoveLayer", args: [this.layerName(step.layer)] }, () => {
                     const i = parent.children.indexOf(step);
                     if (i >= 0) parent.children.splice(i, 1);
                     for (const k of Object.keys(parent.overrides)) if (parent.overrides[k] === step) delete parent.overrides[k];
@@ -729,7 +729,7 @@ export class MockBackend {
                 const i = parent.children.indexOf(step);
                 const j = i + Number(a[1]);
                 if (i < 0 || j < 0 || j >= parent.children.length) break;
-                this.edit({ key: "Placemaker.Undo.MoveLayer" }, () => {
+                this.edit({ key: "Citymaker.Undo.MoveLayer" }, () => {
                     [parent.children[i], parent.children[j]] = [parent.children[j], parent.children[i]];
                     this.focus = pp + "/" + j;
                     this.modified = true;
@@ -739,7 +739,7 @@ export class MockBackend {
             case "setStepEnabled": {
                 const step = this.get(a[0]);
                 if (!step) break;
-                this.edit({ key: a[1] ? "Placemaker.Undo.EnableLayer" : "Placemaker.Undo.DisableLayer", args: [this.layerName(step.layer)] }, () => {
+                this.edit({ key: a[1] ? "Citymaker.Undo.EnableLayer" : "Citymaker.Undo.DisableLayer", args: [this.layerName(step.layer)] }, () => {
                     step.enabled = !!a[1];
                     this.modified = true;
                 });
@@ -750,7 +750,7 @@ export class MockBackend {
                 const def = step ? this.featuresOf(step.layer).find((f) => f.layer === a[1]) : undefined;
                 if (!step || !def) break;
                 const on = !!a[2];
-                this.edit({ key: on ? "Placemaker.Undo.EnableLayer" : "Placemaker.Undo.DisableLayer", args: [this.layerName(def.layer)] }, () => {
+                this.edit({ key: on ? "Citymaker.Undo.EnableLayer" : "Citymaker.Undo.DisableLayer", args: [this.layerName(def.layer)] }, () => {
                     const child = step.children.find((c) => c.feature === def.layer);
                     if (child) child.enabled = on;
                     else if (on) step.children.push(this.featureStep(def));
@@ -761,7 +761,7 @@ export class MockBackend {
             case "setStepTarget": {
                 const step = this.get(a[0]);
                 if (!step) break;
-                this.edit({ key: "Placemaker.Undo.SetTarget", args: [this.layerName(step.layer)] }, () => {
+                this.edit({ key: "Citymaker.Undo.SetTarget", args: [this.layerName(step.layer)] }, () => {
                     step.target = String(a[1] ?? "");
                     this.modified = true;
                 });
@@ -772,7 +772,7 @@ export class MockBackend {
                 if (!parent) break;
                 const key = String(a[1]);
                 const layerId = String(a[2] ?? "");
-                this.edit({ key: layerId ? "Placemaker.Undo.OverrideRegion" : "Placemaker.Undo.RemoveOverride", args: [key, layerId ? this.layerName(layerId) : ""] }, () => {
+                this.edit({ key: layerId ? "Citymaker.Undo.OverrideRegion" : "Citymaker.Undo.RemoveOverride", args: [key, layerId ? this.layerName(layerId) : ""] }, () => {
                     if (!layerId) delete parent.overrides[key];
                     else {
                         const child = parent.children.find((c) => c.target && (c.target === key || key.startsWith(c.target + ":")));
@@ -790,7 +790,7 @@ export class MockBackend {
                 const label = this.layer(step.layer)?.controls.find((c) => c.id === a[1])?.label ?? a[1];
                 this.preview.delete(a[0] + "|" + a[1]);
                 this.edit(
-                    { key: "Placemaker.Undo.ChangeValue", args: [en(label, a[1])] },
+                    { key: "Citymaker.Undo.ChangeValue", args: [en(label, a[1])] },
                     () => {
                         step.values[a[1]] = v;
                         if (!step.locked.includes(a[1])) step.locked.push(a[1]);
@@ -836,7 +836,7 @@ export class MockBackend {
             case "resetStep": {
                 const step = this.get(a[0]);
                 if (!step) break;
-                this.edit({ key: "Placemaker.Undo.ResetLayer", args: [this.layerName(step.layer)] }, () => {
+                this.edit({ key: "Citymaker.Undo.ResetLayer", args: [this.layerName(step.layer)] }, () => {
                     step.values = this.defaults(step.layer);
                     step.locked = [];
                     this.modified = true;
@@ -847,7 +847,7 @@ export class MockBackend {
                 const step = this.get(a[0]);
                 const data = step ? this.presetData(step.layer, String(a[1])) : null;
                 if (!step || !data) break;
-                this.edit({ key: "Placemaker.Undo.ResetLayer", args: [this.presetName(step.layer, String(a[1]))] }, () => {
+                this.edit({ key: "Citymaker.Undo.ResetLayer", args: [this.presetName(step.layer, String(a[1]))] }, () => {
                     this.applyData(step, data);
                     if (a[0] === "0") this.active = { id: String(a[1]), layer: step.layer, base: this.capture(step) };
                     this.modified = true;
@@ -862,7 +862,7 @@ export class MockBackend {
                     this.recipes.find((x) => x.info.id === layerId);
                 const data = id ? this.presetData(layerId, id) : null;
                 if (!r || (id && !data)) break;
-                this.edit({ key: "Placemaker.Undo.SelectRecipe", args: [id ? this.presetName(layerId, id) : this.layerName(layerId)] }, () => {
+                this.edit({ key: "Citymaker.Undo.SelectRecipe", args: [id ? this.presetName(layerId, id) : this.layerName(layerId)] }, () => {
                     this.recipeId = r.info.id;
                     const root = this.instantiate(r.root);
                     this.root = root;
@@ -924,7 +924,7 @@ export class MockBackend {
                 if (isActive && this.root) {
                     const root = this.root;
                     const data = this.presetData(layerId, id)!;
-                    this.edit({ key: "Placemaker.Undo.ResetLayer", args: [this.presetName(layerId, id)] }, () => {
+                    this.edit({ key: "Citymaker.Undo.ResetLayer", args: [this.presetName(layerId, id)] }, () => {
                         this.applyData(root, data);
                         this.active = { id, layer: layerId, base: this.capture(root) };
                     });
@@ -962,7 +962,7 @@ export class MockBackend {
                 const step = this.get(a[0]);
                 if (!step || !(i < step.markers.length)) break;
                 const base = step.markers[i].kind.split("+crosswalk")[0];
-                this.edit({ key: "Placemaker.Undo.Crosswalk" }, () => (step.markers[i].kind = a[2] ? base + "+crosswalk" : base));
+                this.edit({ key: "Citymaker.Undo.Crosswalk" }, () => (step.markers[i].kind = a[2] ? base + "+crosswalk" : base));
                 return;
             }
             case "ungroupGroup":
@@ -979,13 +979,13 @@ export class MockBackend {
                 const i = Number(a[1]);
                 if (!step || !(i >= 0 && i < step.markers.length)) break;
                 const kind = step.markers[i].kind;
-                this.edit({ key: "Placemaker.Undo.RemoveMarker", args: [en(`Placemaker.Marker.${kind}`, kind)] }, () => step.markers.splice(i, 1));
+                this.edit({ key: "Citymaker.Undo.RemoveMarker", args: [en(`Citymaker.Marker.${kind}`, kind)] }, () => step.markers.splice(i, 1));
                 return;
             }
             case "clearMarkers": {
                 const step = this.get(a[0]);
                 if (!step) break;
-                this.edit({ key: "Placemaker.Undo.ClearMarkers" }, () => (step.markers = step.markers.filter((m) => m.kind !== a[1])));
+                this.edit({ key: "Citymaker.Undo.ClearMarkers" }, () => (step.markers = step.markers.filter((m) => m.kind !== a[1])));
                 return;
             }
             case "saveRecipeAs": {
@@ -1089,7 +1089,7 @@ export class MockBackend {
         const res = this.plan?.steps?.[path]?.resolvedAssets;
         if (!res) return undefined;
         const out: Record<string, LocText> = {};
-        for (const [id, r] of Object.entries(res)) if (r.unused && !s.values[id]) out[id] = { key: "Placemaker.UI.Why.NotInLayout" };
+        for (const [id, r] of Object.entries(res)) if (r.unused && !s.values[id]) out[id] = { key: "Citymaker.UI.Why.NotInLayout" };
         return Object.keys(out).length ? out : undefined;
     }
 
@@ -1147,7 +1147,7 @@ export class MockBackend {
             if (!values || (values as any).error) values = this.fakeRandomize(s);
             results.set(s, values);
         }
-        this.edit({ key: "Placemaker.Undo.Randomize" }, () => {
+        this.edit({ key: "Citymaker.Undo.Randomize" }, () => {
             for (const [s, v] of results) {
                 s.values = { ...s.values, ...v };
                 for (const id of s.locked) if (id in s.values) s.values[id] = s.values[id];
@@ -1191,7 +1191,7 @@ export class MockBackend {
     stepReady(s: StepModel, path: string): { ready: boolean; nextStep?: LocText } {
         const l = this.layer(s.layer);
         const need = this.markersRequiredOf(s);
-        if (need > 0 && s.markers.length < need) return { ready: false, nextStep: { key: "Placemaker.Parking.NeedsEntrance" } };
+        if (need > 0 && s.markers.length < need) return { ready: false, nextStep: { key: "Citymaker.Parking.NeedsEntrance" } };
         if (l?.real) return this.readiness.get(path) ?? { ready: true };
         return { ready: true };
     }
@@ -1231,43 +1231,43 @@ export class MockBackend {
 
     primary(): PrimaryAction {
         const summary = this.summary();
-        if (this.markerMode && this.stage !== "building") return { action: "placeMarkers", label: { key: "Placemaker.Primary.DoneMarkers" }, enabled: true };
+        if (this.markerMode && this.stage !== "building") return { action: "placeMarkers", label: { key: "Citymaker.Primary.DoneMarkers" }, enabled: true };
         switch (this.stage) {
             case "area":
-                if (this.areaValid()) return { action: "toDesign", label: { key: "Placemaker.Primary.Next" }, enabled: true };
+                if (this.areaValid()) return { action: "toDesign", label: { key: "Citymaker.Primary.Next" }, enabled: true };
                 return {
                     action: "toDesign",
-                    label: { key: "Placemaker.Primary.Next" },
+                    label: { key: "Citymaker.Primary.Next" },
                     enabled: false,
-                    reason: this.problem() ?? (this.ring.length === 0 ? { key: "Placemaker.Reason.NoArea" } : { key: "Placemaker.Reason.CloseArea" }),
+                    reason: this.problem() ?? (this.ring.length === 0 ? { key: "Citymaker.Reason.NoArea" } : { key: "Citymaker.Reason.CloseArea" }),
                 };
             case "design": {
-                if (!this.root) return { action: "toReview", label: { key: "Placemaker.Primary.Review" }, enabled: false, reason: { key: "Placemaker.Reason.NoRecipe" } };
+                if (!this.root) return { action: "toReview", label: { key: "Citymaker.Primary.Review" }, enabled: false, reason: { key: "Citymaker.Reason.NoRecipe" } };
                 const r = this.allReady();
                 // Like C# StageMachine.MarkerStep: no automatic entrances; disabled, but pressing it starts placement.
                 if (!r.ready && r.kind)
-                    return { action: "placeMarkers", label: { key: "Placemaker.Primary.Review" }, enabled: false, reason: { key: "Placemaker.Reason.AddEntrance" }, stepPath: r.path, markerKind: r.kind };
-                if (!r.ready) return { action: "toReview", label: { key: "Placemaker.Primary.Review" }, enabled: false, reason: r.next };
-                return { action: "toReview", label: { key: "Placemaker.Primary.Review" }, enabled: true };
+                    return { action: "placeMarkers", label: { key: "Citymaker.Primary.Review" }, enabled: false, reason: { key: "Citymaker.Reason.AddEntrance" }, stepPath: r.path, markerKind: r.kind };
+                if (!r.ready) return { action: "toReview", label: { key: "Citymaker.Primary.Review" }, enabled: false, reason: r.next };
+                return { action: "toReview", label: { key: "Citymaker.Primary.Review" }, enabled: true };
             }
             case "review": {
                 const editing = this.editingGroup != null;
                 const base = editing
-                    ? { action: "finishEdit" as const, label: { key: "Placemaker.Primary.ApplyEdit" } }
-                    : { action: "build" as const, label: { key: "Placemaker.Primary.Build", args: [this.recipeDisplayName().toLowerCase()] } };
+                    ? { action: "finishEdit" as const, label: { key: "Citymaker.Primary.ApplyEdit" } }
+                    : { action: "build" as const, label: { key: "Citymaker.Primary.Build", args: [this.recipeDisplayName().toLowerCase()] } };
                 const r = this.allReady();
                 if (!r.ready && r.kind)
-                    return { action: "placeMarkers", label: base.label, enabled: false, reason: { key: "Placemaker.Reason.AddEntrance" }, stepPath: r.path, markerKind: r.kind };
-                if (!summary.ready || summary.stale) return { ...base, enabled: false, reason: { key: "Placemaker.Reason.Planning" } };
-                if (!r.ready) return { ...base, enabled: false, reason: { key: "Placemaker.Reason.StepNotReady" } };
-                if (summary.issues.some((i) => i.severity === "error")) return { ...base, enabled: false, reason: { key: "Placemaker.Reason.PlanErrors" } };
-                if (!summary.canAfford) return { ...base, enabled: false, reason: { key: "Placemaker.Reason.NoMoney" } };
+                    return { action: "placeMarkers", label: base.label, enabled: false, reason: { key: "Citymaker.Reason.AddEntrance" }, stepPath: r.path, markerKind: r.kind };
+                if (!summary.ready || summary.stale) return { ...base, enabled: false, reason: { key: "Citymaker.Reason.Planning" } };
+                if (!r.ready) return { ...base, enabled: false, reason: { key: "Citymaker.Reason.StepNotReady" } };
+                if (summary.issues.some((i) => i.severity === "error")) return { ...base, enabled: false, reason: { key: "Citymaker.Reason.PlanErrors" } };
+                if (!summary.canAfford) return { ...base, enabled: false, reason: { key: "Citymaker.Reason.NoMoney" } };
                 return { ...base, enabled: true };
             }
             case "building":
-                return { action: "cancelBuild", label: { key: "Placemaker.Primary.CancelBuild" }, enabled: true };
+                return { action: "cancelBuild", label: { key: "Citymaker.Primary.CancelBuild" }, enabled: true };
             case "manage":
-                return { action: "none", label: { key: "Placemaker.Primary.PickBuilt" }, enabled: false, reason: { key: "Placemaker.Reason.PickBuilt" } };
+                return { action: "none", label: { key: "Citymaker.Primary.PickBuilt" }, enabled: false, reason: { key: "Citymaker.Reason.PickBuilt" } };
         }
         return { action: "none", label: { key: "" }, enabled: false };
     }
@@ -1340,7 +1340,7 @@ export class MockBackend {
             ring: clone(this.ring),
             root: clone(this.root!),
             recipeId: this.recipeId,
-            recipeName: this.recipeInfo()?.custom ? { key: "Placemaker.UI.Literal", args: [this.recipeDisplayName()] } : { key: this.recipeInfo()?.name ?? this.root!.layer },
+            recipeName: this.recipeInfo()?.custom ? { key: "Citymaker.UI.Literal", args: [this.recipeDisplayName()] } : { key: this.recipeInfo()?.name ?? this.root!.layer },
             customName: this.groups.find((x) => x.id === this.editingGroup)?.customName ?? "",
             plan,
             stats: plan.stats,
@@ -1417,13 +1417,13 @@ export class MockBackend {
         const extra: Record<string, string> = {};
         for (const [id, name, icon, group] of MORE_TYPES) {
             if (this.layers.some((l) => l.id === id)) continue;
-            const key = "Placemaker." + id.charAt(0).toUpperCase() + id.slice(1) + ".Name";
+            const key = "Citymaker." + id.charAt(0).toUpperCase() + id.slice(1) + ".Name";
             extra[key] = name;
             this.layers.push({
                 id, name: key, icon, kind: "fill", accepts: [], emits: ["green"], presets: [], minArea: 400,
                 controls: [
-                    { id: "ground", kind: "asset", tier: "essential", group: "", label: "Placemaker.Park.Ground", assetCategory: id === "marketSquare" ? "surface.paving" : "surface.grass", default: "" },
-                    { id: "trees", kind: "slider", tier: "essential", group: "", label: "Placemaker.Park.TreeDensity", min: 0, max: 100, step: 5, unit: "%", default: 50 },
+                    { id: "ground", kind: "asset", tier: "essential", group: "", label: "Citymaker.Park.Ground", assetCategory: id === "marketSquare" ? "surface.paving" : "surface.grass", default: "" },
+                    { id: "trees", kind: "slider", tier: "essential", group: "", label: "Citymaker.Park.TreeDensity", min: 0, max: 100, step: 5, unit: "%", default: 50 },
                 ],
             });
             this.recipes.push({ info: { id, name: key, icon, custom: false, group }, root: { layer: id } });
@@ -1539,28 +1539,28 @@ export class MockBackend {
 
     hints(): Hint[] {
         const h = (key: string, keys?: string[]): Hint => ({ text: { key }, keys });
-        if (this.markerMode) return [h("Placemaker.Hint.MarkerPlace", ["Click"]), h("Placemaker.Hint.MarkerRemove", ["Right-click"]), h("Placemaker.Hint.MarkerDone", ["Esc"])];
+        if (this.markerMode) return [h("Citymaker.Hint.MarkerPlace", ["Click"]), h("Citymaker.Hint.MarkerRemove", ["Right-click"]), h("Citymaker.Hint.MarkerDone", ["Esc"])];
         switch (this.stage) {
             case "area":
                 switch (this.mode) {
                     case "draw":
                         return this.closed
-                            ? [h("Placemaker.Hint.DrawEdit", ["Drag"]), h("Placemaker.Hint.DrawInsertClick", ["Ctrl", "Click"]), h("Placemaker.Hint.DrawRemoveLast", ["Right-click"]), h("Placemaker.Hint.Primary", ["Enter"])]
-                            : [h("Placemaker.Hint.DrawAdd", ["Click"]), h("Placemaker.Hint.DrawAddOrClose", ["Click first"]), h("Placemaker.Hint.DrawRemoveLast", ["Right-click"]), h("Placemaker.Hint.Undo", ["Ctrl", "Z"])];
+                            ? [h("Citymaker.Hint.DrawEdit", ["Drag"]), h("Citymaker.Hint.DrawInsertClick", ["Ctrl", "Click"]), h("Citymaker.Hint.DrawRemoveLast", ["Right-click"]), h("Citymaker.Hint.Primary", ["Enter"])]
+                            : [h("Citymaker.Hint.DrawAdd", ["Click"]), h("Citymaker.Hint.DrawAddOrClose", ["Click first"]), h("Citymaker.Hint.DrawRemoveLast", ["Right-click"]), h("Citymaker.Hint.Undo", ["Ctrl", "Z"])];
                     case "block":
-                        return [h("Placemaker.Hint.BlockPick", ["Click"]), h("Placemaker.Hint.BlockAdd", ["Shift", "Click"]), h("Placemaker.Hint.Primary", ["Enter"])];
+                        return [h("Citymaker.Hint.BlockPick", ["Click"]), h("Citymaker.Hint.BlockAdd", ["Shift", "Click"]), h("Citymaker.Hint.Primary", ["Enter"])];
                     case "paint":
-                        return [h("Placemaker.Hint.PaintPaint", ["Left drag"]), h("Placemaker.Hint.PaintErase", ["Right drag"]), h("Placemaker.Hint.PaintRotate", ["Shift", "Move"]), h("Placemaker.Hint.Primary", ["Enter"])];
+                        return [h("Citymaker.Hint.PaintPaint", ["Left drag"]), h("Citymaker.Hint.PaintErase", ["Right drag"]), h("Citymaker.Hint.PaintRotate", ["Shift", "Move"]), h("Citymaker.Hint.Primary", ["Enter"])];
                     case "blockPaint":
-                        return [h("Placemaker.Hint.BlockPaintStart", ["Left drag"]), h("Placemaker.Hint.BlockPaintErase", ["Right drag"]), h("Placemaker.Hint.PaintRotate", ["Shift", "Move"]), h("Placemaker.Hint.Primary", ["Enter"])];
+                        return [h("Citymaker.Hint.BlockPaintStart", ["Left drag"]), h("Citymaker.Hint.BlockPaintErase", ["Right drag"]), h("Citymaker.Hint.PaintRotate", ["Shift", "Move"]), h("Citymaker.Hint.Primary", ["Enter"])];
                     case "perimeter":
-                        return [h("Placemaker.Hint.PerimeterAdd", ["Click"]), h("Placemaker.Hint.DrawAddOrClose", ["Click first"]), h("Placemaker.Hint.Undo", ["Ctrl", "Z"])];
+                        return [h("Citymaker.Hint.PerimeterAdd", ["Click"]), h("Citymaker.Hint.DrawAddOrClose", ["Click first"]), h("Citymaker.Hint.Undo", ["Ctrl", "Z"])];
                 }
                 return [];
             case "design":
-                return [h("Placemaker.Hint.Undo", ["Ctrl", "Z"]), h("Placemaker.Hint.Primary", ["Enter"]), h("Placemaker.Hint.Close", ["Esc"])];
+                return [h("Citymaker.Hint.Undo", ["Ctrl", "Z"]), h("Citymaker.Hint.Primary", ["Enter"]), h("Citymaker.Hint.Close", ["Esc"])];
             case "review":
-                return [h("Placemaker.Hint.Primary", ["Enter"]), h("Placemaker.Hint.Undo", ["Ctrl", "Z"]), h("Placemaker.Hint.Close", ["Esc"])];
+                return [h("Citymaker.Hint.Primary", ["Enter"]), h("Citymaker.Hint.Undo", ["Ctrl", "Z"]), h("Citymaker.Hint.Close", ["Esc"])];
             default:
                 return [];
         }
@@ -1588,7 +1588,7 @@ export class MockBackend {
             canRedo: this.redoStack.length > 0 && this.stage !== "building",
             undoLabel: last?.label,
             redoLabel: next?.label,
-            markerMode: this.markerMode ? { ...this.markerMode, label: { key: "Placemaker.Marker." + this.markerMode.kind } } : undefined,
+            markerMode: this.markerMode ? { ...this.markerMode, label: { key: "Citymaker.Marker." + this.markerMode.kind } } : undefined,
             hints: this.hints(),
             planning: this.planning,
             buildProgress: this.stage === "building" ? this.buildProgress : undefined,
@@ -1610,7 +1610,7 @@ export class MockBackend {
 
     /** Area overhaul: what the area tools draw (C# Core/Tool/AreaLegend), a fixed sample per tool. */
     areaLegend(): ToolState["areaLegend"] {
-        const e = (id: string, color: string, count: number, areaM2?: number) => ({ id, label: "Placemaker.Legend.Area." + id.slice(5), color, count, areaM2 });
+        const e = (id: string, color: string, count: number, areaM2?: number) => ({ id, label: "Citymaker.Legend.Area." + id.slice(5), color, count, areaM2 });
         const shape = this.closed && this.ring.length >= 3 ? Math.round(area(this.ring)) : 0;
         const list: NonNullable<ToolState["areaLegend"]> = [];
         if (this.mode === "block") {
@@ -1662,9 +1662,9 @@ export class MockBackend {
             }
         }
         const stale = this.stale || undefined;
-        if (!runs) return !parentRan || this.stale ? undefined : { kind: "failed", text: { key: "Placemaker.UI.Feature.NoRoom" } };
-        if (failed === runs) return { kind: "failed", text: firstFail?.text ?? { key: "Placemaker.UI.Feature.NoRoom" }, stale };
-        if (failed) return { kind: "reduced", text: { key: "Placemaker.UI.Feature.SomeMissing", args: [runs - failed, runs] }, stale };
+        if (!runs) return !parentRan || this.stale ? undefined : { kind: "failed", text: { key: "Citymaker.UI.Feature.NoRoom" } };
+        if (failed === runs) return { kind: "failed", text: firstFail?.text ?? { key: "Citymaker.UI.Feature.NoRoom" }, stale };
+        if (failed) return { kind: "reduced", text: { key: "Citymaker.UI.Feature.SomeMissing", args: [runs - failed, runs] }, stale };
         if (reduced) return { kind: "reduced", text: firstReduced!.text, stale };
         return { kind: "ok", stale };
     }
@@ -1672,7 +1672,7 @@ export class MockBackend {
     private featureTooBig(layerId: string): LocText | undefined {
         const min = (this.layer(layerId) as any)?.minArea as number | undefined;
         if (!min || !this.closed || this.ring.length < 3) return undefined;
-        return area(this.ring) < min ? { key: "Placemaker.Why.AreaTooSmall", args: [Math.round(min)] } : undefined;
+        return area(this.ring) < min ? { key: "Citymaker.Why.AreaTooSmall", args: [Math.round(min)] } : undefined;
     }
 
     stepView(s: StepModel, path: string): StepView {

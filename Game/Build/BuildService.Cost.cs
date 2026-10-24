@@ -1,4 +1,4 @@
-// Placemaker — charging what the game would charge (US5 "honest price") (GPL-3.0).
+// Citymaker — charging what the game would charge (US5 "honest price") (GPL-3.0).
 //
 // Decompiled facts (CS2 1.6.2f1, docs/RESEARCH-NOTES-ADDENDUM.md):
 //  * ToolApplySystem sums Temp.m_Cost of every applied temporary and calls PlayerMoney.Subtract —
@@ -23,11 +23,11 @@ using Game.Net;
 using Game.Prefabs;
 using Game.Simulation;
 using Game.Tools;
-using Placemaker.Core;
+using Citymaker.Core;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Build
+namespace Citymaker.Game.Build
 {
     public sealed partial class BuildService
     {
@@ -94,7 +94,7 @@ namespace Placemaker.Game.Build
             money.Subtract(cost);
             EntityManager.SetComponentData(city, money);
             _netCharged = cost;
-            Mod.Log.Info($"Placemaker charged {cost} for {priced} road/path edges (vanilla formula).");
+            Mod.Log.Info($"Citymaker charged {cost} for {priced} road/path edges (vanilla formula).");
         }
     }
 }

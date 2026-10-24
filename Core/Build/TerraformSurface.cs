@@ -1,4 +1,4 @@
-// Placemaker — sloped terraform patches (s20, GPL-3.0).
+// Citymaker — sloped terraform patches (s20, GPL-3.0).
 //
 // Playtests 28–34 ("blocky", "terraced", "pyramids"): every terraform polygon used to be levelled to ONE height,
 // so a sculpted bank was a staircase of 6–12 m flat cells. A sloped patch (PlannedTerraform.Sloped) carries its
@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     public static class TerraformSurface
     {

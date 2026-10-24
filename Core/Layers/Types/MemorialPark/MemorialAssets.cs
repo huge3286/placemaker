@@ -3,9 +3,9 @@
 // standing stones and stone heads (in "decoration"): a standing stone reads as a memorial stone / cenotaph,
 // the stone heads and the bicycle statue as sculpture. Plaques fall back to low old headstones.
 
-using Placemaker.Core.Layers.Park;
+using Citymaker.Core.Layers.Park;
 
-namespace Placemaker.Core.Layers.Types.MemorialPark
+namespace Citymaker.Core.Layers.Types.MemorialPark
 {
     public static class MemorialAssets
     {

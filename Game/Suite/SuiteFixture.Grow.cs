@@ -3,10 +3,10 @@
 // reaches beyond what is already laid out (SuiteLayout.PatchOutside), so the grid, earlier plots and standing builds
 // keep their ground.
 
-using Placemaker.Core.Suite;
+using Citymaker.Core.Suite;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     internal sealed partial class SuiteFixture
     {

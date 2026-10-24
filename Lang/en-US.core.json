@@ -1,6 +1,6 @@
 {
-  "Placemaker.Name": "Placemaker",
-  "Placemaker.Issue.RecipeTooDeep": "This design has too many nested layers.",
-  "Placemaker.Issue.UnknownLayer": "Unknown layer \"{0}\" — is a mod missing?",
-  "Placemaker.Issue.LayerFailed": "{0} could not be planned: {1}"
+  "Citymaker.Name": "citymaker",
+  "Citymaker.Issue.RecipeTooDeep": "This design has too many nested layers.",
+  "Citymaker.Issue.UnknownLayer": "Unknown layer \"{0}\" — is a mod missing?",
+  "Citymaker.Issue.LayerFailed": "{0} could not be planned: {1}"
 }

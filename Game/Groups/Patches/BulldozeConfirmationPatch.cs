@@ -1,4 +1,4 @@
-// Placemaker — ask the vanilla bulldoze confirmation before a whole build is removed (GPL-3.0).
+// Citymaker — ask the vanilla bulldoze confirmation before a whole build is removed (GPL-3.0).
 // Uses Harmony 2.2.2 (MIT, Andreas Pardeike) as a library; see Library/Harmony/LICENSE.
 // Adapted from ParkingLotTool's ParkingLotBulldozeConfirmationPatch (KruemelGames, GPL-3.0).
 //
@@ -22,12 +22,12 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 
-namespace Placemaker.Game.Groups.Patches
+namespace Citymaker.Game.Groups.Patches
 {
     [HarmonyPatch]
     internal static class BulldozeConfirmationPatch
     {
-        /// <summary>Setting: ask before bulldozing a whole Placemaker build (default on).</summary>
+        /// <summary>Setting: ask before bulldozing a whole Citymaker build (default on).</summary>
         public static bool Enabled = true;
 
         private sealed class Approval { internal bool Confirmed; }
@@ -44,7 +44,7 @@ namespace Placemaker.Game.Groups.Patches
             if (AccessTools.Method(typeof(BulldozeToolSystem), "Apply") == null) missing.Add("BulldozeToolSystem.Apply");
             if (ApplyModeSetter == null) missing.Add("ToolBaseSystem.applyMode");
             if (missing.Count == 0) return true;
-            Mod.Log.Warn("Placemaker: bulldoze confirmation disabled, missing " + string.Join(", ", missing.ToArray()));
+            Mod.Log.Warn("Citymaker: bulldoze confirmation disabled, missing " + string.Join(", ", missing.ToArray()));
             return false;
         }
 
@@ -75,7 +75,7 @@ namespace Placemaker.Game.Groups.Patches
                 {
                     // Without a UI receiver never delete silently.
                     StateField.SetValue(__instance, Enum.Parse(StateField.FieldType, "Cancelled"));
-                    Mod.Log.Warn("Placemaker: bulldozing a build was cancelled because the confirmation dialog is unavailable.");
+                    Mod.Log.Warn("Citymaker: bulldozing a build was cancelled because the confirmation dialog is unavailable.");
                     return false;
                 }
                 StateField.SetValue(__instance, Enum.Parse(StateField.FieldType, "Waiting"));
@@ -85,7 +85,7 @@ namespace Placemaker.Game.Groups.Patches
             catch (Exception e)
             {
                 Enabled = false;
-                Mod.Log.Error(e, "Placemaker bulldoze confirmation failed; disabled for this session");
+                Mod.Log.Error(e, "Citymaker bulldoze confirmation failed; disabled for this session");
                 return true;
             }
         }

@@ -1,4 +1,4 @@
-// Placemaker — read-only view of the game's road network for block / perimeter selection.
+// Citymaker — read-only view of the game's road network for block / perimeter selection.
 //
 // Adapter from ECS to Core's IRoadGraph (pure face tracing / Dijkstra in Core/Tool/RoadGraph.cs),
 // plus the geometry the selection needs: nearest road to the cursor (net search tree, never a
@@ -13,14 +13,14 @@ using Game.Common;
 using Game.Net;
 using Game.Prefabs;
 using Game.Tools;
-using Placemaker.Core;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Tool;
+using Citymaker.Core;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Tool;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Selection
+namespace Citymaker.Game.Selection
 {
     public sealed class RoadNetwork : IRoadGraph
     {

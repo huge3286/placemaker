@@ -7,7 +7,7 @@
 //   * keys go through the tool's own key handling (Enter, Esc, Ctrl+Z/Y).
 // Every action checks that it happened (a click that changed nothing is logged with the reason and the scenario's
 // remaining steps may stop). Waits are on readiness and logged; shots go through the settle gate (SuiteShots). The
-// runner measures and judges nothing: what Placemaker did is in its own log. This file: the scenario loop, step
+// runner measures and judges nothing: what Citymaker did is in its own log. This file: the scenario loop, step
 // dispatch, waits.
 
 using System;
@@ -17,16 +17,16 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Placemaker.Core;
-using Placemaker.Core.Suite;
-using Placemaker.Core.Tool;
-using Placemaker.Game.Tool;
+using Citymaker.Core;
+using Citymaker.Core.Suite;
+using Citymaker.Core.Tool;
+using Citymaker.Game.Tool;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     public sealed partial class SuiteRunner
     {
@@ -119,7 +119,7 @@ namespace Placemaker.Game.Suite
 
             yield return OpenTool();
             // a clean slate: no leftover clicks, no history of the previous scenario, nothing still planning or building
-            int leftover = PlacemakerToolSystem.SuiteResetInput();
+            int leftover = CitymakerToolSystem.SuiteResetInput();
             if (leftover > 0) res["leftoverInputFrames"] = leftover;
             yield return Idle(res);
             if ((string)res["status"] == "tool-not-idle") yield break;
@@ -137,7 +137,7 @@ namespace Placemaker.Game.Suite
                 // only camera/shot/issue/select/delete steps run (checked in RunOne)
                 _tool.SuiteResetHistory();
             }
-            PlacemakerToolSystem.SuiteResetSeed(s.Seed);
+            CitymakerToolSystem.SuiteResetSeed(s.Seed);
 
             var steps = s.Steps ?? DefaultSteps(s);
             var outSteps = new JArray();
@@ -154,15 +154,15 @@ namespace Placemaker.Game.Suite
                 _scenario = s.Id + "#" + i + ":" + what;
                 var bad = Schema.CheckStep(step);
                 if (bad != null) { rec["error"] = bad; if (IsHard(what)) st.Stop = true; continue; }
-                int pending = PlacemakerToolSystem.SuiteResetInput();
+                int pending = CitymakerToolSystem.SuiteResetInput();
                 if (pending > 0) rec["staleInputFramesDropped"] = pending;
                 float t0 = Time.realtimeSinceStartup;
                 OpenWindow(i, what);
                 yield return Guard(Step(st, step, rec), e => { rec["error"] = "suite error: " + e.GetType().Name + ": " + e.Message; rec["suiteError"] = true; Say($"step {i} {what} threw: {e}"); });
-                if (PlacemakerToolSystem.SuiteFramesPending > 0)
+                if (CitymakerToolSystem.SuiteFramesPending > 0)
                 {
-                    rec["error"] = (rec["error"] != null ? rec["error"] + "; " : "") + $"{PlacemakerToolSystem.SuiteFramesPending} scripted input frames never ran (the tool did not take them)";
-                    PlacemakerToolSystem.SuiteResetInput();
+                    rec["error"] = (rec["error"] != null ? rec["error"] + "; " : "") + $"{CitymakerToolSystem.SuiteFramesPending} scripted input frames never ran (the tool did not take them)";
+                    CitymakerToolSystem.SuiteResetInput();
                 }
                 rec["ms"] = Math.Round((Time.realtimeSinceStartup - t0) * 1000f);
                 string shot = (string)step["shot"];
@@ -231,13 +231,13 @@ namespace Placemaker.Game.Suite
                 res["refused"] = $"tool not idle ({ToolState()})";
                 _abortBatch = _tool.Building
                     ? "a build was still running when the next scenario started: every later result would be contaminated"
-                    : $"the Placemaker tool stayed busy even after closing and reopening it ({ToolState()}): every later scenario would wait on it";
+                    : $"the Citymaker tool stayed busy even after closing and reopening it ({ToolState()}): every later scenario would wait on it";
             }
         }
 
         private string ToolState() =>
             $"building {_tool.Building}, planning {_tool.Planning}, ghost pending {_tool.GhostPending}, stage {_tool.Stage}, active {_tool.IsActive}"
-            + (Placemaker.Game.Preview.GhostPreview.Service is Placemaker.Game.Build.BuildService b ? ", " + b.GhostDebug : "");
+            + (Citymaker.Game.Preview.GhostPreview.Service is Citymaker.Game.Build.BuildService b ? ", " + b.GhostDebug : "");
 
         /// <summary>The build button is greyed out for a reason no waiting can change (plan errors, money, no area or type).</summary>
         private bool PlanBlocked(out string why)
@@ -247,8 +247,8 @@ namespace Placemaker.Game.Suite
             if (p.Enabled) return false;
             switch (p.Reason)
             {
-                case "Placemaker.Reason.PlanErrors": case "Placemaker.Reason.NoMoney": case "Placemaker.Reason.BuildUnavailable":
-                case "Placemaker.Reason.NoArea": case "Placemaker.Reason.NoRecipe": case "Placemaker.Reason.CloseArea": case "Placemaker.Reason.GroupsUnavailable":
+                case "Citymaker.Reason.PlanErrors": case "Citymaker.Reason.NoMoney": case "Citymaker.Reason.BuildUnavailable":
+                case "Citymaker.Reason.NoArea": case "Citymaker.Reason.NoRecipe": case "Citymaker.Reason.CloseArea": case "Citymaker.Reason.GroupsUnavailable":
                     why = p.Reason + " " + _tool.SuiteUnreadyText();
                     return true;
             }

@@ -2,11 +2,11 @@
 // rim, a plaque or wreath in the middle and benches facing in. Optional dressing: without flagpoles
 // installed it reports the usual Info and still builds the court.
 
-using Placemaker.Core.Layers.AddOns;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.AddOns;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.MemorialPark
+namespace Citymaker.Core.Layers.Types.MemorialPark
 {
     [AreaGenerator(220, Hidden = true)]
     public sealed class FlagCircleAddOn : AddOnLayer
@@ -41,7 +41,7 @@ namespace Placemaker.Core.Layers.Types.MemorialPark
                 Build(ctx, occ, c, r);
                 return;
             }
-            NoSpace(ctx, "Placemaker.AddOn.FlagCircle.Name");
+            NoSpace(ctx, "Citymaker.AddOn.FlagCircle.Name");
         }
 
         private static void Build(LayerContext ctx, Occupancy occ, float2 c, float r)

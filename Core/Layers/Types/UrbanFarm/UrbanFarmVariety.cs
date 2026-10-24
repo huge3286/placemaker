@@ -3,9 +3,9 @@
 // PlannedObject.Variation (up to AutoAssets.MaxVariety prefabs per step).
 
 using System.Collections.Generic;
-using Placemaker.Core.Build;
+using Citymaker.Core.Build;
 
-namespace Placemaker.Core.Layers.Types.UrbanFarm
+namespace Citymaker.Core.Layers.Types.UrbanFarm
 {
     public sealed class UrbanFarmVariety : IVarietyCategories
     {

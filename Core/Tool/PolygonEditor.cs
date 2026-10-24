@@ -1,4 +1,4 @@
-// Placemaker — the draw-mode outline editor, engine-free.
+// Citymaker — the draw-mode outline editor, engine-free.
 //
 // Behaviour ported from ParkingLotTool's polygon editor (KruemelGames, GPL-3.0:
 // Tools/ParkingLotToolSystem.cs, ParkingLotEdgeDrag.cs): every edit that would make the outline
@@ -9,10 +9,10 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Tool
+namespace Citymaker.Core.Tool
 {
     public sealed class PolygonEditor
     {
@@ -157,16 +157,16 @@ namespace Placemaker.Core.Tool
         /// <summary>Why a new corner at p would be refused (null = fine).</summary>
         public string CheckAdd(float2 p)
         {
-            if (Closed) return "Placemaker.Problem.AlreadyClosed";
-            if (_points.Count >= MaxPoints) return "Placemaker.Problem.TooManyPoints";
+            if (Closed) return "Citymaker.Problem.AlreadyClosed";
+            if (_points.Count >= MaxPoints) return "Citymaker.Problem.TooManyPoints";
             if (_points.Count == 0) return null;
             float2 last = _points[_points.Count - 1].xz;
-            if (math.distance(last, p) < MinEdge) return "Placemaker.Problem.TooClose";
+            if (math.distance(last, p) < MinEdge) return "Citymaker.Problem.TooClose";
             for (int i = 0; i < _points.Count - 1; i++)
-                if (math.distance(_points[i].xz, p) < MinEdge) return "Placemaker.Problem.TooClose";
+                if (math.distance(_points[i].xz, p) < MinEdge) return "Citymaker.Problem.TooClose";
             // The new segment may touch only its own predecessor segment.
             for (int i = 0; i + 1 < _points.Count - 1; i++)
-                if (Poly.SegmentsIntersect(last, p, _points[i].xz, _points[i + 1].xz)) return "Placemaker.Problem.Crossing";
+                if (Poly.SegmentsIntersect(last, p, _points[i].xz, _points[i + 1].xz)) return "Citymaker.Problem.Crossing";
             return null;
         }
 
@@ -215,10 +215,10 @@ namespace Placemaker.Core.Tool
         /// <summary>Why the outline cannot be closed now (null = it can).</summary>
         public string CheckClose()
         {
-            if (Closed) return "Placemaker.Problem.AlreadyClosed";
-            if (_points.Count < MinPoints) return "Placemaker.Problem.NeedThreePoints";
-            if (!Poly.IsSimple(Ring2D())) return "Placemaker.Problem.Crossing";
-            if (Poly.Area(Ring2D()) <= 1f) return "Placemaker.Problem.TooSmall";
+            if (Closed) return "Citymaker.Problem.AlreadyClosed";
+            if (_points.Count < MinPoints) return "Citymaker.Problem.NeedThreePoints";
+            if (!Poly.IsSimple(Ring2D())) return "Citymaker.Problem.Crossing";
+            if (Poly.Area(Ring2D()) <= 1f) return "Citymaker.Problem.TooSmall";
             return null;
         }
 
@@ -495,9 +495,9 @@ namespace Placemaker.Core.Tool
         {
             if (!Closed) return null;
             var r = Ring2D();
-            if (r.Length < MinPoints) return "Placemaker.Problem.NeedThreePoints";
-            if (!Poly.IsSimple(r)) return "Placemaker.Problem.Crossing";
-            if (Poly.Area(r) <= 1f) return "Placemaker.Problem.TooSmall";
+            if (r.Length < MinPoints) return "Citymaker.Problem.NeedThreePoints";
+            if (!Poly.IsSimple(r)) return "Citymaker.Problem.Crossing";
+            if (Poly.Area(r) <= 1f) return "Citymaker.Problem.TooSmall";
             return null;
         }
 

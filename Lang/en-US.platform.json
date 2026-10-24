@@ -1,8 +1,8 @@
 {
-  "Placemaker.Category.surface.rubber": "rubber play surfaces",
-  "Placemaker.Category.surface.bark": "bark mulch surfaces",
-  "Placemaker.Category.surface.clay": "clay surfaces",
-  "Placemaker.Category.surface.track": "running track surfaces",
-  "Placemaker.Category.surface.gravel": "gravel surfaces",
-  "Placemaker.Category.surface.rock": "rocky surfaces"
+  "Citymaker.Category.surface.rubber": "rubber play surfaces",
+  "Citymaker.Category.surface.bark": "bark mulch surfaces",
+  "Citymaker.Category.surface.clay": "clay surfaces",
+  "Citymaker.Category.surface.track": "running track surfaces",
+  "Citymaker.Category.surface.gravel": "gravel surfaces",
+  "Citymaker.Category.surface.rock": "rocky surfaces"
 }

@@ -1,7 +1,7 @@
 // Localisation: every visible string goes through translate(key, fallback).
-// English fallbacks live next to the call (t("Placemaker.UI.X", "English")) and are extracted into
+// English fallbacks live next to the call (t("Citymaker.UI.X", "English")) and are extracted into
 // Lang/en-US.ui.json by tools/extract-lang.js, so the game's locale files and the code never drift.
-// Keys owned by layers ("Placemaker.Park.*") fall back to a humanised last segment so a missing
+// Keys owned by layers ("Citymaker.Park.*") fall back to a humanised last segment so a missing
 // locale entry still reads well ("PathWidth" → "Path width") instead of showing a raw key.
 import { useCallback, useMemo } from "react";
 import { useLocalization } from "cs2/l10n";

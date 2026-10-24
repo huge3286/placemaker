@@ -3,9 +3,9 @@
 // Info issue and leaves the spot empty when nothing of a category is installed.
 
 using System.Collections.Generic;
-using Placemaker.Core.Build;
+using Citymaker.Core.Build;
 
-namespace Placemaker.Core
+namespace Citymaker.Core
 {
     public static partial class AssetCategories
     {
@@ -16,7 +16,7 @@ namespace Placemaker.Core
     }
 }
 
-namespace Placemaker.Core.Layers.Types.LookoutHill
+namespace Citymaker.Core.Layers.Types.LookoutHill
 {
     public sealed class HillCategoryRules : ICategoryRules
     {

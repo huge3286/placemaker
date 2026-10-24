@@ -1,4 +1,4 @@
-// Placemaker — parking economy: capacity, fee and comfort on real parking lanes (GPL-3.0).
+// Citymaker — parking economy: capacity, fee and comfort on real parking lanes (GPL-3.0).
 // Ported from ParkingLotTool's ParkingLotComfortSystem/ParkingLotEconomySystem (KruemelGames, GPL-3.0).
 //
 // Each parking decal of a "parking" layer spawns a real ParkingLane (prefab SubLane). Vanilla
@@ -16,14 +16,14 @@ using Game;
 using Game.Common;
 using Game.Net;
 using Game.Tools;
-using Placemaker.Core.Build;
-using Placemaker.Game.Groups;
+using Citymaker.Core.Build;
+using Citymaker.Game.Groups;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine.Scripting;
 
-namespace Placemaker.Game.Economy
+namespace Citymaker.Game.Economy
 {
     public sealed partial class ParkingEconomySystem : GameSystemBase, IEffectProvider
     {
@@ -32,7 +32,7 @@ namespace Placemaker.Game.Economy
         /// <summary>Comfort of our stalls (PLT used 0.5: between street parking and a garage).</summary>
         public const float ComfortFactor = 0.5f;
 
-        /// <summary>Setting: fee/comfort/capacity on Placemaker parking lots.</summary>
+        /// <summary>Setting: fee/comfort/capacity on Citymaker parking lots.</summary>
         public static bool FeatureEnabled = true;
         /// <summary>Setting: default fee for new lots when the plan does not set one (money per park).</summary>
         public static int DefaultFee = 0;
@@ -137,7 +137,7 @@ namespace Placemaker.Game.Economy
             }
             catch (Exception e)
             {
-                Mod.Log.Error(e, "Placemaker parking economy failed; disabled for this session (lots keep working without fees)");
+                Mod.Log.Error(e, "Citymaker parking economy failed; disabled for this session (lots keep working without fees)");
                 FeatureEnabled = false;
             }
         }
@@ -176,7 +176,7 @@ namespace Placemaker.Game.Economy
                 foreach (var kv in counted) _capacity[kv.Key] = kv.Value;
         }
 
-        /// <summary>Lane → decal (Owner) → PlacemakerMember. Bounded walk (≤ 4 owners).</summary>
+        /// <summary>Lane → decal (Owner) → CitymakerMember. Bounded walk (≤ 4 owners).</summary>
         private int GroupOfLane(Entity lane)
         {
             var e = lane;
@@ -185,7 +185,7 @@ namespace Placemaker.Game.Economy
                 if (!EntityManager.HasComponent<Owner>(e)) return 0;
                 e = EntityManager.GetComponentData<Owner>(e).m_Owner;
                 if (e == Entity.Null || !EntityManager.Exists(e)) return 0;
-                if (EntityManager.HasComponent<PlacemakerMember>(e)) return EntityManager.GetComponentData<PlacemakerMember>(e).GroupId;
+                if (EntityManager.HasComponent<CitymakerMember>(e)) return EntityManager.GetComponentData<CitymakerMember>(e).GroupId;
             }
             return 0;
         }

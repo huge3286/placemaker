@@ -4,9 +4,9 @@
 // the layer always falls back (shelter → barn → shed → pavilion) or skips with an Info issue.
 
 using System.Collections.Generic;
-using Placemaker.Core.Build;
+using Citymaker.Core.Build;
 
-namespace Placemaker.Core
+namespace Citymaker.Core
 {
     public static partial class AssetCategories
     {
@@ -18,7 +18,7 @@ namespace Placemaker.Core
     }
 }
 
-namespace Placemaker.Core.Layers.Types.AnimalPark
+namespace Citymaker.Core.Layers.Types.AnimalPark
 {
     public sealed class AnimalParkCategoryRules : ICategoryRules
     {
@@ -65,9 +65,9 @@ namespace Placemaker.Core.Layers.Types.AnimalPark
     }
 }
 
-namespace Placemaker.Core.Layers.Types.AnimalPark
+namespace Citymaker.Core.Layers.Types.AnimalPark
 {
-    using Placemaker.Core.Layers.Common;
+    using Citymaker.Core.Layers.Common;
 
     /// <summary>
     /// Art-pass defaults (2026-10-13), verified against the player's catalog dump. Vanilla has no animal

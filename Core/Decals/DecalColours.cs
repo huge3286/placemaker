@@ -1,4 +1,4 @@
-// Placemaker — decals must match the colour of what they lie on (s28 decal art pass). GPL-3.0.
+// Citymaker — decals must match the colour of what they lie on (s28 decal art pass). GPL-3.0.
 //
 // User (screenshot 58): "Still seeing decals that are squares/shapes not meant to be. Decals should MATCH THE COLOUR of the
 // thing they're on, across the board." Orange-brown dirt discs at path junctions and under lamps on a green lawn, a dark
@@ -10,7 +10,7 @@
 
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Decals
+namespace Citymaker.Core.Decals
 {
     public struct Rgb
     {

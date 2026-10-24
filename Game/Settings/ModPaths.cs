@@ -4,7 +4,7 @@ using Colossal.PSI.Environment;
 using Game.Modding;
 using Game.SceneFlow;
 
-namespace Placemaker.Game.Settings
+namespace Citymaker.Game.Settings
 {
     /// <summary>
     /// Where the mod's files live. Assembly.Location is empty for CS2 code mods (RESEARCH-NOTES rule 21),
@@ -14,7 +14,7 @@ namespace Placemaker.Game.Settings
     {
         private static string _modFolder;
 
-        /// <summary>Folder containing Placemaker.dll, Lang/ and Recipes/. Null when it cannot be determined.</summary>
+        /// <summary>Folder containing Citymaker.dll, Lang/ and Recipes/. Null when it cannot be determined.</summary>
         public static string ModFolder => _modFolder;
 
         public static void Initialize(IMod mod)
@@ -28,27 +28,27 @@ namespace Placemaker.Game.Settings
             }
             catch (Exception e)
             {
-                Mod.Log.Warn("Placemaker: could not resolve the mod folder: " + e.Message);
+                Mod.Log.Warn("Citymaker: could not resolve the mod folder: " + e.Message);
             }
             if (string.IsNullOrEmpty(_modFolder))
             {
-                // Standalone deploy fallback (Mods/Placemaker next to the user data).
+                // Standalone deploy fallback (Mods/Citymaker next to the user data).
                 try
                 {
-                    var guess = Path.Combine(EnvPath.kUserDataPath, "Mods", "Placemaker");
+                    var guess = Path.Combine(EnvPath.kUserDataPath, "Mods", "citymaker");
                     if (Directory.Exists(guess)) _modFolder = guess;
                 }
                 catch (Exception) { }
             }
-            Mod.Log.Info("Placemaker mod folder: " + (_modFolder ?? "<unknown>"));
+            Mod.Log.Info("Citymaker mod folder: " + (_modFolder ?? "<unknown>"));
         }
 
-        /// <summary>ModsData/Placemaker — player recipes and saved defaults. Created on demand.</summary>
+        /// <summary>ModsData/Citymaker — player recipes and saved defaults. Created on demand.</summary>
         public static string DataFolder
         {
             get
             {
-                var dir = Path.Combine(EnvPath.kUserDataPath, "ModsData", "Placemaker");
+                var dir = Path.Combine(EnvPath.kUserDataPath, "ModsData", "citymaker");
                 try { Directory.CreateDirectory(dir); } catch (Exception) { }
                 return dir;
             }

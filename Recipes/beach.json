@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "beach",
-  "nameKey": "Placemaker.Recipe.Beach",
-  "descriptionKey": "Placemaker.Recipe.Beach.Description",
+  "nameKey": "Citymaker.Recipe.Beach",
+  "descriptionKey": "Citymaker.Recipe.Beach.Description",
   "icon": "Media/Game/Icons/CityBeach.svg",
   "root": {
     "layer": "beach",

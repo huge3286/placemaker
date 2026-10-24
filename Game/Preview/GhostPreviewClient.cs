@@ -10,14 +10,14 @@
 // nothing when it is None. So the ghost's temporaries survive exactly as long as the active tool
 // says None; a refresh needs one Clear frame in which the new definitions are created (vanilla
 // tools: applyMode = Clear + DestroyDefinitions + new definitions in the same update). The service
-// therefore cannot set the mode itself: the Placemaker tool asks Pump() once per frame from its
+// therefore cannot set the mode itself: the Citymaker tool asks Pump() once per frame from its
 // OnUpdate and sets applyMode = Clear only on the frames the service asks for, None otherwise.
 // Never Apply — the build applies through its own BuildToolSystem.
 
 using System;
-using Placemaker.Core;
+using Citymaker.Core;
 
-namespace Placemaker.Game.Preview
+namespace Citymaker.Game.Preview
 {
     public enum GhostPhase { Hidden = 0, Pending = 1, Shown = 2, Failed = 3 }
 
@@ -45,7 +45,7 @@ namespace Placemaker.Game.Preview
         void Hide();
         GhostStatus Status { get; }
         /// <summary>
-        /// Called once per frame by the active Placemaker tool from its OnUpdate (ToolUpdate phase). The
+        /// Called once per frame by the active Citymaker tool from its OnUpdate (ToolUpdate phase). The
         /// service emits/destroys its creation definitions here and returns true when this frame must be a
         /// Clear frame (old temporaries removed, new ones generated); false = keep the temporaries (None).
         /// </summary>
@@ -136,7 +136,7 @@ namespace Placemaker.Game.Preview
         private void Fail(string what, Exception e)
         {
             _errors++;
-            Mod.Log.Warn("Placemaker: ghost preview " + what + " failed: " + e.Message + (_errors >= MaxErrors ? " — ghost preview disabled for this session" : ""));
+            Mod.Log.Warn("Citymaker: ghost preview " + what + " failed: " + e.Message + (_errors >= MaxErrors ? " — ghost preview disabled for this session" : ""));
         }
     }
 }

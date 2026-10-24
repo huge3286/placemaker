@@ -1,13 +1,13 @@
-// Placemaker roads layer (s52) — hillside terraces: small numeric helpers (a scalar grid with blur, gradient and
+// Citymaker roads layer (s52) — hillside terraces: small numeric helpers (a scalar grid with blur, gradient and
 // marching-squares contours; polylines resampled, smoothed by arc length and measured; a bucket index of segments
 // for nearest / ray queries). Pure, deterministic, no shared state.
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads.Terraces
+namespace Citymaker.Core.Layers.Roads.Terraces
 {
     /// <summary>A regular grid of values over a box (node (i, j) at Origin + (i, j)·Cell).</summary>
     internal sealed class ScalarGrid

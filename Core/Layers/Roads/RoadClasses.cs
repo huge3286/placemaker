@@ -1,4 +1,4 @@
-// Placemaker roads layer — what kind of road an existing road is (its place in the hierarchy).
+// Citymaker roads layer — what kind of road an existing road is (its place in the hierarchy).
 //
 // The roads type works with the network that is already there: it never links to a highway, it uses a big straight
 // road through the area as its spine, and a small two-lane road stays a small road. All of that needs the class of an
@@ -7,7 +7,7 @@
 
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads
+namespace Citymaker.Core.Layers.Roads
 {
     /// <summary>Place of a road in the hierarchy, smallest first.</summary>
     public enum RoadRank { Lane = 0, Minor = 1, Medium = 2, Major = 3, Highway = 4 }

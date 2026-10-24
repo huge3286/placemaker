@@ -1,4 +1,4 @@
-// Placemaker — build transaction: ComposedPlan → game entities → one group (GPL-3.0).
+// Citymaker — build transaction: ComposedPlan → game entities → one group (GPL-3.0).
 //
 // The transaction shape follows ParkManager's build workflow (tomkpunkt, GPL-3.0): definitions →
 // temporaries → game validation → apply → adopt. Improvements over the sources:
@@ -23,16 +23,16 @@ using Game.Common;
 using Game.Prefabs;
 using Game.Simulation;
 using Game.Tools;
-using Placemaker.Core;
-using Placemaker.Core.Build;
-using Placemaker.Game.Assets;
-using Placemaker.Game.Groups;
+using Citymaker.Core;
+using Citymaker.Core.Build;
+using Citymaker.Game.Assets;
+using Citymaker.Game.Groups;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine.Scripting;
 
-namespace Placemaker.Game.Build
+namespace Citymaker.Game.Build
 {
     public sealed partial class BuildService : GameSystemBase, IBuildService
     {
@@ -165,7 +165,7 @@ namespace Placemaker.Game.Build
         protected override void OnDestroy()
         {
             if (ReferenceEquals(Services.Build, this)) Services.Build = null;
-            Placemaker.Game.Preview.GhostPreview.Unregister(this);
+            Citymaker.Game.Preview.GhostPreview.Unregister(this);
             base.OnDestroy();
         }
 
@@ -187,22 +187,22 @@ namespace Placemaker.Game.Build
         {
             if (Busy)
             {
-                _status.MessageKey = "Placemaker.Build.Busy";
+                _status.MessageKey = "Citymaker.Build.Busy";
                 return false;
             }
             if (request?.Plan == null)
             {
-                SetFailed("Placemaker.Build.NothingToBuild");
+                SetFailed("Citymaker.Build.NothingToBuild");
                 return false;
             }
             if (request.Plan.HasErrors)
             {
-                SetFailed("Placemaker.Build.PlanHasErrors");
+                SetFailed("Citymaker.Build.PlanHasErrors");
                 return false;
             }
             if (_catalog == null || !_catalog.Ready)
             {
-                SetFailed("Placemaker.Build.CatalogNotReady");
+                SetFailed("Citymaker.Build.CatalogNotReady");
                 return false;
             }
             DropGhostForBuild();   // the build's first Clear frame removes the ghost's temporaries
@@ -213,11 +213,11 @@ namespace Placemaker.Game.Build
             _status = new BuildStatus { Phase = BuildPhase.Preparing, Progress = 0f, ErrorPositions = new List<float3>(), Warnings = new List<PlanIssue>() };
             // US5: the same concrete assets as preview and price (idempotent if the tool already did it).
             int auto = _catalog.ResolveAutomatic(request.Plan);
-            if (auto > 0) Mod.Log.Info($"Placemaker resolved {auto} automatic assets at build start (the tool should do this before preview/pricing).");
+            if (auto > 0) Mod.Log.Info($"Citymaker resolved {auto} automatic assets at build start (the tool should do this before preview/pricing).");
             Go(Step.Prepare);
-            Mod.Log.Info($"Placemaker build started: {request.Plan.Layers.Count} layers, replace={request.ReplaceGroup}{(request.Ungrouped ? ", ungrouped" : "")}.");
+            Mod.Log.Info($"Citymaker build started: {request.Plan.Layers.Count} layers, replace={request.ReplaceGroup}{(request.Ungrouped ? ", ungrouped" : "")}.");
             if (request.Plan.KerbJoins + request.Plan.CrosswalkJoins > 0 || request.Plan.JoinNotes.Count > 0)
-                Mod.Log.Info($"Placemaker street joins: {request.Plan.KerbJoins} footpath end(s) stop at the kerb (the game joins them), {request.Plan.CrosswalkJoins} split the street with a crosswalk."
+                Mod.Log.Info($"Citymaker street joins: {request.Plan.KerbJoins} footpath end(s) stop at the kerb (the game joins them), {request.Plan.CrosswalkJoins} split the street with a crosswalk."
                     + (request.Plan.JoinNotes.Count > 0 ? " " + string.Join("; ", request.Plan.JoinNotes) : ""));
             return true;
         }
@@ -226,7 +226,7 @@ namespace Placemaker.Game.Build
         {
             if (!Busy || _step == Step.Cleanup) return;
             if (_step == Step.Finish) return;   // last frame: let it finish
-            BeginCleanup(BuildPhase.Cancelled, "Placemaker.Build.Cancelled");
+            BeginCleanup(BuildPhase.Cancelled, "Citymaker.Build.Cancelled");
         }
 
         public void Acknowledge()
@@ -288,7 +288,7 @@ namespace Placemaker.Game.Build
                 if (_toolActivated && _step != Step.Cleanup && _toolSystem.activeTool != _tool)
                 {
                     // The player (or a mod hotkey) switched tools mid-build.
-                    if (!_applied) { BeginCleanup(BuildPhase.Failed, "Placemaker.Build.Interrupted"); return; }
+                    if (!_applied) { BeginCleanup(BuildPhase.Failed, "Citymaker.Build.Interrupted"); return; }
                     _toolSystem.activeTool = _tool;   // after Apply we only need a few quiet frames
                 }
                 switch (_step)
@@ -318,9 +318,9 @@ namespace Placemaker.Game.Build
             }
             catch (Exception e)
             {
-                Mod.Log.Error(e, $"Placemaker build failed in step {_step}");
-                if (_step == Step.Cleanup) ForceIdle(BuildPhase.Failed, "Placemaker.Build.Failed");
-                else BeginCleanup(BuildPhase.Failed, "Placemaker.Build.Failed", e.GetType().Name);
+                Mod.Log.Error(e, $"Citymaker build failed in step {_step}");
+                if (_step == Step.Cleanup) ForceIdle(BuildPhase.Failed, "Citymaker.Build.Failed");
+                else BeginCleanup(BuildPhase.Failed, "Citymaker.Build.Failed", e.GetType().Name);
             }
         }
 
@@ -337,7 +337,7 @@ namespace Placemaker.Game.Build
             _work = PlanWork.Flatten(_request.Plan);
             if (_work.DefinitionCount == 0 && _work.Terraform.Count == 0 && _work.Zoning.Count == 0 && !HasPaint())
             {
-                ForceIdle(BuildPhase.Failed, "Placemaker.Build.NothingToBuild");
+                ForceIdle(BuildPhase.Failed, "Citymaker.Build.NothingToBuild");
                 return;
             }
             ResolvePrefabs();
@@ -347,7 +347,7 @@ namespace Placemaker.Game.Build
                 // tool's hands (GetReceipt before Start) so a failed rebuild can be retried/restored.
                 if (!_registry.RequestRemove(_request.ReplaceGroup))
                 {
-                    ForceIdle(BuildPhase.Failed, "Placemaker.Build.ReplaceFailed");
+                    ForceIdle(BuildPhase.Failed, "Citymaker.Build.ReplaceFailed");
                     return;
                 }
                 Go(Step.WaitReplaced);
@@ -360,7 +360,7 @@ namespace Placemaker.Game.Build
         {
             SetProgress(0.05f);
             if (!_registry.TryGetRecordEntity(_request.ReplaceGroup, out _)) { Go(Step.ActivateTool); return; }
-            if (frame - _stepFrame > ReplaceTimeoutFrames) ForceIdle(BuildPhase.Failed, "Placemaker.Build.ReplaceFailed");
+            if (frame - _stepFrame > ReplaceTimeoutFrames) ForceIdle(BuildPhase.Failed, "Citymaker.Build.ReplaceFailed");
         }
 
         private void DoActivateTool(int frame)
@@ -373,7 +373,7 @@ namespace Placemaker.Game.Build
                 _stepFrame = frame;
                 return;
             }
-            if (_toolSystem.activeTool != _tool) { BeginCleanup(BuildPhase.Failed, "Placemaker.Build.Interrupted"); return; }
+            if (_toolSystem.activeTool != _tool) { BeginCleanup(BuildPhase.Failed, "Citymaker.Build.Interrupted"); return; }
             if (_instant)
             {
                 // Instant build: the ghost's temporaries ARE the build — no Clear, no re-emission.
@@ -430,7 +430,7 @@ namespace Placemaker.Game.Build
                 _lastMatched = -1;
                 if (_itemByKey.Count == 0)
                 {
-                    if (_work.DefinitionCount > 0) { BeginCleanup(BuildPhase.Failed, "Placemaker.Build.AssetsUnavailable"); return; }
+                    if (_work.DefinitionCount > 0) { BeginCleanup(BuildPhase.Failed, "Citymaker.Build.AssetsUnavailable"); return; }
                     // Terraform/zoning-only plan: nothing to adopt, nothing to apply.
                     _applied = true;
                     AfterApply();
@@ -459,8 +459,8 @@ namespace Placemaker.Game.Build
                 // Some pieces never materialised (the game silently drops e.g. surfaces it cannot
                 // triangulate). Build what exists and report the gap.
                 _dropped = census.Expected - census.Matched;
-                _warnings.Add("Placemaker.Build.PartsDropped");
-                Mod.Log.Warn($"Placemaker: {_dropped} of {census.Expected} planned parts did not materialise; continuing.");
+                _warnings.Add("Citymaker.Build.PartsDropped");
+                Mod.Log.Warn($"Citymaker: {_dropped} of {census.Expected} planned parts did not materialise; continuing.");
                 Go(Step.Validate);
                 _status.Phase = BuildPhase.Validating;
                 return;
@@ -468,7 +468,7 @@ namespace Placemaker.Game.Build
             if (frame - _stepFrame > MaterializeTimeoutFrames)
             {
                 CollectErrors();
-                BeginCleanup(BuildPhase.Failed, _status.ErrorPositions.Count > 0 ? _errorKey : "Placemaker.Build.Timeout");
+                BeginCleanup(BuildPhase.Failed, _status.ErrorPositions.Count > 0 ? _errorKey : "Citymaker.Build.Timeout");
             }
         }
 
@@ -484,8 +484,8 @@ namespace Placemaker.Game.Build
             if (_tool.OriginalDeleted)
             {
                 // Something we modify (an existing road we connect to) was removed meanwhile: nothing sensible to apply.
-                Mod.Log.Warn("Placemaker build stopped: an existing piece this build changes was removed meanwhile.");
-                BeginCleanup(BuildPhase.Failed, "Placemaker.Build.Interrupted");
+                Mod.Log.Warn("Citymaker build stopped: an existing piece this build changes was removed meanwhile.");
+                BeginCleanup(BuildPhase.Failed, "Citymaker.Build.Interrupted");
                 return;
             }
             if (!ApplyVerdicts())
@@ -494,24 +494,24 @@ namespace Placemaker.Game.Build
                 return;
             }
             // (s15) Never demolish an existing building: its touching pieces are left out in place (nets: see ProtectBuildings).
-            if (ProtectBuildings() < 0) { BeginCleanup(BuildPhase.Failed, "Placemaker.Build.WouldDemolish"); return; }
+            if (ProtectBuildings() < 0) { BeginCleanup(BuildPhase.Failed, "Citymaker.Build.WouldDemolish"); return; }
             int tagged = TagTemporaries();
             if (TemporariesDuplicated())
             {
                 // Never apply a doubled set: clear everything and emit once more, then give up.
                 if (!_dupRetried) { _dupRetried = true; Go(Step.ResetForRetry); return; }
-                BeginCleanup(BuildPhase.Failed, "Placemaker.Build.Duplicated");
+                BeginCleanup(BuildPhase.Failed, "Citymaker.Build.Duplicated");
                 return;
             }
             if (tagged > 0 && !CanAffordNets(out int netCost))
             {
-                Mod.Log.Warn($"Placemaker: the roads/paths of this build cost {netCost}, more than the city has.");
+                Mod.Log.Warn($"Citymaker: the roads/paths of this build cost {netCost}, more than the city has.");
                 BeginCleanup(BuildPhase.Failed, BuildErrorKeys.For("NotEnoughMoney"), 1, "NotEnoughMoney");
                 return;
             }
             if (tagged == 0)
             {
-                BeginCleanup(BuildPhase.Failed, "Placemaker.Build.NothingMaterialized");
+                BeginCleanup(BuildPhase.Failed, "Citymaker.Build.NothingMaterialized");
                 return;
             }
             _status.ErrorPositions.Clear();   // transient errors seen while settling are not real
@@ -535,7 +535,7 @@ namespace Placemaker.Game.Build
             _errorTypeName = "";
             _work = PlanWork.Flatten(_request.Plan);
             ResolvePrefabs();
-            if (_work.DefinitionCount == 0) { BeginCleanup(BuildPhase.Failed, "Placemaker.Build.NothingToBuild"); return; }
+            if (_work.DefinitionCount == 0) { BeginCleanup(BuildPhase.Failed, "Citymaker.Build.NothingToBuild"); return; }
             _status.Phase = BuildPhase.Materializing;
             _status.ErrorPositions.Clear();
             Go(Step.EmitNets);
@@ -561,7 +561,7 @@ namespace Placemaker.Game.Build
             if (frame - _stepFrame == ApplySettleFrames) DestroyOwnDefinitions();
             int stillTemp = CountTaggedTemporaries();
             if (stillTemp > 0 && frame - _stepFrame < ApplyTimeoutFrames) return;
-            if (stillTemp > 0) Mod.Log.Warn($"Placemaker: {stillTemp} parts stayed temporary after Apply; they are discarded.");
+            if (stillTemp > 0) Mod.Log.Warn($"Citymaker: {stillTemp} parts stayed temporary after Apply; they are discarded.");
             AdoptStrays();
             _registry.MarkDirty();
             // Loose builds (road grids) have no group: count what this build claimed and Apply kept.
@@ -569,7 +569,7 @@ namespace Placemaker.Game.Build
             if (members == 0)
             {
                 CollectErrors();
-                BeginCleanup(BuildPhase.Failed, _status.ErrorPositions.Count > 0 ? _errorKey : "Placemaker.Build.ApplyRejected", _errorArgs);
+                BeginCleanup(BuildPhase.Failed, _status.ErrorPositions.Count > 0 ? _errorKey : "Citymaker.Build.ApplyRejected", _errorArgs);
                 return;
             }
             ChargeNets();
@@ -587,20 +587,20 @@ namespace Placemaker.Game.Build
             {
                 // Built twice despite the pre-Apply check: roll the whole group back (Cleanup after Apply
                 // removes it through the phase-correct removal system) and report.
-                BeginCleanup(BuildPhase.Failed, "Placemaker.Build.Duplicated");
+                BeginCleanup(BuildPhase.Failed, "Citymaker.Build.Duplicated");
                 return;
             }
-            if (LooseBuild) Mod.Log.Info($"Placemaker loose build: {CountAppliedClaimed()} parts are ordinary city content (no group).");
+            if (LooseBuild) Mod.Log.Info($"Citymaker loose build: {CountAppliedClaimed()} parts are ordinary city content (no group).");
             else FinishRecord();
             RestoreTool();
             var groupId = _groupId;
             int dropped = _dropped;
-            if (_cleared > 0) NoteSkip("Placemaker.Build.Cleared", null, IssueSeverity.Info, _cleared);
-            if (_buildingsProtected > 0) NoteSkip("Placemaker.Build.BuildingsKept", null, IssueSeverity.Info, _buildingsProtected);
-            if (_ownerTemp == Entity.Null) NoteSkip("Placemaker.Build.OwnerUnavailable", null, IssueSeverity.Info, 0);
+            if (_cleared > 0) NoteSkip("Citymaker.Build.Cleared", null, IssueSeverity.Info, _cleared);
+            if (_buildingsProtected > 0) NoteSkip("Citymaker.Build.BuildingsKept", null, IssueSeverity.Info, _buildingsProtected);
+            if (_ownerTemp == Entity.Null) NoteSkip("Citymaker.Build.OwnerUnavailable", null, IssueSeverity.Info, 0);
             var issues = ComposeWarnings(dropped);
             var warnings = new List<string>(_warnings);
-            DumpFinish(groupId);   // s30: live ground, water, nets and objects to ModsData/Placemaker/debug (when enabled)
+            DumpFinish(groupId);   // s30: live ground, water, nets and objects to ModsData/Citymaker/debug (when enabled)
             VerifyLiveHollows();   // s55: a bowl in the built ground, with the target's height next to it
             ScanLivePits("after the build");
             LogSaggingEdges("after the build");   // (core) every bowl in the whole outline and its rim, with the nets standing at it
@@ -615,14 +615,14 @@ namespace Placemaker.Game.Build
                 Phase = BuildPhase.Done,
                 Progress = 1f,
                 GroupId = groupId,
-                MessageKey = headline != null ? headline.Key : "Placemaker.Build.Done",
+                MessageKey = headline != null ? headline.Key : "Citymaker.Build.Done",
                 MessageArgs = headline != null ? headline.Args : new object[] { dropped },
                 // A successful build never shows red markers (US8).
                 ErrorPositions = new List<float3>(),
                 Warnings = issues,
                 Audit = audit,
             };
-            Mod.Log.Info($"Placemaker build finished: group {groupId}, {_registry.CountMembers(groupId, true)} members, "
+            Mod.Log.Info($"Citymaker build finished: group {groupId}, {_registry.CountMembers(groupId, true)} members, "
                 + $"{issues.Count} notes, {UnityEngine.Time.frameCount - _startFrame} frames.");
         }
 
@@ -631,10 +631,10 @@ namespace Placemaker.Game.Build
         private void BeginCleanup(BuildPhase phase, string key, params object[] args)
         {
             _cleanupPhase = phase;
-            _cleanupKey = string.IsNullOrEmpty(key) ? "Placemaker.Build.Failed" : key;
+            _cleanupKey = string.IsNullOrEmpty(key) ? "Citymaker.Build.Failed" : key;
             _cleanupArgs = args ?? Array.Empty<object>();
             Go(Step.Cleanup);
-            Mod.Log.Warn($"Placemaker build {phase}: {_cleanupKey}");
+            Mod.Log.Warn($"Citymaker build {phase}: {_cleanupKey}");
         }
 
         /// <summary>
@@ -694,7 +694,7 @@ namespace Placemaker.Game.Build
             }
             catch (Exception e)
             {
-                Mod.Log.Warn("Placemaker could not restore the previous tool: " + e.Message);
+                Mod.Log.Warn("Citymaker could not restore the previous tool: " + e.Message);
             }
             _previousTool = null;
         }

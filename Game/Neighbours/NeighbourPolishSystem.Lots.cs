@@ -1,10 +1,10 @@
-// Placemaker neighbourhood polish — the per-lot flag, the painter's stamps and putting a lot back (GPL-3.0).
+// Citymaker neighbourhood polish — the per-lot flag, the painter's stamps and putting a lot back (GPL-3.0).
 //
 // Every growable lot carries a saved yes/no flag (PolishedLot). Only yes lots are edited; a yes lot next to a no lot takes
 // the whole gap up to the no lot's edge (YardStitch). The flag comes from:
 //   * "Polish new houses": a lot that spawns gets yes (off: no). A building the game replaces (rebuilt after it burnt down,
 //     collapsed or was bulldozed) gets the flag of the one that stood there (by position); a level-up keeps the entity.
-//   * the painter (Placemaker's "Polish gardens" entry): the lots inside the picked area are stamped yes or no.
+//   * the painter (Citymaker's "Polish gardens" entry): the lots inside the picked area are stamped yes or no.
 //   * "Remove all polish": every lot to no.
 // Unpolish puts a lot back: its fence and hedge lines where the game put them, its own lawns as the game made them (also the
 // grass a painted garden tucked under the house), and every piece the polish gave it (beds, paths, paving, owned lawns,
@@ -18,13 +18,13 @@ using Game.Common;
 using Game.Net;
 using Game.Prefabs;
 using Game.Tools;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Neighbours;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Neighbours;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Neighbours
+namespace Citymaker.Game.Neighbours
 {
     public sealed partial class NeighbourPolishSystem
     {
@@ -208,7 +208,7 @@ namespace Placemaker.Game.Neighbours
                     EntityManager.SetComponentData(e, f);
                     n++;
                 }
-            if (n > 0) Mod.Log.Info($"Placemaker neighbourhood polish: {n} polished lots keep the theme their kind has now.");
+            if (n > 0) Mod.Log.Info($"Citymaker neighbourhood polish: {n} polished lots keep the theme their kind has now.");
         }
 
         /// <summary>"Redo polished buildings": every polished lot whose look came from its zone (not one the painter picked, nor
@@ -235,7 +235,7 @@ namespace Placemaker.Game.Neighbours
                     n++;
                 }
             FlagsVersion++;
-            Mod.Log.Info($"Placemaker neighbourhood polish: redo, {n} polished lots take their zone's look now.");
+            Mod.Log.Info($"Citymaker neighbourhood polish: redo, {n} polished lots take their zone's look now.");
         }
 
         /// <summary>"Polish every building": every growable lot not yet polished (kinds set to Off left out) is stamped yes.</summary>
@@ -251,7 +251,7 @@ namespace Placemaker.Game.Neighbours
                     s_stamps.Add((e, true, s_polishAllTheme > 0 && s_polishAllTheme < ThemeNames.Length ? ThemeNames[s_polishAllTheme] : "zone", null));
                     n++;
                 }
-            Mod.Log.Info($"Placemaker neighbourhood polish: outgrow {(s_polishScope == null ? "the whole city" : s_polishScope)}, {n} lots to outgrow{(s_polishAllTheme > 0 ? " (" + ThemeNames[s_polishAllTheme] + ")" : "")} ({off} left out: their zone is Off).");
+            Mod.Log.Info($"Citymaker neighbourhood polish: outgrow {(s_polishScope == null ? "the whole city" : s_polishScope)}, {n} lots to outgrow{(s_polishAllTheme > 0 ? " (" + ThemeNames[s_polishAllTheme] + ")" : "")} ({off} left out: their zone is Off).");
         }
 
         /// <summary>A growable building (a house, shop, office or works the game grew on zoned land).</summary>
@@ -459,7 +459,7 @@ namespace Placemaker.Game.Neighbours
             _stampNo += no;
             _stampRestored += restored;
             if (s_stamps.Count > 0) return;
-            Mod.Log.Info($"Placemaker neighbourhood polish: {_stampYes} lots polished, {_stampNo} unpolished ({_stampRestored} of them put back){(FeatureEnabled && !Paused ? "" : " (Outgrow is paused: gardens change once it runs)")}.");
+            Mod.Log.Info($"Citymaker neighbourhood polish: {_stampYes} lots polished, {_stampNo} unpolished ({_stampRestored} of them put back){(FeatureEnabled && !Paused ? "" : " (Outgrow is paused: gardens change once it runs)")}.");
             _stampYes = _stampNo = _stampRestored = 0;
         }
 
@@ -502,7 +502,7 @@ namespace Placemaker.Game.Neighbours
                 _described.Clear();
             }
             _removeAllCount = 0;
-            Mod.Log.Info($"Placemaker neighbourhood polish: remove outgrow from {(scope == null ? "the whole city" : scope)}: {was} outgrown lots set to no, {_restoreQueue.Count} lots to put back.");
+            Mod.Log.Info($"Citymaker neighbourhood polish: remove outgrow from {(scope == null ? "the whole city" : scope)}: {was} outgrown lots set to no, {_restoreQueue.Count} lots to put back.");
         }
 
         private void DrainRestores()
@@ -515,7 +515,7 @@ namespace Placemaker.Game.Neighbours
                 if (EntityManager.Exists(e) && !EntityManager.HasComponent<Deleted>(e) && Restore(e)) _removeAllCount++;
             }
             _restoreQueue.RemoveRange(0, n);
-            if (_restoreQueue.Count == 0) Mod.Log.Info($"Placemaker neighbourhood polish: remove all polish done, {_removeAllCount} lots put back.");
+            if (_restoreQueue.Count == 0) Mod.Log.Info($"Citymaker neighbourhood polish: remove all polish done, {_removeAllCount} lots put back.");
         }
 
         /// <summary>

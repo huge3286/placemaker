@@ -1,21 +1,21 @@
-// Placemaker — persistent ECS components for build groups (GPL-3.0).
+// Citymaker — persistent ECS components for build groups (GPL-3.0).
 // Version-first ISerializable layouts (RESEARCH-NOTES rule 5): the CS2 serializer packs
 // components back to back without lengths, so readers must consume exactly what the writer
 // wrote for that version. Fields are only ever appended behind a version check.
 //
 // Ownership model (see docs/proposals/gamebuild.md): one headless record entity per group plus a
-// PlacemakerMember tag on every top-level member. Members stay vanilla top-level entities, so
-// vanilla tools (bulldozer, Move It, upgrades) keep working on them; Placemaker finds its group
+// CitymakerMember tag on every top-level member. Members stay vanilla top-level entities, so
+// vanilla tools (bulldozer, Move It, upgrades) keep working on them; Citymaker finds its group
 // through the tag in O(1).
 
 using Colossal.Serialization.Entities;
-using Placemaker.Core.Build;
+using Citymaker.Core.Build;
 using Unity.Entities;
 
-namespace Placemaker.Game.Groups
+namespace Citymaker.Game.Groups
 {
     /// <summary>Tag on every member (net edge/node, object, area, water source, carrier, companion).</summary>
-    public struct PlacemakerMember : IComponentData, IQueryTypeParameter, ISerializable
+    public struct CitymakerMember : IComponentData, IQueryTypeParameter, ISerializable
     {
         public const int CurrentVersion = 1;
         public int GroupId;
@@ -53,16 +53,16 @@ namespace Placemaker.Game.Groups
         WaterSource = 5,
         Surface = 6,
         Zoning = 7,
-        /// <summary>The "Placemaker Area" lot covering the outline: the ONE selectable/bulldozable thing (US7).</summary>
+        /// <summary>The "Citymaker Area" lot covering the outline: the ONE selectable/bulldozable thing (US7).</summary>
         OwnerArea = 8,
-        /// <summary>(s19) Invisible physical "Placemaker Zone Block" lot: blocks the road zone cells under the build.</summary>
+        /// <summary>(s19) Invisible physical "Citymaker Zone Block" lot: blocks the road zone cells under the build.</summary>
         ZoneBlocker = 9,
         /// <summary>(s17) Hidden 1-cell park building carrying the build's park stats (Economy/ParkCompanionSystem).</summary>
         ParkCompanion = 10,
     }
 
-    /// <summary>The group record. Lives on a headless entity together with <see cref="PlacemakerGroupBlob"/>.</summary>
-    public struct PlacemakerGroup : IComponentData, IQueryTypeParameter, ISerializable
+    /// <summary>The group record. Lives on a headless entity together with <see cref="CitymakerGroupBlob"/>.</summary>
+    public struct CitymakerGroup : IComponentData, IQueryTypeParameter, ISerializable
     {
         public const int CurrentVersion = 2;
         public int GroupId;
@@ -70,7 +70,7 @@ namespace Placemaker.Game.Groups
         public Entity Carrier;     // parking carrier or Entity.Null
         public Entity Companion;   // economy companion building or Entity.Null
         public int BuiltMembers;   // members at build time (Modified detection)
-        /// <summary>v2: owner lot area ("Placemaker Area" prefab) or Entity.Null (old groups, prefab unavailable).</summary>
+        /// <summary>v2: owner lot area ("Citymaker Area" prefab) or Entity.Null (old groups, prefab unavailable).</summary>
         public Entity Owner;
 
         public void Serialize<TWriter>(TWriter writer) where TWriter : IWriter
@@ -102,7 +102,7 @@ namespace Placemaker.Game.Groups
     /// ECS components cannot hold managed strings; ParkingLotTool used the same trick for its texts.
     /// </summary>
     [InternalBufferCapacity(0)]
-    public struct PlacemakerGroupBlob : IBufferElementData, ISerializable
+    public struct CitymakerGroupBlob : IBufferElementData, ISerializable
     {
         public byte Value;
 
@@ -111,7 +111,7 @@ namespace Placemaker.Game.Groups
     }
 
     /// <summary>Removal in progress (persisted so a save during removal resumes it after load).</summary>
-    public struct PlacemakerRemoval : IComponentData, IQueryTypeParameter, ISerializable
+    public struct CitymakerRemoval : IComponentData, IQueryTypeParameter, ISerializable
     {
         public const int CurrentVersion = 1;
         public int Passes;
@@ -131,5 +131,5 @@ namespace Placemaker.Game.Groups
     }
 
     /// <summary>Record still being built: excluded from empty-group cleanup. Not serialized on purpose.</summary>
-    public struct PlacemakerUnderConstruction : IComponentData, IQueryTypeParameter { }
+    public struct CitymakerUnderConstruction : IComponentData, IQueryTypeParameter { }
 }

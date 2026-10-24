@@ -1,11 +1,11 @@
-// Placemaker roads layer (s52) — "Hillside terraces": the settings of one terrace plan, read once from the bag.
+// Citymaker roads layer (s52) — "Hillside terraces": the settings of one terrace plan, read once from the bag.
 // See docs/proposals/s52.md for the design. Pure.
 
 using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads.Terraces
+namespace Citymaker.Core.Layers.Roads.Terraces
 {
     internal enum TerraceLinkStyle { Direct, Serpentine, Spiral }
 

@@ -1,4 +1,4 @@
-// rf-shops3 — entrances for the shops types, as in ParkingLotTool and Placemaker's parking type. The user: "I want to be able to
+// rf-shops3 — entrances for the shops types, as in ParkingLotTool and Citymaker's parking type. The user: "I want to be able to
 // set entrances and exits almost exactly like I can in the parking lot tool. And it wouldn't do anything unless I did."
 //
 // The player places them on the outline; nothing is suggested and Build waits for a way in for cars (a two-way entrance or
@@ -11,11 +11,11 @@
 // The marker kinds are the parking type's (same ids, icons and words), so a player who knows the parking tool knows these.
 
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Commercial
+namespace Citymaker.Core.Layers.Commercial
 {
     public static class ShopEntrances
     {
@@ -23,7 +23,7 @@ namespace Placemaker.Core.Layers.Commercial
         public const string TwoWay = "entrance", Entry = "entry", Exit = "exit", Alley = "alley", AlleyIn = "alleyIn", AlleyOut = "alleyOut", Footpath = "footpath", BusStop = "busStop";
         /// <summary>Marker kinds in display order.</summary>
         public static readonly string[] Kinds = { TwoWay, Entry, Exit, Alley, AlleyIn, AlleyOut, Footpath, BusStop };
-        private const string K = "Placemaker.Commercial.";
+        private const string K = "Citymaker.Commercial.";
 
         public static bool IsKind(string k) => System.Array.IndexOf(Kinds, k) >= 0;
         public static bool ForCars(string k) => IsKind(k) && k != Footpath && k != BusStop;
@@ -41,7 +41,7 @@ namespace Placemaker.Core.Layers.Commercial
             m.TooltipKey = K + "entrances.Tooltip";
             foreach (var k in Kinds)
             {
-                string key = "Placemaker.Parking.Marker." + Tool.MarkerKinds.Pascal(k);
+                string key = "Citymaker.Parking.Marker." + Tool.MarkerKinds.Pascal(k);
                 m.Options.Add(new ControlOption { Value = k, LabelKey = key, TooltipKey = key + ".Tip", Icon = Tool.MarkerKinds.IconFor(k == AlleyIn || k == AlleyOut ? Alley : k) });
             }
             return m;
@@ -65,10 +65,10 @@ namespace Placemaker.Core.Layers.Commercial
                 }
             var args = new object[] { 1, cars };
             if (two > 0 || (inbound > 0 && outbound > 0)) return new Readiness { Ready = true, ReasonArgs = args };
-            string reason = inbound > 0 ? "Placemaker.Parking.Reason.EntryWithoutExit"
-                : outbound > 0 ? "Placemaker.Parking.Reason.ExitWithoutEntry"
+            string reason = inbound > 0 ? "Citymaker.Parking.Reason.EntryWithoutExit"
+                : outbound > 0 ? "Citymaker.Parking.Reason.ExitWithoutEntry"
                 : K + "Reason.NeedsEntrance";
-            return new Readiness { Ready = false, NextStepKey = "Placemaker.Parking.Step.PlaceEntrance", ReasonKey = reason, ReasonArgs = args };
+            return new Readiness { Ready = false, NextStepKey = "Citymaker.Parking.Step.PlaceEntrance", ReasonKey = reason, ReasonArgs = args };
         }
 
         /// <summary>One placed entrance, on the outline, with the street it faces (when one is within reach).</summary>

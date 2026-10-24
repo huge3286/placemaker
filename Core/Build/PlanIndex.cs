@@ -1,4 +1,4 @@
-// Placemaker — spatial index over planned items (GPL-3.0).
+// Citymaker — spatial index over planned items (GPL-3.0).
 // Used to (a) recognise which temporary game entities came from OUR definitions (prefab +
 // geometry must match — unlike a baseline diff this never adopts another tool's entities or a
 // split piece of an existing road), and (b) map game error positions back to plan items for
@@ -7,7 +7,7 @@
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     public sealed class PlanIndex
     {

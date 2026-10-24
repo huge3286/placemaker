@@ -14,11 +14,11 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Types.Beach;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Types.Beach;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Common.Shore
+namespace Citymaker.Core.Layers.Common.Shore
 {
     /// <summary>What a quick look at the water around an area found.</summary>
     public struct WaterSurvey
@@ -44,7 +44,7 @@ namespace Placemaker.Core.Layers.Common.Shore
         public const float MinEdgeLength = 15f;
         /// <summary>Depth of the land band handed to the shore feature (promenade, quay apron).</summary>
         public const float DefaultBand = 12f;
-        public const string TooWetKey = "Placemaker.Shore.Issue.TooWet";
+        public const string TooWetKey = "Citymaker.Shore.Issue.TooWet";
 
         public static bool IsWet(SiteContext site, float2 p) => site?.WaterDepthAt != null && site.WaterDepthAt(p) > Shoreline.WetDepth;
 
@@ -148,8 +148,8 @@ namespace Placemaker.Core.Layers.Common.Shore
         {
             var f = new FeatureInfo
             {
-                Layer = LayerId, Target = Place, DefaultOn = true, LabelKey = "Placemaker.Feature.shore",
-                TooltipKey = "Placemaker.Feature.shore.Tooltip",
+                Layer = LayerId, Target = Place, DefaultOn = true, LabelKey = "Citymaker.Feature.shore",
+                TooltipKey = "Citymaker.Feature.shore.Tooltip",
             };
             foreach (var (k, v) in preset) f.Preset.Values[k] = v;
             return f;

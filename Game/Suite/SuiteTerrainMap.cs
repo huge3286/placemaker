@@ -10,11 +10,11 @@ using System.IO;
 using System.Linq;
 using Game.Simulation;
 using Newtonsoft.Json.Linq;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     public sealed partial class SuiteRunner
     {

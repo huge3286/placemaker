@@ -1,4 +1,4 @@
-// Game runner lab (exploration, not a Placemaker feature): "yard stitching". The game's houses are fixed models on
+// Game runner lab (exploration, not a Citymaker feature): "yard stitching". The game's houses are fixed models on
 // rectangular lots, so neighbours never join up: bare strips between lots, wedges on curves, lawns that stop short of
 // the neighbour's fence. The user fixes this by hand with the vanilla Surface Area tool (dragging a house's own lawn
 // across the gap). This does the same automatically, for every house, whatever its asset:
@@ -25,13 +25,13 @@ using Game.Prefabs;
 using Game.Tools;
 using Game.Zones;
 using Newtonsoft.Json.Linq;
-using Placemaker.Core.Build;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Build;
+using Citymaker.Core.Geometry;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     public sealed partial class SuiteRunner
     {
@@ -41,7 +41,7 @@ namespace Placemaker.Game.Suite
         {
             var b = st.S.Block;
             string shape = ((string)step["shape"] ?? "arc").ToLowerInvariant();
-            string roadName = (string)step["road"] ?? Placemaker.Core.Suite.SuiteLayout.SmallRoad;
+            string roadName = (string)step["road"] ?? Citymaker.Core.Suite.SuiteLayout.SmallRoad;
             if (!_fixture.Prefabs.TryGetValue(roadName, out var road)) { rec["error"] = "lab: no road prefab " + roadName; yield break; }
             var curves = new List<Bezier4x3>();
             float elevation = 0f, elevationTo = 0f;
@@ -152,7 +152,7 @@ namespace Placemaker.Game.Suite
                 rec["pieces"] = curves.Count;
                 st.Ring = new[] { lo + 30f, new float2(hi.x - 30f, lo.y + 30f), hi - 30f, new float2(lo.x + 30f, hi.y - 30f) };
                 Event("build");
-                Mod.Log.Info($"Placemaker lab: street {shape} ({curves.Count} pieces of {roadName}{(elevation != elevationTo ? $", climbing {elevation:F0} to {elevationTo:F0} m" : elevation != 0f ? $", {elevation:F0} m up" : "")}), not zoned");
+                Mod.Log.Info($"Citymaker lab: street {shape} ({curves.Count} pieces of {roadName}{(elevation != elevationTo ? $", climbing {elevation:F0} to {elevationTo:F0} m" : elevation != 0f ? $", {elevation:F0} m up" : "")}), not zoned");
                 yield break;
             }
             // the same zone in the other theme when this one has none (NA and EU name most zones alike)
@@ -171,7 +171,7 @@ namespace Placemaker.Game.Suite
             rec["zonedCellsTotal"] = _fixture.CountZonedCells();
             st.Ring = new[] { lo + 30f, new float2(hi.x - 30f, lo.y + 30f), hi - 30f, new float2(lo.x + 30f, hi.y - 30f) };
             Event("build");
-            Mod.Log.Info($"Placemaker lab: street {shape} ({curves.Count} pieces of {roadName}), zoned {zoneName} over ({lo.x:F0},{lo.y:F0})-({hi.x:F0},{hi.y:F0})");
+            Mod.Log.Info($"Citymaker lab: street {shape} ({curves.Count} pieces of {roadName}), zoned {zoneName} over ({lo.x:F0},{lo.y:F0})-({hi.x:F0},{hi.y:F0})");
         }
 
         // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ yards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -342,7 +342,7 @@ namespace Placemaker.Game.Suite
                 catch (Exception e)
                 {
                     failed++;
-                    if (failed <= 3) Mod.Log.Warn("Placemaker lab: yard of " + lots[k].E + " failed: " + e.Message);
+                    if (failed <= 3) Mod.Log.Warn("Citymaker lab: yard of " + lots[k].E + " failed: " + e.Message);
                 }
             }
             float m2 = cell * cell;
@@ -357,7 +357,7 @@ namespace Placemaker.Game.Suite
             rec["coveredM2"] = coveredCells * m2;
             rec["addedLawnM2"] = Math.Round(_yardPlans.Sum(p => p.AddedM2));
             rec["extraPieces"] = _yardPlans.Sum(p => p.Extra.Count);
-            Mod.Log.Info($"Placemaker lab: yards: {lots.Count} houses, {_yardPlans.Count} lawns to stretch (+{_yardPlans.Sum(p => p.AddedM2):F0} mÂ², {_yardPlans.Sum(p => p.Extra.Count)} extra pieces), "
+            Mod.Log.Info($"Citymaker lab: yards: {lots.Count} houses, {_yardPlans.Count} lawns to stretch (+{_yardPlans.Sum(p => p.AddedM2):F0} mÂ², {_yardPlans.Sum(p => p.Extra.Count)} extra pieces), "
                 + $"{noLawn} without a lawn, {tooSmall} with too little bare land, {failed} failed; bare land {bare * m2:F0} mÂ² ({farCells * m2:F0} mÂ² beyond {reach:F0} m of any lot); owned surfaces: {string.Join(", ", ownedNames)}");
 
             // the spots that change most, for before/after close-ups
@@ -424,7 +424,7 @@ namespace Placemaker.Game.Suite
                 shots.Add(sr);
             }
             rec["closeupShots"] = shots;
-            Mod.Log.Info($"Placemaker lab: yards applied: {written} lawns reshaped ({cached} with a local node cache), {vanished} not drawn (no triangles)");
+            Mod.Log.Info($"Citymaker lab: yards applied: {written} lawns reshaped ({cached} with a local node cache), {vanished} not drawn (no triangles)");
         }
 
         /// <summary>How many stretched lawns still have the shape the lab gave them (a level-up or rebuild resets them).</summary>
@@ -441,7 +441,7 @@ namespace Placemaker.Game.Suite
             rec["kept"] = kept;
             rec["reset"] = reset;
             rec["gone"] = gone;
-            Mod.Log.Info($"Placemaker lab: yards check: {kept} stretched lawns kept, {reset} reset, {gone} gone (house rebuilt or levelled up)");
+            Mod.Log.Info($"Citymaker lab: yards check: {kept} stretched lawns kept, {reset} reset, {gone} gone (house rebuilt or levelled up)");
         }
 
         private static float DistanceToRing(float2[] ring, float2 p)

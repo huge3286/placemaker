@@ -208,11 +208,11 @@ const LAYERS: Record<string, (i: Input) => Out> = {
             o.objects.push({ role: "Tree", p, yaw: R() * 6.28, r: 2.5 });
         }
         const trees = o.objects.filter((x) => x.role === "Tree").length;
-        if (skipped > 8) o.issues.push({ severity: "info", text: { key: "Placemaker.Issue.TreesSkipped", args: [skipped] } });
+        if (skipped > 8) o.issues.push({ severity: "info", text: { key: "Citymaker.Issue.TreesSkipped", args: [skipped] } });
         o.stats = [
-            { key: "Placemaker.Stat.Trees", value: trees, unit: "count" },
-            { key: "Placemaker.Stat.Benches", value: o.objects.filter((x) => x.role === "Bench").length, unit: "count" },
-            { key: "Placemaker.Stat.PathLength", value: Math.round(o.nets.filter((n) => n.role.startsWith("Pathway")).reduce((s, n) => s + netLength(n), 0)), unit: "m" },
+            { key: "Citymaker.Stat.Trees", value: trees, unit: "count" },
+            { key: "Citymaker.Stat.Benches", value: o.objects.filter((x) => x.role === "Bench").length, unit: "count" },
+            { key: "Citymaker.Stat.PathLength", value: Math.round(o.nets.filter((n) => n.role.startsWith("Pathway")).reduce((s, n) => s + netLength(n), 0)), unit: "m" },
         ];
         return o;
     },
@@ -240,11 +240,11 @@ const LAYERS: Record<string, (i: Input) => Out> = {
         o.regions.push({ key: "paved", tags: ["paved"], ring: i.ring, areaM2: A });
         o.regions.push({ key: "core", tags: ["core"], ring: circle(c, 16, 14), areaM2: Math.PI * 256 });
         o.regions.push({ key: "edge", tags: ["edge"], ring: i.ring, areaM2: A });
-        if (A > 30000) o.issues.push({ severity: "warning", text: { key: "Placemaker.Issue.PlazaLarge" }, at: [c[0], 0, c[1]] });
+        if (A > 30000) o.issues.push({ severity: "warning", text: { key: "Citymaker.Issue.PlazaLarge" }, at: [c[0], 0, c[1]] });
         o.stats = [
-            { key: "Placemaker.Stat.Benches", value: o.objects.filter((x) => x.role === "Bench").length, unit: "count" },
-            { key: "Placemaker.Stat.Lamps", value: o.objects.filter((x) => x.role === "Lamp").length, unit: "count" },
-            { key: "Placemaker.Stat.PavedArea", value: Math.round(A), unit: "m2" },
+            { key: "Citymaker.Stat.Benches", value: o.objects.filter((x) => x.role === "Bench").length, unit: "count" },
+            { key: "Citymaker.Stat.Lamps", value: o.objects.filter((x) => x.role === "Lamp").length, unit: "count" },
+            { key: "Citymaker.Stat.PavedArea", value: Math.round(A), unit: "m2" },
         ];
         return o;
     },
@@ -253,7 +253,7 @@ const LAYERS: Record<string, (i: Input) => Out> = {
         const o = empty();
         const A = area(i.ring);
         if (A < 600) {
-            o.issues.push({ severity: "error", text: { key: "Placemaker.Parking.TooSmall" } });
+            o.issues.push({ severity: "error", text: { key: "Citymaker.Parking.TooSmall" } });
             return o;
         }
         o.surfaces.push({ role: "Asphalt", ring: i.ring });
@@ -304,8 +304,8 @@ const LAYERS: Record<string, (i: Input) => Out> = {
         o.regions.push({ key: "lot", tags: ["lot"], ring: i.ring, areaM2: A });
         o.regions.push({ key: "edge", tags: ["edge"], ring: i.ring, areaM2: A });
         o.stats = [
-            { key: "Placemaker.Stat.Stalls", value: stalls, unit: "count" },
-            { key: "Placemaker.Stat.Chargers", value: num(i.v, "chargers", 0), unit: "count" },
+            { key: "Citymaker.Stat.Stalls", value: stalls, unit: "count" },
+            { key: "Citymaker.Stat.Chargers", value: num(i.v, "chargers", 0), unit: "count" },
         ];
         return o;
     },
@@ -347,11 +347,11 @@ const LAYERS: Record<string, (i: Input) => Out> = {
                 }
                 o.regions.push({ key: "block:" + idx++, tags: ["block"], ring: q, areaM2: A });
             }
-        if (tiny) o.issues.push({ severity: "info", text: { key: "Placemaker.Issue.BlockTooSmall", args: [tiny] } });
+        if (tiny) o.issues.push({ severity: "info", text: { key: "Citymaker.Issue.BlockTooSmall", args: [tiny] } });
         o.regions.push({ key: "edge", tags: ["edge"], ring: i.ring, areaM2: area(i.ring) });
         o.stats = [
-            { key: "Placemaker.Stat.RoadLength", value: Math.round(o.nets.reduce((s, x) => s + netLength(x), 0)), unit: "m" },
-            { key: "Placemaker.Stat.Blocks", value: idx, unit: "count" },
+            { key: "Citymaker.Stat.RoadLength", value: Math.round(o.nets.reduce((s, x) => s + netLength(x), 0)), unit: "m" },
+            { key: "Citymaker.Stat.Blocks", value: idx, unit: "count" },
         ];
         return o;
     },
@@ -402,7 +402,7 @@ const LAYERS: Record<string, (i: Input) => Out> = {
             }
         });
         o.regions.push({ key: "green:0", tags: ["green"], ring: i.ring, areaM2: area(i.ring) });
-        o.stats = [{ key: "Placemaker.Stat.Tents", value: tents, unit: "count" }];
+        o.stats = [{ key: "Citymaker.Stat.Tents", value: tents, unit: "count" }];
         return o;
     },
 
@@ -411,12 +411,12 @@ const LAYERS: Record<string, (i: Input) => Out> = {
         const r = { s: 6, m: 9, l: 12 }[str(i.v, "size", "m")] ?? 9;
         const p = findSpot(i.ring, r, i.reserved, o);
         if (!p) {
-            o.issues.push({ severity: "warning", text: { key: "Placemaker.Issue.NoRoom", args: ["Playground"] } });
+            o.issues.push({ severity: "warning", text: { key: "Citymaker.Issue.NoRoom", args: ["Playground"] } });
             return o;
         }
         o.surfaces.push({ role: "Decorative", ring: circle(p, r, 16) });
         o.objects.push({ role: "Furniture", p, yaw: 0, r });
-        o.stats = [{ key: "Placemaker.Stat.Playgrounds", value: 1, unit: "count" }];
+        o.stats = [{ key: "Citymaker.Stat.Playgrounds", value: 1, unit: "count" }];
         return o;
     },
 
@@ -424,11 +424,11 @@ const LAYERS: Record<string, (i: Input) => Out> = {
         const o = empty();
         const p = findSpot(i.ring, 5, i.reserved, o);
         if (!p) {
-            o.issues.push({ severity: "warning", text: { key: "Placemaker.Issue.NoRoom", args: ["Fountain"] } });
+            o.issues.push({ severity: "warning", text: { key: "Citymaker.Issue.NoRoom", args: ["Fountain"] } });
             return o;
         }
         o.objects.push({ role: "Centerpiece", p, yaw: 0, r: 5 });
-        o.stats = [{ key: "Placemaker.Stat.Fountains", value: 1, unit: "count" }];
+        o.stats = [{ key: "Citymaker.Stat.Fountains", value: 1, unit: "count" }];
         return o;
     },
 
@@ -441,7 +441,7 @@ const LAYERS: Record<string, (i: Input) => Out> = {
             const p = findSpot(i.ring, 4, i.reserved, o, start);
             if (p) o.objects.push({ role: "Furniture", p, yaw: 0, r: 4 });
         }
-        o.stats = [{ key: "Placemaker.Stat.Restrooms", value: o.objects.length, unit: "count" }];
+        o.stats = [{ key: "Citymaker.Stat.Restrooms", value: o.objects.length, unit: "count" }];
         return o;
     },
 
@@ -454,7 +454,7 @@ const LAYERS: Record<string, (i: Input) => Out> = {
             const p: V2 = [b.x0 + R() * b.w, b.y0 + R() * b.h];
             if (inside(p, i.ring) && distToRing(p, i.ring) > 4 && !blocked(p, 4.5, i.reserved, o.nets, o.objects)) o.objects.push({ role: "Tree", p, yaw: 0, r: 4.5 });
         }
-        o.stats = [{ key: "Placemaker.Stat.Trees", value: o.objects.length, unit: "count" }];
+        o.stats = [{ key: "Citymaker.Stat.Trees", value: o.objects.length, unit: "count" }];
         return o;
     },
 
@@ -474,7 +474,7 @@ const LAYERS: Record<string, (i: Input) => Out> = {
             o.zoning.push({ zone: str(i.v, "zone", "mixed"), quad: [a2, b2, add(b2, mul(n, depth)), add(a2, mul(n, depth))] });
             cells += Math.floor((L - 8) / 8) * (depth / 8);
         }
-        o.stats = [{ key: "Placemaker.Stat.ZoneCells", value: cells, unit: "count" }];
+        o.stats = [{ key: "Citymaker.Stat.ZoneCells", value: cells, unit: "count" }];
         return o;
     },
 
@@ -484,7 +484,7 @@ const LAYERS: Record<string, (i: Input) => Out> = {
         const r = Math.sqrt((A * num(i.v, "size", 15)) / 100 / Math.PI);
         const p = findSpot(i.ring, r, i.reserved, o);
         if (!p) {
-            o.issues.push({ severity: "warning", text: { key: "Placemaker.Issue.NoRoom", args: ["Pond"] } });
+            o.issues.push({ severity: "warning", text: { key: "Citymaker.Issue.NoRoom", args: ["Pond"] } });
             return o;
         }
         const lake = circle(p, r, 24);
@@ -510,7 +510,7 @@ const LAYERS: Record<string, (i: Input) => Out> = {
             const p = findSpot(i.ring, 2, i.reserved, o);
             if (p) o.objects.push({ role: "Bench", p, yaw: 0, r: 2 });
         }
-        o.stats = [{ key: "Placemaker.Stat.Benches", value: o.objects.length, unit: "count" }];
+        o.stats = [{ key: "Citymaker.Stat.Benches", value: o.objects.length, unit: "count" }];
         return o;
     },
 };
@@ -545,12 +545,12 @@ export function composeFake(root: StepModel, ring: V2[]): ComposeResult {
     const run = (step: StepModel, shape: V2[], tags: string[], regionKey: string, path: string, depth: number) => {
         if (!step.enabled) return;
         if (depth > 6 || --budget < 0) {
-            result.issues.push({ severity: "error", text: { key: "Placemaker.Issue.RecipeTooDeep" } });
+            result.issues.push({ severity: "error", text: { key: "Citymaker.Issue.RecipeTooDeep" } });
             return;
         }
         const fn = LAYERS[step.layer];
         if (!fn) {
-            result.issues.push({ severity: "error", text: { key: "Placemaker.Issue.UnknownLayer", args: [step.layer] } });
+            result.issues.push({ severity: "error", text: { key: "Citymaker.Issue.UnknownLayer", args: [step.layer] } });
             return;
         }
         const markers = step.markers.filter((m) => closestOnRing(m.p, shape).d <= 1.5);
@@ -592,7 +592,7 @@ export function composeFake(root: StepModel, ring: V2[]): ComposeResult {
             sums.get(k)!.value += s.value;
         }
     result.stats = order.map((k) => sums.get(k)!);
-    for (const l of result.layers) for (const t of l.terraform) if (t.permanent) result.permanent.push({ key: "Placemaker.Permanent.Terraform" });
+    for (const l of result.layers) for (const t of l.terraform) if (t.permanent) result.permanent.push({ key: "Citymaker.Permanent.Terraform" });
     result.cost = Math.round(result.cost);
     result.upkeep = Math.round(result.upkeep);
     result.ms = performance.now() - t0;

@@ -13,10 +13,10 @@
 // are installed (the gaps in the ring are the openings). All in the rectangle's own frame: symmetric.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns.Monuments
+namespace Citymaker.Core.Layers.AddOns.Monuments
 {
     [AreaGenerator(175)]
     public sealed class FollyAddOn : MonumentAddOn
@@ -257,7 +257,7 @@ namespace Placemaker.Core.Layers.AddOns.Monuments
             ctx.Stat(Keys.StatBenches, benches, Keys.UnitCount);
 
             if (ctx.B("planting")) Planting(ctx, occ, site, f, R, Rr, lagoon != null, Lc, La, Lb);
-            ctx.Stat("Placemaker.Stat.Monuments", 1, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Monuments", 1, Keys.UnitCount);
         }
 
         /// <summary>Reeds / shrubs at the lagoon's ends, a screen of trees behind the rotunda and the arms.</summary>

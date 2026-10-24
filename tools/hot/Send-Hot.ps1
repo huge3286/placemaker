@@ -20,7 +20,7 @@ if (-not (Test-Path $dll)) { throw "hot build failed: $dll" }
 Write-Output "hot planner: $dll"
 $text = [IO.File]::ReadAllText((Resolve-Path (Join-Path $repo $File)))
 $text = $text.Replace('{hot}', $dll.Replace('\', '\\'))
-$tmp = Join-Path $env:TEMP ("placemaker-hot-" + [IO.Path]::GetFileNameWithoutExtension($dll) + ".json")
+$tmp = Join-Path $env:TEMP ("citymaker-hot-" + [IO.Path]::GetFileNameWithoutExtension($dll) + ".json")
 [IO.File]::WriteAllText($tmp, $text)
 $extra = @(); if ($Build) { $extra += '-Build' }
 & powershell -NoProfile -File (Join-Path $repo 'tools\suite\Send-Suite.ps1') -File $tmp -Who $Who @extra

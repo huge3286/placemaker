@@ -7,10 +7,10 @@
 //   tip       the town tip: skips in lines on both sides of the aisles, garbage heaps in bays at the back, the bin lorries
 //             parked in a row.
 
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Yards
+namespace Citymaker.Core.Layers.Types.Yards
 {
     [AreaGenerator(66, Group = "industrial")]
     public sealed class JunkYardLayer : IndustrialYardLayer

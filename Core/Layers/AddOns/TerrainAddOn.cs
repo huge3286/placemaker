@@ -10,10 +10,10 @@
 //  * on ground that is already rough the decoration scales back, or is skipped with an Info issue.
 
 using System;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns
+namespace Citymaker.Core.Layers.AddOns
 {
     [AreaGenerator(140)]
     public sealed class TerrainAddOn : AddOnLayer
@@ -23,8 +23,8 @@ namespace Placemaker.Core.Layers.AddOns
         /// <summary>Roughness (m, RMS of the ground about its ±8 m local mean) where decoration starts to scale back / is skipped.</summary>
         public const float RoughStart = 0.25f, RoughSkip = 0.75f;
 
-        public const string IssueRough = "Placemaker.AddOn.Terrain.Issue.RoughGround";
-        public const string IssueScaled = "Placemaker.AddOn.Terrain.Issue.ScaledBack";
+        public const string IssueRough = "Citymaker.AddOn.Terrain.Issue.RoughGround";
+        public const string IssueScaled = "Citymaker.AddOn.Terrain.Issue.ScaledBack";
 
         protected override string Area => "AddOn.Terrain";
         public override string Id => LayerId;
@@ -70,7 +70,7 @@ namespace Placemaker.Core.Layers.AddOns
                 if (scale < 0.2f)
                 {
                     ctx.Issue(IssueSeverity.Info, IssueRough);
-                    ctx.Stat("Placemaker.Stat.TerrainChange", 0, Keys.UnitM);
+                    ctx.Stat("Citymaker.Stat.TerrainChange", 0, Keys.UnitM);
                     return;
                 }
                 if (scale < 0.95f)
@@ -96,11 +96,11 @@ namespace Placemaker.Core.Layers.AddOns
             if (spec.Mode == TerrainMode.Berms)
             {
                 spec.Frontage = StreetFrontage.Edges(region.Ring, StreetFrontage.Roads(ctx.Input));
-                if (spec.Frontage.Count == 0) ctx.Issue(IssueSeverity.Info, "Placemaker.AddOn.Terrain.Issue.NoRoads");
+                if (spec.Frontage.Count == 0) ctx.Issue(IssueSeverity.Info, "Citymaker.AddOn.Terrain.Issue.NoRoads");
             }
             var r = TerrainShaper.Shape(ctx, region, spec);
-            if (r.Cells == 0) ctx.Issue(IssueSeverity.Info, "Placemaker.AddOn.Terrain.Issue.Nothing");
-            ctx.Stat("Placemaker.Stat.TerrainChange", System.Math.Round(math.max(r.MaxOffset, -r.MinOffset), 1), Keys.UnitM);
+            if (r.Cells == 0) ctx.Issue(IssueSeverity.Info, "Citymaker.AddOn.Terrain.Issue.Nothing");
+            ctx.Stat("Citymaker.Stat.TerrainChange", System.Math.Round(math.max(r.MaxOffset, -r.MinOffset), 1), Keys.UnitM);
         }
 
         /// <summary>

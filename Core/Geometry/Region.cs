@@ -1,10 +1,10 @@
-// Placemaker — polygon with holes, the result type of every boolean / offset / split operation.
+// Citymaker — polygon with holes, the result type of every boolean / offset / split operation.
 
 using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Geometry
+namespace Citymaker.Core.Geometry
 {
     /// <summary>How the inside of a set of rings is decided.</summary>
     public enum FillRule

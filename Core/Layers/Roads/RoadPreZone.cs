@@ -1,4 +1,4 @@
-// Placemaker roads layer (s34) — "Pre-zone all new roads".
+// Citymaker roads layer (s34) — "Pre-zone all new roads".
 //
 // Playtest (image 62): the Roads type zoned its frontage through the edge-zoning cutout feature — quads clipped by
 // whatever the layer reserved, then snapped to cells — and the result was a scattered pattern of zoned and empty
@@ -10,11 +10,11 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Build;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Build;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads
+namespace Citymaker.Core.Layers.Roads
 {
     public static class RoadPreZone
     {

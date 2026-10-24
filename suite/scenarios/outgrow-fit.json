@@ -1,5 +1,5 @@
 {
-  "_about": "Outgrow fit (the user's B-minus report): houses grow with Outgrow on along Placemaker's own roads (cul-de-sacs with turning circles, a roundabout centre) and on shop and industry streets; the outgrow check measures gardens over roads (round ends apart), garden edges with no fence or a fence the game hides, and lawns or paving that stop short of the fence, with close-ups of the worst spots. Send with: powershell -File tools/suite/Send-Suite.ps1 -File suite/scenarios/outgrow-fit.json -Who outgrow-fit",
+  "_about": "Outgrow fit (the user's B-minus report): houses grow with Outgrow on along Citymaker's own roads (cul-de-sacs with turning circles, a roundabout centre) and on shop and industry streets; the outgrow check measures gardens over roads (round ends apart), garden edges with no fence or a fence the game hides, and lawns or paving that stop short of the fence, with close-ups of the worst spots. Send with: powershell -File tools/suite/Send-Suite.ps1 -File suite/scenarios/outgrow-fit.json -Who outgrow-fit",
   "scenarios": [
     {
       "id": "outgrow-culdesacs",

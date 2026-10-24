@@ -1,10 +1,10 @@
 {
-  "Placemaker.Issue.CutoutNotZonable": "A shop plot faces no road the game zones from. It is left to the park.",
-  "Placemaker.Issue.BuildingsKept": "{0} buildings are in the way. They are kept: nothing is built on their lots.",
-  "Placemaker.Issue.BuildingsLeftOut": "{0} parts were left out or cut back to keep clear of existing buildings.",
-  "Placemaker.Problem.OnlyBuildings": "Only things the brush rules keep off are under the paint (buildings, other builds, zoning, water). Paint somewhere else, or change the rules.",
-  "Placemaker.Hint.BuildingsKept": "{0} buildings in the selection stay: nothing is built on their lots.",
-  "Placemaker.Settings.PaintAvoidBuildings": "Paint: keep off buildings",
-  "Placemaker.Settings.PaintAvoidBuildings.Desc": "Plain Paint cuts building lots out of the painted area (shaded red while painting). Off = the old behaviour: the outline covers buildings, and the build still leaves them standing.",
-  "Placemaker.Why.AreaTooSmall": "Needs a bigger area (at least {0} m²)."
+  "Citymaker.Issue.CutoutNotZonable": "A shop plot faces no road the game zones from. It is left to the park.",
+  "Citymaker.Issue.BuildingsKept": "{0} buildings are in the way. They are kept: nothing is built on their lots.",
+  "Citymaker.Issue.BuildingsLeftOut": "{0} parts were left out or cut back to keep clear of existing buildings.",
+  "Citymaker.Problem.OnlyBuildings": "Only things the brush rules keep off are under the paint (buildings, other builds, zoning, water). Paint somewhere else, or change the rules.",
+  "Citymaker.Hint.BuildingsKept": "{0} buildings in the selection stay: nothing is built on their lots.",
+  "Citymaker.Settings.PaintAvoidBuildings": "Paint: keep off buildings",
+  "Citymaker.Settings.PaintAvoidBuildings.Desc": "Plain Paint cuts building lots out of the painted area (shaded red while painting). Off = the old behaviour: the outline covers buildings, and the build still leaves them standing.",
+  "Citymaker.Why.AreaTooSmall": "Needs a bigger area (at least {0} m²)."
 }

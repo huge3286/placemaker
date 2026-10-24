@@ -17,8 +17,8 @@ const LauncherInner = () => {
     return (
         <Tip
             direction="down"
-            title={t("Placemaker.Name", "Placemaker")}
-            description={t("Placemaker.UI.LauncherTip", "Choose an area and turn it into a park, plaza, parking lot, streets… or your own mix.")}
+            title={t("Citymaker.Name", "citymaker")}
+            description={t("Citymaker.UI.LauncherTip", "Choose an area and turn it into a park, plaza, parking lot, streets… or your own mix.")}
             footer={<Keys keys={["Ctrl", "Shift", "A"]} />}
         >
             <div className={s.wrap} data-testid="launcher" data-open={state.open ? "true" : "false"}>
@@ -36,8 +36,8 @@ const PolishLauncherInner = () => {
     return (
         <Tip
             direction="down"
-            title={t("Placemaker.UI.Polish.Name", "Outgrow")}
-            description={t("Placemaker.UI.Polish.LauncherTip", "Pick buildings and outgrow their gardens: shared fences and hedges, lawns or painted ground, planting, by theme.")}
+            title={t("Citymaker.UI.Polish.Name", "Outgrow")}
+            description={t("Citymaker.UI.Polish.LauncherTip", "Pick buildings and outgrow their gardens: shared fences and hedges, lawns or painted ground, planting, by theme.")}
         >
             <div className={s.wrap} data-testid="polish-launcher" data-open={on ? "true" : "false"}>
                 <SafeFloatingButton src={icon("shrub")} selected={on} onSelect={act.togglePolish} className={s.button} />

@@ -3,9 +3,9 @@
 // implementations are kept; these ids stay loadable as hidden aliases (settings are translated by
 // LayerAliases, and loaded recipes/receipts are normalised to the canonical ids).
 
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 
-namespace Placemaker.Core.Layers.Types.UrbanFarm
+namespace Citymaker.Core.Layers.Types.UrbanFarm
 {
     [AreaGenerator(132, Hidden = true)]
     public sealed class HoneyHivesAddOn : LayerAlias

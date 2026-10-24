@@ -1,13 +1,13 @@
-// Placemaker roads layer — the planned road network between generation and output.
+// Citymaker roads layer — the planned road network between generation and output.
 // Holds generated edges as Bézier curves, welds coincident end points into nodes, prunes
 // stubs and tracks which nodes connect to existing roads.
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads
+namespace Citymaker.Core.Layers.Roads
 {
     internal sealed class RoadEdge
     {

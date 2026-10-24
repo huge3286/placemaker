@@ -1,4 +1,4 @@
-// Placemaker roads layer — city blocks (buildable land between roads) and frontage strips.
+// Citymaker roads layer — city blocks (buildable land between roads) and frontage strips.
 //
 // Blocks are the bounded faces of the planar arrangement of: generated roads, existing roads inside
 // the area and the area outline, each face shrunk by the half-width of the road along each of its
@@ -10,10 +10,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads
+namespace Citymaker.Core.Layers.Roads
 {
     internal static class RoadBlocks
     {

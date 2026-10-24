@@ -7,9 +7,9 @@
 // catalog-dump (2026-10-13); all vanilla except where a fallback chain starts with a modded item.
 // Each ref keeps vanilla fallbacks, so a missing item degrades to the next, then to the category.
 
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 
-namespace Placemaker.Core.Layers.Plaza
+namespace Citymaker.Core.Layers.Plaza
 {
     public static class PlazaArt
     {

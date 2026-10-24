@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace Placemaker.Core.Layers.Common
+namespace Citymaker.Core.Layers.Common
 {
     public static class LayerAliases
     {

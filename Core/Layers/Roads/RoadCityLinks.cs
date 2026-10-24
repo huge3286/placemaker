@@ -1,4 +1,4 @@
-// Placemaker roads layer (smarter roads) — the joins between the new network and the city, placed the way a designer would.
+// Citymaker roads layer (smarter roads) — the joins between the new network and the city, placed the way a designer would.
 //
 // Candidates come from both sides:
 //   continue   a street inside the area runs on, straight through the perimeter, to the first road it meets (or to a
@@ -13,10 +13,10 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads
+namespace Citymaker.Core.Layers.Roads
 {
     internal static class RoadCityLinks
     {

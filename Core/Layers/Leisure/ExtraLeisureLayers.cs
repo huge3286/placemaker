@@ -1,11 +1,11 @@
 // Optional round-4 types: skate park, cemetery grounds, greenway (linear park).
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Park;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Park;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Leisure
+namespace Citymaker.Core.Layers.Leisure
 {
     /// <summary>
     /// Skate park: a paved bowl area with a cluster of ramps/rails in the middle (sports.skate),
@@ -99,7 +99,7 @@ namespace Placemaker.Core.Layers.Leisure
             LeisureKit.Plant(ctx, occ, region, (int)(region.Area / 10000f * 30f), ObjectRole.Tree, ctx.L("x"), 2.4f, 12f, 0.5f, 0x7E5u, p => padRegion.Contains(p));
             EmitGreenRegions(ctx, occ, 60f);
             CommonStats(ctx);
-            ctx.Stat("Placemaker.Stat.Equipment", ramps, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Equipment", ramps, Keys.UnitCount);
         }
     }
 
@@ -214,7 +214,7 @@ namespace Placemaker.Core.Layers.Leisure
             if (ctx.B("fence")) Fence(ctx, gates, AssetMix.One(""), 3f);
             EmitGreenRegions(ctx, occ, 80f);
             CommonStats(ctx);
-            ctx.Stat("Placemaker.Stat.Graves", count, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Graves", count, Keys.UnitCount);
         }
     }
 

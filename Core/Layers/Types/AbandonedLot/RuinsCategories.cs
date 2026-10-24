@@ -8,9 +8,9 @@
 // park furniture — here that junk is exactly the point.
 
 using System.Collections.Generic;
-using Placemaker.Core.Build;
+using Citymaker.Core.Build;
 
-namespace Placemaker.Core
+namespace Citymaker.Core
 {
     public static partial class AssetCategories
     {
@@ -24,7 +24,7 @@ namespace Placemaker.Core
     }
 }
 
-namespace Placemaker.Core.Layers.Types.Ruins
+namespace Citymaker.Core.Layers.Types.Ruins
 {
     public sealed class RuinsCategoryRules : ICategoryRules
     {

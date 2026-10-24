@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "containerYard",
-  "nameKey": "Placemaker.Recipe.ContainerYard",
-  "descriptionKey": "Placemaker.Recipe.ContainerYard.Description",
+  "nameKey": "Citymaker.Recipe.ContainerYard",
+  "descriptionKey": "Citymaker.Recipe.ContainerYard.Description",
   "icon": "Media/Game/Icons/ZoneIndustrialWarehouses.svg",
   "root": {
     "layer": "containerYard",

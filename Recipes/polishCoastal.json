@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "polishCoastal",
-  "nameKey": "Placemaker.UI.Painter.Theme.coastal",
-  "descriptionKey": "Placemaker.UI.Painter.ThemeTip.coastal",
+  "nameKey": "Citymaker.UI.Painter.Theme.coastal",
+  "descriptionKey": "Citymaker.UI.Painter.ThemeTip.coastal",
   "icon": "Media/Game/Icons/Zones.svg",
   "root": {
     "layer": "polishCoastal",

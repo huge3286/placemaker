@@ -15,11 +15,11 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Plaza
+namespace Citymaker.Core.Layers.Plaza
 {
     internal static class PlazaLevels
     {
@@ -42,7 +42,7 @@ namespace Placemaker.Core.Layers.Plaza
                 minB = math.min(minB, math.dot(d, side)); maxB = math.max(maxB, math.dot(d, side));
             }
             float spanA = maxA - minA, spanB = maxB - minB;
-            if (spanA < 24f || spanB < 16f) { ctx.Issue(IssueSeverity.Info, "Placemaker.Plaza.Issue.TooSmallForLevels"); return 0; }
+            if (spanA < 24f || spanB < 16f) { ctx.Issue(IssueSeverity.Info, "Citymaker.Plaza.Issue.TooSmallForLevels"); return 0; }
             region.DeepestPoint(out float inscribed, null, 12);
             float falloff = math.clamp(inscribed * 0.25f, 4f, 14f);
             float h = math.max(0.5f, ctx.F("levelHeight"));

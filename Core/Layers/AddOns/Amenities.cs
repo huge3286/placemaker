@@ -12,11 +12,11 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core
+namespace Citymaker.Core
 {
     /// <summary>Amenity asset categories (round 5). Subcategories are also classified as their parent where one exists.</summary>
     public static partial class AssetCategories
@@ -29,7 +29,7 @@ namespace Placemaker.Core
     }
 }
 
-namespace Placemaker.Core.Layers.AddOns
+namespace Citymaker.Core.Layers.AddOns
 {
     /// <summary>Footprint and default position of one amenity.</summary>
     public sealed class AmenitySpec
@@ -112,7 +112,7 @@ namespace Placemaker.Core.Layers.AddOns
         /// <summary>FeatureInfo for an amenity on a host (target = its place, options = the host's position / path controls).</summary>
         public static FeatureInfo Feature(string host, string layer, bool paths) => new FeatureInfo
         {
-            Layer = layer, Target = Place(layer), LabelKey = "Placemaker.Feature." + layer, TooltipKey = "Placemaker.Feature." + layer + ".Tooltip",
+            Layer = layer, Target = Place(layer), LabelKey = "Citymaker.Feature." + layer, TooltipKey = "Citymaker.Feature." + layer + ".Tooltip",
             Options = paths ? new[] { AtControl(layer), PathControl(layer) } : new[] { AtControl(layer) },
         };
 

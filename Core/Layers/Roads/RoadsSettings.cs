@@ -1,14 +1,14 @@
-// Placemaker roads layer — control schema and mapping to the generator parameters.
+// Citymaker roads layer — control schema and mapping to the generator parameters.
 // The ~45 GridParameters of Grid Road Generator (Ti4goc) are exposed as one clean schema:
 // a handful of essentials per pattern (VisibleWhen "pattern=…"), every option grouped under a plain heading.
 // Control ids are save format: never rename, only add.
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Roads.Generators;
+using Citymaker.Core.Layers.Roads.Generators;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads
+namespace Citymaker.Core.Layers.Roads
 {
     public enum RoadPattern { Grid, Tree, Organic, Contour, Mixed, Loop, Superblock, Concentric, Radial, Terraces }
 
@@ -165,7 +165,7 @@ namespace Placemaker.Core.Layers.Roads
     /// <summary>Schema construction and settings → generator parameters.</summary>
     public static class RoadsSchema
     {
-        public const string KeyPrefix = "Placemaker.Roads.";
+        public const string KeyPrefix = "Citymaker.Roads.";
         /// <summary>Default perimeter corner (m): the tightest a two-lane road turns cleanly (its half width 8 m + 6 m, rounded up).</summary>
         public const float TightCorner = 15f;
         /// <summary>Perimeter corner of the winding styles (m): their streets curve, a tight corner would look out of place.</summary>
@@ -185,8 +185,8 @@ namespace Placemaker.Core.Layers.Roads
         public static string Label(string id) => KeyPrefix + "Control." + id;
         public static string Tooltip(string id) => KeyPrefix + "Control." + id + ".Tooltip";
         public static string OptionLabel(string id, string value) => KeyPrefix + "Option." + id + "." + value;
-        /// <summary>The panel reads group headings from "Placemaker.UI.Group.{id}" (shared across layers).</summary>
-        public static string GroupLabel(string group) => "Placemaker.UI.Group." + group;
+        /// <summary>The panel reads group headings from "Citymaker.UI.Group.{id}" (shared across layers).</summary>
+        public static string GroupLabel(string group) => "Citymaker.UI.Group." + group;
 
         public static List<ControlSchema> Build()
         {
@@ -194,7 +194,7 @@ namespace Placemaker.Core.Layers.Roads
 
             // ── Essentials ────────────────────────────────────────────────
             var pattern = Choice(RoadsIds.Pattern, ControlTier.Essential, "layout", "grid", PatternValues);
-            // Pattern options are text choices: no "placemaker" coui host exists and vanilla has no
+            // Pattern options are text choices: no "citymaker" coui host exists and vanilla has no
             // pattern icons. Bundled icons are requested in docs/proposals/roads.md.
             c.Add(pattern);
             var mix = Choice(RoadsIds.RoadMix, ControlTier.Essential, "roadTypes", RoadMixes.Automatic, RoadMixes.Values());
@@ -302,9 +302,9 @@ namespace Placemaker.Core.Layers.Roads
             c.Add(Choice(RoadsIds.LandShape, ControlTier.Essential, "terrain", "natural", new[] { "terrace", "natural" }));
             c.Add(Slider(RoadsIds.MaxGrade, ControlTier.More, "terrain", 4, 16, 1, "%", 10));
             var preZone = Choice(RoadsIds.PreZone, ControlTier.Essential, "zoning", RoadPreZone.Default, RoadPreZone.Values());
-            // The zone types read like everywhere else (Placemaker.Zone.<kind>).
+            // The zone types read like everywhere else (Citymaker.Zone.<kind>).
             foreach (var o in preZone.Options)
-                if (o.Value != RoadPreZone.None) { o.LabelKey = "Placemaker.Zone." + o.Value; o.TooltipKey = "Placemaker.Zone." + o.Value + ".Tooltip"; }
+                if (o.Value != RoadPreZone.None) { o.LabelKey = "Citymaker.Zone." + o.Value; o.TooltipKey = "Citymaker.Zone." + o.Value + ".Tooltip"; }
             c.Add(preZone);
 
             // ── s52: hillside terraces (more) ────────────────────────────

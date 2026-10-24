@@ -13,16 +13,16 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Beach
+namespace Citymaker.Core.Layers.Types.Beach
 {
     public sealed class ShoreGround
     {
-        public const string CliffKey = "Placemaker.Shore.Issue.Cliff";
-        public const string EarthworkKey = "Placemaker.Shore.Issue.Earthwork";
+        public const string CliffKey = "Citymaker.Shore.Issue.Cliff";
+        public const string EarthworkKey = "Citymaker.Shore.Issue.Earthwork";
         /// <summary>Shores more than this share cliff get the cliff-top treatment instead of a beach / quay.</summary>
         public const float CliffShoreShare = 0.7f;
 

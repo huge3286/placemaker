@@ -1,0 +1,14 @@
+{
+  "formatVersion": 1,
+  "id": "roads-with-parks",
+  "nameKey": "Citymaker.Recipe.RoadsWithParks",
+  "descriptionKey": "Citymaker.Recipe.RoadsWithParks.Description",
+  "icon": "Media/Game/Icons/ParksAndRecreation.svg",
+  "root": {
+    "layer": "roads",
+    "settings": { "pattern": "grid", "gridSpacing": 120 },
+    "children": [
+      { "layer": "park", "target": "block" }
+    ]
+  }
+}

@@ -19,9 +19,9 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 
-namespace Placemaker.Core.Layers.Types.Scrapyard
+namespace Citymaker.Core.Layers.Types.Scrapyard
 {
     public static class GritAssets
     {

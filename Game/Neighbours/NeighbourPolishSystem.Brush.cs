@@ -1,11 +1,11 @@
-// Global outgrow's brush (PlacemakerToolSystem.Painter, UpdateOutgrowBrushInput): which buildings a stroke touches.
+// Global outgrow's brush (CitymakerToolSystem.Painter, UpdateOutgrowBrushInput): which buildings a stroke touches.
 // No area, no smart edges: a lot the brush passes over at all is in.
 
 using System.Collections.Generic;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Neighbours
+namespace Citymaker.Game.Neighbours
 {
     public sealed partial class NeighbourPolishSystem
     {

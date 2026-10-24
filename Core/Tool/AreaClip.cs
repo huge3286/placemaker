@@ -1,4 +1,4 @@
-// Placemaker — "Keep off existing roads" (FEEDBACK-2 #3).
+// Citymaker — "Keep off existing roads" (FEEDBACK-2 #3).
 //
 // A drawn or painted area that overlaps existing roads would plant trees on the asphalt. Before
 // planning, the corridors of nearby nets (centre line ± half the composition width, which in CS2
@@ -12,10 +12,10 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Tool
+namespace Citymaker.Core.Tool
 {
     public sealed class AreaClipResult
     {
@@ -42,8 +42,8 @@ namespace Placemaker.Core.Tool
         public const float MinRemovedArea = 2f;
         public const float SampleSpacing = 2f;
 
-        public const string IssueTrimmed = "Placemaker.Issue.KeptOffRoads";
-        public const string IssueSplit = "Placemaker.Issue.AreaSplitByRoad";
+        public const string IssueTrimmed = "Citymaker.Issue.KeptOffRoads";
+        public const string IssueSplit = "Citymaker.Issue.AreaSplitByRoad";
 
         public static bool ClipsSource(AreaSource s) => s == AreaSource.Drawn || s == AreaSource.Painted;
 

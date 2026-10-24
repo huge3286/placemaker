@@ -8,14 +8,14 @@
 // 2 Lush grass, 3 Dirt, 4 Sand; 0 erases back to the procedural base).
 
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Common
+namespace Citymaker.Core.Layers.Common
 {
     public static class TerrainPaint
     {
-        public const string PermanentKey = "Placemaker.Paint.Issue.Permanent";
+        public const string PermanentKey = "Citymaker.Paint.Issue.Permanent";
 
         /// <summary>
         /// A patch with a soft edge: the outline at half strength feathered over <paramref name="blend"/> m (with a

@@ -1,10 +1,10 @@
-// Placemaker "Zoning" category — the looks of an area's buildings as Placemaker types (GPL-3.0).
+// Citymaker "Zoning" category — the looks of an area's buildings as Citymaker types (GPL-3.0).
 //
 // Each look (Garden, Natural, Tidy, Yard, Meadow, Rustic, Coastal, Manicured; Core/Neighbours/PolishLooks) is a type in the
 // Make row's Zoning category: its option rows are every setting the neighbourhood polish reads per house (reach and
 // joining, fences, lawns and paint, ground, planting and features, paths and shops; PolishLooks.Knobs), its styles are
 // Compact, Standard and Sprawling (and the player's own, as for every type). Planning counts the buildings in the area;
-// Build (Game/Tool/PlacemakerToolSystem.Polish) polishes them with the look and the values the rows have, saved on each
+// Build (Game/Tool/CitymakerToolSystem.Polish) polishes them with the look and the values the rows have, saved on each
 // building (NeighbourPolishSystem).
 // Two tools in one: Zoning (zoneArea: zone the empty land, or only edit the buildings there) and Outgrow (shapeLots: lots
 // grow past their borders). Up to three zones (A, B, C) to zone, each a zone type (or an exact zone prefab: any, mods' too)
@@ -25,32 +25,32 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Placemaker.Core.Build;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.AddOns;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Neighbours;
+using Citymaker.Core.Build;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.AddOns;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Neighbours;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Zoning
+namespace Citymaker.Core.Layers.Types.Zoning
 {
     public abstract class PolishLookLayer : LayerBase
     {
         public const string Prefix = "polish";
-        public const string StatBuildings = "Placemaker.Polish.Stat.Buildings";
+        public const string StatBuildings = "Citymaker.Polish.Stat.Buildings";
 
         /// <summary>The look this type is (PolishLooks.BuiltIn id).</summary>
         public abstract string LookId { get; }
 
         protected override string Area => "Polish";
         public override string Id => Prefix + char.ToUpperInvariant(LookId[0]) + LookId.Substring(1);
-        public override string NameKey => "Placemaker.UI.Painter.Theme." + LookId;
+        public override string NameKey => "Citymaker.UI.Painter.Theme." + LookId;
         public override string Icon => "Media/Game/Icons/Zones.svg";
         public override LayerKind Kind => LayerKind.Fill;
         public override float MinArea => 20f;
 
-        public const string StatCells = "Placemaker.Polish.Stat.Cells";
-        public const string StatZone = "Placemaker.Polish.Stat.Zone.", StatExact = "Placemaker.Polish.Stat.ZoneExact";
+        public const string StatCells = "Citymaker.Polish.Stat.Cells";
+        public const string StatZone = "Citymaker.Polish.Stat.Zone.", StatExact = "Citymaker.Polish.Stat.ZoneExact";
         public static readonly string[] Patterns = { "mixed", "clumps", "even" };
         public const int MaxDepth = 6, MaxWidth = 10;
 

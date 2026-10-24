@@ -14,12 +14,12 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Park;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Park;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Beach
+namespace Citymaker.Core.Layers.Types.Beach
 {
     public enum ShoreMode { Edge = 0, Inside = 1, Assumed = 2 }
 
@@ -28,8 +28,8 @@ namespace Placemaker.Core.Layers.Types.Beach
 
     public sealed class Shoreline
     {
-        public const string NoWaterKey = "Placemaker.Shore.Issue.NoWater";
-        public const string WaterInsideKey = "Placemaker.Shore.Issue.WaterInside";
+        public const string NoWaterKey = "Citymaker.Shore.Issue.NoWater";
+        public const string WaterInsideKey = "Citymaker.Shore.Issue.WaterInside";
         public const float WetDepth = 0.05f;
         public static readonly string[] Sides = { "auto", "awayFromRoad", "north", "east", "south", "west" };
 

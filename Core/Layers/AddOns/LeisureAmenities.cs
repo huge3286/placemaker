@@ -2,10 +2,10 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns
+namespace Citymaker.Core.Layers.AddOns
 {
     [AreaGenerator(164)]
     public sealed class ChessAddOn : AmenityAddOn
@@ -99,7 +99,7 @@ namespace Placemaker.Core.Layers.AddOns
             if (ctx.B("lamps"))
                 for (int k = -1; k <= 1; k += 2)
                     Put(ctx, occ, site.Local(k * (site.HalfLength - 0.9f), SideSign(site, toward) * (site.HalfWidth - 0.9f)), 0f, ObjectRole.Lamp, new AssetRef(""), null, 0.5f, Hashing.Mix(ctx.Seed, 0x1A0u + (uint)(k + 1)));
-            ctx.Stat("Placemaker.Stat.GameTables", placed, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.GameTables", placed, Keys.UnitCount);
         }
     }
 
@@ -204,7 +204,7 @@ namespace Placemaker.Core.Layers.AddOns
                     float side = -SideSign(site, toward);
                     Put(ctx, occ, site.Local(k * (site.HalfLength - 2.5f), side * (site.HalfWidth - 2.5f)), 0f, ObjectRole.Tree, new AssetRef(""), null, 2.4f, Hashing.Mix(ctx.Seed, 0x7E0u + (uint)(k + 1)));
                 }
-            ctx.Stat("Placemaker.Stat.Jets", jets ? placed : 0, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Jets", jets ? placed : 0, Keys.UnitCount);
             ctx.Stat(Keys.StatBenches, seats, Keys.UnitCount);
             ctx.Plan.Facts["padRadius"] = r;
         }
@@ -445,7 +445,7 @@ namespace Placemaker.Core.Layers.AddOns
                     if (Put(ctx, occ, p, run.Yaw + (agility & 1) * math.PI * 0.5f, ObjectRole.Furniture, AssetMix.Pick(ids, v), AssetCategories.DogAgility, 1.3f, v)) agility++;
                 }
             }
-            ctx.Stat("Placemaker.Stat.AgilityItems", agility, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.AgilityItems", agility, Keys.UnitCount);
             ctx.Stat(Keys.StatBenches, benches, Keys.UnitCount);
             ctx.Plan.Facts["dogAmenities"] = extras;
         }
@@ -496,7 +496,7 @@ namespace Placemaker.Core.Layers.AddOns
                 Put(ctx, occ, site.Local(end - 0.4f, side * 0.6f), yaw, ObjectRole.Bench, AssetMix.One(ctx.S("benchAsset")), null, 1.2f, Hashing.Mix(ctx.Seed, 0xBE0u));
             if (ctx.B("bin")) Put(ctx, occ, site.Local(-end, side * 0.4f), 0f, ObjectRole.Bin, new AssetRef(""), null, 0.5f, Hashing.Mix(ctx.Seed, 0xB1u));
             if (ctx.B("lamp")) Put(ctx, occ, site.Local(-end, -side * (site.HalfWidth - 0.7f)), 0f, ObjectRole.Lamp, new AssetRef(""), null, 0.45f, Hashing.Mix(ctx.Seed, 0x1Au));
-            ctx.Stat("Placemaker.Stat.Noticeboards", placed, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Noticeboards", placed, Keys.UnitCount);
         }
     }
 }

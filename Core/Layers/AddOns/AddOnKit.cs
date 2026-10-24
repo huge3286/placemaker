@@ -4,11 +4,11 @@
 //     so the parent's path network and its prefab stay untouched).
 //   • Arrival: where people come from (the park's spur end at the place, else the nearest path point).
 
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns
+namespace Citymaker.Core.Layers.AddOns
 {
     public static class AddOnKit
     {

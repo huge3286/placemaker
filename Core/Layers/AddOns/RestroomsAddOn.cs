@@ -3,10 +3,10 @@
 // go near the outline (street frontage) instead.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns
+namespace Citymaker.Core.Layers.AddOns
 {
     [AreaGenerator(120)]
     public sealed class RestroomsAddOn : AddOnLayer
@@ -96,8 +96,8 @@ namespace Placemaker.Core.Layers.AddOns
                 LeisureKit.Put(ctx, occ, spot + fwd * (radius + 0.9f) + side * binSide * (radius + 0.4f), yaw, ObjectRole.Bin, AssetMix.One("", AddOnAssets.Bin), null, 0.4f,
                     Hashing.Mix(ctx.Seed, 0xB1Bu + (uint)placed), 0.2f, 0.1f);
             }
-            if (placed == 0) NoSpace(ctx, "Placemaker.AddOn.Restrooms.Name");
-            else if (placed < wanted) ctx.Issue(IssueSeverity.Info, "Placemaker.AddOn.Restrooms.Issue.Fewer", placed, wanted);
+            if (placed == 0) NoSpace(ctx, "Citymaker.AddOn.Restrooms.Name");
+            else if (placed < wanted) ctx.Issue(IssueSeverity.Info, "Citymaker.AddOn.Restrooms.Issue.Fewer", placed, wanted);
             ctx.Stat(Keys.StatRestrooms, placed, Keys.UnitCount);
         }
     }

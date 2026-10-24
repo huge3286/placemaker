@@ -1,13 +1,13 @@
 // "Dirt jumps" feature: kids and BMX riders dig jump lines into any leftover ground — offered by the
 // abandoned lot and the urban ruins (and usable by any recipe). See DirtJumps for the shaping.
 
-using Placemaker.Core.Layers.Types.Scrapyard;
-using Placemaker.Core.Layers.AddOns;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Types.Ruins;
+using Citymaker.Core.Layers.Types.Scrapyard;
+using Citymaker.Core.Layers.AddOns;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Types.Ruins;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.UrbanRuins
+namespace Citymaker.Core.Layers.Types.UrbanRuins
 {
     [AreaGenerator(172)]
     public sealed class DirtJumpsAddOn : AddOnLayer
@@ -48,8 +48,8 @@ namespace Placemaker.Core.Layers.Types.UrbanRuins
             var deep = region.DeepestPoint(out _, null, 14);
             int built = DirtJumps.PlaceLines(ctx, region, occ, new Zones(), deep, axis, ctx.I("lines"), ctx.I("jumps"), ctx.F("height"), ctx.F("spacing"),
                 ctx.B("startHill"), ctx.B("paint"), ctx.I("paintLayer"), Hashing.Mix(ctx.Seed, 0xD127u));
-            if (built == 0) NoSpace(ctx, "Placemaker.AddOn.DirtJumps.Name");
-            ctx.Stat("Placemaker.Stat.Jumps", built, Keys.UnitCount);
+            if (built == 0) NoSpace(ctx, "Citymaker.AddOn.DirtJumps.Name");
+            ctx.Stat("Citymaker.Stat.Jumps", built, Keys.UnitCount);
             ctx.Plan.Facts["jumps"] = built;
         }
     }

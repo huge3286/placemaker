@@ -11,9 +11,9 @@
 #>
 $ErrorActionPreference = 'Stop'
 $repo = Resolve-Path (Join-Path $PSScriptRoot '..\..')
-if (-not (Test-Path (Join-Path $repo 'bin\Release\Placemaker.dll'))) { throw 'bin\Release\Placemaker.dll is missing: build the mod once first' }
-$name = 'PlacemakerHot_' + (Get-Date -Format 'HHmmss_fff')
-$out = & dotnet build (Join-Path $PSScriptRoot 'PlacemakerHot.csproj') -c Release "-p:HotName=$name" -nologo -v:q 2>&1
+if (-not (Test-Path (Join-Path $repo 'bin\Release\Citymaker.dll'))) { throw 'bin\Release\Citymaker.dll is missing: build the mod once first' }
+$name = 'CitymakerHot_' + (Get-Date -Format 'HHmmss_fff')
+$out = & dotnet build (Join-Path $PSScriptRoot 'CitymakerHot.csproj') -c Release "-p:HotName=$name" -nologo -v:q 2>&1
 if ($LASTEXITCODE -ne 0) { $out | Select-String -Pattern 'error' | ForEach-Object { $_.Line }; throw 'hot build failed' }
 $dll = Join-Path $repo "bin\Hot\$name.dll"
 if (-not (Test-Path $dll)) { throw "no $dll" }

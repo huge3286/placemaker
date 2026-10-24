@@ -1,4 +1,4 @@
-// Placemaker — lift raycast hits on any member of a build to its owner lot (GPL-3.0).
+// Citymaker — lift raycast hits on any member of a build to its owner lot (GPL-3.0).
 // Uses Harmony 2.2.2 (MIT, Andreas Pardeike) as a library; see Library/Harmony/LICENSE.
 // Adapted from ParkingLotTool's ParkingLotRaycastPatch (KruemelGames, GPL-3.0).
 //
@@ -19,7 +19,7 @@ using Game.Tools;
 using HarmonyLib;
 using Unity.Entities;
 
-namespace Placemaker.Game.Groups.Patches
+namespace Citymaker.Game.Groups.Patches
 {
     [HarmonyPatch(typeof(ToolRaycastSystem), nameof(ToolRaycastSystem.GetRaycastResult))]
     internal static class RaycastLiftPatch
@@ -33,7 +33,7 @@ namespace Placemaker.Game.Groups.Patches
         private static bool Prepare()
         {
             if (AccessTools.Method(typeof(ToolRaycastSystem), nameof(ToolRaycastSystem.GetRaycastResult)) != null) return true;
-            Mod.Log.Warn("Placemaker: ToolRaycastSystem.GetRaycastResult no longer exists; builds are selectable per part only.");
+            Mod.Log.Warn("Citymaker: ToolRaycastSystem.GetRaycastResult no longer exists; builds are selectable per part only.");
             return false;
         }
 
@@ -72,7 +72,7 @@ namespace Placemaker.Game.Groups.Patches
                 // Never break the player's tools: give up lifting for this session.
                 Enabled = false;
                 _broken = true;
-                Mod.Log.Error(e, "Placemaker raycast lift failed; disabled for this session");
+                Mod.Log.Error(e, "Citymaker raycast lift failed; disabled for this session");
             }
         }
     }

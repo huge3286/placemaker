@@ -2,7 +2,7 @@
 //   {"do":"lab","op":"lineup","match":"^Rock\\d+$","exclude":"Pillar","max":24,"perRow":6,"gap":3,"at":[0,0]}
 //   {"do":"lab","op":"lineup","names":["PileSandLarge01","Boulder03"],"sink":0.5,"turn":40,"roll":0}   (a name may repeat)
 // Every object whose prefab name matches (sorted by name; buildings left out) stands in rows along +x, rows along +z, a
-// flag pole 4 m before the first of each row. The step's record and Placemaker.log list each one's name, size and spot,
+// flag pole 4 m before the first of each row. The step's record and Citymaker.log list each one's name, size and spot,
 // and every name that matched (also past "max"; "max":0 only lists them, all of them). The camera's "area" target frames the line-up.
 
 using System.Collections;
@@ -18,7 +18,7 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     public sealed partial class SuiteRunner
     {
@@ -58,7 +58,7 @@ namespace Placemaker.Game.Suite
             if (max <= 0)
             {
                 // Names only: every match in the log, 40 to a line, nothing placed.
-                for (int k = 0; k < order.Count; k += 40) Mod.Log.Info($"Placemaker lab: lineup names {k}: {string.Join(" | ", order.Skip(k).Take(40))}");
+                for (int k = 0; k < order.Count; k += 40) Mod.Log.Info($"Citymaker lab: lineup names {k}: {string.Join(" | ", order.Skip(k).Take(40))}");
                 yield break;
             }
             var pick = order.Take(max).ToList();
@@ -118,11 +118,11 @@ namespace Placemaker.Game.Suite
             {
                 var at = s.at + shift;
                 items.Add(new JObject { ["i"] = i, ["name"] = s.name, ["size"] = new JArray(R(s.size.x), R(s.size.y), R(s.size.z)), ["row"] = i / perRow, ["col"] = i % perRow });
-                Mod.Log.Info($"Placemaker lab: lineup {i} (row {i / perRow}, col {i % perRow}) {s.name} size {s.size.x:F1} x {s.size.y:F1} x {s.size.z:F1} at ({at.x:F0}, {at.y:F0})");
+                Mod.Log.Info($"Citymaker lab: lineup {i} (row {i / perRow}, col {i % perRow}) {s.name} size {s.size.x:F1} x {s.size.y:F1} x {s.size.z:F1} at ({at.x:F0}, {at.y:F0})");
                 i++;
             }
             rec["items"] = items;
-            Mod.Log.Info($"Placemaker lab: lineup matched {order.Count}: {string.Join(", ", order.Take(400))}");
+            Mod.Log.Info($"Citymaker lab: lineup matched {order.Count}: {string.Join(", ", order.Take(400))}");
             var lo = shift - new float2(6f, 2f);
             var hi = shift + new float2(width + 2f, z + 2f);
             st.Ring = new[] { lo, new float2(hi.x, lo.y), hi, new float2(lo.x, hi.y) };

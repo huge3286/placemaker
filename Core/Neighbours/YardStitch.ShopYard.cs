@@ -1,4 +1,4 @@
-// Placemaker neighbourhood polish — what a shop's or an office's outgrown land holds (GPL-3.0).
+// Citymaker neighbourhood polish — what a shop's or an office's outgrown land holds (GPL-3.0).
 //
 // Any building whose look makes its land a car park yard gets one (a shop or an office by default; a house or a tower when
 // the player gives it such a look: its service corner is only bins). A shop's extra land used to be one concrete slab out to its fence ("it's just kind of an empty field, it's weird"). Now,
@@ -6,7 +6,7 @@
 //   * a grass strip inside the fence (not along the street) with a few slim trees and bushes between them;
 //   * near the shop: paved, a service corner behind one of the building's back corners (dumpsters, a gas cage; pallets,
 //     crates, cardboard, a skip on a bigger lot, a shed or a backup generator on a big one) and an overflow car park in
-//     marked rows, most bays with a parked car or van (Placemaker's vehicle props; decoration: nobody drives in);
+//     marked rows, most bays with a parked car or van (Citymaker's vehicle props; decoration: nobody drives in);
 //   * further out (past shopFar of the lot): no concrete, the ground painted green with a few trees and bushes.
 // Pieces are the house's own (StitchPlan.Paths and Bushes), made and kept like every garden piece.
 //
@@ -25,10 +25,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Neighbours
+namespace Citymaker.Core.Neighbours
 {
     public static partial class YardStitch
     {

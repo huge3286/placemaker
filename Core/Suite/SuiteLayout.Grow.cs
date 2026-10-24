@@ -5,7 +5,7 @@
 
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Suite
+namespace Citymaker.Core.Suite
 {
     public sealed partial class SuiteLayout
     {

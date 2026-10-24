@@ -11,10 +11,10 @@
 // Context-aware dressing (leaves under trees, oil in bays…) is the composer's pass: Core/Decals/Dressing.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns
+namespace Citymaker.Core.Layers.AddOns
 {
     [AreaGenerator(150)]
     public sealed class DecalsAddOn : AddOnLayer
@@ -170,7 +170,7 @@ namespace Placemaker.Core.Layers.AddOns
                 ctx.Object(p, yaw, ObjectRole.Decal, AssetMix.Pick(ids, v), v, -1, category);
                 placed++;
             }
-            ctx.Stat("Placemaker.Stat.Decals", placed, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Decals", placed, Keys.UnitCount);
         }
 
         /// <summary>Typical edge length (m) of a theme's decals in the real catalog (vanilla + common packs).</summary>

@@ -1,4 +1,4 @@
-// Placemaker roads layer (s52) — "Hillside terraces": the roads up and down the hill, and the bank walks.
+// Citymaker roads layer (s52) — "Hillside terraces": the roads up and down the hill, and the bank walks.
 //
 // Links join a terrace street to the next one up (the first street a ray up the slope meets). Every link has a level
 // landing where it meets a street (junctions on terraces are level) and climbs at most just under the steepest-road
@@ -20,10 +20,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads.Terraces
+namespace Citymaker.Core.Layers.Roads.Terraces
 {
     internal sealed class TerraceRoute
     {

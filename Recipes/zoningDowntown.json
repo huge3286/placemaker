@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "zoningDowntown",
-  "nameKey": "Placemaker.Zoning.Type.downtown",
-  "descriptionKey": "Placemaker.Zoning.Type.downtown.Tooltip",
+  "nameKey": "Citymaker.Zoning.Type.downtown",
+  "descriptionKey": "Citymaker.Zoning.Type.downtown.Tooltip",
   "icon": "Media/Game/Icons/Zones.svg",
   "root": {
     "layer": "zoningDowntown",

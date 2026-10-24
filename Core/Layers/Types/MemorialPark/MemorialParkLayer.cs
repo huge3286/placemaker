@@ -15,20 +15,20 @@
 //     each set against a hedge backdrop, and a large sculpture as the focal piece.
 
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.AddOns.Monuments;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Leisure;
-using Placemaker.Core.Layers.Park;
-using Placemaker.Core.Layers.Types.AdventurePlayground;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.AddOns.Monuments;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Leisure;
+using Citymaker.Core.Layers.Park;
+using Citymaker.Core.Layers.Types.AdventurePlayground;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.MemorialPark
+namespace Citymaker.Core.Layers.Types.MemorialPark
 {
     [AreaGenerator(218, Group = "parks")]
     public sealed class MemorialParkLayer : LeisureLayer
     {
-        public const string K = "Placemaker.Memorial.";
+        public const string K = "Citymaker.Memorial.";
         public static readonly string[] Styles = { "garden", "square", "war", "reflection", "sculpture" };
 
         protected override string Area => "Memorial";
@@ -219,8 +219,8 @@ namespace Placemaker.Core.Layers.Types.MemorialPark
 
             EmitGreenRegions(ctx, st.Occ, 100f);
             CommonStats(ctx);
-            ctx.Stat("Placemaker.Stat.Rooms", st.Rooms, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Sculptures", st.Sculptures, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Rooms", st.Rooms, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Sculptures", st.Sculptures, Keys.UnitCount);
             ctx.Plan.Facts["rooms"] = st.Rooms;
             ctx.Plan.Facts["sculptures"] = st.Sculptures;
             ctx.Plan.Facts["plaques"] = st.Plaques;

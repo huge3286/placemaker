@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Placemaker.Core.Tool
+namespace Citymaker.Core.Tool
 {
     /// <summary>
     /// List-backed LIFO. System.Collections.Generic.Stack&lt;T&gt; is ambiguous when compiling against

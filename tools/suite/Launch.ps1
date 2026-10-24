@@ -1,5 +1,5 @@
 # Plain launch for the user: starts CS2 to the main menu with THEIR OWN settings (nothing swapped, no window flags,
-# no suite token, no test world) and only local mods: Placemaker plus any -Mods named here (Paradox mods by DLL name,
+# no suite token, no test world) and only local mods: Citymaker plus any -Mods named here (Paradox mods by DLL name,
 # copied from the subscribed-mods cache into Mods\ for this session and removed again when the game closes).
 #   powershell -File tools/suite/Launch.ps1 -Mods PreservePhotoMode,SunGlasses
 #   powershell -File tools/suite/Launch.ps1 -AllMods        # the whole playset, as the launcher would

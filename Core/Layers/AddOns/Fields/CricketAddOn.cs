@@ -5,10 +5,10 @@
 // ends, a pavilion on the arrival side with benches round the boundary, optional floodlights.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns.Fields
+namespace Citymaker.Core.Layers.AddOns.Fields
 {
     [AreaGenerator(185)]
     public sealed class CricketAddOn : FieldAddOn

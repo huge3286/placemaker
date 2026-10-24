@@ -1,4 +1,4 @@
-// Placemaker — registers Lang/<locale>*.json with the game's LocalizationManager.
+// Citymaker — registers Lang/<locale>*.json with the game's LocalizationManager.
 //
 // Every workstream ships its own file per locale (en-US.core.json, en-US.tool.json, en-US.park.json…)
 // so parallel work never conflicts; this merges them. Late community locales (I18N Everywhere,
@@ -13,10 +13,10 @@ using System.IO;
 using System.Text.RegularExpressions;
 using Colossal;
 using Game.SceneFlow;
-using Placemaker.Core.Tool;
-using Placemaker.Game.Settings;
+using Citymaker.Core.Tool;
+using Citymaker.Game.Settings;
 
-namespace Placemaker.Game.Localization
+namespace Citymaker.Game.Localization
 {
     public static class LocalizationLoader
     {
@@ -38,7 +38,7 @@ namespace Placemaker.Game.Localization
             s_Extra = extraKeys;
             s_Files = LoadFiles(ModPaths.ModFolder == null ? null : Path.Combine(ModPaths.ModFolder, "Lang"));
             var lm = GameManager.instance?.localizationManager;
-            if (lm == null) { Mod.Log.Warn("Placemaker: no LocalizationManager, texts will show as keys"); return; }
+            if (lm == null) { Mod.Log.Warn("Citymaker: no LocalizationManager, texts will show as keys"); return; }
             if (!s_Listening)
             {
                 lm.onSupportedLocalesChanged += RegisterPending;
@@ -82,7 +82,7 @@ namespace Placemaker.Game.Localization
                 }
                 catch (Exception e)
                 {
-                    Mod.Log.Warn("Placemaker: locale " + locale + " not registered: " + e.Message);
+                    Mod.Log.Warn("Citymaker: locale " + locale + " not registered: " + e.Message);
                 }
                 s_Registered.Add(locale);
             }
@@ -114,7 +114,7 @@ namespace Placemaker.Game.Localization
             var files = new Dictionary<string, Dictionary<string, string>>(StringComparer.OrdinalIgnoreCase);
             if (string.IsNullOrEmpty(folder) || !Directory.Exists(folder))
             {
-                Mod.Log.Warn("Placemaker: Lang folder not found (" + (folder ?? "<null>") + ")");
+                Mod.Log.Warn("Citymaker: Lang folder not found (" + (folder ?? "<null>") + ")");
                 return files;
             }
             var paths = Directory.GetFiles(folder, "*.json");
@@ -132,13 +132,13 @@ namespace Placemaker.Game.Localization
                     {
                         if (kv.Value.Kind != JsonKind.String) continue;
                         if (dict.ContainsKey(kv.Key) && dict[kv.Key] != kv.Value.AsString())
-                            Mod.Log.Warn("Placemaker: key " + kv.Key + " defined twice for " + locale + " (" + Path.GetFileName(path) + " wins)");
+                            Mod.Log.Warn("Citymaker: key " + kv.Key + " defined twice for " + locale + " (" + Path.GetFileName(path) + " wins)");
                         dict[kv.Key] = kv.Value.AsString();
                     }
                 }
                 catch (Exception e)
                 {
-                    Mod.Log.Warn("Placemaker: skipping " + Path.GetFileName(path) + ": " + e.Message);
+                    Mod.Log.Warn("Citymaker: skipping " + Path.GetFileName(path) + ": " + e.Message);
                 }
             }
             return files;

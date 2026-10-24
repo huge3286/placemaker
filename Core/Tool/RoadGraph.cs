@@ -1,4 +1,4 @@
-// Placemaker — road-graph helpers for perimeter and multi-block selection.
+// Citymaker — road-graph helpers for perimeter and multi-block selection.
 //
 // Block picking itself is Core/Geometry/PlanarGraph.PickFace. This file keeps what the selection
 // needs on top of it, working on an ON-DEMAND graph (IRoadGraph reads the ECS lazily, so perimeter
@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Tool
+namespace Citymaker.Core.Tool
 {
     public struct RoadLink
     {

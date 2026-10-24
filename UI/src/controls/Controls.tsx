@@ -50,7 +50,7 @@ export const ControlRow = ({ c, ctx, className, avail }: { c: ControlEx; ctx: Ro
             else act.setValue(step.path, c.id, v);
         }
     };
-    const help = c.tooltip ? t(c.tooltip, "") : c.kind === "arrangement" ? t("Placemaker.UI.Arrangement.Hint", "Repeats in this order along the edges") : "";
+    const help = c.tooltip ? t(c.tooltip, "") : c.kind === "arrangement" ? t("Citymaker.UI.Arrangement.Hint", "Repeats in this order along the edges") : "";
     const tip = off && avail?.reason ? avail.reason + (help ? " — " + help : "") : help;
     // Wide editors get their own line under the label: lists, and choices whose labels wouldn't fit beside it.
     const stacked = c.kind === "arrangement" || c.kind === "assetMulti" || (c.kind === "choice" && choiceLayout(c, t) !== "inline");
@@ -63,8 +63,8 @@ export const ControlRow = ({ c, ctx, className, avail }: { c: ControlEx; ctx: Ro
                     iconSize={11}
                     className={s.mini}
                     testId={`lock-${c.id}`}
-                    title={t("Placemaker.UI.Locked", "Kept when randomizing")}
-                    description={t("Placemaker.UI.LockedHint", "Click to let Randomize change it again.")}
+                    title={t("Citymaker.UI.Locked", "Kept when randomizing")}
+                    description={t("Citymaker.UI.LockedHint", "Click to let Randomize change it again.")}
                     onClick={() => act.unlockValue(step.path, c.id)}
                 />
             ) : (
@@ -76,7 +76,7 @@ export const ControlRow = ({ c, ctx, className, avail }: { c: ControlEx; ctx: Ro
                     iconSize={11}
                     className={s.mini}
                     testId={`reset-${c.id}`}
-                    title={t("Placemaker.UI.ResetValue", "Reset to default")}
+                    title={t("Citymaker.UI.ResetValue", "Reset to default")}
                     onClick={() => {
                         if (sink) sink.set(c.id, def as SettingValue);
                         else {
@@ -153,7 +153,7 @@ function renderEditor(c: ControlEx, value: SettingValue, commit: (v: SettingValu
         case "markers":
             return <MarkersEditor c={c} ctx={ctx} />;
         default:
-            return <div className={s.unknown}>{t("Placemaker.UI.UnknownControl", "Unsupported")}</div>;
+            return <div className={s.unknown}>{t("Citymaker.UI.UnknownControl", "Unsupported")}</div>;
     }
 }
 
@@ -383,8 +383,8 @@ const AssetEditor = ({
                 {value
                     ? list?.find((a) => a.id === value)?.name ?? (resolved?.id === value && resolved.name ? resolved.name : name(c.assetCategory, value))
                     : autoName
-                      ? t("Placemaker.UI.Picker.AutoIs", "Automatic · {0}", [autoName])
-                      : t("Placemaker.UI.Picker.Auto", "Automatic")}
+                      ? t("Citymaker.UI.Picker.AutoIs", "Automatic · {0}", [autoName])
+                      : t("Citymaker.UI.Picker.Auto", "Automatic")}
             </div>
             <Icon name="chevronRight" size={11} tint="dim" />
         </button>
@@ -420,7 +420,7 @@ const AssetMultiEditor = ({ c, value, commit, path }: { c: ControlEx; value: str
                     }}
                 >
                     <AutoMosaic items={autoPool(list, c.assetCategory, 3)} size={20} testId={`asset-thumb-${c.id}`} />
-                    <div className={s.chipText}>{t("Placemaker.UI.Picker.Auto", "Automatic")}</div>
+                    <div className={s.chipText}>{t("Citymaker.UI.Picker.Auto", "Automatic")}</div>
                 </button>
             ) : (
                 value.map((id) => (
@@ -441,7 +441,7 @@ const AssetMultiEditor = ({ c, value, commit, path }: { c: ControlEx; value: str
                     </div>
                 ))
             )}
-            <Btn icon="plus" iconSize={12} label={t("Placemaker.UI.Choose", "Choose")} className={s.chipAdd} onClick={openPicker} testId={`assetmulti-add-${c.id}`} />
+            <Btn icon="plus" iconSize={12} label={t("Citymaker.UI.Choose", "Choose")} className={s.chipAdd} onClick={openPicker} testId={`assetmulti-add-${c.id}`} />
         </div>
     );
 };
@@ -487,7 +487,7 @@ const ArrangementEditor = ({ c, value, commit }: { c: ControlEx; value: string[]
             <Btn
                 icon="plus"
                 iconSize={12}
-                label={t("Placemaker.UI.Add", "Add")}
+                label={t("Citymaker.UI.Add", "Add")}
                 className={s.chipAdd}
                 testId={`arrangement-add-${c.id}`}
                 onClick={() =>
@@ -522,12 +522,12 @@ const MarkersEditor = ({ c, ctx }: { c: ControlEx; ctx: RowCtx }) => {
                             testId={`markers-${kind}`}
                             label={
                                 active
-                                    ? t("Placemaker.UI.Markers.Active", "Done ({0})", [count])
+                                    ? t("Citymaker.UI.Markers.Active", "Done ({0})", [count])
                                     : count
-                                    ? t("Placemaker.UI.Markers.PlaceN", "Place ({0})", [count])
-                                    : t("Placemaker.UI.Markers.Place", "Place")
+                                    ? t("Citymaker.UI.Markers.PlaceN", "Place ({0})", [count])
+                                    : t("Citymaker.UI.Markers.Place", "Place")
                             }
-                            description={t("Placemaker.UI.Markers.Hint", "Click the outline to add; right-click one to remove.")}
+                            description={t("Citymaker.UI.Markers.Hint", "Click the outline to add; right-click one to remove.")}
                             onClick={() => (active ? act.endMarkers() : act.startMarkers(ctx.step.path, kind))}
                         />
                         {count > 0 && !active ? (
@@ -535,7 +535,7 @@ const MarkersEditor = ({ c, ctx }: { c: ControlEx; ctx: RowCtx }) => {
                                 icon="close"
                                 iconSize={11}
                                 testId={`markers-clear-${kind}`}
-                                title={t("Placemaker.UI.Markers.Clear", "Remove all")}
+                                title={t("Citymaker.UI.Markers.Clear", "Remove all")}
                                 onClick={() => act.clearMarkers(ctx.step.path, kind)}
                             />
                         ) : null}
@@ -562,7 +562,7 @@ export function summarize(
     // A "master" switch leads its group (the rest only shows when it is on): off → the group is "Off".
     const first = list[0];
     const master = first.kind === "toggle" && (list.length === 1 || list.slice(1).some((c) => (c.visibleWhen ?? "").includes(first.id)));
-    if (master && valueOf(step, first) !== true) return t("Placemaker.UI.Off", "Off");
+    if (master && valueOf(step, first) !== true) return t("Citymaker.UI.Off", "Off");
     const parts: string[] = [];
     for (const c of list) {
         const v = valueOf(step, c);
@@ -596,8 +596,8 @@ export function summarize(
             }
         }
     }
-    if (master && !parts.length) return t("Placemaker.UI.On", "On");
-    if (!parts.length) return t("Placemaker.UI.Picker.Auto", "Automatic");
+    if (master && !parts.length) return t("Citymaker.UI.On", "On");
+    if (!parts.length) return t("Citymaker.UI.Picker.Auto", "Automatic");
     // Keep it to what fits one header line (~30 characters): the first values win.
     let out = parts[0];
     for (const p of parts.slice(1, 3)) {
@@ -668,7 +668,7 @@ export const ControlList = ({
             !(exclude && exclude.has(c.id)),
     );
     if (visible.length === 0) {
-        return typedMarkers || only || exclude?.size ? null : <div className={s.none}>{t("Placemaker.UI.NoSettings", "No settings: adapts to the area.")}</div>;
+        return typedMarkers || only || exclude?.size ? null : <div className={s.none}>{t("Citymaker.UI.NoSettings", "No settings: adapts to the area.")}</div>;
     }
     if (flat) {
         return (
@@ -690,7 +690,7 @@ export const ControlList = ({
         return {
             name, list, id,
             open: isOpen(id, defaultOpen(i, list)),
-            title: g ? t("Placemaker.UI.Group." + g, humanize(g)) : allFolded ? t("Placemaker.UI.Group.Options", "Options") : t("Placemaker.UI.Group.Basics", "Basics"),
+            title: g ? t("Citymaker.UI.Group." + g, humanize(g)) : allFolded ? t("Citymaker.UI.Group.Options", "Options") : t("Citymaker.UI.Group.Basics", "Basics"),
         };
     });
     const pairs: (typeof items)[] = [];

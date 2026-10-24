@@ -7,10 +7,10 @@
 // to a straight segment.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Park
+namespace Citymaker.Core.Layers.Park
 {
     /// <summary>Path hierarchy tier (ParkPathHierarchy.cs): decides which asset a curve is built with.</summary>
     public enum PathTier { Main = 0, Small = 1, Trail = 2, Bike = 3, Desire = 4, Service = 5 }

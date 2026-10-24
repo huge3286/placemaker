@@ -23,14 +23,14 @@ using Game.Prefabs;
 using Game.Tools;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Placemaker.Core.Geometry;
-using Placemaker.Game.Neighbours;
-using Placemaker.Game.Selection;
+using Citymaker.Core.Geometry;
+using Citymaker.Game.Neighbours;
+using Citymaker.Game.Selection;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     public sealed partial class SuiteRunner
     {
@@ -112,7 +112,7 @@ namespace Placemaker.Game.Suite
                 {
                     var seen = named.Values.Where(v => !string.IsNullOrEmpty(v)).Distinct().OrderBy(v => v).ToList();
                     rec["streets"] = new JArray(seen.Take(400));
-                    Mod.Log.Info($"Placemaker lab: fence map: no street named '{street}'; {seen.Count} names: {string.Join(" | ", seen.Take(400))}");
+                    Mod.Log.Info($"Citymaker lab: fence map: no street named '{street}'; {seen.Count} names: {string.Join(" | ", seen.Take(400))}");
                     rec["error"] = $"lab: no street named '{street}'";
                     yield break;
                 }
@@ -480,13 +480,13 @@ namespace Placemaker.Game.Suite
             rec["crossingList"] = new JArray(crossings.Take(30));
             rec["insideList"] = new JArray(inside.Take(30));
             rec["overlapList"] = new JArray(overlaps.OrderByDescending(o => (double)o["m2"]).Take(20));
-            Mod.Log.Info($"Placemaker lab: fence map ({label}): {bits.Count} fences ({drawn.Count} drawn, {hiddenOurs} of Outgrow's pieces and {hiddenLanes} lanes hidden by the game); "
+            Mod.Log.Info($"Citymaker lab: fence map ({label}): {bits.Count} fences ({drawn.Count} drawn, {hiddenOurs} of Outgrow's pieces and {hiddenLanes} lanes hidden by the game); "
                 + $"{gaps.Count} gaps ({string.Join(", ", gaps.GroupBy(g => (string)g["kind"]).Select(g => $"{g.Count()} {g.Key}"))}; {rec["gapsOverHidden"]} over a hidden piece), "
                 + $"{crossings.Count} crossings, {doubles.Count} doubles, {houseGaps} gaps between a house's own lanes (its design), {inside.Count} fences inside a garden, {overlaps.Count} gardens over each other, {openEnds.Count} other open ends");
-            foreach (var g in gaps.OrderByDescending(x => (double)x["len"]).Take(25)) Mod.Log.Info("Placemaker lab: fence map: gap " + g.ToString(Formatting.None));
-            foreach (var c in crossings.Take(25)) Mod.Log.Info("Placemaker lab: fence map: crossing " + c.ToString(Formatting.None));
-            foreach (var x in inside.Take(15)) Mod.Log.Info("Placemaker lab: fence map: inside " + x.ToString(Formatting.None));
-            foreach (var o in overlaps.OrderByDescending(o => (double)o["m2"]).Take(15)) Mod.Log.Info("Placemaker lab: fence map: gardens over each other " + o.ToString(Formatting.None));
+            foreach (var g in gaps.OrderByDescending(x => (double)x["len"]).Take(25)) Mod.Log.Info("Citymaker lab: fence map: gap " + g.ToString(Formatting.None));
+            foreach (var c in crossings.Take(25)) Mod.Log.Info("Citymaker lab: fence map: crossing " + c.ToString(Formatting.None));
+            foreach (var x in inside.Take(15)) Mod.Log.Info("Citymaker lab: fence map: inside " + x.ToString(Formatting.None));
+            foreach (var o in overlaps.OrderByDescending(o => (double)o["m2"]).Take(15)) Mod.Log.Info("Citymaker lab: fence map: gardens over each other " + o.ToString(Formatting.None));
 
             // everything, for the picture (tools/suite/FenceMap.js)
             JArray P(float2 p) => new JArray(Math.Round(p.x, 2), Math.Round(p.y, 2));
@@ -595,7 +595,7 @@ namespace Placemaker.Game.Suite
                 // low enough to see a fence stand (a fence seen from straight above is a line), close enough to see a gap
                 var cam = new JObject { ["target"] = "point", ["at"] = new JArray(focus[i].At.x, focus[i].At.y), ["abs"] = true, ["view"] = "oblique", ["pitch"] = 55, ["yaw"] = (i * 77) % 360, ["distance"] = 32 };
                 yield return StepShot(st, new JObject { ["camera"] = cam, ["shotMode"] = "render" }, sr, $"fence-{focus[i].Kind}-{i + 1}");
-                Mod.Log.Info($"Placemaker lab: fence map close-up {i + 1} ({focus[i].Kind}) at ({focus[i].At.x:F1}, {focus[i].At.y:F1}): {focus[i].Why}");
+                Mod.Log.Info($"Citymaker lab: fence map close-up {i + 1} ({focus[i].Kind}) at ({focus[i].At.x:F1}, {focus[i].At.y:F1}): {focus[i].Why}");
                 shots.Add(sr);
             }
             rec["closeupShots"] = shots;

@@ -1,4 +1,4 @@
 {
-  "Placemaker.Harmony.Issue.SteepPath": "Some paths climb steeper than is comfortable: the ground is too steep to grade them without big cuts.",
-  "Placemaker.Harmony.Issue.Failed": "Paths and pads could not be graded ({0}). They follow the ground as it is."
+  "Citymaker.Harmony.Issue.SteepPath": "Some paths climb steeper than is comfortable: the ground is too steep to grade them without big cuts.",
+  "Citymaker.Harmony.Issue.Failed": "Paths and pads could not be graded ({0}). They follow the ground as it is."
 }

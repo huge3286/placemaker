@@ -1,4 +1,4 @@
-// Placemaker — polygon toolkit used by every layer.
+// Citymaker — polygon toolkit used by every layer.
 //
 // The public API of Poly / SurfaceAcceptance / EarClip is used by other workstreams: signatures and
 // behaviour contracts are stable, new members are added freely. Conventions everywhere:
@@ -13,7 +13,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Geometry
+namespace Citymaker.Core.Geometry
 {
     public static partial class Poly
     {

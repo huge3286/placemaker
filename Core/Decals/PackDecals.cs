@@ -1,4 +1,4 @@
-// Placemaker — no decals from decal packs (GitHub issue #2; the user, 2026-10-19). GPL-3.0.
+// Citymaker — no decals from decal packs (GitHub issue #2; the user, 2026-10-19). GPL-3.0.
 //
 // The base game ships only markings, court lines and Chirper logos as decals: every ground decal (leaves, dirt, sand,
 // moss, puddles, cracks, graffiti, paving patterns, tyre ruts) comes from a decal pack. Builds placed the decorative ones
@@ -11,9 +11,9 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Layers.AddOns;
+using Citymaker.Core.Layers.AddOns;
 
-namespace Placemaker.Core.Decals
+namespace Citymaker.Core.Decals
 {
     public static class PackDecals
     {

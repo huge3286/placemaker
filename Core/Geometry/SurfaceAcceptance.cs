@@ -1,4 +1,4 @@
-// Placemaker — will CS2 keep this area ring, and how to make it keep it.
+// Citymaker — will CS2 keep this area ring, and how to make it keep it.
 //
 // Reimplemented from documented behaviour (RESEARCH-NOTES rule 6; ParkingLotTool's measured notes by
 // KruemelGames, GPL-3.0): CS2 moves every node of the ring 0.1 m inwards (miter at the corner, no
@@ -14,7 +14,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Geometry
+namespace Citymaker.Core.Geometry
 {
     /// <summary>Why a ring would be (or was) dropped. Useful for PlanIssues and diagnostics.</summary>
     public enum SurfaceVerdict

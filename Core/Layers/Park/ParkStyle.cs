@@ -5,7 +5,7 @@
 // 55/30/12 % for trees). Other rows are variations measured against the same 1–5 ha test
 // shapes so the tree count still follows the density slider.
 
-namespace Placemaker.Core.Layers.Park
+namespace Citymaker.Core.Layers.Park
 {
     public sealed class ParkStyle
     {

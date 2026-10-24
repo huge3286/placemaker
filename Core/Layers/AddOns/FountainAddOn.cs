@@ -4,10 +4,10 @@
 // bounds when larger).
 
 using System;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns
+namespace Citymaker.Core.Layers.AddOns
 {
     [AreaGenerator(100)]
     public sealed class FountainAddOn : AddOnLayer
@@ -76,11 +76,11 @@ namespace Placemaker.Core.Layers.AddOns
                         if (!ctx.LayerRegion.ContainsDisc(focal, apron + 0.5f) || occ.Clearance(focal, apron * 2f + 5f) < apron) continue;
                     }
                     else if (!Spots.Find(occ, apron, Spots.Preference.Centre, ctx.Seed, out spot)) continue;
-                    if (si != sizeIndex) ctx.Issue(IssueSeverity.Info, "Placemaker.AddOn.Fountain.Issue.Smaller");
+                    if (si != sizeIndex) ctx.Issue(IssueSeverity.Info, "Citymaker.AddOn.Fountain.Issue.Smaller");
                     Build(ctx, occ, spot, basin, apron, asset, alone ? 0 : benches, !alone && lamps, !alone && planters);
                     return;
                 }
-            NoSpace(ctx, "Placemaker.AddOn.Fountain.Name");
+            NoSpace(ctx, "Citymaker.AddOn.Fountain.Name");
         }
 
         /// <summary>

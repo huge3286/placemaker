@@ -1,0 +1,15 @@
+{
+  "formatVersion": 1,
+  "id": "park-with-playground",
+  "nameKey": "Citymaker.Recipe.ParkWithPlayground",
+  "descriptionKey": "Citymaker.Recipe.ParkWithPlayground.Description",
+  "icon": "Media/Game/Icons/ParksAndRecreation.svg",
+  "root": {
+    "layer": "park",
+    "settings": { "style": "natural", "furniture": 4 },
+    "children": [
+      { "layer": "playground", "target": "core", "settings": { "size": "medium", "benches": true } },
+      { "layer": "restrooms", "target": "", "settings": { "count": 1 } }
+    ]
+  }
+}

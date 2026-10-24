@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "formalGarden",
-  "nameKey": "Placemaker.Recipe.FormalGarden",
-  "descriptionKey": "Placemaker.Recipe.FormalGarden.Description",
+  "nameKey": "Citymaker.Recipe.FormalGarden",
+  "descriptionKey": "Citymaker.Recipe.FormalGarden.Description",
   "icon": "Media/Game/Icons/Landscaping.svg",
   "root": {
     "layer": "formalGarden",

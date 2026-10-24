@@ -10,7 +10,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Placemaker.Core.Layers.Parking
+namespace Citymaker.Core.Layers.Parking
 {
     internal static class ParkingIds
     {

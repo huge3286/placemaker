@@ -14,10 +14,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Park
+namespace Citymaker.Core.Layers.Park
 {
     public enum ParkItemKind { Tree = 0, Bush = 1, Bench = 2, Lamp = 3, Bin = 4, Spawner = 5 }
 

@@ -1,4 +1,4 @@
-// Placemaker — s53: build audit; s59: the anarchy decision moved to Core/Build/BuildVerdicts (one pass, no retry loop).
+// Citymaker — s53: build audit; s59: the anarchy decision moved to Core/Build/BuildVerdicts (one pass, no retry loop).
 //
 // Anarchy ("Ignore collisions in my builds", default on) builds every planned piece whatever the game's collision checks say;
 // the audit lists what was left out (with the reason) and what was kept despite a game error (AuditReason.Anarchy).
@@ -9,17 +9,17 @@ using System.IO;
 using Game.Common;
 using Game.Prefabs;
 using Game.Tools;
-using Placemaker.Game.Settings;
-using Placemaker.Core;
-using Placemaker.Core.Build;
-using Placemaker.Core.Geometry;
-using Placemaker.Game.Groups;
-using Placemaker.Game.Selection;
+using Citymaker.Game.Settings;
+using Citymaker.Core;
+using Citymaker.Core.Build;
+using Citymaker.Core.Geometry;
+using Citymaker.Game.Groups;
+using Citymaker.Game.Selection;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Build
+namespace Citymaker.Game.Build
 {
     public sealed partial class BuildService
     {
@@ -81,7 +81,7 @@ namespace Placemaker.Game.Build
                 if (string.IsNullOrEmpty(name)) name = w.Asset.Id;
                 Audit.Add(AuditKind(_request?.Plan, w), name, new float3(w.Anchor.x, Height(w.Anchor), w.Anchor.y), reason);
             }
-            catch (Exception e) { Mod.Log.Warn("Placemaker: audit entry failed: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker: audit entry failed: " + e.Message); }
         }
 
         private void AuditMissing(WorkItem w)
@@ -125,7 +125,7 @@ namespace Placemaker.Game.Build
             try
             {
                 if (_groupId == 0 || LooseBuild || _request?.Plan == null) return;
-                var q = GetEntityQuery(ComponentType.ReadOnly<PlacemakerMember>(), ComponentType.ReadOnly<global::Game.Common.Overridden>(),
+                var q = GetEntityQuery(ComponentType.ReadOnly<CitymakerMember>(), ComponentType.ReadOnly<global::Game.Common.Overridden>(),
                     ComponentType.ReadOnly<global::Game.Objects.Transform>(), ComponentType.ReadOnly<PrefabRef>(),
                     ComponentType.Exclude<Deleted>(), ComponentType.Exclude<Temp>());
                 int hiddenNow = 0, restored = 0, unmasked = 0;
@@ -138,7 +138,7 @@ namespace Placemaker.Game.Build
                     for (int i = 0; i < entities.Length; i++)
                     {
                         var e = entities[i];
-                        var tag = EntityManager.GetComponentData<PlacemakerMember>(e);
+                        var tag = EntityManager.GetComponentData<CitymakerMember>(e);
                         if (tag.GroupId != _groupId || tag.Kind != MemberKind.Object) continue;
                         var prefab = EntityManager.GetComponentData<PrefabRef>(e).m_Prefab;
                         var pos = EntityManager.GetComponentData<global::Game.Objects.Transform>(e).m_Position;
@@ -175,11 +175,11 @@ namespace Placemaker.Game.Build
                     top.Sort((a, b) => b.Value.CompareTo(a.Value));
                     var parts = new List<string>();
                     for (int i = 0; i < top.Count && i < 6; i++) parts.Add(top[i].Key + " x" + top[i].Value);
-                    Mod.Log.Warn($"Placemaker survivors: {hiddenNow} object(s) of group {_groupId} were hidden by the game (Overridden): {restored} shown again (anarchy: planned pieces stay visible; {unmasked} back in the render search tree), {hiddenNow - restored} stay hidden [{string.Join("; ", parts)}].");
+                    Mod.Log.Warn($"Citymaker survivors: {hiddenNow} object(s) of group {_groupId} were hidden by the game (Overridden): {restored} shown again (anarchy: planned pieces stay visible; {unmasked} back in the render search tree), {hiddenNow - restored} stay hidden [{string.Join("; ", parts)}].");
                 }
-                else Mod.Log.Info($"Placemaker survivors: no object of group {_groupId} is hidden by the game (Overridden); {_carrierOwned} share the carrier owner.");
+                else Mod.Log.Info($"Citymaker survivors: no object of group {_groupId} is hidden by the game (Overridden); {_carrierOwned} share the carrier owner.");
             }
-            catch (Exception e) { Mod.Log.Warn("Placemaker: survivor check failed: " + e.Message); }
+            catch (Exception e) { Mod.Log.Warn("Citymaker: survivor check failed: " + e.Message); }
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace Placemaker.Game.Build
                 search.AddStaticSearchTreeWriter(default);
                 return ok;
             }
-            catch (Exception ex) { Mod.Log.Warn("Placemaker: search tree restore failed: " + ex.Message); return false; }
+            catch (Exception ex) { Mod.Log.Warn("Citymaker: search tree restore failed: " + ex.Message); return false; }
         }
 
         private static void Tally(Dictionary<string, int> d, string key) => d[key] = (d.TryGetValue(key, out int n) ? n : 0) + 1;
@@ -295,14 +295,14 @@ namespace Placemaker.Game.Build
                 foreach (var b in buildings) if (Poly.Contains(quad, b)) built++;
                 var c = Poly.Centroid(plan.ZoneQuads[q].Quad);
                 bool mismatch = preview != plannedN || plannedN != live;
-                if (q < 40) Mod.Log.Info($"Placemaker zoning plot {q} at ({c.x:F0}, {c.y:F0}) {plan.ZoneQuads[q].ZoneId}: preview {preview}, planned {plannedN}, live zoned {live}, buildings {built}{(mismatch ? "  <-- differs" : "")}.");
+                if (q < 40) Mod.Log.Info($"Citymaker zoning plot {q} at ({c.x:F0}, {c.y:F0}) {plan.ZoneQuads[q].ZoneId}: preview {preview}, planned {plannedN}, live zoned {live}, buildings {built}{(mismatch ? "  <-- differs" : "")}.");
                 if (preview > live || preview > 0 && plannedN == 0)
                 {
                     bad++;
                     Audit.Add("zoning", $"plot {q}: preview {preview}, planned {plannedN}, live {live}, buildings {built}", new float3(c.x, Height(c), c.y), AuditReason.ZoningMismatch);
                 }
             }
-            if (bad > 0) Mod.Log.Warn($"Placemaker zoning: {bad} plot(s) shown in the preview but not zoned as shown (details per plot above).");
+            if (bad > 0) Mod.Log.Warn($"Citymaker zoning: {bad} plot(s) shown in the preview but not zoned as shown (details per plot above).");
         }
 
         /// <summary>Finish: totals, plan-time drops (declutter), the log block and the JSON file.</summary>
@@ -318,15 +318,15 @@ namespace Placemaker.Game.Build
                     planned = PlanWork.Flatten(plan, null).DefinitionCount;
                     foreach (var i in plan.Issues)
                     {
-                        if (i?.Key == null || !i.Key.StartsWith("Placemaker.Issue.Declutter.", StringComparison.Ordinal)) continue;
+                        if (i?.Key == null || !i.Key.StartsWith("Citymaker.Issue.Declutter.", StringComparison.Ordinal)) continue;
                         int n = i.Args != null && i.Args.Length > 0 && i.Args[0] is int c ? c : 1;
-                        a.Add("object", i.Key.Substring("Placemaker.Issue.Declutter.".Length), i.At ?? default, AuditReason.Declutter, n);
+                        a.Add("object", i.Key.Substring("Citymaker.Issue.Declutter.".Length), i.At ?? default, AuditReason.Declutter, n);
                         declutter += n;
                     }
                 }
                 a.Planned = planned + declutter;
                 a.Built = Math.Max(0, a.Planned - a.LeftOut);
-                Mod.Log.Info("Placemaker " + a.Summary());
+                Mod.Log.Info("Citymaker " + a.Summary());
                 if (a.Entries.Count > 0)
                 {
                     var dir = Path.Combine(ModPaths.DataFolder, "audit");
@@ -336,7 +336,7 @@ namespace Placemaker.Game.Build
                 }
                 return a;
             }
-            catch (Exception e) { Mod.Log.Warn("Placemaker: build audit failed: " + e.Message); return null; }
+            catch (Exception e) { Mod.Log.Warn("Citymaker: build audit failed: " + e.Message); return null; }
         }
     }
 }

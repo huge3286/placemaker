@@ -1,4 +1,4 @@
-// Placemaker neighbourhood polish — the city's own Outgrow switches (GPL-3.0).
+// Citymaker neighbourhood polish — the city's own Outgrow switches (GPL-3.0).
 //
 // "Outgrow new buildings" and the master switch belong to the city, not the mod: they are saved with it (a headless entity
 // with PolishCitySwitches) and read back when it loads. A city without them (a new one, or one saved before) starts with
@@ -11,7 +11,7 @@ using Game.Common;
 using Unity.Collections;
 using Unity.Entities;
 
-namespace Placemaker.Game.Neighbours
+namespace Citymaker.Game.Neighbours
 {
     public sealed partial class NeighbourPolishSystem
     {
@@ -28,7 +28,7 @@ namespace Placemaker.Game.Neighbours
             if (PolishNew == on) return;
             PolishNew = on;
             s_switchesDirty = true;
-            Mod.Log.Info($"Placemaker neighbourhood polish: outgrow new buildings {(on ? "on" : "off")} (this city)");
+            Mod.Log.Info($"Citymaker neighbourhood polish: outgrow new buildings {(on ? "on" : "off")} (this city)");
         }
 
         /// <summary>The master switch for this city (saved with it): off pauses Outgrow and puts nothing back.</summary>
@@ -37,7 +37,7 @@ namespace Placemaker.Game.Neighbours
             if (Paused == !on) return;
             Paused = !on;
             s_switchesDirty = true;
-            Mod.Log.Info($"Placemaker neighbourhood polish: Outgrow {(on ? "running" : "paused")} (this city)");
+            Mod.Log.Info($"Citymaker neighbourhood polish: Outgrow {(on ? "running" : "paused")} (this city)");
         }
 
         private void CreateSwitchesQuery()
@@ -83,7 +83,7 @@ namespace Placemaker.Game.Neighbours
                                 s_switchesDirty = true;   // written as switches below
                             }
                         if (!_oldCitySettings.IsEmptyIgnoreFilter) EntityManager.DestroyEntity(_oldCitySettings);
-                        Mod.Log.Info($"Placemaker neighbourhood polish: this city's switches {(all.Length > 0 ? "read" : "not saved yet (the defaults)")}: new buildings {(PolishNew ? "on" : "off")}, Outgrow {(Paused ? "paused" : "running")}");
+                        Mod.Log.Info($"Citymaker neighbourhood polish: this city's switches {(all.Length > 0 ? "read" : "not saved yet (the defaults)")}: new buildings {(PolishNew ? "on" : "off")}, Outgrow {(Paused ? "paused" : "running")}");
                     }
                     StatusVersion++;
                 }

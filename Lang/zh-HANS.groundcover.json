@@ -1,0 +1,14 @@
+{
+  "Citymaker.Category.surface.crop": "农田表面",
+  "Citymaker.Category.surface.crop.soil": "耕过的土壤表面",
+  "Citymaker.Category.surface.crop.plowed": "犁过的土壤表面",
+  "Citymaker.Category.surface.crop.rows": "作物行表面",
+  "Citymaker.Category.surface.crop.green": "绿色作物表面",
+  "Citymaker.Category.surface.crop.straw": "稻草/谷物表面",
+  "Citymaker.Category.surface.crop.flower": "开花作物表面",
+  "Citymaker.Category.surface.crop.lavender": "淡紫色作物表面",
+  "Citymaker.Category.surface.crop.yellow": "黄色作物表面",
+  "Citymaker.Category.decal.farm": "农场跑道贴花",
+  "Citymaker.GroundCover.Issue.Painted": "没有安装农田表面，因此田地被绘制在地形上（永久）。",
+  "Citymaker.Common.Issue.ObjectBudget": "该设计想要{0}对象； {2} 重复道具被细化以留在 {1} 附近。田地和床被绘制为地面。"
+}

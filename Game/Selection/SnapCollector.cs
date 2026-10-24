@@ -1,4 +1,4 @@
-// Placemaker — world snap targets for draw mode (curbs, building sides, other areas, zone grid).
+// Citymaker — world snap targets for draw mode (curbs, building sides, other areas, zone grid).
 //
 // Port of ParkingLotTool's ParkingLotSnapping.Targets.cs (KruemelGames, GPL-3.0). Scoring lives in
 // Core (SnapResolver); this only reads the game's search trees around the cursor — bounded
@@ -12,12 +12,12 @@ using Game.Net;
 using Game.Prefabs;
 using Game.Simulation;
 using Game.Tools;
-using Placemaker.Core.Tool;
+using Citymaker.Core.Tool;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Selection
+namespace Citymaker.Game.Selection
 {
     public sealed class SnapCollector
     {

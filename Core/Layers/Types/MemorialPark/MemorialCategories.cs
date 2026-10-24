@@ -3,9 +3,9 @@
 // the leisure rules would have classified them; low path lights are also "lamp".
 
 using System.Collections.Generic;
-using Placemaker.Core.Build;
+using Citymaker.Core.Build;
 
-namespace Placemaker.Core
+namespace Citymaker.Core
 {
     public static partial class AssetCategories
     {
@@ -17,7 +17,7 @@ namespace Placemaker.Core
     }
 }
 
-namespace Placemaker.Core.Layers.Types.MemorialPark
+namespace Citymaker.Core.Layers.Types.MemorialPark
 {
     public sealed class MemorialCategoryRules : ICategoryRules
     {

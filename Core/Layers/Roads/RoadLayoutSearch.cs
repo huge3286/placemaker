@@ -1,4 +1,4 @@
-// Placemaker roads layer (smarter roads) — where the grid goes: its frame and its phase, chosen to fit the network that
+// Citymaker roads layer (smarter roads) — where the grid goes: its frame and its phase, chosen to fit the network that
 // is already there and the land.
 //
 //   spine     a straight existing road through the area (an avenue first, a big road, a straight small road last) turns
@@ -18,11 +18,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Roads.Generators;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Roads.Generators;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads
+namespace Citymaker.Core.Layers.Roads
 {
     internal static class RoadLayoutSearch
     {

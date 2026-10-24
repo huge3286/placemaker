@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "shoppingPlaza",
-  "nameKey": "Placemaker.Recipe.ShoppingPlaza",
-  "descriptionKey": "Placemaker.Recipe.ShoppingPlaza.Description",
+  "nameKey": "Citymaker.Recipe.ShoppingPlaza",
+  "descriptionKey": "Citymaker.Recipe.ShoppingPlaza.Description",
   "icon": "Media/Game/Icons/PropsCommercial.svg",
   "root": {
     "layer": "shoppingPlaza",

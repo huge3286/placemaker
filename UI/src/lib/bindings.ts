@@ -1,4 +1,4 @@
-// Bindings to Game/UI/PlacemakerUISystem (shapes: ../contract.ts, which is authoritative).
+// Bindings to Game/UI/CitymakerUISystem (shapes: ../contract.ts, which is authoritative).
 //
 // Robustness rules:
 //  * every value tolerates a missing/late C# binding (fallback = null → defaults below);
@@ -12,7 +12,7 @@ import {
     AreaMode, BrushShape, SettingValue, BrushRules, BucketWalls, LocText, NetLegendEntry, ResolvedAsset, LegendEntry,
 } from "../contract";
 
-const LOG = "[Placemaker]";
+const LOG = "[Citymaker]";
 
 function bindRaw(name: string): ValueBinding<unknown> | null {
     try {
@@ -63,7 +63,7 @@ export const DEFAULT_STATE: ToolState = {
     areaMode: "draw",
     brush: { shape: "round", size: 40, angle: 0 },
     area: { valid: false, closed: false, pointCount: 0, areaM2: 0, perimeterM: 0 },
-    primary: { action: "none", label: { key: "Placemaker.UI.Primary.SelectArea" }, enabled: false },
+    primary: { action: "none", label: { key: "Citymaker.UI.Primary.SelectArea" }, enabled: false },
     canUndo: false,
     canRedo: false,
     hints: [],
@@ -320,7 +320,7 @@ export const act = {
     setPanelCollapsed: (collapsed: boolean) => fire(Triggers.setPanelCollapsed, collapsed),
     goToStage: (stage: Stage) => fire(Triggers.goToStage, stage),
     primary: () => fire(Triggers.primary),
-    /** Review's second button: build, then close Placemaker (the primary builds and keeps the area). */
+    /** Review's second button: build, then close Citymaker (the primary builds and keeps the area). */
     buildAndClose: () => fire(Triggers.buildAndClose),
     /** (PROTOCOL 25) The painter: Polish (true) or Unpolish (false) the lots in the area. */
     polishStamp: (yes: boolean) => fire(Triggers.polishStamp, yes),

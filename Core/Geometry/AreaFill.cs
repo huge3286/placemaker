@@ -1,4 +1,4 @@
-// Placemaker — the area tools' fill: what the Paint bucket takes from one click, and the block Paint area paints in.
+// Citymaker — the area tools' fill: what the Paint bucket takes from one click, and the block Paint area paints in.
 //
 // The user (area overhaul, 2026-10-17): "it needs a threshold. If an opening is 10 meters across, it should still paint
 // bucket and consider that closed", "sometimes it goes inside tiny little cracks too", "sometimes in corners it doesn't
@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Geometry
+namespace Citymaker.Core.Geometry
 {
     public enum FillStatus { Ok = 0, OnWall = 1, Nothing = 2, TooSmall = 3, Failed = 4 }
 

@@ -1,10 +1,10 @@
 // Game runner — a city saved in one game and loaded in a fresh one (GitHub issue #2, white boxes after loading). GPL-3.0.
 //   {"do":"lab","op":"oldDecal","decal":"ChirperDecalLarge01","tier":25,"at":[0,0],"yaw":0}
 //       an object the way builds up to 0.1.1 left decorative decals: a runtime copy named like a see-through copy
-//       ("Placemaker Decal 25 - ChirperDecalLarge01"), placed on the block. Only this game knows that prefab, so a save
+//       ("Citymaker Decal 25 - ChirperDecalLarge01"), placed on the block. Only this game knows that prefab, so a save
 //       made now names a prefab the next game does not have (what players met when the copies were not ready in time).
-//   {"do":"lab","op":"saveCity","name":"PlacemakerSuiteReload"}     the city saved in the player's saves
-//   {"do":"lab","op":"loadCity","name":"PlacemakerSuiteReload","delete":true}
+//   {"do":"lab","op":"saveCity","name":"CitymakerSuiteReload"}     the city saved in the player's saves
+//   {"do":"lab","op":"loadCity","name":"CitymakerSuiteReload","delete":true}
 //       that save loaded (in a fresh game: Send-Suite -Fresh); records how many objects stand on a missing prefab and
 //       what the old-decal clean-up removed; "delete" removes the save afterwards. Only camera and shot steps make sense
 //       after it (the test grid of this game is gone): frame with {"do":"camera","target":"point","at":[x,z],"abs":true}.
@@ -19,17 +19,17 @@ using Game.Prefabs;
 using Game.SceneFlow;
 using Game.Tools;
 using Newtonsoft.Json.Linq;
-using Placemaker.Game.Build;
+using Citymaker.Game.Build;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     public sealed partial class SuiteRunner
     {
-        private const string ReloadSaveName = "PlacemakerSuiteReload";
+        private const string ReloadSaveName = "CitymakerSuiteReload";
 
         private IEnumerator LabOldDecal(ScenarioState st, JObject step, JObject rec)
         {
@@ -39,7 +39,7 @@ namespace Placemaker.Game.Suite
             if (!shapes.DatabaseReady) { rec["error"] = "lab: shape database " + shapes.DatabaseState; yield break; }
             string decal = (string)step["decal"] ?? "ChirperDecalLarge01";
             int tier = (int?)step["tier"] ?? 25;
-            var req = new SuiteLabShapeSystem.Request { Name = Placemaker.Core.Decals.DecalLook.CloneName(decal, tier), CopyOf = decal };
+            var req = new SuiteLabShapeSystem.Request { Name = Citymaker.Core.Decals.DecalLook.CloneName(decal, tier), CopyOf = decal };
             shapes.Enqueue(req);
             yield return WaitFor(rec, "old decal made", () => req.Done, 30f);
             rec["prefabName"] = req.Name;
@@ -77,7 +77,7 @@ namespace Placemaker.Game.Suite
             var ring = new[] { new float2(pos.x - r, pos.z - r), new float2(pos.x + r, pos.z - r), new float2(pos.x + r, pos.z + r), new float2(pos.x - r, pos.z + r) };
             st.Ring = st.Ring == null ? ring : st.Ring.Concat(ring).ToArray();
             Event("build");
-            Mod.Log.Info($"Placemaker lab: placed old decal '{req.Name}' at ({pos.x:F1}, {pos.z:F1}), size {size}");
+            Mod.Log.Info($"Citymaker lab: placed old decal '{req.Name}' at ({pos.x:F1}, {pos.z:F1}), size {size}");
         }
 
         private IEnumerator LabSaveCity(JObject step, JObject rec)
@@ -93,7 +93,7 @@ namespace Placemaker.Game.Suite
             yield return Frames(10);
             rec["saved"] = ScratchSave(name) != null;
             rec["name"] = name;
-            Mod.Log.Info($"Placemaker lab: city saved as '{name}' ({(ScratchSave(name) != null ? "found in the saves" : "NOT found in the saves")})");
+            Mod.Log.Info($"Citymaker lab: city saved as '{name}' ({(ScratchSave(name) != null ? "found in the saves" : "NOT found in the saves")})");
         }
 
         private IEnumerator LabLoadCity(JObject step, JObject rec)
@@ -115,8 +115,8 @@ namespace Placemaker.Game.Suite
             rec["oldDecalCleanup"] = !OldDecalCleanupSystem.SuiteSkip;
             var (missing, ours) = ObjectsOnMissingPrefabs();
             rec["objectsOnMissingPrefabs"] = missing;
-            rec["objectsOnMissingPlacemakerDecals"] = ours;
-            Mod.Log.Info($"Placemaker lab: loaded '{name}' in {rec["loadSeconds"]} s: {missing} object(s) stand on a missing prefab ({ours} on a missing 'Placemaker Decal' copy); the clean-up "
+            rec["objectsOnMissingCitymakerDecals"] = ours;
+            Mod.Log.Info($"Citymaker lab: loaded '{name}' in {rec["loadSeconds"]} s: {missing} object(s) stand on a missing prefab ({ours} on a missing 'Citymaker Decal' copy); the clean-up "
                 + (OldDecalCleanupSystem.SuiteSkip ? "was off" : $"removed {OldDecalCleanupSystem.LastRemoved}"));
             if ((bool?)step["delete"] == true)
             {
@@ -149,7 +149,7 @@ namespace Placemaker.Game.Suite
                                 kind = 1;
                                 string n = null;
                                 try { n = prefabs.GetObsoleteID(pd).GetName(); } catch (Exception) { }
-                                if (n != null && n.StartsWith(Placemaker.Core.Decals.DecalLook.ClonePrefix, StringComparison.Ordinal)) kind = 2;
+                                if (n != null && n.StartsWith(Citymaker.Core.Decals.DecalLook.ClonePrefix, StringComparison.Ordinal)) kind = 2;
                             }
                         }
                         kindOf[p] = kind;

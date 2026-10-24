@@ -1,0 +1,13 @@
+{
+  "Citymaker.UI.MakeGroup.Roads": "道路",
+  "Citymaker.UI.MakeGroup.Parking": "停车场",
+  "Citymaker.UI.MakeGroup.Parks": "公园",
+  "Citymaker.UI.MakeGroup.Beach": "海滩",
+  "Citymaker.UI.MakeGroup.Commercial": "商业与广场",
+  "Citymaker.UI.MakeGroup.Nature": "自然景观",
+  "Citymaker.UI.MakeGroup.Farms": "农场",
+  "Citymaker.UI.MakeGroup.Sports": "运动场地",
+  "Citymaker.UI.MakeGroup.Neighbourhood": "街区",
+  "Citymaker.UI.MakeGroup.Industry": "工业设施",
+  "Citymaker.UI.MakeGroup.Transport": "交通设施"
+}

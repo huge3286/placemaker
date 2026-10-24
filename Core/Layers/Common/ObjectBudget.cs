@@ -14,7 +14,7 @@
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Common
+namespace Citymaker.Core.Layers.Common
 {
     public static class ObjectBudget
     {
@@ -23,7 +23,7 @@ namespace Placemaker.Core.Layers.Common
         public const int BulkGroup = 12;
         /// <summary>At most this share of one group is removed (the look must survive).</summary>
         public const float MaxThin = 0.75f;
-        public const string IssueKey = "Placemaker.Common.Issue.ObjectBudget";
+        public const string IssueKey = "Citymaker.Common.Issue.ObjectBudget";
 
         public static int Cap(float areaM2, float perHectare) =>
             perHectare <= 0f ? int.MaxValue : math.max(MinCap, (int)math.round(areaM2 / 10000f * perHectare));

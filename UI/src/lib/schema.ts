@@ -74,19 +74,19 @@ export function controlAvailability(
 function whyFrom(cond: string, values: Record<string, SettingValue>, controls: ControlEx[], t: Translate): string {
     const f = failingClause(cond, values);
     const other = f ? controls.find((x) => x.id === f.id) : undefined;
-    if (!f || !other) return t("Placemaker.UI.Why.NotNow", "Not available with the current settings");
+    if (!f || !other) return t("Citymaker.UI.Why.NotNow", "Not available with the current settings");
     const name = t(other.label, humanizeId(other.label || other.id));
     const onOff = f.values.length === 1 && (f.values[0] === "true" || f.values[0] === "false");
     if (other.kind === "toggle" || onOff) {
         const on = (f.values[0] !== "false") !== f.neg;
-        return on ? t("Placemaker.UI.Why.WhenOn", "Only when {0} is on", [name]) : t("Placemaker.UI.Why.WhenOff", "Only when {0} is off", [name]);
+        return on ? t("Citymaker.UI.Why.WhenOn", "Only when {0} is on", [name]) : t("Citymaker.UI.Why.WhenOff", "Only when {0} is off", [name]);
     }
     const opts = f.values.map((v) => {
         const o = other.options?.find((x) => x.value === v);
         return o ? t(o.label, humanizeId(o.label || o.value)) : v;
     });
-    const list = opts.join(t("Placemaker.UI.Why.Or", " or "));
-    return f.neg ? t("Placemaker.UI.Why.WhenNot", "Not when {0} is {1}", [name, list]) : t("Placemaker.UI.Why.WhenIs", "Only when {0} is {1}", [name, list]);
+    const list = opts.join(t("Citymaker.UI.Why.Or", " or "));
+    return f.neg ? t("Citymaker.UI.Why.WhenNot", "Not when {0} is {1}", [name, list]) : t("Citymaker.UI.Why.WhenIs", "Only when {0} is {1}", [name, list]);
 }
 
 function humanizeId(key: string): string {

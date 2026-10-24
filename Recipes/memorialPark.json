@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "memorialPark",
-  "nameKey": "Placemaker.Recipe.MemorialPark",
-  "descriptionKey": "Placemaker.Recipe.MemorialPark.Description",
+  "nameKey": "Citymaker.Recipe.MemorialPark",
+  "descriptionKey": "Citymaker.Recipe.MemorialPark.Description",
   "icon": "Media/Game/Icons/Unique.svg",
   "root": {
     "layer": "memorialPark",

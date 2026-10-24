@@ -1,6 +1,6 @@
-// Placemaker roads layer — grid and loop/superblock patterns, shared clipping and node merging.
-// Adapted from Grid Road Generator (Ti4goc), Core/GridGenerator.cs; part of Placemaker (GPL-3.0).
-// Changes for Placemaker: no static caches or global lock (thread-safe, reentrant), cooperative
+// Citymaker roads layer — grid and loop/superblock patterns, shared clipping and node merging.
+// Adapted from Grid Road Generator (Ti4goc), Core/GridGenerator.cs; part of Citymaker (GPL-3.0).
+// Changes for Citymaker: no static caches or global lock (thread-safe, reentrant), cooperative
 // cancellation through GridParameters.Cancel, per-call diagnostics objects instead of statics.
 // The "merge with the nearest accepted node" rule follows the "super node" idea of CS2-NetworkTools
 // (Luca Rager, MIT).
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads.Generators
+namespace Citymaker.Core.Layers.Roads.Generators
 {
     /// <summary>
     /// A road segment to create: a start point and an end point. Coordinates are in world space (X, Z;
@@ -1453,7 +1453,7 @@ namespace Placemaker.Core.Layers.Roads.Generators
                     // uMinCell/uMaxCell/vMinCell/vMaxCell touch the edge of the selected POLYGON (not
                     // an inner collector), the fine grid still attaches to it: that edge is almost
                     // always a REAL existing road in game (the player clicks along it), and the game
-                    // layer (Placemaker's RoadsPlanner/RoadConnections) connects to it automatically,
+                    // layer (Citymaker's RoadsPlanner/RoadConnections) connects to it automatically,
                     // exactly as it already does for the collectors (user feedback: "the pedestrian
                     // roads also have to connect to the base road, not just the collectors"; leaving an
                     // empty ring between the real perimeter and the 1st collector wastes all that

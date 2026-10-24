@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace Placemaker.Core.Tool
+namespace Citymaker.Core.Tool
 {
     public static class RecipePaths
     {

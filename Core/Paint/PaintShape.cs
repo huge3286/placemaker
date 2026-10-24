@@ -1,4 +1,4 @@
-// Placemaker — composable terrain-paint strength fields (s33, docs/TERRAIN-PAINT.md). GPL-3.0.
+// Citymaker — composable terrain-paint strength fields (s33, docs/TERRAIN-PAINT.md). GPL-3.0.
 //
 // A PaintShape is a pure function world xz → strength 0..1 with a support box (0 outside it). Primitives: feathered
 // polygon fill, stroke along a polyline (width, feather, wobble, strength gradient start → end, faded ends), radial
@@ -15,10 +15,10 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Paint
+namespace Citymaker.Core.Paint
 {
     /// <summary>How a gradient falls from full (t = 0) to nothing (t = 1).</summary>
     public enum Falloff

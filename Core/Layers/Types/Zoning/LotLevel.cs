@@ -1,4 +1,4 @@
-// Placemaker "Zoning" — Level the lots: every lot the Zoning tool zones on sloped land becomes a level pad at the height it
+// Citymaker "Zoning" — Level the lots: every lot the Zoning tool zones on sloped land becomes a level pad at the height it
 // meets its road (level across the lot, following the road along it), with banks blending into the land around (no steeper
 // than the bank setting, past the area where needed, never over buildings, roads or water). A lot that would need more
 // earth than the limit is made shallower (down to its zone's smallest depth) or left empty. Lots already level are left
@@ -15,14 +15,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Placemaker.Core.Build;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Roads;
-using Placemaker.Core.Layers.Roads.Terraces;
+using Citymaker.Core.Build;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Roads;
+using Citymaker.Core.Layers.Roads.Terraces;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Zoning
+namespace Citymaker.Core.Layers.Types.Zoning
 {
     internal static class LotLevel
     {
@@ -601,7 +601,7 @@ namespace Placemaker.Core.Layers.Types.Zoning
             TerraceField.LimitBanks(sc, protect, slope, cancel, earth, side);
         }
 
-        public const string StatLevelled = "Placemaker.Polish.Stat.Levelled";
+        public const string StatLevelled = "Citymaker.Polish.Stat.Levelled";
 
         /// <summary>A lot's ground over its first rows (a filler: its quad), grown by <paramref name="grow"/>.</summary>
         private static float2[] RectOf(Lot l, int rows, float grow)

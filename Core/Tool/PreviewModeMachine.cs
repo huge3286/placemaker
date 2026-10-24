@@ -17,7 +17,7 @@
 // - While a ghost is visible the sketch's objects (nets, objects, surface fills) are hidden when the
 //   ghost shows the current plan, dimmed while it is catching up; outline, markers and handles stay.
 
-namespace Placemaker.Core.Tool
+namespace Citymaker.Core.Tool
 {
     public enum PreviewMode { Sketch = 0, Ghost = 1 }
 
@@ -47,7 +47,7 @@ namespace Placemaker.Core.Tool
     public struct PreviewInput
     {
         public ToolStage Stage;
-        /// <summary>The Placemaker tool is the active tool (not closed, not handed to the build service).</summary>
+        /// <summary>The Citymaker tool is the active tool (not closed, not handed to the build service).</summary>
         public bool ToolActive;
         public bool BuildRunning;
         public ValuePreviewKind ValuePreview;
@@ -172,7 +172,7 @@ namespace Placemaker.Core.Tool
     }
 }
 
-namespace Placemaker.Core.Tool
+namespace Citymaker.Core.Tool
 {
     public static class ValuePreviews
     {

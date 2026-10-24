@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "restArea",
-  "nameKey": "Placemaker.Recipe.RestArea",
-  "descriptionKey": "Placemaker.Recipe.RestArea.Description",
+  "nameKey": "Citymaker.Recipe.RestArea",
+  "descriptionKey": "Citymaker.Recipe.RestArea.Description",
   "icon": "Media/Game/Icons/Highways.svg",
   "root": {
     "layer": "restArea",

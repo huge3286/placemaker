@@ -1,4 +1,4 @@
-// Placemaker neighbourhood polish — automatic yard stitching on the game's own houses (GPL-3.0).
+// Citymaker neighbourhood polish — automatic yard stitching on the game's own houses (GPL-3.0).
 //
 // Every house the game grows is edited after it is placed, never replaced: its own fence/hedge lines and its own lawn are
 // reshaped so neighbours join up (Core/Neighbours/YardStitch decides what; docs/research/custom-assets-on-the-fly.md).
@@ -28,13 +28,13 @@ using Game.Net;
 using Game.Prefabs;
 using Game.Simulation;
 using Game.Tools;
-using Placemaker.Core.Neighbours;
+using Citymaker.Core.Neighbours;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine.Scripting;
 
-namespace Placemaker.Game.Neighbours
+namespace Citymaker.Game.Neighbours
 {
     public sealed partial class NeighbourPolishSystem : GameSystemBase
     {
@@ -306,21 +306,21 @@ namespace Placemaker.Game.Neighbours
                 // this city's switches first: new lots below are flagged by them
                 SwitchesUpdate();
             }
-            catch (Exception e) { if (_errors++ < 5) Mod.Log.Error(e, "Placemaker neighbourhood polish (switches) failed"); }
+            catch (Exception e) { if (_errors++ < 5) Mod.Log.Error(e, "Citymaker neighbourhood polish (switches) failed"); }
             try
             {
                 // the painter's stamps, "Remove all polish", new lots' flags and our new pieces' tags: also with the polish
                 // off (putting a lot back never hurts, and a flag given now is used once it is switched on)
                 LotsUpdate();
             }
-            catch (Exception e) { if (_errors++ < 5) Mod.Log.Error(e, "Placemaker neighbourhood polish (lots) failed"); }
+            catch (Exception e) { if (_errors++ < 5) Mod.Log.Error(e, "Citymaker neighbourhood polish (lots) failed"); }
             // (our own pieces the game hid: shown again by NeighbourShowSystem, after the game's check of this frame)
             if (!FeatureEnabled || Paused)
             {
                 // off: nothing is planned or written. Polished houses the game rebuilds meanwhile (a level-up gives back its
                 // own fences) are remembered and fitted again once it is on: switching on never replans the whole city
                 try { CollectChanged(); }
-                catch (Exception e) { if (_errors++ < 5) Mod.Log.Error(e, "Placemaker neighbourhood polish (off) failed"); }
+                catch (Exception e) { if (_errors++ < 5) Mod.Log.Error(e, "Citymaker neighbourhood polish (off) failed"); }
                 Busy = _restoreQueue.Count > 0 || s_stamps.Count > 0;
                 Waiting = 0;
                 return;
@@ -339,7 +339,7 @@ namespace Placemaker.Game.Neighbours
                     _described.Clear();
                     _gridStale = true;
                     SettingsChanged = false;
-                    Mod.Log.Info($"Placemaker neighbourhood polish: every polished lot again, {yes} to look at.");
+                    Mod.Log.Info($"Citymaker neighbourhood polish: every polished lot again, {yes} to look at.");
                 }
                 CollectChanged();
                 HealEmpty();
@@ -356,8 +356,8 @@ namespace Placemaker.Game.Neighbours
             }
             catch (Exception e)
             {
-                if (_errors++ < 5) Mod.Log.Error(e, "Placemaker neighbourhood polish failed");
-                if (_errors >= 5) { FeatureEnabled = false; Mod.Log.Warn("Placemaker neighbourhood polish switched off for this session after repeated errors."); }
+                if (_errors++ < 5) Mod.Log.Error(e, "Citymaker neighbourhood polish failed");
+                if (_errors >= 5) { FeatureEnabled = false; Mod.Log.Warn("Citymaker neighbourhood polish switched off for this session after repeated errors."); }
             }
         }
 
@@ -365,7 +365,7 @@ namespace Placemaker.Game.Neighbours
         private void CollectChanged()
         {
             try { CollectNewNearby(); }
-            catch (Exception e) { if (_errors++ < 5) Mod.Log.Error(e, "Placemaker neighbourhood polish (new things nearby) failed"); }
+            catch (Exception e) { if (_errors++ < 5) Mod.Log.Error(e, "Citymaker neighbourhood polish (new things nearby) failed"); }
             if (!_goneHouses.IsEmptyIgnoreFilter)
                 using (var gone = _goneHouses.ToEntityArray(Allocator.Temp))
                 {
@@ -409,7 +409,7 @@ namespace Placemaker.Game.Neighbours
             // buildings the game finished or rebuilt (fences or not) and pieces it took away (after the lanes: a house planned
             // again anyway is not refilled piece by piece)
             try { CollectRebuilt(); }
-            catch (Exception e) { if (_errors++ < 5) Mod.Log.Error(e, "Placemaker neighbourhood polish (rebuilt buildings) failed"); }
+            catch (Exception e) { if (_errors++ < 5) Mod.Log.Error(e, "Citymaker neighbourhood polish (rebuilt buildings) failed"); }
         }
 
         // ───────────── one pass: a batch of dirty houses with their neighbourhoods ─────────────
@@ -744,7 +744,7 @@ namespace Placemaker.Game.Neighbours
             var task = pend.Task;
             if (task.IsFaulted || task.IsCanceled || pend == null)
             {
-                if (_errors++ < 5) Mod.Log.Warn("Placemaker neighbourhood polish: a plan failed: " + task.Exception?.GetBaseException().Message);
+                if (_errors++ < 5) Mod.Log.Warn("Citymaker neighbourhood polish: a plan failed: " + task.Exception?.GetBaseException().Message);
                 return;
             }
             var plan = task.Result;
@@ -769,7 +769,7 @@ namespace Placemaker.Game.Neighbours
                     if (_dirty.Add(ce)) { clashes++; DirtyBy[3]++; }
                     if (pend.First) _first.Add(ce);
                 }
-            if (clashes > 0) Mod.Log.Info($"Placemaker neighbourhood polish: {clashes} gardens over a new lot planned again");
+            if (clashes > 0) Mod.Log.Info($"Citymaker neighbourhood polish: {clashes} gardens over a new lot planned again");
             var sw = pend.Clock;
             int asked = pend.Asked, clusterCount = pend.Cluster;
             _houseOf.Clear();
@@ -784,9 +784,9 @@ namespace Placemaker.Game.Neighbours
             bool logPass = TotalPasses < 6 || s_logPasses > 0;
             if (s_logPasses > 0) s_logPasses--;
             if (logPass)
-                foreach (var note in plan.Notes) Mod.Log.Info("Placemaker neighbourhood polish: " + note);
+                foreach (var note in plan.Notes) Mod.Log.Info("Citymaker neighbourhood polish: " + note);
             if (logPass)
-                Mod.Log.Info($"Placemaker neighbourhood polish pass {TotalPasses + 1}: {asked} houses asked, {clusterCount} in their neighbourhoods ({stitch.Count(h => !h.Polished)} unpolished), {plan.Pairs.Count} pairs ({plan.Pairs.Count(p => p.Edge)} against an unpolished lot), "
+                Mod.Log.Info($"Citymaker neighbourhood polish pass {TotalPasses + 1}: {asked} houses asked, {clusterCount} in their neighbourhoods ({stitch.Count(h => !h.Polished)} unpolished), {plan.Pairs.Count} pairs ({plan.Pairs.Count(p => p.Edge)} against an unpolished lot), "
                     + $"{plan.MoveLines.Count} lines to move, {plan.HideLines.Count} to hide, {plan.Lawns.Count} lawns{(EditLines ? "" : " (lines off)")}{(EditLawns ? "" : " (lawns off)")}{(skip.Count > 0 ? $", {skip.Count} unpolished meanwhile" : "")}");
 
             var heights = _terrain.GetHeightData(true);
@@ -919,7 +919,7 @@ namespace Placemaker.Game.Neighbours
                 var c = float2.zero;
                 foreach (var p in common) c += p;
                 c /= common.Length;
-                float r = math.clamp(math.sqrt(Placemaker.Core.Geometry.Poly.Area(common)) / 6f, 2f, 5f);
+                float r = math.clamp(math.sqrt(Citymaker.Core.Geometry.Poly.Area(common)) / 6f, 2f, 5f);
                 var bed = new float2[10];
                 for (int i = 0; i < bed.Length; i++) { float ang = i * math.PI * 2f / bed.Length; bed[i] = c + new float2(math.cos(ang), math.sin(ang)) * r * (i % 2 == 0 ? 1f : 0.82f); }
                 NeighbourAreaSystem.Queue.Add(new NeighbourAreaSystem.Request { Name = "Forestry Surface 01", Ring = bed, Owner = commonOwner, Kind = PolishPieceKind.Common });
@@ -946,7 +946,7 @@ namespace Placemaker.Game.Neighbours
             var (since, times) = _clashed.TryGetValue(house, out var c) && LotFrame - c.Since < ClashWindow ? c : (LotFrame, 0);
             if (times >= ClashMax)
             {
-                if (TotalClashesHeld++ < 20) Mod.Log.Info($"Placemaker neighbourhood polish: house {house.Index}'s garden still lies over a lot after {times} plans: left as it is for a while");
+                if (TotalClashesHeld++ < 20) Mod.Log.Info($"Citymaker neighbourhood polish: house {house.Index}'s garden still lies over a lot after {times} plans: left as it is for a while");
                 return false;
             }
             _clashed[house] = (since, times + 1);
@@ -1258,7 +1258,7 @@ namespace Placemaker.Game.Neighbours
 
         private void Report()
         {
-            Mod.Log.Info($"Placemaker neighbourhood polish: {_passes} passes, {_pairs} neighbour pairs, {_moved} fence/hedge lines moved onto shared borders, "
+            Mod.Log.Info($"Citymaker neighbourhood polish: {_passes} passes, {_pairs} neighbour pairs, {_moved} fence/hedge lines moved onto shared borders, "
                 + $"{_hidden} doubled lines hidden, {_restored} restored, {_lawns} lawns grown (+{_lawnM2:F0} m²), {_ms:F1} ms in total; {_dirty.Count} houses waiting.");
             _passes = _pairs = _moved = _hidden = _restored = _lawns = 0;
             _lawnM2 = 0f;

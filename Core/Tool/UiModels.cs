@@ -1,7 +1,7 @@
-// Placemaker — JSON shapes of the UI contract (UI/src/contract.ts is authoritative).
+// Citymaker — JSON shapes of the UI contract (UI/src/contract.ts is authoritative).
 //
 // Pure builders so the exact field names are unit-tested without the game; the game's
-// PlacemakerUISystem only gathers the inputs and pushes the strings when they change.
+// CitymakerUISystem only gathers the inputs and pushes the strings when they change.
 
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Globalization;
 using System.Linq;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Tool
+namespace Citymaker.Core.Tool
 {
     /// <summary>(s16) Display name and thumbnail of a prefab (from the game catalog).</summary>
     public sealed class AssetLabel
@@ -35,7 +35,7 @@ namespace Placemaker.Core.Tool
         public float BrushSize = 150f;
         public float BrushAngle;
         /// <summary>Block paint brush rules (null = not sent).</summary>
-        public Placemaker.Core.Geometry.BrushRules BrushRules;
+        public Citymaker.Core.Geometry.BrushRules BrushRules;
         public bool AreaValid, AreaClosed;
         public int PointCount;
         public double AreaM2, PerimeterM;
@@ -56,7 +56,7 @@ namespace Placemaker.Core.Tool
         public bool AnarchyAvailable, AnarchyEnabled;
         /// <summary>The build becomes a group (not a loose road grid): the Review switch "One group" applies; BuildSeparate = off.</summary>
         public bool GroupingAvailable, BuildSeparate;
-        /// <summary>Review's "Keep area" switch: Build keeps the area (on) or closes Placemaker (off).</summary>
+        /// <summary>Review's "Keep area" switch: Build keeps the area (on) or closes Citymaker (off).</summary>
         public bool KeepArea = true;
         public bool PanelCollapsed;
         /// <summary>contract: state.previewMode — the player's choice for the current stage.</summary>
@@ -68,7 +68,7 @@ namespace Placemaker.Core.Tool
         /// <summary>(s22) contract: state.legendVisibility — preview layers the player showed/hid (id → visible); null/empty = defaults.</summary>
         public IReadOnlyDictionary<string, bool> LegendVisibility;
         /// <summary>(Area overhaul) contract: state.areaLegend — what the overlay shows while choosing the area (Core/Tool/AreaLegend).</summary>
-        public List<Placemaker.Core.Build.PreviewLegend.Entry> AreaLegend;
+        public List<Citymaker.Core.Build.PreviewLegend.Entry> AreaLegend;
         /// <summary>(PROTOCOL 25) contract: state.painter — "Polish gardens" is the pick (null = not).</summary>
         public PainterView Painter;
     }
@@ -96,7 +96,7 @@ namespace Placemaker.Core.Tool
         /// every knob's value in the rows and in the saved look.</summary>
         public string LookTheme = "garden", LookSavedTheme = "garden";
         public bool Modified;
-        /// <summary>The old polish painter tool (its own window); false: a Zoning type in Placemaker's panel (City window only).</summary>
+        /// <summary>The old polish painter tool (its own window); false: a Zoning type in Citymaker's panel (City window only).</summary>
         public bool Tool;
         /// <summary>Live polish: the selection polished again after every change.</summary>
         public bool Live;
@@ -172,7 +172,7 @@ namespace Placemaker.Core.Tool
         /// <summary>Extra issues from the tool itself (build failure, timeout…).</summary>
         public List<PlanIssue> ExtraIssues = new List<PlanIssue>();
         /// <summary>(s53) The last build's audit (Review/Done "Left out" chip).</summary>
-        public Placemaker.Core.Build.BuildAudit Audit;
+        public Citymaker.Core.Build.BuildAudit Audit;
         /// <summary>(s17) Selected area in m² (park stats scale with it). 0 = the plan's outline is unknown: no park stats.</summary>
         public double AreaM2;
         /// <summary>(s17) Setting "Real park stats (companion building)".</summary>
@@ -223,7 +223,7 @@ namespace Placemaker.Core.Tool
             if (s.CanRedo && s.RedoLabel != null) o.Set("redoLabel", s.RedoLabel.ToJson());
             if (!string.IsNullOrEmpty(s.MarkerKind))
                 o.Set("markerMode", JsonValue.Obj().Set("stepPath", s.MarkerStepPath ?? "").Set("kind", s.MarkerKind)
-                    .Set("label", (s.MarkerLabel ?? new LocText("Placemaker.Marker." + s.MarkerKind)).ToJson())
+                    .Set("label", (s.MarkerLabel ?? new LocText("Citymaker.Marker." + s.MarkerKind)).ToJson())
                     .Set("crosswalk", s.MarkerCrosswalk));
             var hints = JsonValue.Arr();
             foreach (var h in s.Hints)
@@ -337,7 +337,7 @@ namespace Placemaker.Core.Tool
 
         public static JsonValue Primary(PrimaryAction p)
         {
-            p = p ?? new PrimaryAction { Kind = PrimaryKind.None, Label = new LocText("Placemaker.Primary.SelectArea") };
+            p = p ?? new PrimaryAction { Kind = PrimaryKind.None, Label = new LocText("Citymaker.Primary.SelectArea") };
             var o = JsonValue.Obj()
                 .Set("action", PrimaryAction.KindId(p.Kind))
                 .Set("label", (p.Label ?? new LocText("")).ToJson())
@@ -655,7 +655,7 @@ namespace Placemaker.Core.Tool
         }
 
         /// <summary>(s16) Reason for an asset control the current layout does not use (StepView.disabled).</summary>
-        public const string NotInLayoutKey = "Placemaker.UI.Why.NotInLayout";
+        public const string NotInLayoutKey = "Citymaker.UI.Why.NotInLayout";
 
         /// <summary>Built-in features of a step (mirrors UI FeatureView): toggle state, child path and the parent options shown under it.</summary>
         public static JsonValue FeatureViews(RecipeStep s, string path, IAreaGenerator gen, Func<string, IAreaGenerator> generators,
@@ -749,8 +749,8 @@ namespace Placemaker.Core.Tool
             return o;
         }
 
-        public const string NoRoomKey = "Placemaker.UI.Feature.NoRoom";
-        public const string SomeMissingKey = "Placemaker.UI.Feature.SomeMissing";
+        public const string NoRoomKey = "Citymaker.UI.Feature.NoRoom";
+        public const string SomeMissingKey = "Citymaker.UI.Feature.SomeMissing";
 
         /// <summary>Regions produced by the plans of the step at <paramref name="stepPath"/> (all its region runs).</summary>
         public static JsonValue Regions(ComposedPlan plan, string stepPath)
@@ -950,7 +950,7 @@ namespace Placemaker.Core.Tool
             o.Set("canAfford", s.CanAfford);
             // (s45, PROTOCOL 22) the cost by friendly category for the Review cost bar.
             var buckets = JsonValue.Arr();
-            foreach (var b in Placemaker.Core.Build.CostBuckets.Sum(plan, assets))
+            foreach (var b in Citymaker.Core.Build.CostBuckets.Sum(plan, assets))
                 buckets.Add(JsonValue.Obj().Set("id", b.Id).Set("cost", Math.Round(b.Cost)).Set("upkeep", Math.Round(b.Upkeep)));
             o.Set("costBuckets", buckets);
             var layers = JsonValue.Arr();
@@ -988,22 +988,22 @@ namespace Placemaker.Core.Tool
             // Extension (docs/proposals/s17.md): park stats of the planned build.
             if (s.AreaM2 > 0 && s.Recipe != null)
             {
-                Placemaker.Core.Build.ParkStatsResult stats = null;
-                try { stats = Placemaker.Core.Build.ParkStatsEstimator.Estimate(Placemaker.Core.Build.ParkStatsInput.From(plan, s.AreaM2, s.Recipe), s.Recipe.ParkStats); }
+                Citymaker.Core.Build.ParkStatsResult stats = null;
+                try { stats = Citymaker.Core.Build.ParkStatsEstimator.Estimate(Citymaker.Core.Build.ParkStatsInput.From(plan, s.AreaM2, s.Recipe), s.Recipe.ParkStats); }
                 catch (Exception) { stats = null; }
                 if (stats != null && stats.Applicable)
                 {
-                    var site = new Placemaker.Core.Build.ParkCompanionSite { ReasonKey = Placemaker.Core.Build.ParkCompanionPlanner.NoRoadKey };
+                    var site = new Citymaker.Core.Build.ParkCompanionSite { ReasonKey = Citymaker.Core.Build.ParkCompanionPlanner.NoRoadKey };
                     if (s.ParkCompanion)
                         try
                         {
                             var objs = new List<float2>();
                             var paths = new List<(float2, float2, float)>();
-                            Placemaker.Core.Build.ParkCompanionPlanner.Obstacles(plan, objs, paths);
-                            site = Placemaker.Core.Build.ParkCompanionPlanner.Find(s.Outline, s.Roads, objs, paths);
+                            Citymaker.Core.Build.ParkCompanionPlanner.Obstacles(plan, objs, paths);
+                            site = Citymaker.Core.Build.ParkCompanionPlanner.Find(s.Outline, s.Roads, objs, paths);
                         }
                         catch (Exception) { }
-                    Placemaker.Core.Build.ParkStatsEstimator.WithCompanion(stats, s.ParkCompanion, site);
+                    Citymaker.Core.Build.ParkStatsEstimator.WithCompanion(stats, s.ParkCompanion, site);
                     o.Set("parkStats", ParkStats(stats));
                 }
             }
@@ -1014,7 +1014,7 @@ namespace Placemaker.Core.Tool
         }
 
         /// <summary>One legend row (contract.ts LegendEntry) without the road extras.</summary>
-        public static JsonValue LegendEntryJson(Placemaker.Core.Build.PreviewLegend.Entry e)
+        public static JsonValue LegendEntryJson(Citymaker.Core.Build.PreviewLegend.Entry e)
         {
             var eo = JsonValue.Obj()
                 .Set("id", e.Id)
@@ -1042,10 +1042,10 @@ namespace Placemaker.Core.Tool
             if (recipe != null)
                 try { foreach (var kv in RecipePaths.Walk(recipe)) if (kv.Value?.Markers != null) entrances += kv.Value.Markers.Count; }
                 catch (Exception) { entrances = 0; }
-            foreach (var e in Placemaker.Core.Build.PreviewLegend.Compute(plan, entrances))
+            foreach (var e in Citymaker.Core.Build.PreviewLegend.Compute(plan, entrances))
             {
                 var eo = LegendEntryJson(e);
-                if (Placemaker.Core.Build.PreviewLegend.IsRoad(e.Id))
+                if (Citymaker.Core.Build.PreviewLegend.IsRoad(e.Id))
                 {
                     eo.Set("group", "roads");
                     if (!string.IsNullOrEmpty(e.Control)) eo.Set("control", e.Control);
@@ -1053,7 +1053,7 @@ namespace Placemaker.Core.Tool
                     {
                         eo.Set("assetId", e.AssetId);
                         AssetLabel al = null;
-                        bool carFree = e.Id == Placemaker.Core.Build.PreviewLegend.Road(Layers.Roads.RoadRoles.CarFree);
+                        bool carFree = e.Id == Citymaker.Core.Build.PreviewLegend.Road(Layers.Roads.RoadRoles.CarFree);
                         try { al = label?.Invoke(carFree ? AssetCategories.Pathway : AssetCategories.Road, e.AssetId); } catch (Exception) { al = null; }
                         if (!string.IsNullOrEmpty(al?.Name)) eo.Set("assetName", al.Name);
                     }
@@ -1064,14 +1064,14 @@ namespace Placemaker.Core.Tool
         }
 
         /// <summary>(s17) contract.ts ParkStatsView.</summary>
-        public static JsonValue ParkStats(Placemaker.Core.Build.ParkStatsResult r)
+        public static JsonValue ParkStats(Citymaker.Core.Build.ParkStatsResult r)
         {
             var o = JsonValue.Obj()
                 .Set("kind", r.Kind.ToString().ToLowerInvariant())
-                .Set("leisureType", r.LeisureType == Placemaker.Core.Build.LeisureKind.CityBeach ? "beach" : "park")
+                .Set("leisureType", r.LeisureType == Citymaker.Core.Build.LeisureKind.CityBeach ? "beach" : "park")
                 .Set("keepVanilla", r.KeepVanilla)
-                .Set("companion", r.Companion == Placemaker.Core.Build.ParkCompanionState.Yes ? "yes"
-                    : r.Companion == Placemaker.Core.Build.ParkCompanionState.NoRoad ? "noRoad" : "off")
+                .Set("companion", r.Companion == Citymaker.Core.Build.ParkCompanionState.Yes ? "yes"
+                    : r.Companion == Citymaker.Core.Build.ParkCompanionState.NoRoad ? "noRoad" : "off")
                 .Set("quality", Math.Round(r.Quality, 2));
             var arr = JsonValue.Arr();
             foreach (var st in r.Stats)
@@ -1123,15 +1123,15 @@ namespace Placemaker.Core.Tool
                     foreach (var p in l.Paint)
                         if (p != null) paint += p.AreaEstimate > 0f ? p.AreaEstimate : Pricing.PolygonArea(p.Ring ?? Array.Empty<float3>());
             }
-            if (ground > 0) list.Add(new LocText("Placemaker.Permanent.Terraform", RoundArea(ground)));
-            if (water > 0) list.Add(new LocText("Placemaker.Permanent.Water", RoundArea(water)));
-            if (paint > 0) list.Add(new LocText("Placemaker.Permanent.Paint", RoundArea(paint)));
+            if (ground > 0) list.Add(new LocText("Citymaker.Permanent.Terraform", RoundArea(ground)));
+            if (water > 0) list.Add(new LocText("Citymaker.Permanent.Water", RoundArea(water)));
+            if (paint > 0) list.Add(new LocText("Citymaker.Permanent.Paint", RoundArea(paint)));
             return list;
         }
 
         private static double RoundArea(double m2) => m2 < 100 ? Math.Round(m2) : Math.Round(m2 / 10) * 10;
 
-        public const string PermanentPaintKey = "Placemaker.Permanent.Paint";
+        public const string PermanentPaintKey = "Citymaker.Permanent.Paint";
 
         /// <summary>(s33) True when the effects include more than ground paint (terraform, water): those need the tick.</summary>
         public static bool NeedsAck(List<LocText> effects)
@@ -1195,7 +1195,7 @@ namespace Placemaker.Core.Tool
             if (!string.IsNullOrEmpty(i.Cause))
             {
                 int at = (i.Key ?? "").IndexOf(".Issue.", StringComparison.Ordinal);
-                string prefix = at > 0 ? i.Key.Substring(0, at) : "Placemaker";
+                string prefix = at > 0 ? i.Key.Substring(0, at) : "citymaker";
                 o.Set("cause", JsonValue.Obj().Set("id", i.Cause).Set("label", prefix + ".Control." + i.Cause).Set("value", i.CauseValue ?? ""));
             }
             if (i.Dropped) o.Set("dropped", true);
@@ -1220,7 +1220,7 @@ namespace Placemaker.Core.Tool
 
         private static double Round(double v, int digits) => double.IsNaN(v) || double.IsInfinity(v) ? 0 : Math.Round(v, digits);
 
-        public static JsonValue BrushRulesJson(Placemaker.Core.Geometry.BrushRules r) => JsonValue.Obj()
+        public static JsonValue BrushRulesJson(Citymaker.Core.Geometry.BrushRules r) => JsonValue.Obj()
             .Set("roads", r.Roads).Set("buildings", r.Buildings).Set("lots", r.Lots).Set("zoned", r.Zoned).Set("allZoned", r.AllZoned)
             .Set("emptyZones", r.EmptyZones).Set("water", r.Water).Set("stayInBlock", r.StayInBlock)
             .Set("builds", r.Builds).Set("anything", r.Anything).Set("drawClip", r.DrawClip)
@@ -1230,28 +1230,28 @@ namespace Placemaker.Core.Tool
             .Set("gap", Round(r.Gap, 1)).Set("reach", Round(r.Reach, 0));
 
         /// <summary>(s43) Paint bucket walls as { roads, paths, bikes, tracks, water, lots, zoned }.</summary>
-        public static JsonValue WallsJson(Placemaker.Core.Geometry.FillWall w)
+        public static JsonValue WallsJson(Citymaker.Core.Geometry.FillWall w)
         {
             var o = JsonValue.Obj();
             foreach (var kv in WallKeys) o.Set(kv.Key, (w & kv.Value) != 0);
             return o;
         }
 
-        public static readonly KeyValuePair<string, Placemaker.Core.Geometry.FillWall>[] WallKeys =
+        public static readonly KeyValuePair<string, Citymaker.Core.Geometry.FillWall>[] WallKeys =
         {
-            new KeyValuePair<string, Placemaker.Core.Geometry.FillWall>("roads", Placemaker.Core.Geometry.FillWall.Roads),
-            new KeyValuePair<string, Placemaker.Core.Geometry.FillWall>("paths", Placemaker.Core.Geometry.FillWall.Paths),
-            new KeyValuePair<string, Placemaker.Core.Geometry.FillWall>("bikes", Placemaker.Core.Geometry.FillWall.Bikes),
-            new KeyValuePair<string, Placemaker.Core.Geometry.FillWall>("tracks", Placemaker.Core.Geometry.FillWall.Tracks),
-            new KeyValuePair<string, Placemaker.Core.Geometry.FillWall>("water", Placemaker.Core.Geometry.FillWall.Water),
-            new KeyValuePair<string, Placemaker.Core.Geometry.FillWall>("lots", Placemaker.Core.Geometry.FillWall.Lots),
-            new KeyValuePair<string, Placemaker.Core.Geometry.FillWall>("zoned", Placemaker.Core.Geometry.FillWall.Zoned),
+            new KeyValuePair<string, Citymaker.Core.Geometry.FillWall>("roads", Citymaker.Core.Geometry.FillWall.Roads),
+            new KeyValuePair<string, Citymaker.Core.Geometry.FillWall>("paths", Citymaker.Core.Geometry.FillWall.Paths),
+            new KeyValuePair<string, Citymaker.Core.Geometry.FillWall>("bikes", Citymaker.Core.Geometry.FillWall.Bikes),
+            new KeyValuePair<string, Citymaker.Core.Geometry.FillWall>("tracks", Citymaker.Core.Geometry.FillWall.Tracks),
+            new KeyValuePair<string, Citymaker.Core.Geometry.FillWall>("water", Citymaker.Core.Geometry.FillWall.Water),
+            new KeyValuePair<string, Citymaker.Core.Geometry.FillWall>("lots", Citymaker.Core.Geometry.FillWall.Lots),
+            new KeyValuePair<string, Citymaker.Core.Geometry.FillWall>("zoned", Citymaker.Core.Geometry.FillWall.Zoned),
         };
 
         /// <summary>UI "setBrushRules": fields present in the JSON override <paramref name="current"/>; the result is clamped.</summary>
-        public static Placemaker.Core.Geometry.BrushRules ParseBrushRules(string json, Placemaker.Core.Geometry.BrushRules current)
+        public static Citymaker.Core.Geometry.BrushRules ParseBrushRules(string json, Citymaker.Core.Geometry.BrushRules current)
         {
-            var r = (current ?? Placemaker.Core.Geometry.BrushRules.Defaults()).Clone();
+            var r = (current ?? Citymaker.Core.Geometry.BrushRules.Defaults()).Clone();
             JsonValue v;
             try { v = JsonValue.Parse(json ?? ""); } catch (Exception) { return r; }
             if (v == null || !v.IsObject) return r;

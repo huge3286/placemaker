@@ -1,4 +1,4 @@
-// Placemaker — fitting planned net curves to CS2 courses (GPL-3.0).
+// Citymaker — fitting planned net curves to CS2 courses (GPL-3.0).
 // Terrain-split idea adapted from ParkManager's ParkPathCourseBuilder (tomkpunkt, GPL-3.0):
 // a course only knows the terrain height at its ends, so on hills its curve can run metres
 // above or below the ground and CS2 then carves or fills terrain along it. We split where the
@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     /// <summary>Engine-free cubic Bézier (same control-point convention as Colossal's Bezier4x3).</summary>
     public struct Cubic

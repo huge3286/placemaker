@@ -3,11 +3,11 @@
 // block at the lane head and a few campfires. Tents come from the camping pitch category.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.AddOns;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.AddOns;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Events
+namespace Citymaker.Core.Layers.Types.Events
 {
     [AreaGenerator(172)]
     public sealed class FestivalCampingAddOn : AddOnLayer
@@ -38,7 +38,7 @@ namespace Placemaker.Core.Layers.Types.Events
             float pitch = ctx.F("pitch");
             int wanted = ctx.I("pitches");
             // Camp centre: the most open spot; the lane runs along the region's long axis through it.
-            if (!Spots.Find(occ, pitch * 1.5f, Spots.Preference.Open, ctx.Seed, out var c, null, 0f, 1f, 1500)) { NoSpace(ctx, "Placemaker.Feature.festivalCamping"); return; }
+            if (!Spots.Find(occ, pitch * 1.5f, Spots.Preference.Open, ctx.Seed, out var c, null, 0f, 1f, 1500)) { NoSpace(ctx, "Citymaker.Feature.festivalCamping"); return; }
             LeisureKit.Frame(region, out _, out var axis, out var side, out _, out _);
             var tentR = pitch * 0.4f;
             int placed = 0;
@@ -67,7 +67,7 @@ namespace Placemaker.Core.Layers.Types.Events
                 if (u > math.dot(laneB - c, axis)) laneB = c + axis * u;
                 placed++;
             }
-            if (placed == 0) { NoSpace(ctx, "Placemaker.Feature.festivalCamping"); return; }
+            if (placed == 0) { NoSpace(ctx, "Citymaker.Feature.festivalCamping"); return; }
             // Lane through the camp (kept short of the outline).
             if (math.distance(laneA, laneB) > 4f && region.ContainsDisc(laneA, 1f) && region.ContainsDisc(laneB, 1f) && !region.CrossesBoundary(laneA, laneB, false))
                 LeisureKit.Path(ctx, occ, laneA, laneB, NetRole.Pathway, AssetMix.One(""));
@@ -87,7 +87,7 @@ namespace Placemaker.Core.Layers.Types.Events
                     if (EventKit.Put(ctx, occ, s, 0f, fire, AssetMix.One(""), 1.2f, Hashing.Mix(ctx.Seed, 0xF100u + (uint)i))) spots.Add(s);
                 }
             }
-            ctx.Stat("Placemaker.Stat.Pitches", placed, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Pitches", placed, Keys.UnitCount);
         }
     }
 }

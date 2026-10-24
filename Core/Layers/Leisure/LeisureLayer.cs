@@ -6,11 +6,11 @@
 // UI groups their Make cards (Parks / Squares).
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Park;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Park;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Leisure
+namespace Citymaker.Core.Layers.Leisure
 {
     public abstract class LeisureLayer : LayerBase, IHasFeatures
     {
@@ -81,8 +81,8 @@ namespace Placemaker.Core.Layers.Leisure
 
         protected static FeatureInfo Feature(string layer, params (string key, object value)[] preset) => new FeatureInfo
         {
-            Layer = layer, LabelKey = "Placemaker.Feature." + layer,
-            TooltipKey = layer == "shops" || layer == "terrain" ? "Placemaker.Feature." + layer + ".Tooltip" : "",
+            Layer = layer, LabelKey = "Citymaker.Feature." + layer,
+            TooltipKey = layer == "shops" || layer == "terrain" ? "Citymaker.Feature." + layer + ".Tooltip" : "",
             Preset = ParkLayer.Bag(preset),
         };
 

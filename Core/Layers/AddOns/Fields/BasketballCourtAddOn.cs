@@ -5,10 +5,10 @@
 // opposite, floodlights and an optional cage with a gate towards the path.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.AddOns.Fields
+namespace Citymaker.Core.Layers.AddOns.Fields
 {
     [AreaGenerator(184)]
     public sealed class BasketballCourtAddOn : FieldAddOn
@@ -122,7 +122,7 @@ namespace Placemaker.Core.Layers.AddOns.Fields
             if (ctx.B("fence"))
                 RectFence(ctx, new OrientedRect { Center = place.Center, Axis = place.Axis, HalfLength = place.HalfLength - 0.4f, HalfWidth = place.HalfWidth - 0.4f },
                     j.Toward, 2.5f, AssetMix.One(ctx.S("fenceAsset")));
-            ctx.Stat("Placemaker.Stat.Courts", 1, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Courts", 1, Keys.UnitCount);
             ctx.Plan.Facts["hoops"] = j.Equipment;
         }
     }

@@ -10,10 +10,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Hiking
+namespace Citymaker.Core.Layers.Types.Hiking
 {
     public enum TrailPreference { None = 0, High = 1, Low = 2 }
 

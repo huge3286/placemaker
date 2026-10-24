@@ -1,4 +1,4 @@
-// Placemaker — invisible tool that owns the apply cadence during a build (GPL-3.0).
+// Citymaker — invisible tool that owns the apply cadence during a build (GPL-3.0).
 //
 // Why a tool: CS2 applies or clears ALL temporary entities according to the ACTIVE tool's
 // applyMode (ToolSystem.applyMode → ToolOutputSystem → ApplyTool/ClearTool phases). Another tool
@@ -14,11 +14,11 @@ using Game.Tools;
 using Unity.Jobs;
 using UnityEngine.Scripting;
 
-namespace Placemaker.Game.Build
+namespace Citymaker.Game.Build
 {
     public sealed partial class BuildToolSystem : ToolBaseSystem
     {
-        public const string Id = "Placemaker Build";
+        public const string Id = "Citymaker Build";
 
         /// <summary>Apply mode requested by BuildService for the next ToolUpdate.</summary>
         internal ApplyMode Requested = ApplyMode.None;

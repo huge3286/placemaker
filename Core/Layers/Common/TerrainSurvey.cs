@@ -8,7 +8,7 @@
 using System;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Common
+namespace Citymaker.Core.Layers.Common
 {
     public enum SlopeClass { Flat = 0, Gentle = 1, Steep = 2, Cliff = 3 }
 

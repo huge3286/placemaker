@@ -20,7 +20,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Placemaker.Game.Suite
+namespace Citymaker.Game.Suite
 {
     public sealed partial class SuiteRunner
     {
@@ -107,7 +107,7 @@ namespace Placemaker.Game.Suite
             rec["dropouts"] = dropouts;
             rec["jumps"] = changes;
             rec["counts"] = new JArray(counts);
-            Mod.Log.Info($"Placemaker lab: outline flicker ({label}): house {house.Index} lit with {lit.Count - 1} pieces, {counts.Count} frames panning {pan} m a frame; outline pixels median {median}, min {sorted[0]}, max {sorted[sorted.Count - 1]}, "
+            Mod.Log.Info($"Citymaker lab: outline flicker ({label}): house {house.Index} lit with {lit.Count - 1} pieces, {counts.Count} frames panning {pan} m a frame; outline pixels median {median}, min {sorted[0]}, max {sorted[sorted.Count - 1]}, "
                 + $"{dropouts} frames under half the median, {changes} jumps frame to frame; counts {string.Join(",", counts)}");
         }
     }

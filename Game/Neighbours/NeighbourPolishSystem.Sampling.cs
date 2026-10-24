@@ -1,4 +1,4 @@
-// Placemaker neighbourhood polish — the ground and the water around a patch, read off the frame (GPL-3.0).
+// Citymaker neighbourhood polish — the ground and the water around a patch, read off the frame (GPL-3.0).
 //
 // A plan needs the ground's height on a 4 m raster over its patch (gardens stop at cliffs) and where the water is (gardens
 // never reach into it). Read on the main thread that was 40 000 terrain samples and as many water samples every pass,
@@ -10,13 +10,13 @@
 
 using System.Collections.Generic;
 using Game.Simulation;
-using Placemaker.Core.Neighbours;
-using Placemaker.Game.Selection;
+using Citymaker.Core.Neighbours;
+using Citymaker.Game.Selection;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Neighbours
+namespace Citymaker.Game.Neighbours
 {
     public sealed partial class NeighbourPolishSystem
     {

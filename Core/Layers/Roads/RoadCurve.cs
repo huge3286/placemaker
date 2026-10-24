@@ -1,4 +1,4 @@
-// Placemaker roads layer — cubic Bézier helpers in the XZ plane.
+// Citymaker roads layer — cubic Bézier helpers in the XZ plane.
 // FitCurve reproduces the curve CS2 builds for a course from two end tangents
 // (Game.Net.NetUtils.FitCurve), as measured by Grid Road Generator (Ti4goc), so the
 // planned curve is the curve the game will actually lay.
@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads
+namespace Citymaker.Core.Layers.Roads
 {
     /// <summary>Cubic Bézier A→D with control points B, C. Y is carried along but all queries are planar (XZ).</summary>
     public struct RoadCurve

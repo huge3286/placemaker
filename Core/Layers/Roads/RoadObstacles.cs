@@ -1,4 +1,4 @@
-// Placemaker roads layer — obstacle avoidance.
+// Citymaker roads layer — obstacle avoidance.
 // Adapted from Grid Road Generator (Ti4goc), Systems/GridRoadToolSystem.FreeArea.cs
 // (RemoveObstacleSegments / Blocked / InsideBuilding): water deeper than 0.3 m, building
 // footprints + 4 m, utility objects (pylons) + 8 m. Engine queries are replaced by the
@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads
+namespace Citymaker.Core.Layers.Roads
 {
     internal sealed class RoadObstacles
     {

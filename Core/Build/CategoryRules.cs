@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     public interface ICategoryRules
     {
@@ -71,7 +71,7 @@ namespace Placemaker.Core.Build
     }
 }
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     /// <summary>
     /// Optional companion to ICategoryRules: categories whose automatic picks should VARY per object

@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Parking
+namespace Citymaker.Core.Layers.Parking
 {
     internal static class SpecialStalls
     {
@@ -117,7 +117,7 @@ namespace Placemaker.Core.Layers.Parking
                     }
                     if (bestRun < 0)
                     {
-                        if (gi == 0) layout.Issues.Add(new LayoutIssue(IssueSeverity.Info, "Placemaker.Parking.Issue.NoRoomForAccessible"));
+                        if (gi == 0) layout.Issues.Add(new LayoutIssue(IssueSeverity.Info, "Citymaker.Parking.Issue.NoRoomForAccessible"));
                         break;
                     }
                     Replace(layout, runs[bestRun].GetRange(bestStart, bestSize.Fields), bestSize);
@@ -165,7 +165,7 @@ namespace Placemaker.Core.Layers.Parking
                     pairs--;
                 }
                 if (layout.ElectricPairs.Count == 0)
-                    layout.Issues.Add(new LayoutIssue(IssueSeverity.Info, "Placemaker.Parking.Issue.NoRoomForChargers"));
+                    layout.Issues.Add(new LayoutIssue(IssueSeverity.Info, "Citymaker.Parking.Issue.NoRoomForChargers"));
             }
         }
 

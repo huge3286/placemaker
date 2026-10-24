@@ -1,4 +1,4 @@
-// Placemaker roads layer (s61) — the perimeter always closes.
+// Citymaker roads layer (s61) — the perimeter always closes.
 //
 // Playtest: the perimeter ended in two open ends with cul-de-sac stubs where an obstacle (or a crowded junction) had
 // removed its pieces. A perimeter road is a ring: after the other passes every free end of it is joined to the other
@@ -7,10 +7,10 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads
+namespace Citymaker.Core.Layers.Roads
 {
     internal static class RoadPerimeter
     {

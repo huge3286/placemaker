@@ -1,4 +1,4 @@
-// Placemaker roads layer (smarter roads) — a grid that gives way to the hill. Real grids are not perfect on hills, and
+// Citymaker roads layer (smarter roads) — a grid that gives way to the hill. Real grids are not perfect on hills, and
 // that is where they get interesting: the planner lets the land break the grid, only where the land asks for it.
 //
 //   bend          interior junctions move a little (at most a fifth of the spacing) where that takes the streets around
@@ -11,10 +11,10 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Roads
+namespace Citymaker.Core.Layers.Roads
 {
     internal static class RoadTerrainFit
     {

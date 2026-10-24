@@ -1,4 +1,4 @@
-// Placemaker "Zoning" category — the neighbourhood types (GPL-3.0).
+// Citymaker "Zoning" category — the neighbourhood types (GPL-3.0).
 //
 // Each is a kind of neighbourhood: its zones (up to three, each with its share of the land, its lot sizes and the road
 // widths it goes on; what the shares leave stays empty), how its lots mix, and the look its lots outgrow their borders
@@ -6,18 +6,18 @@
 // that neighbourhood (corner shops, leafy, a high street…), not just more or less reach. Lot sizes are zone cells (8 m):
 // width along the road, depth back from it.
 
-using Placemaker.Core.Layers.Common;
-using static Placemaker.Core.Layers.Common.ZoneKinds;
+using Citymaker.Core.Layers.Common;
+using static Citymaker.Core.Layers.Common.ZoneKinds;
 
-namespace Placemaker.Core.Layers.Types.Zoning
+namespace Citymaker.Core.Layers.Types.Zoning
 {
-    /// <summary>A neighbourhood type: id zoning&lt;Name&gt;, name Placemaker.Zoning.Type.&lt;id&gt;.</summary>
+    /// <summary>A neighbourhood type: id zoning&lt;Name&gt;, name Citymaker.Zoning.Type.&lt;id&gt;.</summary>
     public abstract class ZoningTypeLayer : PolishLookLayer
     {
         /// <summary>The type's short id (suburb, village…).</summary>
         protected abstract string TypeId { get; }
         public override string Id => "zoning" + char.ToUpperInvariant(TypeId[0]) + TypeId.Substring(1);
-        public override string NameKey => "Placemaker.Zoning.Type." + TypeId;
+        public override string NameKey => "Citymaker.Zoning.Type." + TypeId;
         protected static ZoneSlot Z(string kind, double share, int w0, int w1, int d0, int d1, double r0 = 0, double r1 = MaxRoad) => new ZoneSlot(kind, share, w0, w1, d0, d1, r0, r1);
         /// <summary>Small streets only (two-lane roads and narrower), and wider roads only.</summary>
         protected const double SmallRoads = 17, BigRoads = 18;

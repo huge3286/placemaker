@@ -1,4 +1,4 @@
-// Placemaker — presets: Category ▸ Type ▸ Preset (contract.ts PresetView / ActivePreset).
+// Citymaker — presets: Category ▸ Type ▸ Preset (contract.ts PresetView / ActivePreset).
 //
 // A type (layer) ships built-in presets (IAreaGenerator.Presets: a few setting values over the
 // defaults). Every Fill type also has STANDARD (StandardId, first in its list): the type's own design, what
@@ -13,15 +13,15 @@
 // Overrides and customs store the full step: settings, Locked and the feature children (playground,
 // zoning…) with their settings. Markers, seeds and free-form children never belong to a preset.
 //
-// Pure: the game persists Write()/Read() to ModsData/Placemaker/presets.json (one entry per preset,
+// Pure: the game persists Write()/Read() to ModsData/Citymaker/presets.json (one entry per preset,
 // human-readable so the lead can bake player presets into the built-in defaults).
 
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Common;
 
-namespace Placemaker.Core.Tool
+namespace Citymaker.Core.Tool
 {
     /// <summary>A preset the player saved: a custom one or an override of a built-in.</summary>
     public sealed class UserPreset
@@ -76,7 +76,7 @@ namespace Placemaker.Core.Tool
         /// <summary>The style every Fill type has and starts on: its own design ("Standard").</summary>
         public const string StandardId = "standard";
         /// <summary>Name key of a Standard the type does not ship itself (Lang/en-US.ui.json).</summary>
-        public const string StandardNameKey = "Placemaker.UI.Preset.Standard";
+        public const string StandardNameKey = "Citymaker.UI.Preset.Standard";
 
         private readonly DesignEditor _editor;
         private readonly Func<DateTime> _clock;
@@ -490,7 +490,7 @@ namespace Placemaker.Core.Tool
             }
             return JsonValue.Obj()
                 .Set("formatVersion", CurrentFormatVersion)
-                .Set("about", "Placemaker player presets. One entry per preset: layer = type id; override = replaces the built-in preset with this id; step = the full saved settings and features.")
+                .Set("about", "Citymaker player presets. One entry per preset: layer = type id; override = replaces the built-in preset with this id; step = the full saved settings and features.")
                 .Set("presets", arr);
         }
 

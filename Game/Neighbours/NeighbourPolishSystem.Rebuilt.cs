@@ -1,4 +1,4 @@
-// Placemaker neighbourhood polish — buildings the game rebuilt and pieces the game took away (GPL-3.0).
+// Citymaker neighbourhood polish — buildings the game rebuilt and pieces the game took away (GPL-3.0).
 //
 // "Outgrown but empty" (the lens shows a building outgrown, it has no garden, yard or car park, or what it had went later;
 // painting over it again fixes it). The polish planned a building again only when one of its fence lanes was made or
@@ -26,7 +26,7 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Neighbours
+namespace Citymaker.Game.Neighbours
 {
     public sealed partial class NeighbourPolishSystem
     {
@@ -88,7 +88,7 @@ namespace Placemaker.Game.Neighbours
                     EntityManager.AddComponent<Updated>(e);
                     sunk++;
                 }
-            if (sunk > 0) Mod.Log.Info($"Placemaker neighbourhood polish: {sunk} car park marks and other pieces that kept zoned land from growing set a hair under the ground");
+            if (sunk > 0) Mod.Log.Info($"Citymaker neighbourhood polish: {sunk} car park marks and other pieces that kept zoned land from growing set a hair under the ground");
         }
 
         /// <summary>A few hundred outgrown buildings of the city just loaded: the ones with nothing they should have
@@ -118,7 +118,7 @@ namespace Placemaker.Game.Neighbours
             if (_healQueue.Count > 0) return;
             _healPending = false;
             _healQueue = null;
-            Mod.Log.Info($"Placemaker neighbourhood polish: {_healLooked} outgrown buildings looked at after the load, {_healFound} had nothing they should have (no garden, yard or car park): planned again");
+            Mod.Log.Info($"Citymaker neighbourhood polish: {_healLooked} outgrown buildings looked at after the load, {_healFound} had nothing they should have (no garden, yard or car park): planned again");
         }
 
         private void CreateRebuiltQueries()
@@ -215,7 +215,7 @@ namespace Placemaker.Game.Neighbours
             TotalRemade += remade;
             if (_remade.Count > 4096) _remade.Clear();
             if (remade > 0 && _lostLogged++ < 20)
-                Mod.Log.Info($"Placemaker neighbourhood polish: the game took {remade} pieces from {owners} outgrown buildings (people or a company moved in or out): made again where they stood");
+                Mod.Log.Info($"Citymaker neighbourhood polish: the game took {remade} pieces from {owners} outgrown buildings (people or a company moved in or out): made again where they stood");
         }
     }
 }

@@ -298,7 +298,7 @@
      "gap": 2,
      "turn": 30,
      "sink": 0.6,
-     "pair": "Placemaker Vehicle Car 1"
+     "pair": "Citymaker Vehicle Car 1"
     },
     {
      "do": "shot",
@@ -339,7 +339,7 @@
      "turn": 30,
      "sink": 0.6,
      "underground": true,
-     "pair": "Placemaker Vehicle Car 1"
+     "pair": "Citymaker Vehicle Car 1"
     },
     {
      "do": "shot",

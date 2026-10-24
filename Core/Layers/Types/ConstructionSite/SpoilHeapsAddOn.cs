@@ -2,14 +2,14 @@
 // open, each a small raised terrain mound (optional, permanent) dressed with pile props and mud
 // paint. Heaps keep far enough from the outline that the mound blends back to the original ground.
 
-using Placemaker.Core.Layers.Types.Scrapyard;
+using Citymaker.Core.Layers.Types.Scrapyard;
 using System.Collections.Generic;
-using Placemaker.Core.Layers.AddOns;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Layers.AddOns;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.ConstructionSite
+namespace Citymaker.Core.Layers.Types.ConstructionSite
 {
     [AreaGenerator(162)]
     public sealed class SpoilHeapsAddOn : AddOnLayer
@@ -68,8 +68,8 @@ namespace Placemaker.Core.Layers.Types.ConstructionSite
                 placed++;
             }
             if (placed > 0 && ctx.B("raise")) ctx.Issue(IssueSeverity.Warning, TerrainShaper.PermanentKey);
-            if (placed == 0) NoSpace(ctx, "Placemaker.AddOn.SpoilHeaps.Name");
-            ctx.Stat("Placemaker.Stat.Heaps", props, Keys.UnitCount);
+            if (placed == 0) NoSpace(ctx, "Citymaker.AddOn.SpoilHeaps.Name");
+            ctx.Stat("Citymaker.Stat.Heaps", props, Keys.UnitCount);
         }
     }
 }

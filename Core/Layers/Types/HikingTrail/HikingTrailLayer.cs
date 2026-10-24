@@ -11,12 +11,12 @@
 // blended back to the original ground at the outline.
 
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Leisure;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Leisure;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Hiking
+namespace Citymaker.Core.Layers.Types.Hiking
 {
     [AreaGenerator(270, Group = "nature")]
     public sealed class HikingTrailLayer : LeisureLayer
@@ -179,7 +179,7 @@ namespace Placemaker.Core.Layers.Types.Hiking
             ctx.Check();
             if (t.Lines.Count == 0)
             {
-                ctx.Issue(IssueSeverity.Warning, "Placemaker.HikingTrail.Issue.NoRoute");
+                ctx.Issue(IssueSeverity.Warning, "Citymaker.HikingTrail.Issue.NoRoute");
                 EmitGreenRegions(ctx, occ);
                 return;
             }
@@ -219,10 +219,10 @@ namespace Placemaker.Core.Layers.Types.Hiking
             if (shaped) Sculpt.Resnap(ctx);
             CommonStats(ctx);
             ctx.Stat(Keys.StatBushes, Count(ctx.Plan, ObjectRole.Bush), Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Viewpoints", t.Views, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.RestSpots", t.Rests, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Footbridges", t.Bridges, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.SteepestGrade", System.Math.Round(t.MaxGrade * 100f), "%");
+            ctx.Stat("Citymaker.Stat.Viewpoints", t.Views, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.RestSpots", t.Rests, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Footbridges", t.Bridges, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.SteepestGrade", System.Math.Round(t.MaxGrade * 100f), "%");
             ctx.Plan.Facts["trailLength"] = t.Length;
             ctx.Plan.Facts["footbridges"] = t.Bridges;
             ctx.Plan.Facts["trailheads"] = t.Heads;

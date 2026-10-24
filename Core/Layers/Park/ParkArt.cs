@@ -9,7 +9,7 @@
 // a playset lacks falls through to the next one and finally to the automatic pool (Build/AutoAssets.Set).
 // A player's own asset choice always wins: these are only used when the control is left on automatic.
 
-namespace Placemaker.Core.Layers.Park
+namespace Citymaker.Core.Layers.Park
 {
     public static class ParkArt
     {
@@ -51,7 +51,7 @@ namespace Placemaker.Core.Layers.Park
     }
 }
 
-namespace Placemaker.Core.Layers.Park
+namespace Citymaker.Core.Layers.Park
 {
     /// <summary>Campground defaults (vanilla CampfireSite palette: makeshift tents, campground table sets and shelters, info signs).</summary>
     public static class CampArt

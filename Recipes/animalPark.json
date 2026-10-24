@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "animalPark",
-  "nameKey": "Placemaker.Recipe.AnimalPark",
-  "descriptionKey": "Placemaker.Recipe.AnimalPark.Description",
+  "nameKey": "Citymaker.Recipe.AnimalPark",
+  "descriptionKey": "Citymaker.Recipe.AnimalPark.Description",
   "icon": "Media/Game/Icons/Animal.svg",
   "root": {
     "layer": "animalPark",

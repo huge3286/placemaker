@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "dogPark",
-  "nameKey": "Placemaker.Recipe.DogPark",
-  "descriptionKey": "Placemaker.Recipe.DogPark.Description",
+  "nameKey": "Citymaker.Recipe.DogPark",
+  "descriptionKey": "Citymaker.Recipe.DogPark.Description",
   "icon": "Media/Game/Icons/Pet.svg",
   "root": {
     "layer": "dogPark",

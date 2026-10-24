@@ -25,7 +25,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
     }
 
     componentDidCatch(error: unknown, info: unknown) {
-        console.error(`[Placemaker] UI region "${this.props.name}" crashed; showing fallback.`, error, info);
+        console.error(`[Citymaker] UI region "${this.props.name}" crashed; showing fallback.`, error, info);
     }
 
     reset = () => this.setState({ error: null, hasError: false });
@@ -42,7 +42,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
                 onClick={this.reset}
                 data-pm-crash={this.props.name}
             >
-                Placemaker: this part of the panel failed ({message}). Click to retry.
+                Citymaker: this part of the panel failed ({message}). Click to retry.
             </div>
         );
     }

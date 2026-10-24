@@ -1,4 +1,4 @@
-// Placemaker — keep the city's zoned buildings off a build, and give its zoning cutouts exactly their cells (s19).
+// Citymaker — keep the city's zoned buildings off a build, and give its zoning cutouts exactly their cells (s19).
 //
 // Playtest: zoned apartment blocks grew right over a plaza; only the cutouts were meant for buildings. CS2
 // (decompiled 1.6.2f1, RESEARCH-NOTES-ADDENDUM 67–72): every road owns zone blocks of 8 m cells up to 6 deep,
@@ -18,10 +18,10 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
+using Citymaker.Core.Geometry;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Build
+namespace Citymaker.Core.Build
 {
     public enum ZoneCellState : byte { Zoned = 0, Blocked = 1, Kept = 2 }
 
@@ -331,7 +331,7 @@ namespace Placemaker.Core.Build
         }
 
         /// <summary>(s26) Issue: a planned plot faces no road's zone block (no cell of it can be zoned).</summary>
-        public const string NotZonableKey = "Placemaker.Issue.CutoutNotZonable";
+        public const string NotZonableKey = "Citymaker.Issue.CutoutNotZonable";
 
         /// <summary>Zone blocks the game will give the roads this plan adds (both sides of every road-class net).</summary>
         public static List<ZoneGrid> PredictedGrids(ComposedPlan plan, SiteContext site)

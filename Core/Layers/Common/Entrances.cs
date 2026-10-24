@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Common
+namespace Citymaker.Core.Layers.Common
 {
     public struct Gate
     {
@@ -60,7 +60,7 @@ namespace Placemaker.Core.Layers.Common
         {
             foreach (var k in kinds)
             {
-                string key = "Placemaker.Entrance." + char.ToUpperInvariant(k[0]) + k.Substring(1);
+                string key = "Citymaker.Entrance." + char.ToUpperInvariant(k[0]) + k.Substring(1);
                 c.Options.Add(new ControlOption { Value = k, LabelKey = key, TooltipKey = key + ".Tip", Icon = Icon(k) });
             }
             return c;
@@ -342,7 +342,7 @@ namespace Placemaker.Core.Layers.Common
             if (input?.Markers != null)
                 foreach (var m in input.Markers)
                     if (m.Kind == EntranceKinds.Legacy || Array.IndexOf(kinds, m.Kind) >= 0) return new Readiness { Ready = true };
-            return new Readiness { Ready = false, NextStepKey = "Placemaker.Entrance.Step.Place", ReasonKey = "Placemaker.Entrance.Reason.Needs" };
+            return new Readiness { Ready = false, NextStepKey = "Citymaker.Entrance.Step.Place", ReasonKey = "Citymaker.Entrance.Reason.Needs" };
         }
 
         // ───────────────────────── typed entrances (park family) ─────────────────────────

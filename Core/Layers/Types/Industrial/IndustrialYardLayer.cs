@@ -12,12 +12,12 @@
 // No grime scatter, no strays, no "random junk by the fence": the user asked for yards that look designed.
 
 using System.Collections.Generic;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Leisure;
-using Placemaker.Core.Layers.Types.Scrapyard;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Leisure;
+using Citymaker.Core.Layers.Types.Scrapyard;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Yards
+namespace Citymaker.Core.Layers.Types.Yards
 {
     public abstract class IndustrialYardLayer : LeisureLayer
     {
@@ -170,11 +170,11 @@ namespace Placemaker.Core.Layers.Types.Yards
             EmitGreenRegions(ctx, s.Occ, 200f);
 
             ctx.Stat(Keys.StatArea, System.Math.Round(region.Area), Keys.UnitM2);
-            ctx.Stat("Placemaker.Stat.Containers", s.Containers, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Wrecks", s.Wrecks, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Heaps", s.Heaps, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Bays", s.Bays, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Machines", s.Machines, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Containers", s.Containers, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Wrecks", s.Wrecks, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Heaps", s.Heaps, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Bays", s.Bays, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Machines", s.Machines, Keys.UnitCount);
             ctx.Stat(Keys.StatLamps, s.Lights, Keys.UnitCount);
             int used = 0;
             foreach (var b in s.Blocks) if (b.Use.Length > 0) used++;

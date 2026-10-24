@@ -1,22 +1,22 @@
 // s14: the "Commercial" category (Make-row group "commercial"). Each type is a composition built with the
 // Mall kit: lanes, zoned shop rows (cutouts), parking lots from the Parking planner and green / plaza pieces
 // from the Park, Plaza and Market square planners. Shared controls read the same on every type
-// (labels Placemaker.Commercial.<id>, zone type Placemaker.Zone.*).
+// (labels Citymaker.Commercial.<id>, zone type Citymaker.Zone.*).
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.AddOns;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Leisure;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.AddOns;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Leisure;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Commercial
+namespace Citymaker.Core.Layers.Commercial
 {
     public abstract partial class CommercialLayer : LeisureLayer
     {
         public const string Group = "commercial";
-        protected const string K = "Placemaker.Commercial.";
+        protected const string K = "Citymaker.Commercial.";
         public const string NoStreetKey = K + "Issue.NoStreet";
         public const string NoLotKey = K + "Issue.NoLot";
         public const string FallbackKey = K + "Issue.Fallback";
@@ -41,7 +41,7 @@ namespace Placemaker.Core.Layers.Commercial
         public override List<EdgeMarker> SuggestMarkers(AreaInput input) => UsesEntrances ? new List<EdgeMarker>() : base.SuggestMarkers(input);
 
         /// <summary>
-        /// (rf-shops3) The architect's extras (panel group "Extras", shared keys Placemaker.Commercial.*; Mall.Extras): each type passes
+        /// (rf-shops3) The architect's extras (panel group "Extras", shared keys Citymaker.Commercial.*; Mall.Extras): each type passes
         /// its defaults, each style may override them in its preset.
         /// </summary>
         protected static void ExtrasControls(ControlSet c, bool walkways = true, bool plaza = true, string bikes = "racks", int trucks = 2, bool pads = false,
@@ -111,7 +111,7 @@ namespace Placemaker.Core.Layers.Commercial
             c.Fixed("outerZone");
         }
 
-        /// <summary>Points a control at the shared Placemaker.Commercial.* keys (options too).</summary>
+        /// <summary>Points a control at the shared Citymaker.Commercial.* keys (options too).</summary>
         protected static ControlSchema Shared(ControlSchema c)
         {
             c.LabelKey = K + c.Id;

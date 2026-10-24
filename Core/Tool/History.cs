@@ -1,4 +1,4 @@
-// Placemaker — one undo/redo stack for everything the player edits in the tool: outline,
+// Citymaker — one undo/redo stack for everything the player edits in the tool: outline,
 // markers and the design (recipe tree + values). Adapted from Grid Road Generator's History
 // (snapshot of the stable state, gesture = one entry), but typed instead of reflection and
 // with explicit commits + labels so the panel can say "Undo: move corner".
@@ -10,7 +10,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Placemaker.Core.Tool
+namespace Citymaker.Core.Tool
 {
     public sealed class History<T> where T : class
     {

@@ -13,12 +13,12 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Build;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Build;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.LookoutHill
+namespace Citymaker.Core.Layers.Types.LookoutHill
 {
     public enum HillShape { Cone = 0, Dome = 1, Mound = 2, Mesa = 3, Terraced = 4 }
 

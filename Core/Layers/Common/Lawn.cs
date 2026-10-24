@@ -1,4 +1,4 @@
-// Placemaker — the lawn: a grass SURFACE or bare terrain + ground paint (s33, docs/TERRAIN-PAINT.md). GPL-3.0.
+// Citymaker — the lawn: a grass SURFACE or bare terrain + ground paint (s33, docs/TERRAIN-PAINT.md). GPL-3.0.
 //
 // A grass surface is one uniformly tiled texture that hides the terrain: no wear, no mulch, no lush/dry variation shows
 // through it (s28 audit). CS2's own terrain already IS grass on flat ground (procedural base, "Grass_temperate"), with
@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Common
+namespace Citymaker.Core.Layers.Common
 {
     public static class Lawn
     {

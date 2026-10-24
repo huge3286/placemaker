@@ -16,7 +16,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Suite
+namespace Citymaker.Core.Suite
 {
     public enum SuiteBlockKind { Flat = 0, Zoned = 1, Slope = 2, Rough = 3, Survive = 4, Plot = 5 }
 

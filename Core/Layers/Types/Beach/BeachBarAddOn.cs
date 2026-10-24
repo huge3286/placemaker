@@ -2,11 +2,11 @@
 // small terrace in front of it — cafe tables in a fan facing away from the counter, shaded by
 // umbrellas when wanted. Placed near the paths so it is reachable; spread when several are wanted.
 
-using Placemaker.Core.Layers.AddOns;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.AddOns;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Beach
+namespace Citymaker.Core.Layers.Types.Beach
 {
     [AreaGenerator(71, Hidden = true, Group = "water")]
     public sealed class BeachBarAddOn : AddOnLayer
@@ -67,9 +67,9 @@ namespace Placemaker.Core.Layers.Types.Beach
                         LeisureKit.Put(ctx, occ, q + side * 1.2f + fwd * 1.3f, 0f, ObjectRole.Furniture, AssetMix.One(""), shade, 0.5f, Hashing.Mix(v, (uint)k + 50u), 0.4f, 0.05f);
                 }
             }
-            if (placed == 0) NoSpace(ctx, "Placemaker.AddOn.BeachBar.Name");
-            ctx.Stat("Placemaker.Stat.Kiosks", placed, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.CafeTables", seats, Keys.UnitCount);
+            if (placed == 0) NoSpace(ctx, "Citymaker.AddOn.BeachBar.Name");
+            ctx.Stat("Citymaker.Stat.Kiosks", placed, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.CafeTables", seats, Keys.UnitCount);
         }
     }
 }

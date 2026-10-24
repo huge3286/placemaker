@@ -1,8 +1,8 @@
-// Placemaker — the owner lot of a build (US7) and clearing existing trees/props (US6) (GPL-3.0).
+// Citymaker — the owner lot of a build (US7) and clearing existing trees/props (US6) (GPL-3.0).
 //
-// Owner lot: a "Placemaker Area" lot (OwnerAreaPrefabSystem) is emitted over the build outline in the
-// same transaction as everything else. It is tagged PlacemakerMember{Auxiliary, OwnerArea} and its
-// entity is stored in the record (PlacemakerGroup.Owner). It is the ONE selectable thing: the lot is
+// Owner lot: a "Citymaker Area" lot (OwnerAreaPrefabSystem) is emitted over the build outline in the
+// same transaction as everything else. It is tagged CitymakerMember{Auxiliary, OwnerArea} and its
+// entity is stored in the record (CitymakerGroup.Owner). It is the ONE selectable thing: the lot is
 // raycastable by the default tool and the bulldozer (AreaTypeMask.Lots), the RaycastLiftPatch lifts
 // hits on any member to it, and bulldozing it cascades to the whole group (GroupRegistrySystem →
 // GroupRemovalSystem, phase-correct). Members are deliberately NOT given an Owner:
@@ -22,15 +22,15 @@ using Game.Common;
 using Game.Objects;
 using Game.Prefabs;
 using Game.Tools;
-using Placemaker.Core;
-using Placemaker.Core.Build;
-using Placemaker.Core.Geometry;
-using Placemaker.Game.Groups;
+using Citymaker.Core;
+using Citymaker.Core.Build;
+using Citymaker.Core.Geometry;
+using Citymaker.Game.Groups;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Placemaker.Game.Build
+namespace Citymaker.Game.Build
 {
     public sealed partial class BuildService
     {
@@ -59,7 +59,7 @@ namespace Placemaker.Game.Build
                     ComponentType.ReadOnly<Owner>(), ComponentType.ReadOnly<Temp>(), ComponentType.ReadOnly<Deleted>(),
                     ComponentType.ReadOnly<global::Game.Buildings.Building>(), ComponentType.ReadOnly<global::Game.Objects.UtilityObject>(),
                     ComponentType.ReadOnly<Attached>(), ComponentType.ReadOnly<global::Game.Routes.TransportStop>(),
-                    ComponentType.ReadOnly<PlacemakerMember>(), ComponentType.ReadOnly<Secondary>(),
+                    ComponentType.ReadOnly<CitymakerMember>(), ComponentType.ReadOnly<Secondary>(),
                 },
             });
         }
@@ -123,7 +123,7 @@ namespace Placemaker.Game.Build
             }
             if (ring == null)
             {
-                Mod.Log.Warn("Placemaker: no valid lot shape for the owner lot; the build is selectable per part (bulldozing a part removes it all).");
+                Mod.Log.Warn("Citymaker: no valid lot shape for the owner lot; the build is selectable per part (bulldozing a part removes it all).");
                 return false;
             }
             var ring3 = new float3[ring.Length];
@@ -192,7 +192,7 @@ namespace Placemaker.Game.Build
             if (temp == Entity.Null)
             {
                 if (frame - _ownerSince < OwnerMaterializeFrames) return;
-                Mod.Log.Warn($"Placemaker: the owner lot (level {_ownerLevel}) did not materialise.");
+                Mod.Log.Warn($"Citymaker: the owner lot (level {_ownerLevel}) did not materialise.");
                 NextOwnerLevel(frame, Entity.Null);
                 return;
             }
@@ -202,13 +202,13 @@ namespace Placemaker.Game.Build
                 string type = ErrorTypeOf(temp);
                 if (IsShapeError(type))
                 {
-                    Mod.Log.Warn($"Placemaker: the game rejected the owner lot shape (level {_ownerLevel}: {type}); trying a simpler ring.");
+                    Mod.Log.Warn($"Citymaker: the game rejected the owner lot shape (level {_ownerLevel}: {type}); trying a simpler ring.");
                     NextOwnerLevel(frame, temp);
                     return;
                 }
                 // Overlap with another lot (a neighbouring build, a planned lot): harmless for an invisible
                 // selection lot. Apply builds temporaries regardless of errors (the tool gate is ours).
-                Mod.Log.Info($"Placemaker: owner lot overlaps existing lots ({type}); kept.");
+                Mod.Log.Info($"Citymaker: owner lot overlaps existing lots ({type}); kept.");
             }
             AdoptOwnerTemp(temp);
             Go(Step.Apply);
@@ -221,7 +221,7 @@ namespace Placemaker.Game.Build
             _ownerSince = frame;
             if (_ownerLevel >= OwnerRings.Levels || !EmitOwnerArea())
             {
-                Mod.Log.Warn("Placemaker: building without owner lot; the build is selectable per part and bulldozing a part removes it all.");
+                Mod.Log.Warn("Citymaker: building without owner lot; the build is selectable per part and bulldozing a part removes it all.");
                 Go(Step.Apply);
             }
         }
@@ -234,7 +234,7 @@ namespace Placemaker.Game.Build
             Tag(e, MemberKind.Auxiliary, MemberRole.OwnerArea);
             if (_record != Entity.Null && EntityManager.Exists(_record))
             {
-                var g = EntityManager.GetComponentData<PlacemakerGroup>(_record);
+                var g = EntityManager.GetComponentData<CitymakerGroup>(_record);
                 g.Owner = e;   // Apply converts the Temp in place, so the entity stays valid
                 EntityManager.SetComponentData(_record, g);
             }
@@ -284,7 +284,7 @@ namespace Placemaker.Game.Build
                 });
                 _cleared++;
             }
-            if (_cleared > 0) Mod.Log.Info($"Placemaker clears {_cleared} existing trees/props inside the outline.");
+            if (_cleared > 0) Mod.Log.Info($"Citymaker clears {_cleared} existing trees/props inside the outline.");
         }
     }
 }

@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "id": "botanicalGarden",
-  "nameKey": "Placemaker.Recipe.BotanicalGarden",
-  "descriptionKey": "Placemaker.Recipe.BotanicalGarden.Description",
+  "nameKey": "Citymaker.Recipe.BotanicalGarden",
+  "descriptionKey": "Citymaker.Recipe.BotanicalGarden.Description",
   "icon": "Media/Game/Icons/PropsPlants.svg",
   "root": {
     "layer": "botanicalGarden",

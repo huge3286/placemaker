@@ -1,13 +1,13 @@
 // Work lights feature (construction site, quarry): floodlight towers along the edge, at the corners or
 // spread over the open ground, each with a small generator beside it.
 
-using Placemaker.Core.Layers.Types.Scrapyard;
+using Citymaker.Core.Layers.Types.Scrapyard;
 using System.Collections.Generic;
-using Placemaker.Core.Layers.AddOns;
-using Placemaker.Core.Layers.Common;
+using Citymaker.Core.Layers.AddOns;
+using Citymaker.Core.Layers.Common;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.ConstructionSite
+namespace Citymaker.Core.Layers.Types.ConstructionSite
 {
     [AreaGenerator(163)]
     public sealed class WorkLightsAddOn : AddOnLayer
@@ -76,7 +76,7 @@ namespace Placemaker.Core.Layers.Types.ConstructionSite
                     SiteKit.Put(ctx, occ, p + new float2(-side.y, side.x) * 2.4f, Facing(p, region.Centroid), gen, null, 1f, 0x1180u + (uint)i, 0.5f);
                 }
             }
-            if (placed == 0) NoSpace(ctx, "Placemaker.AddOn.WorkLights.Name");
+            if (placed == 0) NoSpace(ctx, "Citymaker.AddOn.WorkLights.Name");
             ctx.Stat(Keys.StatLamps, placed, Keys.UnitCount);
         }
 

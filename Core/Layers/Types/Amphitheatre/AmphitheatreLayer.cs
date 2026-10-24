@@ -9,14 +9,14 @@
 
 using System;
 using System.Collections.Generic;
-using Placemaker.Core.Geometry;
-using Placemaker.Core.Layers.Common;
-using Placemaker.Core.Layers.Leisure;
-using Placemaker.Core.Layers.Plaza;
-using Placemaker.Core.Layers.Types.Events;
+using Citymaker.Core.Geometry;
+using Citymaker.Core.Layers.Common;
+using Citymaker.Core.Layers.Leisure;
+using Citymaker.Core.Layers.Plaza;
+using Citymaker.Core.Layers.Types.Events;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Layers.Types.Amphitheatre
+namespace Citymaker.Core.Layers.Types.Amphitheatre
 {
     [AreaGenerator(81, Group = "events")]
     public sealed class AmphitheatreLayer : LeisureLayer, ILinkedControls
@@ -26,7 +26,7 @@ namespace Placemaker.Core.Layers.Types.Amphitheatre
         public void Derive(SettingsBag settings) => GroundPalettes.Derive(settings, "seatSurface");
 
         public const string BowlPlace = Composer.PlacePrefix + "bowl";
-        private const string K = "Placemaker.Amphitheatre.";
+        private const string K = "Citymaker.Amphitheatre.";
         /// <summary>Steepest terrain change allowed towards the outline (rise/run), below the 30 % the tests and the build accept.</summary>
         private const float EdgeSlope = 0.28f;
 
@@ -45,7 +45,7 @@ namespace Placemaker.Core.Layers.Types.Amphitheatre
         private static FeatureInfo Flowerbeds()
         {
             var f = Feature("flowerbeds");
-            f.LabelKey = "Placemaker.Park.Feature.flowerbeds";
+            f.LabelKey = "Citymaker.Park.Feature.flowerbeds";
             return f;
         }
 
@@ -290,9 +290,9 @@ namespace Placemaker.Core.Layers.Types.Amphitheatre
             for (int i = 0; i < pieces.Count && i < 24; i++) ctx.AddRegion(pieces[i], "green:" + i, RegionTags.Green);
 
             CommonStats(ctx);
-            ctx.Stat("Placemaker.Stat.Seats", seats, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Rows", b.Rows, Keys.UnitCount);
-            ctx.Stat("Placemaker.Stat.Capacity", Math.Round(capacity), Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Seats", seats, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Rows", b.Rows, Keys.UnitCount);
+            ctx.Stat("Citymaker.Stat.Capacity", Math.Round(capacity), Keys.UnitCount);
             ctx.Plan.Facts["rows"] = b.Rows;
             ctx.Plan.Facts["seats"] = seats;
             ctx.Plan.Facts["capacity"] = Math.Round(capacity);

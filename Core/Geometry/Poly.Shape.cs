@@ -1,4 +1,4 @@
-// Placemaker — ring shaping: simplify, smooth, resample, preview fill runs, pole of inaccessibility.
+// Citymaker — ring shaping: simplify, smooth, resample, preview fill runs, pole of inaccessibility.
 //
 // SmoothCorners, FillRuns and the moving-average loop smoothing are adapted from Grid Road Generator
 // (Ti4goc), Core/FreeAreaPerimeter.cs and Core/BrushMask.cs.
@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace Placemaker.Core.Geometry
+namespace Citymaker.Core.Geometry
 {
     public static partial class Poly
     {
